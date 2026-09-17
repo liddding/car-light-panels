@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>数据看板中心 · Panels</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Microsoft YaHei',-apple-system,sans-serif; background:#f0f2f5; color:#1a2332; padding:24px; max-width:1040px; margin:0 auto; }
+.header { background:linear-gradient(135deg,#7A2E2E,#C1121F); color:#fff; border-radius:12px; padding:26px 30px; margin-bottom:22px; }
+.header h1 { font-size:25px; }
+.header p { font-size:13px; opacity:.93; margin-top:8px; line-height:1.7; }
+h2 { font-size:16px; color:#7A2E2E; margin:22px 0 12px; border-left:4px solid #C1121F; padding-left:10px; }
+.grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+a.card { display:block; background:#fff; border-radius:10px; padding:18px 20px; text-decoration:none; color:#1a2332; box-shadow:0 1px 3px rgba(0,0,0,.08); border-left:4px solid #C1121F; transition:.15s; }
+a.card:hover { transform:translateY(-2px); box-shadow:0 6px 18px rgba(193,18,31,.18); }
+a.card.blue { border-left-color:#1F4E78; }
+.card .t { font-size:16px; font-weight:700; color:#7A2E2E; margin-bottom:6px; }
+a.card.blue .t { color:#1F4E78; }
+.card .d { font-size:12.5px; color:#5f6b7a; line-height:1.7; }
+.card .tag { display:inline-block; font-size:11px; background:#fdf1f0; color:#C1121F; border-radius:10px; padding:2px 9px; margin-top:8px; }
+.footer { text-align:center; font-size:11.5px; color:#8a94a3; margin-top:26px; line-height:1.9; }
+@media (max-width:760px){ .grid { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<div class="header">
+<h1>&#128202; 数据看板中心</h1>
+<p>亚马逊运营数据看板集合 ｜ 金额单位: 人民币(&yen;)<br>数据窗口: 2026年 7-9月 · W36-W37 ｜ 库龄快照: 2026-09</p>
+</div>
+
+<h2>车灯总成</h2>
+<div class="grid">
+<a class="card" href="slow-panel.html">
+  <div class="t">&#128680; 滞销清理追踪看板</div>
+  <div class="d">库存现状 · 商编动销分层 · 广告/流量/转化多维诊断(D1-D7)· 周度记录追踪(可编辑)</div>
+  <span class="tag">可录入 · 自动保存在本机浏览器</span>
+</a>
+<a class="card" href="car-light-merged-panel.html">
+  <div class="t">&#128200; 周环比整合看板(W36→W37)</div>
+  <div class="d">品牌维度 + 新/旧链接维度 + 广告环比变化(整体与分品牌)</div>
+</a>
+<a class="card" href="car-light-newold-panel.html">
+  <div class="t">&#128279; 新链接 vs 旧链接维度</div>
+  <div class="d">PHILTOP / Torchbeam 新旧链接销量、销售额、转化率、广告对比</div>
+</a>
+<a class="card" href="car-light-brand-panel.html">
+  <div class="t">&#127991; 品牌维度周环比</div>
+  <div class="d">各品牌销量/销售额/份额/转化率/广告效率对比</div>
+</a>
+<a class="card" href="car-light-peak-panel.html">
+  <div class="t">&#127942; 2026 旺季规划看板</div>
+  <div class="d">9-12月销售目标(保守+30%/中性+40%/冲刺+50%)· PHILTOP 60% / Torchbeam 40%</div>
+</a>
+</div>
+
+<h2>发动机支架</h2>
+<div class="grid">
+<a class="card blue" href="engine-mount-panel.html">
+  <div class="t">&#128295; 发动机支架周报看板(W37)</div>
+  <div class="d">US22 主店 9 周趋势 · 库存周转 · 断货预警 · 连续下滑监控 · 周环比分析</div>
+</a>
+</div>
+
+<div class="footer">
+部署于 GitHub Pages(永久固定链接)｜ 滞销看板记录保存在浏览器本地(localStorage),可导出 JSON 备份<br>
+自动生成 · 数据看板中心
+</div>
+</body>
+</html>
