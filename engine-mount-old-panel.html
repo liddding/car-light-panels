@@ -439,7 +439,7 @@ window.addEventListener('resize', function(){
       tools.className = 'tbl-tools';
       tools.innerHTML = '<input type="text" placeholder="搜索 ' + rows.length + ' 行(输入 ASIN / SKU / 关键词)">'
         + '<span class="cnt"></span>'
-        + (rows.length > 12 ? '<button class="btn-mini" type="button">展开全部</button>' : '');
+        + ((rows.length > 12 && !t.hasAttribute('data-nofold')) ? '<button class="btn-mini" type="button">展开全部</button>' : '');
       wrap.insertBefore(tools, t);
 
       var input = tools.querySelector('input');
@@ -450,7 +450,7 @@ window.addEventListener('resize', function(){
         cnt.textContent = '显示 ' + shown + ' / ' + rows.length + ' 行';
       }
       setCnt(rows.length);
-      if (rows.length > 12 && btn) {
+      if (rows.length > 12 && btn && !t.hasAttribute('data-nofold')) {
         wrap.classList.add('collapsed');
         btn.textContent = '展开全部(' + rows.length + ' 行)';
         setCnt(Math.min(12, rows.length));
