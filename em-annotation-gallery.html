@@ -1,0 +1,915 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>发动机支架 图片标注核验</title><style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,"Segoe UI","Microsoft YaHei",sans-serif;background:#0f1420;color:#e8ecf4;padding:20px;font-size:13px}
+.wrap{max-width:1600px;margin:0 auto}
+h1{font-size:22px;font-weight:700}
+.sub{color:#7d8ba3;font-size:12px;margin-top:6px;line-height:1.7}
+.badge{display:inline-block;background:#1b2740;color:#5fb3ff;border:1px solid #2a3c5e;padding:2px 9px;border-radius:11px;font-size:11px;margin-left:8px}
+.badge.g{background:#14301f;color:#6ee7a8;border-color:#2a5e3c}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}
+.kpi{background:#161d2e;border:1px solid #232f47;border-radius:10px;padding:14px 16px;position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:#3b82f6}
+.kpi.g::before{background:#22c55e}.kpi.r::before{background:#ef4444}.kpi.a::before{background:#f59e0b}
+.kpi .lbl{color:#7d8ba3;font-size:11px;margin-bottom:6px}
+.kpi .val{font-size:24px;font-weight:700}
+.kpi .val span{font-size:12px;color:#7d8ba3;font-weight:400;margin-left:3px}
+.note{background:#131a28;border:1px solid #232f47;border-radius:8px;padding:12px 15px;margin-bottom:16px;color:#8fa3bf;font-size:11.5px;line-height:1.9}
+.note b{color:#5fb3ff}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(700px,1fr));gap:16px}
+.card{background:#161d2e;border:1px solid #232f47;border-radius:12px;overflow:hidden}
+.chead{display:flex;justify-content:space-between;align-items:center;padding:11px 14px;background:#1a2333;border-bottom:1px solid #232f47}
+.code{font-weight:700;font-size:14px;color:#5fb3ff}
+.pcode{color:#7d8ba3;font-size:11.5px;margin-left:7px}
+.bg{font-size:10.5px;padding:2px 9px;border-radius:9px;background:#1e2a3f;color:#8fa3bf}
+.bg.ok{background:#14301f;color:#6ee7a8}.bg.warn{background:#3b2f1a;color:#fcd34d}
+.cbody{display:grid;grid-template-columns:330px 1fr}
+.cimg{background:#fff;display:flex;align-items:center;justify-content:center;padding:8px;border-right:1px solid #232f47}
+.cimg img{width:100%;max-width:314px;display:block;border-radius:6px;cursor:zoom-in;transition:.15s}
+.cimg img:hover{transform:scale(1.04)}
+.cinfo{padding:11px 13px;min-width:0}
+table.items{width:100%;border-collapse:collapse;font-size:11.5px}
+table.items th{text-align:left;color:#5a6a85;font-weight:500;padding:4px 5px;border-bottom:1px solid #232f47;font-size:10.5px}
+table.items td{padding:4px 5px;border-bottom:1px solid #1c2637;vertical-align:top}
+td.num-b{color:#fca5a5;font-weight:700;width:44px;text-align:center}
+td.nm{color:#e8ecf4}
+td.oe{color:#6ee7a8;font-family:ui-monospace,Consolas,monospace;font-size:11px;white-space:nowrap}
+td.pos{color:#8fa3bf;width:64px}
+td.coord{color:#5a6a85;width:96px;font-family:ui-monospace,Consolas,monospace;font-size:10.5px}
+footer{margin-top:22px;color:#5a6a85;font-size:11px;text-align:center;line-height:1.8}
+</style></head><body><div class="wrap">
+<h1>发动机支架 图片标注核验 <span class="badge">共78个商编</span><span class="badge g">精准72个</span></h1>
+<div class="sub">标注样式：红色圆角标记 + 白色数字 ｜ 标记号 = 包装内容中的序号（同款2x标相同号）｜ 图片目录：em-images/annotated/</div>
+<div class="kpis">
+  <div class="kpi g"><div class="lbl">已标注商编</div><div class="val">78<span>个</span></div></div>
+  <div class="kpi"><div class="lbl">标记总数</div><div class="val">234<span>个</span></div></div>
+  <div class="kpi a"><div class="lbl">件数精确匹配</div><div class="val">72<span>个</span></div></div>
+  <div class="kpi r"><div class="lbl">需人工复核</div><div class="val">6<span>个</span></div></div>
+</div>
+<div class="note">
+<b>标记规则</b>：标记号对应「包装内容」中的条目顺序（1=第1条，2=第2条…）；某条为 2x 时，两个相同支架标同一个号。<br>
+<b>位置排序</b>：检测出支架后按<b>阅读顺序</b>（从上到下、同排从左到右）依次分配标记号。<br>
+<b>使用建议</b>：请对照实物照片核验——若某个支架的名称与实物不符，把「商编 + 标记号 + 正确名称」告诉我，我立即重排。
+</div>
+<div class="grid">
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO39300</span><span class="pcode">1EMO3930</span></div><span class="bg ok">✓ 2件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO39300.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO39300.jpg" loading="lazy" alt="OO1EMO39300"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Motor Mount</td><td class="oe">A4575EL</td><td class="pos">中中</td><td class="coord">34.5%,43.3%</td></tr><tr><td class="num-b">2</td><td class="nm">Front Right Motor Mount</td><td class="oe">A4587</td><td class="pos">中右</td><td class="coord">79.4%,61.9%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO39400</span><span class="pcode">1EMO3940</span></div><span class="bg ok">✓ 4件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO39400.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO39400.jpg" loading="lazy" alt="OO1EMO39400"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Transmission Mount</td><td class="oe">A42011</td><td class="pos">上左</td><td class="coord">25.0%,29.4%</td></tr><tr><td class="num-b">2</td><td class="nm">Front Motor Mount</td><td class="oe">A62038</td><td class="pos">上右</td><td class="coord">73.6%,26.7%</td></tr><tr><td class="num-b">3</td><td class="nm">Front Right Motor Mount</td><td class="oe">A42023</td><td class="pos">下左</td><td class="coord">26.8%,77.8%</td></tr><tr><td class="num-b">4</td><td class="nm">Rear Motor Mount</td><td class="oe">A42003</td><td class="pos">下右</td><td class="coord">68.1%,72.0%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO39500</span><span class="pcode">1EMO3950</span></div><span class="bg ok">✓ 3件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO39500.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO39500.jpg" loading="lazy" alt="OO1EMO39500"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Right Motor Mount</td><td class="oe">A5316</td><td class="pos">上左</td><td class="coord">28.8%,31.7%</td></tr><tr><td class="num-b">2</td><td class="nm">Front Left Motor Mount</td><td class="oe">A5341</td><td class="pos">中右</td><td class="coord">74.5%,51.8%</td></tr><tr><td class="num-b">3</td><td class="nm">Transmission Mount</td><td class="oe">A2957</td><td class="pos">下左</td><td class="coord">28.8%,77.7%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO39700</span><span class="pcode">1EMO3970</span></div><span class="bg ok">✓ 2件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO39700.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO39700.jpg" loading="lazy" alt="OO1EMO39700"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A2621</td><td class="pos">上中 / 下左</td><td class="coord">63.9%,29.9% / 33.7%,73.2%</td></tr><tr><td class="num-b">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A2621</td><td class="pos">上中 / 下左</td><td class="coord">63.9%,29.9% / 33.7%,73.2%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO40000</span><span class="pcode">1EMO4000</span></div><span class="bg ok">✓ 4件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO40000.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO40000.jpg" loading="lazy" alt="OO1EMO40000"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Motor Mount</td><td class="oe">A62012</td><td class="pos">上左</td><td class="coord">30.8%,31.8%</td></tr><tr><td class="num-b">2</td><td class="nm">Front Right Motor Mount</td><td class="oe">A62049HY</td><td class="pos">上右</td><td class="coord">73.7%,33.8%</td></tr><tr><td class="num-b">3</td><td class="nm">Rear Motor Mount</td><td class="oe">A62046</td><td class="pos">下左</td><td class="coord">27.4%,79.0%</td></tr><tr><td class="num-b">4</td><td class="nm">Transmission Mount</td><td class="oe">A62064</td><td class="pos">下中</td><td class="coord">65.3%,70.7%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO40100</span><span class="pcode">1EMO4010</span></div><span class="bg ok">✓ 4件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO40100.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO40100.jpg" loading="lazy" alt="OO1EMO40100"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Motor Mount</td><td class="oe">A6277</td><td class="pos">上左</td><td class="coord">28.7%,24.3%</td></tr><tr><td class="num-b">2</td><td class="nm">Rear Motor Mount</td><td class="oe">A6253</td><td class="pos">中右</td><td class="coord">67.4%,43.3%</td></tr><tr><td class="num-b">3</td><td class="nm">Torque Strut Mount</td><td class="oe">A4233</td><td class="pos">中左</td><td class="coord">23.8%,58.6%</td></tr><tr><td class="num-b">4</td><td class="nm">Transmission Mount</td><td class="oe">A6256</td><td class="pos">下中</td><td class="coord">42.9%,82.9%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO40300</span><span class="pcode">1EMO4030</span></div><span class="bg ok">✓ 4件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO40300.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO40300.jpg" loading="lazy" alt="OO1EMO40300"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Motor Mount</td><td class="oe">A5553</td><td class="pos">上左</td><td class="coord">27.6%,25.4%</td></tr><tr><td class="num-b">2</td><td class="nm">Front Transmission Mount</td><td class="oe">A5707</td><td class="pos">上右</td><td class="coord">75.3%,21.7%</td></tr><tr><td class="num-b">3</td><td class="nm">Transmission Mount</td><td class="oe">A5554</td><td class="pos">中左</td><td class="coord">25.9%,64.9%</td></tr><tr><td class="num-b">4</td><td class="nm">Rear Transmission Mount</td><td class="oe">A5633</td><td class="pos">下右</td><td class="coord">69.2%,68.1%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO40400</span><span class="pcode">1EMO4040</span></div><span class="bg ok">✓ 3件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO40400.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO40400.jpg" loading="lazy" alt="OO1EMO40400"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A2292</td><td class="pos">上中 / 下左</td><td class="coord">38.0%,31.2% / 25.0%,71.0%</td></tr><tr><td class="num-b">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A2292</td><td class="pos">上中 / 下左</td><td class="coord">38.0%,31.2% / 25.0%,71.0%</td></tr><tr><td class="num-b">2</td><td class="nm">Transmission Mount</td><td class="oe">A2394</td><td class="pos">中右</td><td class="coord">69.9%,64.2%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO40800</span><span class="pcode">1EMO4080</span></div><span class="bg ok">✓ 3件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO40800.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO40800.jpg" loading="lazy" alt="OO1EMO40800"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Transmission Mount</td><td class="oe">A5987</td><td class="pos">上左</td><td class="coord">31.2%,26.2%</td></tr><tr><td class="num-b">2</td><td class="nm">Front Right Motor Mount</td><td class="oe">A5898</td><td class="pos">中右</td><td class="coord">73.2%,34.2%</td></tr><tr><td class="num-b">3</td><td class="nm">Torque Strut Mount</td><td class="oe">A5988</td><td class="pos">下中</td><td class="coord">62.8%,74.2%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO40900</span><span class="pcode">1EMO4090</span></div><span class="bg ok">✓ 2件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO40900.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO40900.jpg" loading="lazy" alt="OO1EMO40900"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A2572</td><td class="pos">上右 / 中中</td><td class="coord">69.4%,32.4% / 34.3%,64.2%</td></tr><tr><td class="num-b">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A2572</td><td class="pos">上右 / 中中</td><td class="coord">69.4%,32.4% / 34.3%,64.2%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO41000</span><span class="pcode">1EMO4100</span></div><span class="bg ok">✓ 4件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO41000.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO41000.jpg" loading="lazy" alt="OO1EMO41000"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Motor Mount</td><td class="oe">A62012</td><td class="pos">中中</td><td class="coord">38.4%,37.1%</td></tr><tr><td class="num-b">2</td><td class="nm">Front Right Motor Mount</td><td class="oe">A62071</td><td class="pos">上右</td><td class="coord">79.3%,26.7%</td></tr><tr><td class="num-b">3</td><td class="nm">Rear Motor Mount</td><td class="oe">A62067</td><td class="pos">下左</td><td class="coord">22.5%,71.3%</td></tr><tr><td class="num-b">4</td><td class="nm">Transmission Mount</td><td class="oe">A62070</td><td class="pos">下右</td><td class="coord">69.3%,75.8%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO41100</span><span class="pcode">1EMO4110</span></div><span class="bg ok">✓ 3件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO41100.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO41100.jpg" loading="lazy" alt="OO1EMO41100"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A4017</td><td class="pos">上中 / 中右</td><td class="coord">35.3%,29.7% / 82.7%,38.6%</td></tr><tr><td class="num-b">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A4017</td><td class="pos">上中 / 中右</td><td class="coord">35.3%,29.7% / 82.7%,38.6%</td></tr><tr><td class="num-b">2</td><td class="nm">Transmission Mount</td><td class="oe">A4095</td><td class="pos">下中</td><td class="coord">49.4%,75.0%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO41300</span><span class="pcode">1EMO4130</span></div><span class="bg ok">✓ 2件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO41300.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO41300.jpg" loading="lazy" alt="OO1EMO41300"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A2883</td><td class="pos">上右 / 中中</td><td class="coord">72.8%,31.4% / 35.9%,65.0%</td></tr><tr><td class="num-b">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A2883</td><td class="pos">上右 / 中中</td><td class="coord">72.8%,31.4% / 35.9%,65.0%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO41500</span><span class="pcode">1EMO4150</span></div><span class="bg ok">✓ 2件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO41500.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO41500.jpg" loading="lazy" alt="OO1EMO41500"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">9988</td><td class="pos">上中 / 下左</td><td class="coord">62.2%,29.2% / 31.4%,70.8%</td></tr><tr><td class="num-b">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">9988</td><td class="pos">上中 / 下左</td><td class="coord">62.2%,29.2% / 31.4%,70.8%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO41800</span><span class="pcode">1EMO4180</span></div><span class="bg ok">✓ 4件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO41800.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO41800.jpg" loading="lazy" alt="OO1EMO41800"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Lower Torque Strut Mount</td><td class="oe">A4547</td><td class="pos">中左</td><td class="coord">30.0%,35.5%</td></tr><tr><td class="num-b">2</td><td class="nm">Front Upper Torque Strut Mount</td><td class="oe">A4548</td><td class="pos">上右</td><td class="coord">74.3%,24.0%</td></tr><tr><td class="num-b">3</td><td class="nm">Front Motor Mount</td><td class="oe">A65030</td><td class="pos">中中</td><td class="coord">64.1%,59.2%</td></tr><tr><td class="num-b">4</td><td class="nm">Transmission Mount</td><td class="oe">A4546</td><td class="pos">下中</td><td class="coord">44.2%,80.6%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO41900</span><span class="pcode">1EMO4190</span></div><span class="bg ok">✓ 4件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO41900.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO41900.jpg" loading="lazy" alt="OO1EMO41900"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Motor Mount</td><td class="oe">A4239HY</td><td class="pos">上左</td><td class="coord">24.6%,30.6%</td></tr><tr><td class="num-b">2</td><td class="nm">Front Right Motor Mount</td><td class="oe">A4212</td><td class="pos">上右</td><td class="coord">73.2%,30.1%</td></tr><tr><td class="num-b">3</td><td class="nm">Transmission Mount</td><td class="oe">A4207</td><td class="pos">下中</td><td class="coord">44.1%,70.0%</td></tr><tr><td class="num-b">4</td><td class="nm">Front Right Torque Strut Mount</td><td class="oe">A4236</td><td class="pos">下右</td><td class="coord">77.8%,78.9%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO42000</span><span class="pcode">1EMO4200</span></div><span class="bg ok">✓ 3件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO42000.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO42000.jpg" loading="lazy" alt="OO1EMO42000"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Right Motor Mount</td><td class="oe">A5415</td><td class="pos">上中</td><td class="coord">65.0%,26.2%</td></tr><tr><td class="num-b">2</td><td class="nm">Transmission Mount</td><td class="oe">A5418</td><td class="pos">中中</td><td class="coord">35.4%,66.2%</td></tr><tr><td class="num-b">3</td><td class="nm">Rear Motor Mount</td><td class="oe">A5423</td><td class="pos">中右</td><td class="coord">73.6%,63.7%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO42100</span><span class="pcode">1EMO4210</span></div><span class="bg ok">✓ 2件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO42100.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO42100.jpg" loading="lazy" alt="OO1EMO42100"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A2292</td><td class="pos">上左 / 下中</td><td class="coord">33.1%,27.1% / 64.3%,70.1%</td></tr><tr><td class="num-b">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A2292</td><td class="pos">上左 / 下中</td><td class="coord">33.1%,27.1% / 64.3%,70.1%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO42200</span><span class="pcode">1EMO4220</span></div><span class="bg ok">✓ 2件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO42200.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO42200.jpg" loading="lazy" alt="OO1EMO42200"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A2802</td><td class="pos">上右 / 下左</td><td class="coord">67.2%,33.5% / 33.2%,70.3%</td></tr><tr><td class="num-b">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A2802</td><td class="pos">上右 / 下左</td><td class="coord">67.2%,33.5% / 33.2%,70.3%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO42300</span><span class="pcode">1EMO4230</span></div><span class="bg ok">✓ 3件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO42300.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO42300.jpg" loading="lazy" alt="OO1EMO42300"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A7072HY</td><td class="pos">上中</td><td class="coord">50.9%,27.7%</td></tr><tr><td class="num-b">2</td><td class="nm">Motor Mount</td><td class="oe">A7073</td><td class="pos">下左</td><td class="coord">25.4%,69.6%</td></tr><tr><td class="num-b">3</td><td class="nm">Transmission Mount</td><td class="oe">A4095</td><td class="pos">下右</td><td class="coord">71.3%,69.6%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO42400</span><span class="pcode">1EMO4240</span></div><span class="bg ok">✓ 2件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO42400.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO42400.jpg" loading="lazy" alt="OO1EMO42400"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A7360</td><td class="pos">中左 / 中右</td><td class="coord">30.8%,37.7% / 72.4%,63.3%</td></tr><tr><td class="num-b">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A7360</td><td class="pos">中左 / 中右</td><td class="coord">30.8%,37.7% / 72.4%,63.3%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO42500</span><span class="pcode">1EMO4250</span></div><span class="bg ok">✓ 3件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO42500.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO42500.jpg" loading="lazy" alt="OO1EMO42500"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Transmission Mount</td><td class="oe">A4263</td><td class="pos">上中</td><td class="coord">49.9%,22.0%</td></tr><tr><td class="num-b">2</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A4260</td><td class="pos">中右</td><td class="coord">75.7%,45.0%</td></tr><tr><td class="num-b">3</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A4260</td><td class="pos">中中</td><td class="coord">37.5%,63.4%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO42600</span><span class="pcode">1EMO4260</span></div><span class="bg ok">✓ 4件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO42600.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO42600.jpg" loading="lazy" alt="OO1EMO42600"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Motor Mount</td><td class="oe">A5416</td><td class="pos">上左</td><td class="coord">27.2%,30.5%</td></tr><tr><td class="num-b">2</td><td class="nm">Front Right Motor Mount</td><td class="oe">A4644</td><td class="pos">上右</td><td class="coord">76.5%,23.1%</td></tr><tr><td class="num-b">3</td><td class="nm">Rear Motor Mount</td><td class="oe">A5417</td><td class="pos">下中</td><td class="coord">38.8%,75.1%</td></tr><tr><td class="num-b">4</td><td class="nm">Transmission Mount</td><td class="oe">A5418</td><td class="pos">中右</td><td class="coord">82.5%,64.5%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO42700</span><span class="pcode">1EMO4270</span></div><span class="bg ok">✓ 6件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO42700.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO42700.jpg" loading="lazy" alt="OO1EMO42700"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Transmission Mount</td><td class="oe">2712</td><td class="pos">上左</td><td class="coord">27.0%,13.1%</td></tr><tr><td class="num-b">2</td><td class="nm">Motor Mount</td><td class="oe">A2796</td><td class="pos">上右</td><td class="coord">67.8%,22.7%</td></tr><tr><td class="num-b">3</td><td class="nm">Front Left Front Right Torque Strut Mount</td><td class="oe">A2866</td><td class="pos">中左 / 中右</td><td class="coord">27.4%,52.6% / 68.0%,57.7%</td></tr><tr><td class="num-b">3</td><td class="nm">Front Left Front Right Torque Strut Mount</td><td class="oe">A2866</td><td class="pos">中左 / 中右</td><td class="coord">27.4%,52.6% / 68.0%,57.7%</td></tr><tr><td class="num-b">4</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A5309</td><td class="pos">下右 / 下左</td><td class="coord">86.3%,73.0% / 32.0%,85.0%</td></tr><tr><td class="num-b">4</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A5309</td><td class="pos">下右 / 下左</td><td class="coord">86.3%,73.0% / 32.0%,85.0%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO42800</span><span class="pcode">1EMO4280</span></div><span class="bg ok">✓ 3件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO42800.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO42800.jpg" loading="lazy" alt="OO1EMO42800"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Transmission Mount</td><td class="oe">A4425</td><td class="pos">上中</td><td class="coord">34.6%,29.3%</td></tr><tr><td class="num-b">2</td><td class="nm">Front Motor Mount</td><td class="oe">A4449</td><td class="pos">下左</td><td class="coord">31.3%,74.6%</td></tr><tr><td class="num-b">3</td><td class="nm">Rear Torque Strut Mount</td><td class="oe">A4419</td><td class="pos">中右</td><td class="coord">75.2%,61.1%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO43000</span><span class="pcode">1EMO4300</span></div><span class="bg ok">✓ 4件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO43000.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO43000.jpg" loading="lazy" alt="OO1EMO43000"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Motor Mount</td><td class="oe">A62053</td><td class="pos">上左</td><td class="coord">29.9%,31.7%</td></tr><tr><td class="num-b">2</td><td class="nm">Transmission Mount</td><td class="oe">A42004</td><td class="pos">上右</td><td class="coord">74.6%,21.2%</td></tr><tr><td class="num-b">3</td><td class="nm">Rear Motor Mount</td><td class="oe">A72024</td><td class="pos">中右</td><td class="coord">70.4%,62.1%</td></tr><tr><td class="num-b">4</td><td class="nm">Front Right Motor Mount</td><td class="oe">A62000</td><td class="pos">下左</td><td class="coord">31.2%,78.6%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO43100</span><span class="pcode">1EMO4310</span></div><span class="bg ok">✓ 3件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO43100.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO43100.jpg" loading="lazy" alt="OO1EMO43100"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Left Motor Mount</td><td class="oe">A5825</td><td class="pos">上右</td><td class="coord">67.3%,31.2%</td></tr><tr><td class="num-b">2</td><td class="nm">Front Right Motor Mount</td><td class="oe">A5824</td><td class="pos">中左</td><td class="coord">29.0%,59.5%</td></tr><tr><td class="num-b">3</td><td class="nm">Rear Torque Strut Mount</td><td class="oe">A5752</td><td class="pos">下中</td><td class="coord">63.1%,80.5%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO43200</span><span class="pcode">1EMO4320</span></div><span class="bg ok">✓ 3件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO43200.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO43200.jpg" loading="lazy" alt="OO1EMO43200"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Right Motor Mount</td><td class="oe">A4212</td><td class="pos">上中</td><td class="coord">35.5%,31.6%</td></tr><tr><td class="num-b">2</td><td class="nm">Transmission Mount</td><td class="oe">A4207</td><td class="pos">下左</td><td class="coord">22.8%,67.4%</td></tr><tr><td class="num-b">3</td><td class="nm">Front Right Torque Strut Mount</td><td class="oe">A4205</td><td class="pos">下中</td><td class="coord">65.4%,68.8%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO43400</span><span class="pcode">1EMO4340</span></div><span class="bg ok">✓ 2件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO43400.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO43400.jpg" loading="lazy" alt="OO1EMO43400"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A5410</td><td class="pos">上中 / 下中</td><td class="coord">60.8%,29.2% / 37.7%,71.0%</td></tr><tr><td class="num-b">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A5410</td><td class="pos">上中 / 下中</td><td class="coord">60.8%,29.2% / 37.7%,71.0%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO43500</span><span class="pcode">1EMO4350</span></div><span class="bg ok">✓ 2件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO43500.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO43500.jpg" loading="lazy" alt="OO1EMO43500"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Upper Motor Mount</td><td class="oe">A6969</td><td class="pos">上左</td><td class="coord">31.9%,29.5%</td></tr><tr><td class="num-b">2</td><td class="nm">Front Lower Motor Mount</td><td class="oe">A6966</td><td class="pos">下右</td><td class="coord">67.7%,71.4%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO43600</span><span class="pcode">1EMO4360</span></div><span class="bg ok">✓ 3件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO43600.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO43600.jpg" loading="lazy" alt="OO1EMO43600"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A5102</td><td class="pos">上左 / 中右</td><td class="coord">26.0%,30.6% / 73.4%,41.2%</td></tr><tr><td class="num-b">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A5102</td><td class="pos">上左 / 中右</td><td class="coord">26.0%,30.6% / 73.4%,41.2%</td></tr><tr><td class="num-b">2</td><td class="nm">Transmission Mount</td><td class="oe">A5340</td><td class="pos">下中</td><td class="coord">46.7%,80.9%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO43800</span><span class="pcode">1EMO4380</span></div><span class="bg warn">目标5/检出7</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO43800.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO43800.jpg" loading="lazy" alt="OO1EMO43800"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Right Motor Mount</td><td class="oe">A4587</td><td class="pos">上左</td><td class="coord">29.9%,26.3%</td></tr><tr><td class="num-b">2</td><td class="nm">Rear Transmission Mount</td><td class="oe">A4557</td><td class="pos">中右</td><td class="coord">73.0%,38.4%</td></tr><tr><td class="num-b">3</td><td class="nm">Rear Motor Mount</td><td class="oe">A4553</td><td class="pos">中左</td><td class="coord">24.9%,62.7%</td></tr><tr><td class="num-b">4</td><td class="nm">Front Transmission Mount</td><td class="oe">A4558</td><td class="pos">下中</td><td class="coord">44.7%,81.5%</td></tr><tr><td class="num-b">5</td><td class="nm">Front Motor Mount</td><td class="oe">A65023HY</td><td class="pos">下右</td><td class="coord">76.9%,77.0%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO43900</span><span class="pcode">1EMO4390</span></div><span class="bg warn">目标5/检出9</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO43900.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO43900.jpg" loading="lazy" alt="OO1EMO43900"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Motor Mount</td><td class="oe">A65026EL</td><td class="pos">上左</td><td class="coord">30.2%,27.5%</td></tr><tr><td class="num-b">2</td><td class="nm">Rear Motor Mount</td><td class="oe">A4583EL</td><td class="pos">上右</td><td class="coord">80.4%,29.9%</td></tr><tr><td class="num-b">3</td><td class="nm">Front Right Motor Mount</td><td class="oe">A4587</td><td class="pos">中左</td><td class="coord">21.8%,59.9%</td></tr><tr><td class="num-b">4</td><td class="nm">Front Transmission Mount</td><td class="oe">A6582</td><td class="pos">下右</td><td class="coord">68.8%,72.1%</td></tr><tr><td class="num-b">5</td><td class="nm">Rear Transmission Mount</td><td class="oe">A4559</td><td class="pos">下左</td><td class="coord">20.7%,80.3%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO44000</span><span class="pcode">1EMO4400</span></div><span class="bg ok">✓ 4件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO44000.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO44000.jpg" loading="lazy" alt="OO1EMO44000"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Motor Mount</td><td class="oe">A4203</td><td class="pos">上中</td><td class="coord">35.1%,31.0%</td></tr><tr><td class="num-b">2</td><td class="nm">Front Right Motor Mount</td><td class="oe">A4211</td><td class="pos">上右</td><td class="coord">77.4%,30.9%</td></tr><tr><td class="num-b">3</td><td class="nm">Front Right Torque Strut Mount</td><td class="oe">A4236</td><td class="pos">下左</td><td class="coord">24.6%,73.3%</td></tr><tr><td class="num-b">4</td><td class="nm">Transmission Mount</td><td class="oe">A4207</td><td class="pos">下中</td><td class="coord">65.5%,68.9%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO44200</span><span class="pcode">1EMO4420</span></div><span class="bg ok">✓ 3件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO44200.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO44200.jpg" loading="lazy" alt="OO1EMO44200"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A5365</td><td class="pos">上左 / 下左</td><td class="coord">32.6%,33.3% / 24.0%,77.0%</td></tr><tr><td class="num-b">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A5365</td><td class="pos">上左 / 下左</td><td class="coord">32.6%,33.3% / 24.0%,77.0%</td></tr><tr><td class="num-b">2</td><td class="nm">Transmission Mount</td><td class="oe">A2811</td><td class="pos">下右</td><td class="coord">68.9%,70.9%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO44300</span><span class="pcode">1EMO4430</span></div><span class="bg ok">✓ 5件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO44300.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO44300.jpg" loading="lazy" alt="OO1EMO44300"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Right Motor Mount</td><td class="oe">A6520</td><td class="pos">上左</td><td class="coord">26.4%,16.9%</td></tr><tr><td class="num-b">2</td><td class="nm">Front Left Upper Motor Mount</td><td class="oe">A6556</td><td class="pos">上右</td><td class="coord">74.6%,17.1%</td></tr><tr><td class="num-b">3</td><td class="nm">Front Front Left Lower Motor Mount</td><td class="oe">A6502</td><td class="pos">中左</td><td class="coord">27.6%,47.7%</td></tr><tr><td class="num-b">4</td><td class="nm">Rear Motor Mount</td><td class="oe">A6506</td><td class="pos">中右</td><td class="coord">69.3%,59.3%</td></tr><tr><td class="num-b">5</td><td class="nm">Rear Transmission Mount</td><td class="oe">A6526</td><td class="pos">下左</td><td class="coord">26.3%,81.3%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO44400</span><span class="pcode">1EMO4440</span></div><span class="bg ok">✓ 4件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO44400.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO44400.jpg" loading="lazy" alt="OO1EMO44400"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Motor Mount</td><td class="oe">A6589</td><td class="pos">上左</td><td class="coord">23.1%,30.8%</td></tr><tr><td class="num-b">2</td><td class="nm">Front Left Motor Mount</td><td class="oe">A4539</td><td class="pos">上右</td><td class="coord">70.8%,24.8%</td></tr><tr><td class="num-b">3</td><td class="nm">Rear Motor Mount</td><td class="oe">A6588</td><td class="pos">下左</td><td class="coord">23.8%,79.2%</td></tr><tr><td class="num-b">4</td><td class="nm">Transmission Mount</td><td class="oe">A4511</td><td class="pos">中右</td><td class="coord">70.8%,65.3%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO44600</span><span class="pcode">1EMO4460</span></div><span class="bg ok">✓ 1件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO44600.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO44600.jpg" loading="lazy" alt="OO1EMO44600"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Rear Front Right Torque Strut Mount</td><td class="oe">A4259</td><td class="pos">中中</td><td class="coord">47.9%,47.0%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO44800</span><span class="pcode">1EMO4480</span></div><span class="bg ok">✓ 1件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO44800.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO44800.jpg" loading="lazy" alt="OO1EMO44800"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Rear Torque Strut Mount</td><td class="oe">A62060</td><td class="pos">中中</td><td class="coord">51.1%,48.8%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO44900</span><span class="pcode">1EMO4490</span></div><span class="bg ok">✓ 1件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO44900.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO44900.jpg" loading="lazy" alt="OO1EMO44900"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Motor Mount</td><td class="oe">A5631</td><td class="pos">中中</td><td class="coord">49.9%,41.9%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO45000</span><span class="pcode">1EMO4500</span></div><span class="bg ok">✓ 1件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO45000.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO45000.jpg" loading="lazy" alt="OO1EMO45000"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Lower Transmission Mount</td><td class="oe">A5520</td><td class="pos">中中</td><td class="coord">53.0%,46.8%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO45100</span><span class="pcode">1EMO4510</span></div><span class="bg ok">✓ 3件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO45100.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO45100.jpg" loading="lazy" alt="OO1EMO45100"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Motor Mount</td><td class="oe">A5595</td><td class="pos">上中</td><td class="coord">37.0%,29.2%</td></tr><tr><td class="num-b">2</td><td class="nm">Transmission Mount</td><td class="oe">A5596</td><td class="pos">下左</td><td class="coord">15.1%,78.4%</td></tr><tr><td class="num-b">3</td><td class="nm">Transmission Mount</td><td class="oe">A5597</td><td class="pos">下中</td><td class="coord">64.3%,69.1%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO45300</span><span class="pcode">1EMO4530</span></div><span class="bg ok">✓ 1件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO45300.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO45300.jpg" loading="lazy" alt="OO1EMO45300"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Motor Mount</td><td class="oe">A5592</td><td class="pos">中中</td><td class="coord">55.1%,50.4%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO45500</span><span class="pcode">1EMO4550</span></div><span class="bg warn">目标4/检出8</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO45500.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO45500.jpg" loading="lazy" alt="OO1EMO45500"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Motor Mount</td><td class="oe">A42094</td><td class="pos">上左</td><td class="coord">27.5%,22.4%</td></tr><tr><td class="num-b">2</td><td class="nm">Motor Mount</td><td class="oe">A42095</td><td class="pos">上右</td><td class="coord">73.6%,22.7%</td></tr><tr><td class="num-b">3</td><td class="nm">Transmission Mount</td><td class="oe">A42097</td><td class="pos">中中</td><td class="coord">34.6%,66.0%</td></tr><tr><td class="num-b">4</td><td class="nm">Transmission Mount</td><td class="oe">A42115</td><td class="pos">中右</td><td class="coord">74.0%,63.5%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO45600</span><span class="pcode">1EMO4560</span></div><span class="bg ok">✓ 1件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO45600.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO45600.jpg" loading="lazy" alt="OO1EMO45600"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Torque Strut Mount</td><td class="oe">A7378</td><td class="pos">中中</td><td class="coord">46.8%,51.3%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO45800</span><span class="pcode">1EMO4580</span></div><span class="bg ok">✓ 4件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO45800.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO45800.jpg" loading="lazy" alt="OO1EMO45800"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Motor Mount</td><td class="oe">A62009</td><td class="pos">上中</td><td class="coord">40.8%,32.2%</td></tr><tr><td class="num-b">2</td><td class="nm">Front Right Motor Mount</td><td class="oe">A4295</td><td class="pos">上右</td><td class="coord">68.6%,19.9%</td></tr><tr><td class="num-b">3</td><td class="nm">Torque Strut Mount</td><td class="oe">A4257</td><td class="pos">中左</td><td class="coord">20.0%,66.8%</td></tr><tr><td class="num-b">4</td><td class="nm">Transmission Mount</td><td class="oe">A4207</td><td class="pos">中右</td><td class="coord">71.6%,63.0%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO46000</span><span class="pcode">1EMO4600</span></div><span class="bg ok">✓ 1件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO46000.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO46000.jpg" loading="lazy" alt="OO1EMO46000"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Motor Mount</td><td class="oe">A5446</td><td class="pos">中中</td><td class="coord">50.1%,52.7%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO46200</span><span class="pcode">1EMO4620</span></div><span class="bg ok">✓ 3件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO46200.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO46200.jpg" loading="lazy" alt="OO1EMO46200"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Front Right Lower Motor Mount</td><td class="oe">A2949</td><td class="pos">上右</td><td class="coord">69.1%,22.4%</td></tr><tr><td class="num-b">2</td><td class="nm">Front Right Upper Rear Motor Mount</td><td class="oe">A2948</td><td class="pos">中中</td><td class="coord">48.6%,49.9%</td></tr><tr><td class="num-b">3</td><td class="nm">Front Rear Motor Mount</td><td class="oe">A2947</td><td class="pos">下左</td><td class="coord">30.8%,74.2%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO46300</span><span class="pcode">1EMO4630</span></div><span class="bg ok">✓ 4件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO46300.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO46300.jpg" loading="lazy" alt="OO1EMO46300"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Motor Mount</td><td class="oe">A4382</td><td class="pos">上左</td><td class="coord">29.0%,21.5%</td></tr><tr><td class="num-b">2</td><td class="nm">Torque Strut Mount</td><td class="oe">A4389</td><td class="pos">中右</td><td class="coord">76.6%,34.5%</td></tr><tr><td class="num-b">3</td><td class="nm">Motor Mount</td><td class="oe">A4381</td><td class="pos">中左</td><td class="coord">25.9%,66.6%</td></tr><tr><td class="num-b">4</td><td class="nm">Torque Strut Mount</td><td class="oe">A4390</td><td class="pos">下中</td><td class="coord">62.8%,72.9%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO46400</span><span class="pcode">1EMO4640</span></div><span class="bg ok">✓ 6件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO46400.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO46400.jpg" loading="lazy" alt="OO1EMO46400"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Motor Mount</td><td class="oe">A7394</td><td class="pos">上中</td><td class="coord">53.0%,21.2%</td></tr><tr><td class="num-b">2</td><td class="nm">Rear Motor Mount</td><td class="oe">A7391HY</td><td class="pos">上左</td><td class="coord">18.9%,32.8%</td></tr><tr><td class="num-b">3</td><td class="nm">Front Right Motor Mount</td><td class="oe">A4365HY</td><td class="pos">中中</td><td class="coord">53.7%,42.3%</td></tr><tr><td class="num-b">4</td><td class="nm">Rear Torque Strut Mount</td><td class="oe">A4373</td><td class="pos">中右</td><td class="coord">84.3%,34.7%</td></tr><tr><td class="num-b">5</td><td class="nm">Front Right Torque Strut Mount</td><td class="oe">A7363</td><td class="pos">中中</td><td class="coord">59.7%,64.7%</td></tr><tr><td class="num-b">6</td><td class="nm">Transmission Mount</td><td class="oe">A7372</td><td class="pos">下左</td><td class="coord">19.2%,77.6%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO46500</span><span class="pcode">1EMO4650</span></div><span class="bg ok">✓ 4件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO46500.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO46500.jpg" loading="lazy" alt="OO1EMO46500"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Motor Mount</td><td class="oe">A62009</td><td class="pos">上左</td><td class="coord">24.2%,31.0%</td></tr><tr><td class="num-b">2</td><td class="nm">Front Right Motor Mount</td><td class="oe">A4295</td><td class="pos">上右</td><td class="coord">80.3%,33.7%</td></tr><tr><td class="num-b">3</td><td class="nm">Torque Strut Mount</td><td class="oe">A62062</td><td class="pos">下左</td><td class="coord">24.1%,74.8%</td></tr><tr><td class="num-b">4</td><td class="nm">Transmission Mount</td><td class="oe">A4288</td><td class="pos">下中</td><td class="coord">61.8%,77.8%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO46800</span><span class="pcode">1EMO4680</span></div><span class="bg ok">✓ 3件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO46800.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO46800.jpg" loading="lazy" alt="OO1EMO46800"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Right Motor Mount Bushing</td><td class="oe">A5312</td><td class="pos">中左</td><td class="coord">27.3%,34.7%</td></tr><tr><td class="num-b">2</td><td class="nm">Upper Transmission Mount</td><td class="oe">A2986</td><td class="pos">上右</td><td class="coord">72.9%,30.0%</td></tr><tr><td class="num-b">3</td><td class="nm">Rear Torque Strut Mount</td><td class="oe">A2939</td><td class="pos">下中</td><td class="coord">55.9%,72.7%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO47500</span><span class="pcode">1EMO4750</span></div><span class="bg ok">✓ 1件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO47500.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO47500.jpg" loading="lazy" alt="OO1EMO47500"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Left Motor Mount</td><td class="oe">A5739</td><td class="pos">中中</td><td class="coord">49.0%,51.2%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO47700</span><span class="pcode">1EMO4770</span></div><span class="bg ok">✓ 3件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO47700.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO47700.jpg" loading="lazy" alt="OO1EMO47700"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Left Motor Mount</td><td class="oe">A5739</td><td class="pos">上右</td><td class="coord">71.8%,24.7%</td></tr><tr><td class="num-b">2</td><td class="nm">Front Right Motor Mount</td><td class="oe">A5738</td><td class="pos">中左</td><td class="coord">29.5%,51.3%</td></tr><tr><td class="num-b">3</td><td class="nm">Transmission Mount</td><td class="oe">A2638</td><td class="pos">中右</td><td class="coord">71.7%,64.0%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO48400</span><span class="pcode">1EMO4840</span></div><span class="bg ok">✓ 4件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO48400.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO48400.jpg" loading="lazy" alt="OO1EMO48400"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Right Motor Mount</td><td class="oe">A4587</td><td class="pos">上左</td><td class="coord">28.5%,26.8%</td></tr><tr><td class="num-b">2</td><td class="nm">Transmission Mount</td><td class="oe">A65057</td><td class="pos">上右</td><td class="coord">75.6%,27.9%</td></tr><tr><td class="num-b">3</td><td class="nm">Front Motor Mount</td><td class="oe">A4575EL</td><td class="pos">下左</td><td class="coord">24.7%,74.3%</td></tr><tr><td class="num-b">4</td><td class="nm">Rear Motor Mount</td><td class="oe">A65017EL</td><td class="pos">下右</td><td class="coord">68.9%,70.0%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO48500</span><span class="pcode">1EMO4850</span></div><span class="bg ok">✓ 4件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO48500.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO48500.jpg" loading="lazy" alt="OO1EMO48500"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Right Motor Mount</td><td class="oe">A7370</td><td class="pos">上中</td><td class="coord">39.4%,29.6%</td></tr><tr><td class="num-b">2</td><td class="nm">Front Left Transmission Mount</td><td class="oe">A7392</td><td class="pos">中右</td><td class="coord">73.3%,47.9%</td></tr><tr><td class="num-b">3</td><td class="nm">Front Upper Torque Strut Mount</td><td class="oe">A4351</td><td class="pos">下左</td><td class="coord">30.4%,71.8%</td></tr><tr><td class="num-b">4</td><td class="nm">Front Lower Torque Strut Mount</td><td class="oe">A4352</td><td class="pos">下右</td><td class="coord">76.1%,73.1%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO48600</span><span class="pcode">1EMO4860</span></div><span class="bg ok">✓ 4件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO48600.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO48600.jpg" loading="lazy" alt="OO1EMO48600"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Left Transmission Mount</td><td class="oe">A5608</td><td class="pos">中左</td><td class="coord">30.1%,36.0%</td></tr><tr><td class="num-b">2</td><td class="nm">Front Transmission Mount</td><td class="oe">A5530</td><td class="pos">上右</td><td class="coord">71.3%,30.0%</td></tr><tr><td class="num-b">3</td><td class="nm">Rear Transmission Mount</td><td class="oe">A5579</td><td class="pos">下左</td><td class="coord">28.4%,69.8%</td></tr><tr><td class="num-b">4</td><td class="nm">Motor Mount</td><td class="oe">3200</td><td class="pos">中右</td><td class="coord">70.7%,63.3%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO49101</span><span class="pcode">1EMO4910</span></div><span class="bg ok">✓ 4件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO49101.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO49101.jpg" loading="lazy" alt="OO1EMO49101"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Right Motor Mount</td><td class="oe">A5415</td><td class="pos">上左</td><td class="coord">30.1%,30.2%</td></tr><tr><td class="num-b">2</td><td class="nm">Front Motor Mount</td><td class="oe">A5416</td><td class="pos">上右</td><td class="coord">70.5%,23.4%</td></tr><tr><td class="num-b">3</td><td class="nm">Rear Motor Mount</td><td class="oe">A5417</td><td class="pos">下左</td><td class="coord">23.4%,75.9%</td></tr><tr><td class="num-b">4</td><td class="nm">Transmission Mount</td><td class="oe">A5418</td><td class="pos">下右</td><td class="coord">75.6%,70.8%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO49300</span><span class="pcode">1EMO4930</span></div><span class="bg ok">✓ 4件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO49300.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO49300.jpg" loading="lazy" alt="OO1EMO49300"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Motor Mount</td><td class="oe">A5938</td><td class="pos">中左</td><td class="coord">27.4%,34.5%</td></tr><tr><td class="num-b">2</td><td class="nm">Torque Strut Bracket</td><td class="oe">A20071</td><td class="pos">中右</td><td class="coord">75.9%,40.0%</td></tr><tr><td class="num-b">3</td><td class="nm">Torque Strut Mount</td><td class="oe">A5879</td><td class="pos">下中</td><td class="coord">34.6%,70.8%</td></tr><tr><td class="num-b">4</td><td class="nm">Transmission Mount</td><td class="oe">A20080</td><td class="pos">下右</td><td class="coord">69.7%,84.6%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO49500</span><span class="pcode">1EMO4950</span></div><span class="bg ok">✓ 2件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO49500.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO49500.jpg" loading="lazy" alt="OO1EMO49500"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Rear Torque Strut Mount</td><td class="oe">A4318</td><td class="pos">上中</td><td class="coord">49.4%,31.8%</td></tr><tr><td class="num-b">2</td><td class="nm">Front Torque Strut Mount</td><td class="oe">A4345</td><td class="pos">中中</td><td class="coord">46.3%,63.7%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO49600</span><span class="pcode">1EMO4960</span></div><span class="bg ok">✓ 3件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO49600.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO49600.jpg" loading="lazy" alt="OO1EMO49600"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Motor Mount</td><td class="oe">A71048</td><td class="pos">中左</td><td class="coord">27.0%,44.5%</td></tr><tr><td class="num-b">2</td><td class="nm">Front Lower Torque Strut Mount</td><td class="oe">A71021</td><td class="pos">上右</td><td class="coord">72.1%,33.2%</td></tr><tr><td class="num-b">3</td><td class="nm">Transmission Mount</td><td class="oe">A71009</td><td class="pos">下中</td><td class="coord">62.0%,70.4%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO50100</span><span class="pcode">1EMO5010</span></div><span class="bg ok">✓ 3件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO50100.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO50100.jpg" loading="lazy" alt="OO1EMO50100"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A5611</td><td class="pos">上右 / 中中</td><td class="coord">76.7%,21.6% / 34.4%,48.4%</td></tr><tr><td class="num-b">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A5611</td><td class="pos">上右 / 中中</td><td class="coord">76.7%,21.6% / 34.4%,48.4%</td></tr><tr><td class="num-b">2</td><td class="nm">Transmission Mount</td><td class="oe">A5488</td><td class="pos">下中</td><td class="coord">65.6%,75.5%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO50200</span><span class="pcode">1EMO5020</span></div><span class="bg ok">✓ 3件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO50200.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO50200.jpg" loading="lazy" alt="OO1EMO50200"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Motor Mount</td><td class="oe">A71065</td><td class="pos">上中</td><td class="coord">38.6%,32.9%</td></tr><tr><td class="num-b">2</td><td class="nm">Torque Strut Mount</td><td class="oe">A71093</td><td class="pos">中右</td><td class="coord">76.6%,53.3%</td></tr><tr><td class="num-b">3</td><td class="nm">Transmission Mount</td><td class="oe">A71067</td><td class="pos">下左</td><td class="coord">32.6%,76.8%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO50300</span><span class="pcode">1EMO5030</span></div><span class="bg ok">✓ 1件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO50300.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO50300.jpg" loading="lazy" alt="OO1EMO50300"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Rear Motor Mount</td><td class="oe">A5690</td><td class="pos">中中</td><td class="coord">44.1%,48.2%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO50400</span><span class="pcode">1EMO5040</span></div><span class="bg ok">✓ 3件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO50400.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO50400.jpg" loading="lazy" alt="OO1EMO50400"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Motor Mount</td><td class="oe">A5674</td><td class="pos">中右</td><td class="coord">68.5%,35.4%</td></tr><tr><td class="num-b">2</td><td class="nm">Rear Motor Mount</td><td class="oe">A5690</td><td class="pos">中左</td><td class="coord">24.3%,51.6%</td></tr><tr><td class="num-b">3</td><td class="nm">Transmission Mount</td><td class="oe">A5822</td><td class="pos">下中</td><td class="coord">55.3%,70.6%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO50700</span><span class="pcode">1EMO5070</span></div><span class="bg ok">✓ 3件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO50700.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO50700.jpg" loading="lazy" alt="OO1EMO50700"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Rear Torque Strut Mount</td><td class="oe">A4428</td><td class="pos">上左</td><td class="coord">31.5%,24.4%</td></tr><tr><td class="num-b">2</td><td class="nm">Front Motor Mount</td><td class="oe">A4429</td><td class="pos">中右</td><td class="coord">71.4%,58.7%</td></tr><tr><td class="num-b">3</td><td class="nm">Transmission Mount</td><td class="oe">A4430</td><td class="pos">下左</td><td class="coord">28.9%,78.5%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO50900</span><span class="pcode">1EMO5090</span></div><span class="bg ok">✓ 1件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO50900.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO50900.jpg" loading="lazy" alt="OO1EMO50900"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Motor Mount</td><td class="oe">A70063</td><td class="pos">中中</td><td class="coord">47.5%,46.4%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO51100</span><span class="pcode">1EMO5110</span></div><span class="bg ok">✓ 5件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO51100.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO51100.jpg" loading="lazy" alt="OO1EMO51100"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Rear Motor Mount</td><td class="oe">A5499HY</td><td class="pos">上左 / 上中 / 上右</td><td class="coord">20.9%,22.9% / 51.8%,22.9% / 80.0%,22.9%</td></tr><tr><td class="num-b">1</td><td class="nm">Front Rear Motor Mount</td><td class="oe">A5499HY</td><td class="pos">上左 / 上中 / 上右</td><td class="coord">20.9%,22.9% / 51.8%,22.9% / 80.0%,22.9%</td></tr><tr><td class="num-b">1</td><td class="nm">Front Rear Motor Mount</td><td class="oe">A5499HY</td><td class="pos">上左 / 上中 / 上右</td><td class="coord">20.9%,22.9% / 51.8%,22.9% / 80.0%,22.9%</td></tr><tr><td class="num-b">2</td><td class="nm">Torque Strut Mount</td><td class="oe">A5426</td><td class="pos">中中</td><td class="coord">58.2%,61.2%</td></tr><tr><td class="num-b">3</td><td class="nm">Rear Torque Strut Mount</td><td class="oe">A5428</td><td class="pos">下中</td><td class="coord">47.5%,83.5%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO51200</span><span class="pcode">1EMO5120</span></div><span class="bg warn">目标1/检出3</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO51200.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO51200.jpg" loading="lazy" alt="OO1EMO51200"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Transmission Mount - A200691x Front Right Motor Mount - A58981x Torque Strut Mount</td><td class="oe">A20058</td><td class="pos">上右</td><td class="coord">68.9%,29.5%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO51500</span><span class="pcode">1EMO5150</span></div><span class="bg warn">目标1/检出3</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO51500.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO51500.jpg" loading="lazy" alt="OO1EMO51500"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Motor Mount</td><td class="oe">A65087</td><td class="pos">中中</td><td class="coord">46.1%,42.0%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO51600</span><span class="pcode">1EMO5160</span></div><span class="bg warn">目标2/检出4</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO51600.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO51600.jpg" loading="lazy" alt="OO1EMO51600"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A6991HY</td><td class="pos">中左 / 下右</td><td class="coord">29.7%,35.4% / 71.1%,68.5%</td></tr><tr><td class="num-b">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A6991HY</td><td class="pos">中左 / 下右</td><td class="coord">29.7%,35.4% / 71.1%,68.5%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO51701</span><span class="pcode">1EMO5170</span></div><span class="bg ok">✓ 4件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO51701.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO51701.jpg" loading="lazy" alt="OO1EMO51701"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Motor Mount</td><td class="oe">A5551</td><td class="pos">上中</td><td class="coord">37.2%,33.3%</td></tr><tr><td class="num-b">2</td><td class="nm">Rear Motor Mount</td><td class="oe">A5443</td><td class="pos">中右</td><td class="coord">73.5%,45.5%</td></tr><tr><td class="num-b">3</td><td class="nm">Motor Mount</td><td class="oe">A5632</td><td class="pos">下中</td><td class="coord">34.0%,76.7%</td></tr><tr><td class="num-b">4</td><td class="nm">Front Left Transmission Mount</td><td class="oe">A5543</td><td class="pos">下右</td><td class="coord">75.3%,80.0%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO51800</span><span class="pcode">1EMO5180</span></div><span class="bg ok">✓ 3件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO51800.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO51800.jpg" loading="lazy" alt="OO1EMO51800"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Right Motor Mount</td><td class="oe">AM500</td><td class="pos">中左</td><td class="coord">26.1%,36.3%</td></tr><tr><td class="num-b">2</td><td class="nm">Rear Motor Mount</td><td class="oe">A4552</td><td class="pos">上右</td><td class="coord">69.5%,21.6%</td></tr><tr><td class="num-b">3</td><td class="nm">Transmission Mount</td><td class="oe">A4537</td><td class="pos">下中</td><td class="coord">65.2%,73.5%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO52100</span><span class="pcode">1EMO5210</span></div><span class="bg ok">✓ 1件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO52100.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO52100.jpg" loading="lazy" alt="OO1EMO52100"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Motor Mount</td><td class="oe">A4446</td><td class="pos">中中</td><td class="coord">49.9%,52.5%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO52400</span><span class="pcode">1EMO5240</span></div><span class="bg ok">✓ 3件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO52400.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO52400.jpg" loading="lazy" alt="OO1EMO52400"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Motor Mount</td><td class="oe">A45004</td><td class="pos">上左</td><td class="coord">17.6%,26.8%</td></tr><tr><td class="num-b">2</td><td class="nm">Transmission Mount</td><td class="oe">A45005</td><td class="pos">中中</td><td class="coord">64.8%,36.9%</td></tr><tr><td class="num-b">3</td><td class="nm">Front Torque Strut Mount</td><td class="oe">A45006</td><td class="pos">下中</td><td class="coord">35.3%,71.8%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO52600</span><span class="pcode">1EMO5260</span></div><span class="bg ok">✓ 3件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO52600.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO52600.jpg" loading="lazy" alt="OO1EMO52600"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Upper Motor Mount</td><td class="oe">A71047</td><td class="pos">上左</td><td class="coord">27.1%,28.0%</td></tr><tr><td class="num-b">2</td><td class="nm">Front Lower Torque Strut Mount</td><td class="oe">A71020</td><td class="pos">中中</td><td class="coord">40.8%,58.5%</td></tr><tr><td class="num-b">3</td><td class="nm">Transmission Mount</td><td class="oe">A71029</td><td class="pos">下右</td><td class="coord">71.4%,76.9%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO52800</span><span class="pcode">1EMO5280</span></div><span class="bg ok">✓ 4件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO52800.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO52800.jpg" loading="lazy" alt="OO1EMO52800"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Motor Mount</td><td class="oe">A5487</td><td class="pos">上中</td><td class="coord">39.9%,29.0%</td></tr><tr><td class="num-b">2</td><td class="nm">Front Right Motor Mount</td><td class="oe">A5486</td><td class="pos">中右</td><td class="coord">84.1%,34.8%</td></tr><tr><td class="num-b">3</td><td class="nm">Transmission Mount</td><td class="oe">A5465</td><td class="pos">下左</td><td class="coord">28.2%,71.4%</td></tr><tr><td class="num-b">4</td><td class="nm">Front Left Transmission Mount</td><td class="oe">A5543</td><td class="pos">下右</td><td class="coord">67.9%,73.0%</td></tr></tbody></table>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="chead"><div><span class="code">OO1EMO53100</span><span class="pcode">1EMO5310</span></div><span class="bg ok">✓ 5件</span></div>
+  <div class="cbody">
+    <div class="cimg"><a href="em-images/annotated/OO1EMO53100.jpg" target="_blank">
+      <img src="em-images/ann-thumbs/OO1EMO53100.jpg" loading="lazy" alt="OO1EMO53100"></a></div>
+    <div class="cinfo">
+      <table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
+      <th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="num-b">1</td><td class="nm">Front Motor Mount</td><td class="oe">A6597</td><td class="pos">上左</td><td class="coord">23.5%,20.0%</td></tr><tr><td class="num-b">2</td><td class="nm">Front Right Motor Mount</td><td class="oe">A6596</td><td class="pos">上右</td><td class="coord">74.6%,21.9%</td></tr><tr><td class="num-b">3</td><td class="nm">Rear Differential Mount</td><td class="oe">A65010</td><td class="pos">中中</td><td class="coord">46.2%,43.3%</td></tr><tr><td class="num-b">4</td><td class="nm">Rear Motor Mount</td><td class="oe">A4504</td><td class="pos">下左</td><td class="coord">20.1%,69.1%</td></tr><tr><td class="num-b">5</td><td class="nm">Transmission Mount</td><td class="oe">A4506</td><td class="pos">下右</td><td class="coord">69.9%,73.0%</td></tr></tbody></table>
+    </div>
+  </div>
+</div></div>
+<footer>数据源：商品属性管理-商品数据.xlsx（包装内容/OE号） + 发动机支架新品/*.jpg ｜ 标记为红色圆角+白色数字，样式对齐参考文件《发动机支架名称对应.xlsx》</footer>
+</div></body></html>
