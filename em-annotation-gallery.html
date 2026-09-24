@@ -39,6 +39,29 @@ td.pos{color:#8fa3bf;width:64px}
 td.coord{color:#5a6a85;width:104px;font-family:ui-monospace,Consolas,monospace;font-size:10.5px}
 .same{background:#2a1d3b;color:#c4a5fc;font-size:9.5px;padding:0 5px;border-radius:7px;margin-left:5px}
 footer{margin-top:22px;color:#5a6a85;font-size:11px;text-align:center;line-height:1.8}
+.review{margin-top:9px;padding-top:9px;border-top:1px dashed #2a3a55}
+.rvhead{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap}
+.rvlbl{font-size:11px;color:#7d8ba3}
+.rvbtns{display:flex;gap:5px}
+.rvb{font-size:10.5px;padding:2px 9px;border-radius:9px;border:1px solid #2a3a55;background:#1a2333;color:#8fa3bf;cursor:pointer;transition:.12s;font-family:inherit}
+.rvb:hover{border-color:#5fb3ff;color:#cfe4ff}
+.rvb.on[data-st=ok]{background:#14301f;border-color:#2f7a4d;color:#6ee7a8}
+.rvb.on[data-st=bad]{background:#3a1618;border-color:#8a2b30;color:#fca5a5}
+.rvb.on[data-st=skip]{background:#3b2f1a;border-color:#8a6d2b;color:#fcd34d}
+.rvnote{width:100%;min-height:38px;resize:vertical;background:#0f1420;border:1px solid #2a3a55;border-radius:7px;color:#e8ecf4;font-size:11.5px;padding:6px 8px;font-family:inherit;line-height:1.6;outline:none}
+.rvnote:focus{border-color:#5fb3ff;box-shadow:0 0 0 2px rgba(95,179,255,.14)}
+.rvnote::placeholder{color:#55617a}
+.card[data-st=ok]{border-color:#2f7a4d;box-shadow:0 0 0 1px rgba(47,122,77,.45)}
+.card[data-st=bad]{border-color:#8a2b30;box-shadow:0 0 0 1px rgba(138,43,48,.55)}
+.card[data-st=skip]{border-color:#8a6d2b}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:16px 0 4px}
+.tbtn{font-size:12px;padding:6px 13px;border-radius:8px;border:1px solid #2a3a55;background:#1a2333;color:#cfe4ff;cursor:pointer;font-family:inherit;transition:.12s}
+.tbtn:hover{background:#22314a;border-color:#5fb3ff}
+.tbtn.pri{background:#1d4ed8;border-color:#2563eb;color:#fff}
+.tbtn.pri:hover{background:#2563eb}
+.tstat{font-size:11.5px;color:#8fa3bf;margin-left:4px}
+.tstat b{color:#6ee7a8}
+.tstat i{color:#fca5a5;font-style:normal}
 </style></head><body><div class="wrap">
 <h1>发动机支架 图片位置标注核验 <span class="badge">共78个商编</span><span class="badge g">精准78个</span></h1>
 <div class="sub">标记样式:红色圆角标记+白色数字 ｜ 标记号 = 包装内容中的条目序号 ｜ 图源:发动机支架新品/_annotated/</div>
@@ -53,396 +76,1292 @@ footer{margin-top:22px;color:#5a6a85;font-size:11px;text-align:center;line-heigh
 <div class="kpi a"><div class="lbl">件数精确匹配</div><div class="val">78<span>个</span></div></div>
 <div class="kpi r"><div class="lbl">需人工复核</div><div class="val">0<span>个</span></div></div>
 </div>
+<div class="toolbar">
+  <button class="tbtn pri" onclick="rvExportJSON()">&#128190; 导出JSON（发我改）</button>
+  <button class="tbtn" onclick="rvExportCSV()">&#128202; 导出CSV</button>
+  <button class="tbtn" onclick="document.getElementById('rvimp').click()">&#128228; 导入JSON</button>
+  <input type="file" id="rvimp" accept=".json" style="display:none" onchange="rvImport(this)">
+  <button class="tbtn" onclick="rvFilter('bad')">只看「有问题」</button>
+  <button class="tbtn" onclick="rvFilter('skip')">只看「待核」</button>
+  <button class="tbtn" onclick="rvFilter('all')">显示全部</button>
+  <button class="tbtn" onclick="rvClear()">&#128465; 清空</button>
+</div>
+<div class="tstat" id="stat"></div>
 <div class="grid"><div class="card"><div class="chead"><div><span class="code">OO1EMO39300</span>
 <span class="pcode">1EMO3930</span></div><span class="bg ok">✓ 2件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO39300.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO39300.jpg?v=v3" loading="lazy" alt="OO1EMO39300"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A4575EL</td><td class="pos">中中</td><td class="coord">34.5%,57.1%</td></tr><tr><td class="nb">2</td><td class="nm">Front Right Motor Mount</td><td class="oe">A4587</td><td class="pos">下右</td><td class="coord">79.3%,81.0%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO39400</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A4575EL</td><td class="pos">中中</td><td class="coord">34.5%,57.1%</td></tr><tr><td class="nb">2</td><td class="nm">Front Right Motor Mount</td><td class="oe">A4587</td><td class="pos">下右</td><td class="coord">79.3%,81.0%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO39300">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO39400</span>
 <span class="pcode">1EMO3940</span></div><span class="bg ok">✓ 4件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO39400.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO39400.jpg?v=v3" loading="lazy" alt="OO1EMO39400"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Transmission Mount</td><td class="oe">A42011</td><td class="pos">中左</td><td class="coord">24.9%,48.4%</td></tr><tr><td class="nb">2</td><td class="nm">Front Motor Mount</td><td class="oe">A62038</td><td class="pos">中右</td><td class="coord">73.6%,46.9%</td></tr><tr><td class="nb">3</td><td class="nm">Front Right Motor Mount</td><td class="oe">A42023</td><td class="pos">下左</td><td class="coord">26.8%,86.0%</td></tr><tr><td class="nb">4</td><td class="nm">Rear Motor Mount</td><td class="oe">A42003</td><td class="pos">下右</td><td class="coord">68.0%,87.5%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO39500</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Transmission Mount</td><td class="oe">A42011</td><td class="pos">中左</td><td class="coord">24.9%,48.4%</td></tr><tr><td class="nb">2</td><td class="nm">Front Motor Mount</td><td class="oe">A62038</td><td class="pos">中右</td><td class="coord">73.6%,46.9%</td></tr><tr><td class="nb">3</td><td class="nm">Front Right Motor Mount</td><td class="oe">A42023</td><td class="pos">下左</td><td class="coord">26.8%,86.0%</td></tr><tr><td class="nb">4</td><td class="nm">Rear Motor Mount</td><td class="oe">A42003</td><td class="pos">下右</td><td class="coord">68.0%,87.5%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO39400">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO39500</span>
 <span class="pcode">1EMO3950</span></div><span class="bg ok">✓ 3件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO39500.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO39500.jpg?v=v3" loading="lazy" alt="OO1EMO39500"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Right Motor Mount</td><td class="oe">A5316</td><td class="pos">中左</td><td class="coord">28.7%,49.2%</td></tr><tr><td class="nb">2</td><td class="nm">Front Left Motor Mount</td><td class="oe">A5341</td><td class="pos">下右</td><td class="coord">74.5%,72.6%</td></tr><tr><td class="nb">3</td><td class="nm">Transmission Mount</td><td class="oe">A2957</td><td class="pos">下左</td><td class="coord">28.7%,87.8%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO39700</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Right Motor Mount</td><td class="oe">A5316</td><td class="pos">中左</td><td class="coord">28.7%,49.2%</td></tr><tr><td class="nb">2</td><td class="nm">Front Left Motor Mount</td><td class="oe">A5341</td><td class="pos">下右</td><td class="coord">74.5%,72.6%</td></tr><tr><td class="nb">3</td><td class="nm">Transmission Mount</td><td class="oe">A2957</td><td class="pos">下左</td><td class="coord">28.7%,87.8%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO39500">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO39700</span>
 <span class="pcode">1EMO3970</span></div><span class="bg ok">✓ 2件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO39700.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO39700.jpg?v=v3" loading="lazy" alt="OO1EMO39700"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A2621</td><td class="pos">中中 / 下左</td><td class="coord">63.9%,47.3% / 33.6%,88.2%</td></tr><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A2621</td><td class="pos">中中 / 下左</td><td class="coord">63.9%,47.3% / 33.6%,88.2% <span class="same">同款</span></td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO40000</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A2621</td><td class="pos">中中 / 下左</td><td class="coord">63.9%,47.3% / 33.6%,88.2%</td></tr><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A2621</td><td class="pos">中中 / 下左</td><td class="coord">63.9%,47.3% / 33.6%,88.2% <span class="same">同款</span></td></tr></tbody></table>
+<div class="review" data-code="OO1EMO39700">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO40000</span>
 <span class="pcode">1EMO4000</span></div><span class="bg ok">✓ 4件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO40000.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO40000.jpg?v=v3" loading="lazy" alt="OO1EMO40000"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A62012</td><td class="pos">中左</td><td class="coord">30.8%,50.6%</td></tr><tr><td class="nb">2</td><td class="nm">Front Right Motor Mount</td><td class="oe">A62049HY</td><td class="pos">中右</td><td class="coord">73.7%,46.9%</td></tr><tr><td class="nb">3</td><td class="nm">Rear Motor Mount</td><td class="oe">A62046</td><td class="pos">下左</td><td class="coord">27.4%,87.8%</td></tr><tr><td class="nb">4</td><td class="nm">Transmission Mount</td><td class="oe">A62064</td><td class="pos">下中</td><td class="coord">65.2%,85.4%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO40100</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A62012</td><td class="pos">中左</td><td class="coord">30.8%,50.6%</td></tr><tr><td class="nb">2</td><td class="nm">Front Right Motor Mount</td><td class="oe">A62049HY</td><td class="pos">中右</td><td class="coord">73.7%,46.9%</td></tr><tr><td class="nb">3</td><td class="nm">Rear Motor Mount</td><td class="oe">A62046</td><td class="pos">下左</td><td class="coord">27.4%,87.8%</td></tr><tr><td class="nb">4</td><td class="nm">Transmission Mount</td><td class="oe">A62064</td><td class="pos">下中</td><td class="coord">65.2%,85.4%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO40000">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO40100</span>
 <span class="pcode">1EMO4010</span></div><span class="bg ok">✓ 4件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO40100.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO40100.jpg?v=v3" loading="lazy" alt="OO1EMO40100"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Motor Mount</td><td class="oe">A6277</td><td class="pos">中左</td><td class="coord">28.7%,46.2%</td></tr><tr><td class="nb">2</td><td class="nm">Rear Motor Mount</td><td class="oe">A6253</td><td class="pos">中右</td><td class="coord">67.3%,66.2%</td></tr><tr><td class="nb">3</td><td class="nm">Torque Strut Mount</td><td class="oe">A4233</td><td class="pos">中左</td><td class="coord">23.8%,62.4%</td></tr><tr><td class="nb">4</td><td class="nm">Transmission Mount</td><td class="oe">A6256</td><td class="pos">下中</td><td class="coord">42.9%,89.9%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO40300</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Motor Mount</td><td class="oe">A6277</td><td class="pos">中左</td><td class="coord">28.7%,46.2%</td></tr><tr><td class="nb">2</td><td class="nm">Rear Motor Mount</td><td class="oe">A6253</td><td class="pos">中右</td><td class="coord">67.3%,66.2%</td></tr><tr><td class="nb">3</td><td class="nm">Torque Strut Mount</td><td class="oe">A4233</td><td class="pos">中左</td><td class="coord">23.8%,62.4%</td></tr><tr><td class="nb">4</td><td class="nm">Transmission Mount</td><td class="oe">A6256</td><td class="pos">下中</td><td class="coord">42.9%,89.9%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO40100">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO40300</span>
 <span class="pcode">1EMO4030</span></div><span class="bg ok">✓ 4件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO40300.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO40300.jpg?v=v3" loading="lazy" alt="OO1EMO40300"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A5553</td><td class="pos">中左</td><td class="coord">27.6%,44.6%</td></tr><tr><td class="nb">2</td><td class="nm">Front Transmission Mount</td><td class="oe">A5707</td><td class="pos">上右</td><td class="coord">75.2%,32.8%</td></tr><tr><td class="nb">3</td><td class="nm">Transmission Mount</td><td class="oe">A5554</td><td class="pos">下左</td><td class="coord">25.9%,80.6%</td></tr><tr><td class="nb">4</td><td class="nm">Rear Transmission Mount</td><td class="oe">A5633</td><td class="pos">下右</td><td class="coord">69.2%,84.3%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO40400</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A5553</td><td class="pos">中左</td><td class="coord">27.6%,44.6%</td></tr><tr><td class="nb">2</td><td class="nm">Front Transmission Mount</td><td class="oe">A5707</td><td class="pos">上右</td><td class="coord">75.2%,32.8%</td></tr><tr><td class="nb">3</td><td class="nm">Transmission Mount</td><td class="oe">A5554</td><td class="pos">下左</td><td class="coord">25.9%,80.6%</td></tr><tr><td class="nb">4</td><td class="nm">Rear Transmission Mount</td><td class="oe">A5633</td><td class="pos">下右</td><td class="coord">69.2%,84.3%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO40300">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO40400</span>
 <span class="pcode">1EMO4040</span></div><span class="bg ok">✓ 3件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO40400.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO40400.jpg?v=v3" loading="lazy" alt="OO1EMO40400"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A2292</td><td class="pos">中中 / 下右</td><td class="coord">37.9%,45.3% / 69.9%,78.4%</td></tr><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A2292</td><td class="pos">中中 / 下右</td><td class="coord">37.9%,45.3% / 69.9%,78.4% <span class="same">同款</span></td></tr><tr><td class="nb">2</td><td class="nm">Transmission Mount</td><td class="oe">A2394</td><td class="pos">下左</td><td class="coord">25.0%,80.2%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO40800</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A2292</td><td class="pos">中中 / 下右</td><td class="coord">37.9%,45.3% / 69.9%,78.4%</td></tr><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A2292</td><td class="pos">中中 / 下右</td><td class="coord">37.9%,45.3% / 69.9%,78.4% <span class="same">同款</span></td></tr><tr><td class="nb">2</td><td class="nm">Transmission Mount</td><td class="oe">A2394</td><td class="pos">下左</td><td class="coord">25.0%,80.2%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO40400">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO40800</span>
 <span class="pcode">1EMO4080</span></div><span class="bg ok">✓ 3件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO40800.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO40800.jpg?v=v3" loading="lazy" alt="OO1EMO40800"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Transmission Mount</td><td class="oe">A5987</td><td class="pos">中左</td><td class="coord">31.2%,41.6%</td></tr><tr><td class="nb">2</td><td class="nm">Front Right Motor Mount</td><td class="oe">A5898</td><td class="pos">中右</td><td class="coord">73.1%,41.8%</td></tr><tr><td class="nb">3</td><td class="nm">Torque Strut Mount</td><td class="oe">A5988</td><td class="pos">下中</td><td class="coord">62.8%,87.1%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO40900</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Transmission Mount</td><td class="oe">A5987</td><td class="pos">中左</td><td class="coord">31.2%,41.6%</td></tr><tr><td class="nb">2</td><td class="nm">Front Right Motor Mount</td><td class="oe">A5898</td><td class="pos">中右</td><td class="coord">73.1%,41.8%</td></tr><tr><td class="nb">3</td><td class="nm">Torque Strut Mount</td><td class="oe">A5988</td><td class="pos">下中</td><td class="coord">62.8%,87.1%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO40800">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO40900</span>
 <span class="pcode">1EMO4090</span></div><span class="bg ok">✓ 2件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO40900.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO40900.jpg?v=v3" loading="lazy" alt="OO1EMO40900"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A2572</td><td class="pos">中右 / 下中</td><td class="coord">69.3%,52.9% / 34.3%,84.6%</td></tr><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A2572</td><td class="pos">中右 / 下中</td><td class="coord">69.3%,52.9% / 34.3%,84.6% <span class="same">同款</span></td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO41000</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A2572</td><td class="pos">中右 / 下中</td><td class="coord">69.3%,52.9% / 34.3%,84.6%</td></tr><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A2572</td><td class="pos">中右 / 下中</td><td class="coord">69.3%,52.9% / 34.3%,84.6% <span class="same">同款</span></td></tr></tbody></table>
+<div class="review" data-code="OO1EMO40900">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO41000</span>
 <span class="pcode">1EMO4100</span></div><span class="bg ok">✓ 4件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO41000.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO41000.jpg?v=v3" loading="lazy" alt="OO1EMO41000"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A62012</td><td class="pos">中中</td><td class="coord">38.3%,46.4%</td></tr><tr><td class="nb">2</td><td class="nm">Front Right Motor Mount</td><td class="oe">A62071</td><td class="pos">上右</td><td class="coord">79.3%,33.0%</td></tr><tr><td class="nb">3</td><td class="nm">Rear Motor Mount</td><td class="oe">A62067</td><td class="pos">下左</td><td class="coord">22.5%,86.9%</td></tr><tr><td class="nb">4</td><td class="nm">Transmission Mount</td><td class="oe">A62070</td><td class="pos">下右</td><td class="coord">69.3%,85.2%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO41100</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A62012</td><td class="pos">中中</td><td class="coord">38.3%,46.4%</td></tr><tr><td class="nb">2</td><td class="nm">Front Right Motor Mount</td><td class="oe">A62071</td><td class="pos">上右</td><td class="coord">79.3%,33.0%</td></tr><tr><td class="nb">3</td><td class="nm">Rear Motor Mount</td><td class="oe">A62067</td><td class="pos">下左</td><td class="coord">22.5%,86.9%</td></tr><tr><td class="nb">4</td><td class="nm">Transmission Mount</td><td class="oe">A62070</td><td class="pos">下右</td><td class="coord">69.3%,85.2%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO41000">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO41100</span>
 <span class="pcode">1EMO4110</span></div><span class="bg ok">✓ 3件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO41100.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO41100.jpg?v=v3" loading="lazy" alt="OO1EMO41100"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A4017</td><td class="pos">中中 / 下中</td><td class="coord">35.2%,41.8% / 49.4%,87.0%</td></tr><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A4017</td><td class="pos">中中 / 下中</td><td class="coord">35.2%,41.8% / 49.4%,87.0% <span class="same">同款</span></td></tr><tr><td class="nb">2</td><td class="nm">Transmission Mount</td><td class="oe">A4095</td><td class="pos">中右</td><td class="coord">82.7%,52.2%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO41300</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A4017</td><td class="pos">中中 / 下中</td><td class="coord">35.2%,41.8% / 49.4%,87.0%</td></tr><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A4017</td><td class="pos">中中 / 下中</td><td class="coord">35.2%,41.8% / 49.4%,87.0% <span class="same">同款</span></td></tr><tr><td class="nb">2</td><td class="nm">Transmission Mount</td><td class="oe">A4095</td><td class="pos">中右</td><td class="coord">82.7%,52.2%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO41100">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO41300</span>
 <span class="pcode">1EMO4130</span></div><span class="bg ok">✓ 2件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO41300.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO41300.jpg?v=v3" loading="lazy" alt="OO1EMO41300"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A2883</td><td class="pos">中右 / 下中</td><td class="coord">72.8%,51.2% / 35.9%,84.8%</td></tr><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A2883</td><td class="pos">中右 / 下中</td><td class="coord">72.8%,51.2% / 35.9%,84.8% <span class="same">同款</span></td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO41500</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A2883</td><td class="pos">中右 / 下中</td><td class="coord">72.8%,51.2% / 35.9%,84.8%</td></tr><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A2883</td><td class="pos">中右 / 下中</td><td class="coord">72.8%,51.2% / 35.9%,84.8% <span class="same">同款</span></td></tr></tbody></table>
+<div class="review" data-code="OO1EMO41300">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO41500</span>
 <span class="pcode">1EMO4150</span></div><span class="bg ok">✓ 2件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO41500.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO41500.jpg?v=v3" loading="lazy" alt="OO1EMO41500"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount - 9988</td><td class="oe"></td><td class="pos">中中 / 下左</td><td class="coord">62.1%,44.2% / 31.4%,85.8%</td></tr><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount - 9988</td><td class="oe"></td><td class="pos">中中 / 下左</td><td class="coord">62.1%,44.2% / 31.4%,85.8% <span class="same">同款</span></td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO41800</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount - 9988</td><td class="oe"></td><td class="pos">中中 / 下左</td><td class="coord">62.1%,44.2% / 31.4%,85.8%</td></tr><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount - 9988</td><td class="oe"></td><td class="pos">中中 / 下左</td><td class="coord">62.1%,44.2% / 31.4%,85.8% <span class="same">同款</span></td></tr></tbody></table>
+<div class="review" data-code="OO1EMO41500">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO41800</span>
 <span class="pcode">1EMO4180</span></div><span class="bg ok">✓ 4件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO41800.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO41800.jpg?v=v3" loading="lazy" alt="OO1EMO41800"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Lower Torque Strut Mount</td><td class="oe">A4547</td><td class="pos">中左</td><td class="coord">30.0%,56.6%</td></tr><tr><td class="nb">2</td><td class="nm">Front Upper Torque Strut Mount</td><td class="oe">A4548</td><td class="pos">中右</td><td class="coord">74.3%,36.5%</td></tr><tr><td class="nb">3</td><td class="nm">Front Motor Mount</td><td class="oe">A65030</td><td class="pos">下中</td><td class="coord">64.1%,67.9%</td></tr><tr><td class="nb">4</td><td class="nm">Transmission Mount</td><td class="oe">A4546</td><td class="pos">下中</td><td class="coord">44.2%,89.1%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO41900</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Lower Torque Strut Mount</td><td class="oe">A4547</td><td class="pos">中左</td><td class="coord">30.0%,56.6%</td></tr><tr><td class="nb">2</td><td class="nm">Front Upper Torque Strut Mount</td><td class="oe">A4548</td><td class="pos">中右</td><td class="coord">74.3%,36.5%</td></tr><tr><td class="nb">3</td><td class="nm">Front Motor Mount</td><td class="oe">A65030</td><td class="pos">下中</td><td class="coord">64.1%,67.9%</td></tr><tr><td class="nb">4</td><td class="nm">Transmission Mount</td><td class="oe">A4546</td><td class="pos">下中</td><td class="coord">44.2%,89.1%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO41800">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO41900</span>
 <span class="pcode">1EMO4190</span></div><span class="bg ok">✓ 4件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO41900.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO41900.jpg?v=v3" loading="lazy" alt="OO1EMO41900"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A4239HY</td><td class="pos">中左</td><td class="coord">24.6%,48.3%</td></tr><tr><td class="nb">2</td><td class="nm">Front Right Motor Mount</td><td class="oe">A4212</td><td class="pos">中右</td><td class="coord">73.2%,48.3%</td></tr><tr><td class="nb">3</td><td class="nm">Transmission Mount</td><td class="oe">A4207</td><td class="pos">下中</td><td class="coord">44.0%,85.6%</td></tr><tr><td class="nb">4</td><td class="nm">Front Right Torque Strut Mount</td><td class="oe">A4236</td><td class="pos">下右</td><td class="coord">77.8%,88.9%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO42000</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A4239HY</td><td class="pos">中左</td><td class="coord">24.6%,48.3%</td></tr><tr><td class="nb">2</td><td class="nm">Front Right Motor Mount</td><td class="oe">A4212</td><td class="pos">中右</td><td class="coord">73.2%,48.3%</td></tr><tr><td class="nb">3</td><td class="nm">Transmission Mount</td><td class="oe">A4207</td><td class="pos">下中</td><td class="coord">44.0%,85.6%</td></tr><tr><td class="nb">4</td><td class="nm">Front Right Torque Strut Mount</td><td class="oe">A4236</td><td class="pos">下右</td><td class="coord">77.8%,88.9%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO41900">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO42000</span>
 <span class="pcode">1EMO4200</span></div><span class="bg ok">✓ 3件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO42000.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO42000.jpg?v=v3" loading="lazy" alt="OO1EMO42000"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Right Motor Mount</td><td class="oe">A5415</td><td class="pos">中中</td><td class="coord">64.9%,40.8%</td></tr><tr><td class="nb">2</td><td class="nm">Transmission Mount</td><td class="oe">A5418</td><td class="pos">下中</td><td class="coord">35.3%,85.5%</td></tr><tr><td class="nb">3</td><td class="nm">Rear Motor Mount</td><td class="oe">A5423</td><td class="pos">下右</td><td class="coord">73.5%,78.4%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO42100</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Right Motor Mount</td><td class="oe">A5415</td><td class="pos">中中</td><td class="coord">64.9%,40.8%</td></tr><tr><td class="nb">2</td><td class="nm">Transmission Mount</td><td class="oe">A5418</td><td class="pos">下中</td><td class="coord">35.3%,85.5%</td></tr><tr><td class="nb">3</td><td class="nm">Rear Motor Mount</td><td class="oe">A5423</td><td class="pos">下右</td><td class="coord">73.5%,78.4%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO42000">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO42100</span>
 <span class="pcode">1EMO4210</span></div><span class="bg ok">✓ 2件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO42100.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO42100.jpg?v=v3" loading="lazy" alt="OO1EMO42100"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A2292</td><td class="pos">中左 / 下中</td><td class="coord">33.1%,41.7% / 64.3%,86.4%</td></tr><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A2292</td><td class="pos">中左 / 下中</td><td class="coord">33.1%,41.7% / 64.3%,86.4% <span class="same">同款</span></td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO42200</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A2292</td><td class="pos">中左 / 下中</td><td class="coord">33.1%,41.7% / 64.3%,86.4%</td></tr><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A2292</td><td class="pos">中左 / 下中</td><td class="coord">33.1%,41.7% / 64.3%,86.4% <span class="same">同款</span></td></tr></tbody></table>
+<div class="review" data-code="OO1EMO42100">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO42200</span>
 <span class="pcode">1EMO4220</span></div><span class="bg ok">✓ 2件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO42200.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO42200.jpg?v=v3" loading="lazy" alt="OO1EMO42200"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A2802</td><td class="pos">中右 / 下左</td><td class="coord">67.1%,48.9% / 33.2%,85.6%</td></tr><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A2802</td><td class="pos">中右 / 下左</td><td class="coord">67.1%,48.9% / 33.2%,85.6% <span class="same">同款</span></td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO42300</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A2802</td><td class="pos">中右 / 下左</td><td class="coord">67.1%,48.9% / 33.2%,85.6%</td></tr><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A2802</td><td class="pos">中右 / 下左</td><td class="coord">67.1%,48.9% / 33.2%,85.6% <span class="same">同款</span></td></tr></tbody></table>
+<div class="review" data-code="OO1EMO42200">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO42300</span>
 <span class="pcode">1EMO4230</span></div><span class="bg ok">✓ 3件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO42300.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO42300.jpg?v=v3" loading="lazy" alt="OO1EMO42300"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A7072HY</td><td class="pos">中中</td><td class="coord">50.9%,40.2%</td></tr><tr><td class="nb">2</td><td class="nm">Motor Mount</td><td class="oe">A7073</td><td class="pos">下左</td><td class="coord">25.3%,81.3%</td></tr><tr><td class="nb">3</td><td class="nm">Transmission Mount</td><td class="oe">A4095</td><td class="pos">下右</td><td class="coord">71.2%,81.3%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO42400</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A7072HY</td><td class="pos">中中</td><td class="coord">50.9%,40.2%</td></tr><tr><td class="nb">2</td><td class="nm">Motor Mount</td><td class="oe">A7073</td><td class="pos">下左</td><td class="coord">25.3%,81.3%</td></tr><tr><td class="nb">3</td><td class="nm">Transmission Mount</td><td class="oe">A4095</td><td class="pos">下右</td><td class="coord">71.2%,81.3%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO42300">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO42400</span>
 <span class="pcode">1EMO4240</span></div><span class="bg ok">✓ 2件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO42400.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO42400.jpg?v=v3" loading="lazy" alt="OO1EMO42400"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A7360</td><td class="pos">中左 / 下右</td><td class="coord">30.8%,57.5% / 72.3%,83.1%</td></tr><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A7360</td><td class="pos">中左 / 下右</td><td class="coord">30.8%,57.5% / 72.3%,83.1% <span class="same">同款</span></td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO42500</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A7360</td><td class="pos">中左 / 下右</td><td class="coord">30.8%,57.5% / 72.3%,83.1%</td></tr><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A7360</td><td class="pos">中左 / 下右</td><td class="coord">30.8%,57.5% / 72.3%,83.1% <span class="same">同款</span></td></tr></tbody></table>
+<div class="review" data-code="OO1EMO42400">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO42500</span>
 <span class="pcode">1EMO4250</span></div><span class="bg ok">✓ 3件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO42500.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO42500.jpg?v=v3" loading="lazy" alt="OO1EMO42500"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Transmission Mount</td><td class="oe">A4263</td><td class="pos">中中</td><td class="coord">49.8%,36.2%</td></tr><tr><td class="nb">2</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A4260</td><td class="pos">中右</td><td class="coord">75.6%,59.3%</td></tr><tr><td class="nb">3</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A4260</td><td class="pos">下中</td><td class="coord">37.5%,85.3%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO42600</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Transmission Mount</td><td class="oe">A4263</td><td class="pos">中中</td><td class="coord">49.8%,36.2%</td></tr><tr><td class="nb">2</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A4260</td><td class="pos">中右</td><td class="coord">75.6%,59.3%</td></tr><tr><td class="nb">3</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A4260</td><td class="pos">下中</td><td class="coord">37.5%,85.3%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO42500">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO42600</span>
 <span class="pcode">1EMO4260</span></div><span class="bg ok">✓ 4件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO42600.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO42600.jpg?v=v3" loading="lazy" alt="OO1EMO42600"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A5416</td><td class="pos">中左</td><td class="coord">27.2%,48.7%</td></tr><tr><td class="nb">2</td><td class="nm">Front Right Motor Mount</td><td class="oe">A4644</td><td class="pos">中右</td><td class="coord">76.4%,39.0%</td></tr><tr><td class="nb">3</td><td class="nm">Rear Motor Mount</td><td class="oe">A5417</td><td class="pos">下中</td><td class="coord">38.8%,87.2%</td></tr><tr><td class="nb">4</td><td class="nm">Transmission Mount</td><td class="oe">A5418</td><td class="pos">下右</td><td class="coord">82.5%,75.1%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO42700</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A5416</td><td class="pos">中左</td><td class="coord">27.2%,48.7%</td></tr><tr><td class="nb">2</td><td class="nm">Front Right Motor Mount</td><td class="oe">A4644</td><td class="pos">中右</td><td class="coord">76.4%,39.0%</td></tr><tr><td class="nb">3</td><td class="nm">Rear Motor Mount</td><td class="oe">A5417</td><td class="pos">下中</td><td class="coord">38.8%,87.2%</td></tr><tr><td class="nb">4</td><td class="nm">Transmission Mount</td><td class="oe">A5418</td><td class="pos">下右</td><td class="coord">82.5%,75.1%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO42600">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO42700</span>
 <span class="pcode">1EMO4270</span></div><span class="bg ok">✓ 6件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO42700.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO42700.jpg?v=v3" loading="lazy" alt="OO1EMO42700"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Transmission Mount - 2712</td><td class="oe"></td><td class="pos">下右</td><td class="coord">67.9%,67.1%</td></tr><tr><td class="nb">2</td><td class="nm">Motor Mount</td><td class="oe">A2796</td><td class="pos">下左</td><td class="coord">31.9%,91.5%</td></tr><tr><td class="nb">3</td><td class="nm">Front Left Front Right Torque Strut Mount</td><td class="oe">A2866</td><td class="pos">中右 / 中左</td><td class="coord">67.8%,35.3% / 27.3%,65.2%</td></tr><tr><td class="nb">3</td><td class="nm">Front Left Front Right Torque Strut Mount</td><td class="oe">A2866</td><td class="pos">中右 / 中左</td><td class="coord">67.8%,35.3% / 27.3%,65.2% <span class="same">同款</span></td></tr><tr><td class="nb">4</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A5309</td><td class="pos">上左 / 下右</td><td class="coord">27.0%,18.8% / 86.3%,88.4%</td></tr><tr><td class="nb">4</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A5309</td><td class="pos">上左 / 下右</td><td class="coord">27.0%,18.8% / 86.3%,88.4% <span class="same">同款</span></td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO42800</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Transmission Mount - 2712</td><td class="oe"></td><td class="pos">下右</td><td class="coord">67.9%,67.1%</td></tr><tr><td class="nb">2</td><td class="nm">Motor Mount</td><td class="oe">A2796</td><td class="pos">下左</td><td class="coord">31.9%,91.5%</td></tr><tr><td class="nb">3</td><td class="nm">Front Left Front Right Torque Strut Mount</td><td class="oe">A2866</td><td class="pos">中右 / 中左</td><td class="coord">67.8%,35.3% / 27.3%,65.2%</td></tr><tr><td class="nb">3</td><td class="nm">Front Left Front Right Torque Strut Mount</td><td class="oe">A2866</td><td class="pos">中右 / 中左</td><td class="coord">67.8%,35.3% / 27.3%,65.2% <span class="same">同款</span></td></tr><tr><td class="nb">4</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A5309</td><td class="pos">上左 / 下右</td><td class="coord">27.0%,18.8% / 86.3%,88.4%</td></tr><tr><td class="nb">4</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A5309</td><td class="pos">上左 / 下右</td><td class="coord">27.0%,18.8% / 86.3%,88.4% <span class="same">同款</span></td></tr></tbody></table>
+<div class="review" data-code="OO1EMO42700">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO42800</span>
 <span class="pcode">1EMO4280</span></div><span class="bg ok">✓ 3件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO42800.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO42800.jpg?v=v3" loading="lazy" alt="OO1EMO42800"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Transmission Mount</td><td class="oe">A4425</td><td class="pos">中中</td><td class="coord">34.6%,46.1%</td></tr><tr><td class="nb">2</td><td class="nm">Front Motor Mount</td><td class="oe">A4449</td><td class="pos">下左</td><td class="coord">31.2%,86.7%</td></tr><tr><td class="nb">3</td><td class="nm">Rear Torque Strut Mount</td><td class="oe">A4419</td><td class="pos">下右</td><td class="coord">75.2%,83.6%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO43000</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Transmission Mount</td><td class="oe">A4425</td><td class="pos">中中</td><td class="coord">34.6%,46.1%</td></tr><tr><td class="nb">2</td><td class="nm">Front Motor Mount</td><td class="oe">A4449</td><td class="pos">下左</td><td class="coord">31.2%,86.7%</td></tr><tr><td class="nb">3</td><td class="nm">Rear Torque Strut Mount</td><td class="oe">A4419</td><td class="pos">下右</td><td class="coord">75.2%,83.6%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO42800">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO43000</span>
 <span class="pcode">1EMO4300</span></div><span class="bg ok">✓ 4件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO43000.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO43000.jpg?v=v3" loading="lazy" alt="OO1EMO43000"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A62053</td><td class="pos">中左</td><td class="coord">29.8%,45.2%</td></tr><tr><td class="nb">2</td><td class="nm">Transmission Mount</td><td class="oe">A42004</td><td class="pos">上右</td><td class="coord">74.6%,31.4%</td></tr><tr><td class="nb">3</td><td class="nm">Rear Motor Mount</td><td class="oe">A72024</td><td class="pos">下右</td><td class="coord">70.4%,84.2%</td></tr><tr><td class="nb">4</td><td class="nm">Front Right Motor Mount</td><td class="oe">A62000</td><td class="pos">下左</td><td class="coord">31.2%,88.1%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO43100</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A62053</td><td class="pos">中左</td><td class="coord">29.8%,45.2%</td></tr><tr><td class="nb">2</td><td class="nm">Transmission Mount</td><td class="oe">A42004</td><td class="pos">上右</td><td class="coord">74.6%,31.4%</td></tr><tr><td class="nb">3</td><td class="nm">Rear Motor Mount</td><td class="oe">A72024</td><td class="pos">下右</td><td class="coord">70.4%,84.2%</td></tr><tr><td class="nb">4</td><td class="nm">Front Right Motor Mount</td><td class="oe">A62000</td><td class="pos">下左</td><td class="coord">31.2%,88.1%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO43000">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO43100</span>
 <span class="pcode">1EMO4310</span></div><span class="bg ok">✓ 3件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO43100.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO43100.jpg?v=v3" loading="lazy" alt="OO1EMO43100"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Left Motor Mount</td><td class="oe">A5825</td><td class="pos">中右</td><td class="coord">67.2%,46.4%</td></tr><tr><td class="nb">2</td><td class="nm">Front Right Motor Mount</td><td class="oe">A5824</td><td class="pos">下左</td><td class="coord">28.9%,76.2%</td></tr><tr><td class="nb">3</td><td class="nm">Rear Torque Strut Mount</td><td class="oe">A5752</td><td class="pos">下中</td><td class="coord">63.1%,89.6%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO43200</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Left Motor Mount</td><td class="oe">A5825</td><td class="pos">中右</td><td class="coord">67.2%,46.4%</td></tr><tr><td class="nb">2</td><td class="nm">Front Right Motor Mount</td><td class="oe">A5824</td><td class="pos">下左</td><td class="coord">28.9%,76.2%</td></tr><tr><td class="nb">3</td><td class="nm">Rear Torque Strut Mount</td><td class="oe">A5752</td><td class="pos">下中</td><td class="coord">63.1%,89.6%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO43100">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO43200</span>
 <span class="pcode">1EMO4320</span></div><span class="bg ok">✓ 3件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO43200.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO43200.jpg?v=v3" loading="lazy" alt="OO1EMO43200"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Right Motor Mount</td><td class="oe">A4212</td><td class="pos">中中</td><td class="coord">35.5%,42.4%</td></tr><tr><td class="nb">2</td><td class="nm">Transmission Mount</td><td class="oe">A4207</td><td class="pos">下左</td><td class="coord">22.8%,77.2%</td></tr><tr><td class="nb">3</td><td class="nm">Front Right Torque Strut Mount</td><td class="oe">A4205</td><td class="pos">下中</td><td class="coord">65.4%,82.3%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO43400</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Right Motor Mount</td><td class="oe">A4212</td><td class="pos">中中</td><td class="coord">35.5%,42.4%</td></tr><tr><td class="nb">2</td><td class="nm">Transmission Mount</td><td class="oe">A4207</td><td class="pos">下左</td><td class="coord">22.8%,77.2%</td></tr><tr><td class="nb">3</td><td class="nm">Front Right Torque Strut Mount</td><td class="oe">A4205</td><td class="pos">下中</td><td class="coord">65.4%,82.3%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO43200">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO43400</span>
 <span class="pcode">1EMO4340</span></div><span class="bg ok">✓ 2件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO43400.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO43400.jpg?v=v3" loading="lazy" alt="OO1EMO43400"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A5410</td><td class="pos">中中 / 下中</td><td class="coord">60.8%,44.3% / 37.7%,86.1%</td></tr><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A5410</td><td class="pos">中中 / 下中</td><td class="coord">60.8%,44.3% / 37.7%,86.1% <span class="same">同款</span></td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO43500</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A5410</td><td class="pos">中中 / 下中</td><td class="coord">60.8%,44.3% / 37.7%,86.1%</td></tr><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A5410</td><td class="pos">中中 / 下中</td><td class="coord">60.8%,44.3% / 37.7%,86.1% <span class="same">同款</span></td></tr></tbody></table>
+<div class="review" data-code="OO1EMO43400">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO43500</span>
 <span class="pcode">1EMO4350</span></div><span class="bg ok">✓ 2件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO43500.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO43500.jpg?v=v3" loading="lazy" alt="OO1EMO43500"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Upper Motor Mount</td><td class="oe">A6969</td><td class="pos">中左</td><td class="coord">31.9%,45.8%</td></tr><tr><td class="nb">2</td><td class="nm">Front Lower Motor Mount</td><td class="oe">A6966</td><td class="pos">下右</td><td class="coord">67.7%,86.6%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO43600</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Upper Motor Mount</td><td class="oe">A6969</td><td class="pos">中左</td><td class="coord">31.9%,45.8%</td></tr><tr><td class="nb">2</td><td class="nm">Front Lower Motor Mount</td><td class="oe">A6966</td><td class="pos">下右</td><td class="coord">67.7%,86.6%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO43500">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO43600</span>
 <span class="pcode">1EMO4360</span></div><span class="bg ok">✓ 3件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO43600.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO43600.jpg?v=v3" loading="lazy" alt="OO1EMO43600"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A5102</td><td class="pos">中左 / 中右</td><td class="coord">25.9%,46.4% / 73.4%,55.2%</td></tr><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A5102</td><td class="pos">中左 / 中右</td><td class="coord">25.9%,46.4% / 73.4%,55.2% <span class="same">同款</span></td></tr><tr><td class="nb">2</td><td class="nm">Transmission Mount</td><td class="oe">A5340</td><td class="pos">下中</td><td class="coord">46.7%,89.1%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO43800</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A5102</td><td class="pos">中左 / 中右</td><td class="coord">25.9%,46.4% / 73.4%,55.2%</td></tr><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A5102</td><td class="pos">中左 / 中右</td><td class="coord">25.9%,46.4% / 73.4%,55.2% <span class="same">同款</span></td></tr><tr><td class="nb">2</td><td class="nm">Transmission Mount</td><td class="oe">A5340</td><td class="pos">下中</td><td class="coord">46.7%,89.1%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO43600">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO43800</span>
 <span class="pcode">1EMO4380</span></div><span class="bg ok">✓ 5件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO43800.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO43800.jpg?v=v3" loading="lazy" alt="OO1EMO43800"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Right Motor Mount</td><td class="oe">A4587</td><td class="pos">中中</td><td class="coord">49.9%,51.9%</td></tr><tr><td class="nb">2</td><td class="nm">Rear Transmission Mount</td><td class="oe">A4557</td><td class="pos">下中</td><td class="coord">34.7%,86.0%</td></tr><tr><td class="nb">3</td><td class="nm">Rear Motor Mount</td><td class="oe">A4553</td><td class="pos">下右</td><td class="coord">76.8%,86.4%</td></tr><tr><td class="nb">4</td><td class="nm">Front Transmission Mount</td><td class="oe">A4558</td><td class="pos">下左</td><td class="coord">7.8%,94.1%</td></tr><tr><td class="nb">5</td><td class="nm">Front Motor Mount</td><td class="oe">A65023HY</td><td class="pos">下左</td><td class="coord">15.0%,94.1%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO43900</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Right Motor Mount</td><td class="oe">A4587</td><td class="pos">中中</td><td class="coord">49.9%,51.9%</td></tr><tr><td class="nb">2</td><td class="nm">Rear Transmission Mount</td><td class="oe">A4557</td><td class="pos">下中</td><td class="coord">34.7%,86.0%</td></tr><tr><td class="nb">3</td><td class="nm">Rear Motor Mount</td><td class="oe">A4553</td><td class="pos">下右</td><td class="coord">76.8%,86.4%</td></tr><tr><td class="nb">4</td><td class="nm">Front Transmission Mount</td><td class="oe">A4558</td><td class="pos">下左</td><td class="coord">7.8%,94.1%</td></tr><tr><td class="nb">5</td><td class="nm">Front Motor Mount</td><td class="oe">A65023HY</td><td class="pos">下左</td><td class="coord">15.0%,94.1%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO43800">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO43900</span>
 <span class="pcode">1EMO4390</span></div><span class="bg ok">✓ 5件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO43900.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO43900.jpg?v=v3" loading="lazy" alt="OO1EMO43900"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A65026EL</td><td class="pos">中左</td><td class="coord">29.2%,59.1%</td></tr><tr><td class="nb">2</td><td class="nm">Rear Motor Mount</td><td class="oe">A4583EL</td><td class="pos">中右</td><td class="coord">80.4%,41.2%</td></tr><tr><td class="nb">3</td><td class="nm">Front Right Motor Mount</td><td class="oe">A4587</td><td class="pos">下左</td><td class="coord">20.1%,89.8%</td></tr><tr><td class="nb">4</td><td class="nm">Front Transmission Mount</td><td class="oe">A6582</td><td class="pos">下中</td><td class="coord">38.0%,92.6%</td></tr><tr><td class="nb">5</td><td class="nm">Rear Transmission Mount</td><td class="oe">A4559</td><td class="pos">下右</td><td class="coord">67.5%,86.9%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO44000</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A65026EL</td><td class="pos">中左</td><td class="coord">29.2%,59.1%</td></tr><tr><td class="nb">2</td><td class="nm">Rear Motor Mount</td><td class="oe">A4583EL</td><td class="pos">中右</td><td class="coord">80.4%,41.2%</td></tr><tr><td class="nb">3</td><td class="nm">Front Right Motor Mount</td><td class="oe">A4587</td><td class="pos">下左</td><td class="coord">20.1%,89.8%</td></tr><tr><td class="nb">4</td><td class="nm">Front Transmission Mount</td><td class="oe">A6582</td><td class="pos">下中</td><td class="coord">38.0%,92.6%</td></tr><tr><td class="nb">5</td><td class="nm">Rear Transmission Mount</td><td class="oe">A4559</td><td class="pos">下右</td><td class="coord">67.5%,86.9%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO43900">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO44000</span>
 <span class="pcode">1EMO4400</span></div><span class="bg ok">✓ 4件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO44000.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO44000.jpg?v=v3" loading="lazy" alt="OO1EMO44000"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A4203</td><td class="pos">中中</td><td class="coord">35.1%,49.8%</td></tr><tr><td class="nb">2</td><td class="nm">Front Right Motor Mount</td><td class="oe">A4211</td><td class="pos">中右</td><td class="coord">77.4%,49.4%</td></tr><tr><td class="nb">3</td><td class="nm">Front Right Torque Strut Mount</td><td class="oe">A4236</td><td class="pos">下左</td><td class="coord">24.5%,84.9%</td></tr><tr><td class="nb">4</td><td class="nm">Transmission Mount</td><td class="oe">A4207</td><td class="pos">下中</td><td class="coord">65.4%,86.1%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO44200</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A4203</td><td class="pos">中中</td><td class="coord">35.1%,49.8%</td></tr><tr><td class="nb">2</td><td class="nm">Front Right Motor Mount</td><td class="oe">A4211</td><td class="pos">中右</td><td class="coord">77.4%,49.4%</td></tr><tr><td class="nb">3</td><td class="nm">Front Right Torque Strut Mount</td><td class="oe">A4236</td><td class="pos">下左</td><td class="coord">24.5%,84.9%</td></tr><tr><td class="nb">4</td><td class="nm">Transmission Mount</td><td class="oe">A4207</td><td class="pos">下中</td><td class="coord">65.4%,86.1%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO44000">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO44200</span>
 <span class="pcode">1EMO4420</span></div><span class="bg ok">✓ 3件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO44200.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO44200.jpg?v=v3" loading="lazy" alt="OO1EMO44200"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A5365</td><td class="pos">中左 / 下右</td><td class="coord">33.2%,48.8% / 69.4%,86.4%</td></tr><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A5365</td><td class="pos">中左 / 下右</td><td class="coord">33.2%,48.8% / 69.4%,86.4% <span class="same">同款</span></td></tr><tr><td class="nb">2</td><td class="nm">Transmission Mount</td><td class="oe">A2811</td><td class="pos">下左</td><td class="coord">24.0%,86.9%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO44300</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A5365</td><td class="pos">中左 / 下右</td><td class="coord">33.2%,48.8% / 69.4%,86.4%</td></tr><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A5365</td><td class="pos">中左 / 下右</td><td class="coord">33.2%,48.8% / 69.4%,86.4% <span class="same">同款</span></td></tr><tr><td class="nb">2</td><td class="nm">Transmission Mount</td><td class="oe">A2811</td><td class="pos">下左</td><td class="coord">24.0%,86.9%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO44200">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO44300</span>
 <span class="pcode">1EMO4430</span></div><span class="bg ok">✓ 5件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO44300.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO44300.jpg?v=v3" loading="lazy" alt="OO1EMO44300"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Right Motor Mount</td><td class="oe">A6520</td><td class="pos">上左</td><td class="coord">26.4%,23.1%</td></tr><tr><td class="nb">2</td><td class="nm">Front Left Upper Motor Mount</td><td class="oe">A6556</td><td class="pos">上右</td><td class="coord">74.6%,23.2%</td></tr><tr><td class="nb">3</td><td class="nm">Front Front Left Lower Motor Mount</td><td class="oe">A6502</td><td class="pos">中左</td><td class="coord">27.5%,55.8%</td></tr><tr><td class="nb">4</td><td class="nm">Rear Motor Mount</td><td class="oe">A6506</td><td class="pos">下右</td><td class="coord">69.3%,81.1%</td></tr><tr><td class="nb">5</td><td class="nm">Rear Transmission Mount</td><td class="oe">A6526</td><td class="pos">下左</td><td class="coord">26.3%,88.6%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO44400</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Right Motor Mount</td><td class="oe">A6520</td><td class="pos">上左</td><td class="coord">26.4%,23.1%</td></tr><tr><td class="nb">2</td><td class="nm">Front Left Upper Motor Mount</td><td class="oe">A6556</td><td class="pos">上右</td><td class="coord">74.6%,23.2%</td></tr><tr><td class="nb">3</td><td class="nm">Front Front Left Lower Motor Mount</td><td class="oe">A6502</td><td class="pos">中左</td><td class="coord">27.5%,55.8%</td></tr><tr><td class="nb">4</td><td class="nm">Rear Motor Mount</td><td class="oe">A6506</td><td class="pos">下右</td><td class="coord">69.3%,81.1%</td></tr><tr><td class="nb">5</td><td class="nm">Rear Transmission Mount</td><td class="oe">A6526</td><td class="pos">下左</td><td class="coord">26.3%,88.6%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO44300">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO44400</span>
 <span class="pcode">1EMO4440</span></div><span class="bg ok">✓ 4件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO44400.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO44400.jpg?v=v3" loading="lazy" alt="OO1EMO44400"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A6589</td><td class="pos">中左</td><td class="coord">23.1%,45.2%</td></tr><tr><td class="nb">2</td><td class="nm">Front Left Motor Mount</td><td class="oe">A4539</td><td class="pos">中右</td><td class="coord">70.8%,35.6%</td></tr><tr><td class="nb">3</td><td class="nm">Rear Motor Mount</td><td class="oe">A6588</td><td class="pos">下左</td><td class="coord">23.8%,88.9%</td></tr><tr><td class="nb">4</td><td class="nm">Transmission Mount</td><td class="oe">A4511</td><td class="pos">下右</td><td class="coord">70.8%,85.1%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO44600</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A6589</td><td class="pos">中左</td><td class="coord">23.1%,45.2%</td></tr><tr><td class="nb">2</td><td class="nm">Front Left Motor Mount</td><td class="oe">A4539</td><td class="pos">中右</td><td class="coord">70.8%,35.6%</td></tr><tr><td class="nb">3</td><td class="nm">Rear Motor Mount</td><td class="oe">A6588</td><td class="pos">下左</td><td class="coord">23.8%,88.9%</td></tr><tr><td class="nb">4</td><td class="nm">Transmission Mount</td><td class="oe">A4511</td><td class="pos">下右</td><td class="coord">70.8%,85.1%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO44400">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO44600</span>
 <span class="pcode">1EMO4460</span></div><span class="bg ok">✓ 1件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO44600.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO44600.jpg?v=v3" loading="lazy" alt="OO1EMO44600"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Rear Front Right Torque Strut Mount</td><td class="oe">A4259</td><td class="pos">下中</td><td class="coord">47.9%,78.6%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO44800</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Rear Front Right Torque Strut Mount</td><td class="oe">A4259</td><td class="pos">下中</td><td class="coord">47.9%,78.6%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO44600">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO44800</span>
 <span class="pcode">1EMO4480</span></div><span class="bg ok">✓ 1件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO44800.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO44800.jpg?v=v3" loading="lazy" alt="OO1EMO44800"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Rear Torque Strut Mount</td><td class="oe">A62060</td><td class="pos">下中</td><td class="coord">51.1%,79.2%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO44900</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Rear Torque Strut Mount</td><td class="oe">A62060</td><td class="pos">下中</td><td class="coord">51.1%,79.2%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO44800">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO44900</span>
 <span class="pcode">1EMO4490</span></div><span class="bg ok">✓ 1件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO44900.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO44900.jpg?v=v3" loading="lazy" alt="OO1EMO44900"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A5631</td><td class="pos">下中</td><td class="coord">49.9%,78.9%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO45000</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A5631</td><td class="pos">下中</td><td class="coord">49.9%,78.9%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO44900">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO45000</span>
 <span class="pcode">1EMO4500</span></div><span class="bg ok">✓ 1件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO45000.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO45000.jpg?v=v3" loading="lazy" alt="OO1EMO45000"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Lower Transmission Mount</td><td class="oe">A5520</td><td class="pos">下中</td><td class="coord">52.9%,72.4%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO45100</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Lower Transmission Mount</td><td class="oe">A5520</td><td class="pos">下中</td><td class="coord">52.9%,72.4%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO45000">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO45100</span>
 <span class="pcode">1EMO4510</span></div><span class="bg ok">✓ 3件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO45100.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO45100.jpg?v=v3" loading="lazy" alt="OO1EMO45100"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A5595</td><td class="pos">中中</td><td class="coord">37.0%,40.2%</td></tr><tr><td class="nb">2</td><td class="nm">Transmission Mount</td><td class="oe">A5596</td><td class="pos">下左</td><td class="coord">15.1%,86.4%</td></tr><tr><td class="nb">3</td><td class="nm">Transmission Mount</td><td class="oe">A5597</td><td class="pos">下中</td><td class="coord">64.2%,84.2%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO45300</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A5595</td><td class="pos">中中</td><td class="coord">37.0%,40.2%</td></tr><tr><td class="nb">2</td><td class="nm">Transmission Mount</td><td class="oe">A5596</td><td class="pos">下左</td><td class="coord">15.1%,86.4%</td></tr><tr><td class="nb">3</td><td class="nm">Transmission Mount</td><td class="oe">A5597</td><td class="pos">下中</td><td class="coord">64.2%,84.2%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO45100">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO45300</span>
 <span class="pcode">1EMO4530</span></div><span class="bg ok">✓ 1件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO45300.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO45300.jpg?v=v3" loading="lazy" alt="OO1EMO45300"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A5592</td><td class="pos">中中</td><td class="coord">55.1%,65.7%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO45500</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A5592</td><td class="pos">中中</td><td class="coord">55.1%,65.7%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO45300">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO45500</span>
 <span class="pcode">1EMO4550</span></div><span class="bg ok">✓ 4件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO45500.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO45500.jpg?v=v3" loading="lazy" alt="OO1EMO45500"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Motor Mount</td><td class="oe">A42094</td><td class="pos">下中</td><td class="coord">48.4%,78.9%</td></tr><tr><td class="nb">2</td><td class="nm">Motor Mount</td><td class="oe">A42095</td><td class="pos">下左</td><td class="coord">6.8%,90.5%</td></tr><tr><td class="nb">3</td><td class="nm">Transmission Mount</td><td class="oe">A42097</td><td class="pos">下左</td><td class="coord">12.7%,85.5%</td></tr><tr><td class="nb">4</td><td class="nm">Transmission Mount</td><td class="oe">A42115</td><td class="pos">下左</td><td class="coord">12.7%,90.5%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO45600</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Motor Mount</td><td class="oe">A42094</td><td class="pos">下中</td><td class="coord">48.4%,78.9%</td></tr><tr><td class="nb">2</td><td class="nm">Motor Mount</td><td class="oe">A42095</td><td class="pos">下左</td><td class="coord">6.8%,90.5%</td></tr><tr><td class="nb">3</td><td class="nm">Transmission Mount</td><td class="oe">A42097</td><td class="pos">下左</td><td class="coord">12.7%,85.5%</td></tr><tr><td class="nb">4</td><td class="nm">Transmission Mount</td><td class="oe">A42115</td><td class="pos">下左</td><td class="coord">12.7%,90.5%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO45500">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO45600</span>
 <span class="pcode">1EMO4560</span></div><span class="bg ok">✓ 1件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO45600.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO45600.jpg?v=v3" loading="lazy" alt="OO1EMO45600"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Torque Strut Mount</td><td class="oe">A7378</td><td class="pos">下中</td><td class="coord">46.8%,73.9%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO45800</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Torque Strut Mount</td><td class="oe">A7378</td><td class="pos">下中</td><td class="coord">46.8%,73.9%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO45600">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO45800</span>
 <span class="pcode">1EMO4580</span></div><span class="bg ok">✓ 4件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO45800.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO45800.jpg?v=v3" loading="lazy" alt="OO1EMO45800"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A62009</td><td class="pos">中中</td><td class="coord">40.8%,50.5%</td></tr><tr><td class="nb">2</td><td class="nm">Front Right Motor Mount</td><td class="oe">A4295</td><td class="pos">上右</td><td class="coord">68.6%,26.0%</td></tr><tr><td class="nb">3</td><td class="nm">Torque Strut Mount</td><td class="oe">A4257</td><td class="pos">下左</td><td class="coord">19.9%,85.0%</td></tr><tr><td class="nb">4</td><td class="nm">Transmission Mount</td><td class="oe">A4207</td><td class="pos">下右</td><td class="coord">71.6%,82.1%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO46000</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A62009</td><td class="pos">中中</td><td class="coord">40.8%,50.5%</td></tr><tr><td class="nb">2</td><td class="nm">Front Right Motor Mount</td><td class="oe">A4295</td><td class="pos">上右</td><td class="coord">68.6%,26.0%</td></tr><tr><td class="nb">3</td><td class="nm">Torque Strut Mount</td><td class="oe">A4257</td><td class="pos">下左</td><td class="coord">19.9%,85.0%</td></tr><tr><td class="nb">4</td><td class="nm">Transmission Mount</td><td class="oe">A4207</td><td class="pos">下右</td><td class="coord">71.6%,82.1%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO45800">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO46000</span>
 <span class="pcode">1EMO4600</span></div><span class="bg ok">✓ 1件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO46000.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO46000.jpg?v=v3" loading="lazy" alt="OO1EMO46000"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A5446</td><td class="pos">下中</td><td class="coord">50.1%,76.4%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO46200</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A5446</td><td class="pos">下中</td><td class="coord">50.1%,76.4%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO46000">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO46200</span>
 <span class="pcode">1EMO4620</span></div><span class="bg ok">✓ 3件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO46200.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO46200.jpg?v=v3" loading="lazy" alt="OO1EMO46200"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Front Right Lower Motor Mount</td><td class="oe">A2949</td><td class="pos">中右</td><td class="coord">69.1%,34.5%</td></tr><tr><td class="nb">2</td><td class="nm">Front Right Upper Rear Motor Mount</td><td class="oe">A2948</td><td class="pos">下中</td><td class="coord">48.6%,72.5%</td></tr><tr><td class="nb">3</td><td class="nm">Front Rear Motor Mount</td><td class="oe">A2947</td><td class="pos">下左</td><td class="coord">30.8%,88.3%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO46300</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Front Right Lower Motor Mount</td><td class="oe">A2949</td><td class="pos">中右</td><td class="coord">69.1%,34.5%</td></tr><tr><td class="nb">2</td><td class="nm">Front Right Upper Rear Motor Mount</td><td class="oe">A2948</td><td class="pos">下中</td><td class="coord">48.6%,72.5%</td></tr><tr><td class="nb">3</td><td class="nm">Front Rear Motor Mount</td><td class="oe">A2947</td><td class="pos">下左</td><td class="coord">30.8%,88.3%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO46200">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO46300</span>
 <span class="pcode">1EMO4630</span></div><span class="bg ok">✓ 4件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO46300.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO46300.jpg?v=v3" loading="lazy" alt="OO1EMO46300"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Motor Mount</td><td class="oe">A4382</td><td class="pos">上左</td><td class="coord">28.9%,31.6%</td></tr><tr><td class="nb">2</td><td class="nm">Torque Strut Mount</td><td class="oe">A4389</td><td class="pos">中右</td><td class="coord">76.5%,54.0%</td></tr><tr><td class="nb">3</td><td class="nm">Motor Mount</td><td class="oe">A4381</td><td class="pos">下左</td><td class="coord">25.9%,81.1%</td></tr><tr><td class="nb">4</td><td class="nm">Torque Strut Mount</td><td class="oe">A4390</td><td class="pos">下中</td><td class="coord">62.7%,82.8%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO46400</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Motor Mount</td><td class="oe">A4382</td><td class="pos">上左</td><td class="coord">28.9%,31.6%</td></tr><tr><td class="nb">2</td><td class="nm">Torque Strut Mount</td><td class="oe">A4389</td><td class="pos">中右</td><td class="coord">76.5%,54.0%</td></tr><tr><td class="nb">3</td><td class="nm">Motor Mount</td><td class="oe">A4381</td><td class="pos">下左</td><td class="coord">25.9%,81.1%</td></tr><tr><td class="nb">4</td><td class="nm">Torque Strut Mount</td><td class="oe">A4390</td><td class="pos">下中</td><td class="coord">62.7%,82.8%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO46300">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO46400</span>
 <span class="pcode">1EMO4640</span></div><span class="bg ok">✓ 6件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO46400.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO46400.jpg?v=v3" loading="lazy" alt="OO1EMO46400"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A7394</td><td class="pos">上中</td><td class="coord">53.0%,28.2%</td></tr><tr><td class="nb">2</td><td class="nm">Rear Motor Mount</td><td class="oe">A7391HY</td><td class="pos">中左</td><td class="coord">18.8%,45.8%</td></tr><tr><td class="nb">3</td><td class="nm">Front Right Motor Mount</td><td class="oe">A4365HY</td><td class="pos">中中</td><td class="coord">53.7%,45.6%</td></tr><tr><td class="nb">4</td><td class="nm">Rear Torque Strut Mount</td><td class="oe">A4373</td><td class="pos">中右</td><td class="coord">84.2%,42.8%</td></tr><tr><td class="nb">5</td><td class="nm">Front Right Torque Strut Mount</td><td class="oe">A7363</td><td class="pos">下中</td><td class="coord">59.7%,76.6%</td></tr><tr><td class="nb">6</td><td class="nm">Transmission Mount</td><td class="oe">A7372</td><td class="pos">下左</td><td class="coord">19.1%,86.2%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO46500</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A7394</td><td class="pos">上中</td><td class="coord">53.0%,28.2%</td></tr><tr><td class="nb">2</td><td class="nm">Rear Motor Mount</td><td class="oe">A7391HY</td><td class="pos">中左</td><td class="coord">18.8%,45.8%</td></tr><tr><td class="nb">3</td><td class="nm">Front Right Motor Mount</td><td class="oe">A4365HY</td><td class="pos">中中</td><td class="coord">53.7%,45.6%</td></tr><tr><td class="nb">4</td><td class="nm">Rear Torque Strut Mount</td><td class="oe">A4373</td><td class="pos">中右</td><td class="coord">84.2%,42.8%</td></tr><tr><td class="nb">5</td><td class="nm">Front Right Torque Strut Mount</td><td class="oe">A7363</td><td class="pos">下中</td><td class="coord">59.7%,76.6%</td></tr><tr><td class="nb">6</td><td class="nm">Transmission Mount</td><td class="oe">A7372</td><td class="pos">下左</td><td class="coord">19.1%,86.2%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO46400">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO46500</span>
 <span class="pcode">1EMO4650</span></div><span class="bg ok">✓ 4件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO46500.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO46500.jpg?v=v3" loading="lazy" alt="OO1EMO46500"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A62009</td><td class="pos">中左</td><td class="coord">24.1%,49.7%</td></tr><tr><td class="nb">2</td><td class="nm">Front Right Motor Mount</td><td class="oe">A4295</td><td class="pos">中右</td><td class="coord">80.2%,54.9%</td></tr><tr><td class="nb">3</td><td class="nm">Torque Strut Mount</td><td class="oe">A62062</td><td class="pos">下左</td><td class="coord">24.1%,83.5%</td></tr><tr><td class="nb">4</td><td class="nm">Transmission Mount</td><td class="oe">A4288</td><td class="pos">下中</td><td class="coord">61.8%,86.8%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO46800</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A62009</td><td class="pos">中左</td><td class="coord">24.1%,49.7%</td></tr><tr><td class="nb">2</td><td class="nm">Front Right Motor Mount</td><td class="oe">A4295</td><td class="pos">中右</td><td class="coord">80.2%,54.9%</td></tr><tr><td class="nb">3</td><td class="nm">Torque Strut Mount</td><td class="oe">A62062</td><td class="pos">下左</td><td class="coord">24.1%,83.5%</td></tr><tr><td class="nb">4</td><td class="nm">Transmission Mount</td><td class="oe">A4288</td><td class="pos">下中</td><td class="coord">61.8%,86.8%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO46500">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO46800</span>
 <span class="pcode">1EMO4680</span></div><span class="bg ok">✓ 3件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO46800.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO46800.jpg?v=v3" loading="lazy" alt="OO1EMO46800"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Right Motor Mount Bushing</td><td class="oe">A5312</td><td class="pos">中左</td><td class="coord">27.3%,53.6%</td></tr><tr><td class="nb">2</td><td class="nm">Upper Transmission Mount</td><td class="oe">A2986</td><td class="pos">中右</td><td class="coord">72.9%,41.9%</td></tr><tr><td class="nb">3</td><td class="nm">Rear Torque Strut Mount</td><td class="oe">A2939</td><td class="pos">下中</td><td class="coord">55.9%,86.7%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO47500</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Right Motor Mount Bushing</td><td class="oe">A5312</td><td class="pos">中左</td><td class="coord">27.3%,53.6%</td></tr><tr><td class="nb">2</td><td class="nm">Upper Transmission Mount</td><td class="oe">A2986</td><td class="pos">中右</td><td class="coord">72.9%,41.9%</td></tr><tr><td class="nb">3</td><td class="nm">Rear Torque Strut Mount</td><td class="oe">A2939</td><td class="pos">下中</td><td class="coord">55.9%,86.7%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO46800">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO47500</span>
 <span class="pcode">1EMO4750</span></div><span class="bg ok">✓ 1件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO47500.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO47500.jpg?v=v3" loading="lazy" alt="OO1EMO47500"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Left Motor Mount</td><td class="oe">A5739</td><td class="pos">下中</td><td class="coord">48.9%,78.9%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO47700</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Left Motor Mount</td><td class="oe">A5739</td><td class="pos">下中</td><td class="coord">48.9%,78.9%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO47500">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO47700</span>
 <span class="pcode">1EMO4770</span></div><span class="bg ok">✓ 3件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO47700.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO47700.jpg?v=v3" loading="lazy" alt="OO1EMO47700"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Left Motor Mount</td><td class="oe">A5739</td><td class="pos">上右</td><td class="coord">71.8%,33.5%</td></tr><tr><td class="nb">2</td><td class="nm">Front Right Motor Mount</td><td class="oe">A5738</td><td class="pos">中左</td><td class="coord">29.4%,65.8%</td></tr><tr><td class="nb">3</td><td class="nm">Transmission Mount</td><td class="oe">A2638</td><td class="pos">下右</td><td class="coord">71.6%,77.9%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO48400</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Left Motor Mount</td><td class="oe">A5739</td><td class="pos">上右</td><td class="coord">71.8%,33.5%</td></tr><tr><td class="nb">2</td><td class="nm">Front Right Motor Mount</td><td class="oe">A5738</td><td class="pos">中左</td><td class="coord">29.4%,65.8%</td></tr><tr><td class="nb">3</td><td class="nm">Transmission Mount</td><td class="oe">A2638</td><td class="pos">下右</td><td class="coord">71.6%,77.9%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO47700">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO48400</span>
 <span class="pcode">1EMO4840</span></div><span class="bg ok">✓ 4件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO48400.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO48400.jpg?v=v3" loading="lazy" alt="OO1EMO48400"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Right Motor Mount</td><td class="oe">A4587</td><td class="pos">中左</td><td class="coord">28.4%,41.2%</td></tr><tr><td class="nb">2</td><td class="nm">Transmission Mount</td><td class="oe">A65057</td><td class="pos">中右</td><td class="coord">75.6%,39.6%</td></tr><tr><td class="nb">3</td><td class="nm">Front Motor Mount</td><td class="oe">A4575EL</td><td class="pos">下左</td><td class="coord">24.6%,87.1%</td></tr><tr><td class="nb">4</td><td class="nm">Rear Motor Mount</td><td class="oe">A65017EL</td><td class="pos">下右</td><td class="coord">68.9%,84.5%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO48500</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Right Motor Mount</td><td class="oe">A4587</td><td class="pos">中左</td><td class="coord">28.4%,41.2%</td></tr><tr><td class="nb">2</td><td class="nm">Transmission Mount</td><td class="oe">A65057</td><td class="pos">中右</td><td class="coord">75.6%,39.6%</td></tr><tr><td class="nb">3</td><td class="nm">Front Motor Mount</td><td class="oe">A4575EL</td><td class="pos">下左</td><td class="coord">24.6%,87.1%</td></tr><tr><td class="nb">4</td><td class="nm">Rear Motor Mount</td><td class="oe">A65017EL</td><td class="pos">下右</td><td class="coord">68.9%,84.5%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO48400">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO48500</span>
 <span class="pcode">1EMO4850</span></div><span class="bg ok">✓ 4件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO48500.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO48500.jpg?v=v3" loading="lazy" alt="OO1EMO48500"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Right Motor Mount</td><td class="oe">A7370</td><td class="pos">中中</td><td class="coord">39.4%,42.7%</td></tr><tr><td class="nb">2</td><td class="nm">Front Left Transmission Mount</td><td class="oe">A7392</td><td class="pos">中右</td><td class="coord">73.2%,58.8%</td></tr><tr><td class="nb">3</td><td class="nm">Front Upper Torque Strut Mount</td><td class="oe">A4351</td><td class="pos">下左</td><td class="coord">30.4%,86.8%</td></tr><tr><td class="nb">4</td><td class="nm">Front Lower Torque Strut Mount</td><td class="oe">A4352</td><td class="pos">下右</td><td class="coord">76.1%,82.1%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO48600</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Right Motor Mount</td><td class="oe">A7370</td><td class="pos">中中</td><td class="coord">39.4%,42.7%</td></tr><tr><td class="nb">2</td><td class="nm">Front Left Transmission Mount</td><td class="oe">A7392</td><td class="pos">中右</td><td class="coord">73.2%,58.8%</td></tr><tr><td class="nb">3</td><td class="nm">Front Upper Torque Strut Mount</td><td class="oe">A4351</td><td class="pos">下左</td><td class="coord">30.4%,86.8%</td></tr><tr><td class="nb">4</td><td class="nm">Front Lower Torque Strut Mount</td><td class="oe">A4352</td><td class="pos">下右</td><td class="coord">76.1%,82.1%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO48500">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO48600</span>
 <span class="pcode">1EMO4860</span></div><span class="bg ok">✓ 4件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO48600.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO48600.jpg?v=v3" loading="lazy" alt="OO1EMO48600"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Left Transmission Mount</td><td class="oe">A5608</td><td class="pos">中左</td><td class="coord">30.1%,49.9%</td></tr><tr><td class="nb">2</td><td class="nm">Front Transmission Mount</td><td class="oe">A5530</td><td class="pos">中右</td><td class="coord">71.2%,40.4%</td></tr><tr><td class="nb">3</td><td class="nm">Rear Transmission Mount</td><td class="oe">A5579</td><td class="pos">下左</td><td class="coord">28.4%,81.1%</td></tr><tr><td class="nb">4</td><td class="nm">Motor Mount - 3200</td><td class="oe"></td><td class="pos">下右</td><td class="coord">70.7%,76.9%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO49101</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Left Transmission Mount</td><td class="oe">A5608</td><td class="pos">中左</td><td class="coord">30.1%,49.9%</td></tr><tr><td class="nb">2</td><td class="nm">Front Transmission Mount</td><td class="oe">A5530</td><td class="pos">中右</td><td class="coord">71.2%,40.4%</td></tr><tr><td class="nb">3</td><td class="nm">Rear Transmission Mount</td><td class="oe">A5579</td><td class="pos">下左</td><td class="coord">28.4%,81.1%</td></tr><tr><td class="nb">4</td><td class="nm">Motor Mount - 3200</td><td class="oe"></td><td class="pos">下右</td><td class="coord">70.7%,76.9%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO48600">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO49101</span>
 <span class="pcode">1EMO4910</span></div><span class="bg ok">✓ 4件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO49101.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO49101.jpg?v=v3" loading="lazy" alt="OO1EMO49101"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Right Motor Mount</td><td class="oe">A5415</td><td class="pos">中左</td><td class="coord">30.0%,48.0%</td></tr><tr><td class="nb">2</td><td class="nm">Front Motor Mount</td><td class="oe">A5416</td><td class="pos">中右</td><td class="coord">70.5%,36.4%</td></tr><tr><td class="nb">3</td><td class="nm">Rear Motor Mount</td><td class="oe">A5417</td><td class="pos">下左</td><td class="coord">23.3%,86.1%</td></tr><tr><td class="nb">4</td><td class="nm">Transmission Mount</td><td class="oe">A5418</td><td class="pos">下右</td><td class="coord">75.5%,87.4%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO49300</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Right Motor Mount</td><td class="oe">A5415</td><td class="pos">中左</td><td class="coord">30.0%,48.0%</td></tr><tr><td class="nb">2</td><td class="nm">Front Motor Mount</td><td class="oe">A5416</td><td class="pos">中右</td><td class="coord">70.5%,36.4%</td></tr><tr><td class="nb">3</td><td class="nm">Rear Motor Mount</td><td class="oe">A5417</td><td class="pos">下左</td><td class="coord">23.3%,86.1%</td></tr><tr><td class="nb">4</td><td class="nm">Transmission Mount</td><td class="oe">A5418</td><td class="pos">下右</td><td class="coord">75.5%,87.4%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO49101">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO49300</span>
 <span class="pcode">1EMO4930</span></div><span class="bg ok">✓ 4件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO49300.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO49300.jpg?v=v3" loading="lazy" alt="OO1EMO49300"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Motor Mount</td><td class="oe">A5938</td><td class="pos">中左</td><td class="coord">27.4%,45.8%</td></tr><tr><td class="nb">2</td><td class="nm">Torque Strut Bracket</td><td class="oe">A20071</td><td class="pos">中右</td><td class="coord">75.9%,55.8%</td></tr><tr><td class="nb">3</td><td class="nm">Torque Strut Mount</td><td class="oe">A5879</td><td class="pos">下中</td><td class="coord">34.6%,79.4%</td></tr><tr><td class="nb">4</td><td class="nm">Transmission Mount</td><td class="oe">A20080</td><td class="pos">下右</td><td class="coord">69.7%,89.8%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO49500</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Motor Mount</td><td class="oe">A5938</td><td class="pos">中左</td><td class="coord">27.4%,45.8%</td></tr><tr><td class="nb">2</td><td class="nm">Torque Strut Bracket</td><td class="oe">A20071</td><td class="pos">中右</td><td class="coord">75.9%,55.8%</td></tr><tr><td class="nb">3</td><td class="nm">Torque Strut Mount</td><td class="oe">A5879</td><td class="pos">下中</td><td class="coord">34.6%,79.4%</td></tr><tr><td class="nb">4</td><td class="nm">Transmission Mount</td><td class="oe">A20080</td><td class="pos">下右</td><td class="coord">69.7%,89.8%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO49300">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO49500</span>
 <span class="pcode">1EMO4950</span></div><span class="bg ok">✓ 2件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO49500.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO49500.jpg?v=v3" loading="lazy" alt="OO1EMO49500"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Rear Torque Strut Mount</td><td class="oe">A4318</td><td class="pos">中中</td><td class="coord">49.4%,39.4%</td></tr><tr><td class="nb">2</td><td class="nm">Front Torque Strut Mount</td><td class="oe">A4345</td><td class="pos">下中</td><td class="coord">46.2%,72.9%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO49600</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Rear Torque Strut Mount</td><td class="oe">A4318</td><td class="pos">中中</td><td class="coord">49.4%,39.4%</td></tr><tr><td class="nb">2</td><td class="nm">Front Torque Strut Mount</td><td class="oe">A4345</td><td class="pos">下中</td><td class="coord">46.2%,72.9%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO49500">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO49600</span>
 <span class="pcode">1EMO4960</span></div><span class="bg ok">✓ 3件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO49600.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO49600.jpg?v=v3" loading="lazy" alt="OO1EMO49600"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A71048</td><td class="pos">下左</td><td class="coord">27.0%,79.2%</td></tr><tr><td class="nb">2</td><td class="nm">Front Lower Torque Strut Mount</td><td class="oe">A71021</td><td class="pos">中右</td><td class="coord">72.1%,51.7%</td></tr><tr><td class="nb">3</td><td class="nm">Transmission Mount</td><td class="oe">A71009</td><td class="pos">下中</td><td class="coord">62.0%,86.8%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO50100</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A71048</td><td class="pos">下左</td><td class="coord">27.0%,79.2%</td></tr><tr><td class="nb">2</td><td class="nm">Front Lower Torque Strut Mount</td><td class="oe">A71021</td><td class="pos">中右</td><td class="coord">72.1%,51.7%</td></tr><tr><td class="nb">3</td><td class="nm">Transmission Mount</td><td class="oe">A71009</td><td class="pos">下中</td><td class="coord">62.0%,86.8%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO49600">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO50100</span>
 <span class="pcode">1EMO5010</span></div><span class="bg ok">✓ 3件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO50100.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO50100.jpg?v=v3" loading="lazy" alt="OO1EMO50100"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A5611</td><td class="pos">下中 / 下中</td><td class="coord">34.3%,71.2% / 65.6%,85.8%</td></tr><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A5611</td><td class="pos">下中 / 下中</td><td class="coord">34.3%,71.2% / 65.6%,85.8% <span class="same">同款</span></td></tr><tr><td class="nb">2</td><td class="nm">Transmission Mount</td><td class="oe">A5488</td><td class="pos">中右</td><td class="coord">76.7%,35.0%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO50200</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A5611</td><td class="pos">下中 / 下中</td><td class="coord">34.3%,71.2% / 65.6%,85.8%</td></tr><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A5611</td><td class="pos">下中 / 下中</td><td class="coord">34.3%,71.2% / 65.6%,85.8% <span class="same">同款</span></td></tr><tr><td class="nb">2</td><td class="nm">Transmission Mount</td><td class="oe">A5488</td><td class="pos">中右</td><td class="coord">76.7%,35.0%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO50100">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO50200</span>
 <span class="pcode">1EMO5020</span></div><span class="bg ok">✓ 3件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO50200.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO50200.jpg?v=v3" loading="lazy" alt="OO1EMO50200"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A71065</td><td class="pos">中中</td><td class="coord">38.6%,47.6%</td></tr><tr><td class="nb">2</td><td class="nm">Torque Strut Mount</td><td class="oe">A71093</td><td class="pos">下右</td><td class="coord">76.5%,74.2%</td></tr><tr><td class="nb">3</td><td class="nm">Transmission Mount</td><td class="oe">A71067</td><td class="pos">下左</td><td class="coord">32.6%,86.3%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO50300</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A71065</td><td class="pos">中中</td><td class="coord">38.6%,47.6%</td></tr><tr><td class="nb">2</td><td class="nm">Torque Strut Mount</td><td class="oe">A71093</td><td class="pos">下右</td><td class="coord">76.5%,74.2%</td></tr><tr><td class="nb">3</td><td class="nm">Transmission Mount</td><td class="oe">A71067</td><td class="pos">下左</td><td class="coord">32.6%,86.3%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO50200">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO50300</span>
 <span class="pcode">1EMO5030</span></div><span class="bg ok">✓ 1件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO50300.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO50300.jpg?v=v3" loading="lazy" alt="OO1EMO50300"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Rear Motor Mount</td><td class="oe">A5690</td><td class="pos">下中</td><td class="coord">44.1%,70.6%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO50400</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Rear Motor Mount</td><td class="oe">A5690</td><td class="pos">下中</td><td class="coord">44.1%,70.6%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO50300">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO50400</span>
 <span class="pcode">1EMO5040</span></div><span class="bg ok">✓ 3件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO50400.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO50400.jpg?v=v3" loading="lazy" alt="OO1EMO50400"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A5674</td><td class="pos">中右</td><td class="coord">68.4%,46.9%</td></tr><tr><td class="nb">2</td><td class="nm">Rear Motor Mount</td><td class="oe">A5690</td><td class="pos">下左</td><td class="coord">24.2%,68.8%</td></tr><tr><td class="nb">3</td><td class="nm">Transmission Mount</td><td class="oe">A5822</td><td class="pos">下中</td><td class="coord">55.2%,80.4%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO50700</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A5674</td><td class="pos">中右</td><td class="coord">68.4%,46.9%</td></tr><tr><td class="nb">2</td><td class="nm">Rear Motor Mount</td><td class="oe">A5690</td><td class="pos">下左</td><td class="coord">24.2%,68.8%</td></tr><tr><td class="nb">3</td><td class="nm">Transmission Mount</td><td class="oe">A5822</td><td class="pos">下中</td><td class="coord">55.2%,80.4%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO50400">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO50700</span>
 <span class="pcode">1EMO5070</span></div><span class="bg ok">✓ 3件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO50700.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO50700.jpg?v=v3" loading="lazy" alt="OO1EMO50700"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Rear Torque Strut Mount</td><td class="oe">A4428</td><td class="pos">中左</td><td class="coord">31.4%,37.8%</td></tr><tr><td class="nb">2</td><td class="nm">Front Motor Mount</td><td class="oe">A4429</td><td class="pos">下右</td><td class="coord">71.4%,81.8%</td></tr><tr><td class="nb">3</td><td class="nm">Transmission Mount</td><td class="oe">A4430</td><td class="pos">下左</td><td class="coord">28.9%,87.2%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO50900</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Rear Torque Strut Mount</td><td class="oe">A4428</td><td class="pos">中左</td><td class="coord">31.4%,37.8%</td></tr><tr><td class="nb">2</td><td class="nm">Front Motor Mount</td><td class="oe">A4429</td><td class="pos">下右</td><td class="coord">71.4%,81.8%</td></tr><tr><td class="nb">3</td><td class="nm">Transmission Mount</td><td class="oe">A4430</td><td class="pos">下左</td><td class="coord">28.9%,87.2%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO50700">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO50900</span>
 <span class="pcode">1EMO5090</span></div><span class="bg ok">✓ 1件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO50900.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO50900.jpg?v=v3" loading="lazy" alt="OO1EMO50900"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Motor Mount</td><td class="oe">A70063</td><td class="pos">下中</td><td class="coord">47.5%,76.2%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO51100</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Motor Mount</td><td class="oe">A70063</td><td class="pos">下中</td><td class="coord">47.5%,76.2%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO50900">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO51100</span>
 <span class="pcode">1EMO5110</span></div><span class="bg ok">✓ 5件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO51100.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO51100.jpg?v=v3" loading="lazy" alt="OO1EMO51100"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Rear Motor Mount</td><td class="oe">A5499HY</td><td class="pos">中左 / 中中 / 中右</td><td class="coord">20.9%,40.6% / 51.7%,40.6% / 80.0%,40.6%</td></tr><tr><td class="nb">1</td><td class="nm">Front Rear Motor Mount</td><td class="oe">A5499HY</td><td class="pos">中左 / 中中 / 中右</td><td class="coord">20.9%,40.6% / 51.7%,40.6% / 80.0%,40.6% <span class="same">同款</span></td></tr><tr><td class="nb">1</td><td class="nm">Front Rear Motor Mount</td><td class="oe">A5499HY</td><td class="pos">中左 / 中中 / 中右</td><td class="coord">20.9%,40.6% / 51.7%,40.6% / 80.0%,40.6% <span class="same">同款</span></td></tr><tr><td class="nb">2</td><td class="nm">Torque Strut Mount</td><td class="oe">A5426</td><td class="pos">下中</td><td class="coord">58.2%,67.2%</td></tr><tr><td class="nb">3</td><td class="nm">Rear Torque Strut Mount</td><td class="oe">A5428</td><td class="pos">下中</td><td class="coord">47.4%,92.5%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO51200</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Rear Motor Mount</td><td class="oe">A5499HY</td><td class="pos">中左 / 中中 / 中右</td><td class="coord">20.9%,40.6% / 51.7%,40.6% / 80.0%,40.6%</td></tr><tr><td class="nb">1</td><td class="nm">Front Rear Motor Mount</td><td class="oe">A5499HY</td><td class="pos">中左 / 中中 / 中右</td><td class="coord">20.9%,40.6% / 51.7%,40.6% / 80.0%,40.6% <span class="same">同款</span></td></tr><tr><td class="nb">1</td><td class="nm">Front Rear Motor Mount</td><td class="oe">A5499HY</td><td class="pos">中左 / 中中 / 中右</td><td class="coord">20.9%,40.6% / 51.7%,40.6% / 80.0%,40.6% <span class="same">同款</span></td></tr><tr><td class="nb">2</td><td class="nm">Torque Strut Mount</td><td class="oe">A5426</td><td class="pos">下中</td><td class="coord">58.2%,67.2%</td></tr><tr><td class="nb">3</td><td class="nm">Rear Torque Strut Mount</td><td class="oe">A5428</td><td class="pos">下中</td><td class="coord">47.4%,92.5%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO51100">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO51200</span>
 <span class="pcode">1EMO5120</span></div><span class="bg ok">✓ 3件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO51200.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO51200.jpg?v=v3" loading="lazy" alt="OO1EMO51200"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Transmission Mount</td><td class="oe">A20069</td><td class="pos">中右</td><td class="coord">68.9%,49.6%</td></tr><tr><td class="nb">2</td><td class="nm">Front Right Motor Mount</td><td class="oe">A5898</td><td class="pos">下左</td><td class="coord">31.6%,87.1%</td></tr><tr><td class="nb">3</td><td class="nm">Torque Strut Mount</td><td class="oe">A20058</td><td class="pos">下右</td><td class="coord">74.8%,86.3%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO51500</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Transmission Mount</td><td class="oe">A20069</td><td class="pos">中右</td><td class="coord">68.9%,49.6%</td></tr><tr><td class="nb">2</td><td class="nm">Front Right Motor Mount</td><td class="oe">A5898</td><td class="pos">下左</td><td class="coord">31.6%,87.1%</td></tr><tr><td class="nb">3</td><td class="nm">Torque Strut Mount</td><td class="oe">A20058</td><td class="pos">下右</td><td class="coord">74.8%,86.3%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO51200">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO51500</span>
 <span class="pcode">1EMO5150</span></div><span class="bg ok">✓ 1件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO51500.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO51500.jpg?v=v3" loading="lazy" alt="OO1EMO51500"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A65087</td><td class="pos">下中</td><td class="coord">46.2%,80.2%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO51600</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A65087</td><td class="pos">下中</td><td class="coord">46.2%,80.2%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO51500">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO51600</span>
 <span class="pcode">1EMO5160</span></div><span class="bg ok">✓ 2件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO51600.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO51600.jpg?v=v3" loading="lazy" alt="OO1EMO51600"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A6991HY</td><td class="pos">下中 / 下左</td><td class="coord">49.8%,78.9% / 19.9%,93.7%</td></tr><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A6991HY</td><td class="pos">下中 / 下左</td><td class="coord">49.8%,78.9% / 19.9%,93.7% <span class="same">同款</span></td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO51701</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A6991HY</td><td class="pos">下中 / 下左</td><td class="coord">49.8%,78.9% / 19.9%,93.7%</td></tr><tr><td class="nb">1</td><td class="nm">Front Left Front Right Motor Mount</td><td class="oe">A6991HY</td><td class="pos">下中 / 下左</td><td class="coord">49.8%,78.9% / 19.9%,93.7% <span class="same">同款</span></td></tr></tbody></table>
+<div class="review" data-code="OO1EMO51600">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO51701</span>
 <span class="pcode">1EMO5170</span></div><span class="bg ok">✓ 4件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO51701.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO51701.jpg?v=v3" loading="lazy" alt="OO1EMO51701"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A5551</td><td class="pos">中中</td><td class="coord">37.2%,49.8%</td></tr><tr><td class="nb">2</td><td class="nm">Rear Motor Mount</td><td class="oe">A5443</td><td class="pos">中右</td><td class="coord">73.4%,59.2%</td></tr><tr><td class="nb">3</td><td class="nm">Motor Mount</td><td class="oe">A5632</td><td class="pos">下中</td><td class="coord">34.0%,87.8%</td></tr><tr><td class="nb">4</td><td class="nm">Front Left Transmission Mount</td><td class="oe">A5543</td><td class="pos">下右</td><td class="coord">75.3%,88.0%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO51800</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A5551</td><td class="pos">中中</td><td class="coord">37.2%,49.8%</td></tr><tr><td class="nb">2</td><td class="nm">Rear Motor Mount</td><td class="oe">A5443</td><td class="pos">中右</td><td class="coord">73.4%,59.2%</td></tr><tr><td class="nb">3</td><td class="nm">Motor Mount</td><td class="oe">A5632</td><td class="pos">下中</td><td class="coord">34.0%,87.8%</td></tr><tr><td class="nb">4</td><td class="nm">Front Left Transmission Mount</td><td class="oe">A5543</td><td class="pos">下右</td><td class="coord">75.3%,88.0%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO51701">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO51800</span>
 <span class="pcode">1EMO5180</span></div><span class="bg ok">✓ 3件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO51800.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO51800.jpg?v=v3" loading="lazy" alt="OO1EMO51800"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Right Motor Mount</td><td class="oe">AM500</td><td class="pos">中左</td><td class="coord">26.1%,54.8%</td></tr><tr><td class="nb">2</td><td class="nm">Rear Motor Mount</td><td class="oe">A4552</td><td class="pos">中右</td><td class="coord">69.5%,34.8%</td></tr><tr><td class="nb">3</td><td class="nm">Transmission Mount</td><td class="oe">A4537</td><td class="pos">下中</td><td class="coord">65.1%,84.8%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO52100</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Right Motor Mount</td><td class="oe">AM500</td><td class="pos">中左</td><td class="coord">26.1%,54.8%</td></tr><tr><td class="nb">2</td><td class="nm">Rear Motor Mount</td><td class="oe">A4552</td><td class="pos">中右</td><td class="coord">69.5%,34.8%</td></tr><tr><td class="nb">3</td><td class="nm">Transmission Mount</td><td class="oe">A4537</td><td class="pos">下中</td><td class="coord">65.1%,84.8%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO51800">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO52100</span>
 <span class="pcode">1EMO5210</span></div><span class="bg ok">✓ 1件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO52100.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO52100.jpg?v=v3" loading="lazy" alt="OO1EMO52100"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A4446</td><td class="pos">下中</td><td class="coord">49.9%,72.9%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO52400</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A4446</td><td class="pos">下中</td><td class="coord">49.9%,72.9%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO52100">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO52400</span>
 <span class="pcode">1EMO5240</span></div><span class="bg ok">✓ 3件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO52400.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO52400.jpg?v=v3" loading="lazy" alt="OO1EMO52400"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A45004</td><td class="pos">中左</td><td class="coord">17.5%,44.9%</td></tr><tr><td class="nb">2</td><td class="nm">Transmission Mount</td><td class="oe">A45005</td><td class="pos">中中</td><td class="coord">64.8%,48.1%</td></tr><tr><td class="nb">3</td><td class="nm">Front Torque Strut Mount</td><td class="oe">A45006</td><td class="pos">下中</td><td class="coord">35.2%,86.9%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO52600</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A45004</td><td class="pos">中左</td><td class="coord">17.5%,44.9%</td></tr><tr><td class="nb">2</td><td class="nm">Transmission Mount</td><td class="oe">A45005</td><td class="pos">中中</td><td class="coord">64.8%,48.1%</td></tr><tr><td class="nb">3</td><td class="nm">Front Torque Strut Mount</td><td class="oe">A45006</td><td class="pos">下中</td><td class="coord">35.2%,86.9%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO52400">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO52600</span>
 <span class="pcode">1EMO5260</span></div><span class="bg ok">✓ 3件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO52600.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO52600.jpg?v=v3" loading="lazy" alt="OO1EMO52600"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Upper Motor Mount</td><td class="oe">A71047</td><td class="pos">中左</td><td class="coord">27.1%,37.7%</td></tr><tr><td class="nb">2</td><td class="nm">Front Lower Torque Strut Mount</td><td class="oe">A71020</td><td class="pos">下中</td><td class="coord">40.8%,74.6%</td></tr><tr><td class="nb">3</td><td class="nm">Transmission Mount</td><td class="oe">A71029</td><td class="pos">下右</td><td class="coord">71.3%,89.1%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO52800</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Upper Motor Mount</td><td class="oe">A71047</td><td class="pos">中左</td><td class="coord">27.1%,37.7%</td></tr><tr><td class="nb">2</td><td class="nm">Front Lower Torque Strut Mount</td><td class="oe">A71020</td><td class="pos">下中</td><td class="coord">40.8%,74.6%</td></tr><tr><td class="nb">3</td><td class="nm">Transmission Mount</td><td class="oe">A71029</td><td class="pos">下右</td><td class="coord">71.3%,89.1%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO52600">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO52800</span>
 <span class="pcode">1EMO5280</span></div><span class="bg ok">✓ 4件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO52800.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO52800.jpg?v=v3" loading="lazy" alt="OO1EMO52800"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A5487</td><td class="pos">中中</td><td class="coord">39.9%,44.8%</td></tr><tr><td class="nb">2</td><td class="nm">Front Right Motor Mount</td><td class="oe">A5486</td><td class="pos">中右</td><td class="coord">84.1%,53.8%</td></tr><tr><td class="nb">3</td><td class="nm">Transmission Mount</td><td class="oe">A5465</td><td class="pos">下左</td><td class="coord">28.2%,84.4%</td></tr><tr><td class="nb">4</td><td class="nm">Front Left Transmission Mount</td><td class="oe">A5543</td><td class="pos">下右</td><td class="coord">67.8%,87.6%</td></tr></tbody></table></div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO53100</span>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A5487</td><td class="pos">中中</td><td class="coord">39.9%,44.8%</td></tr><tr><td class="nb">2</td><td class="nm">Front Right Motor Mount</td><td class="oe">A5486</td><td class="pos">中右</td><td class="coord">84.1%,53.8%</td></tr><tr><td class="nb">3</td><td class="nm">Transmission Mount</td><td class="oe">A5465</td><td class="pos">下左</td><td class="coord">28.2%,84.4%</td></tr><tr><td class="nb">4</td><td class="nm">Front Left Transmission Mount</td><td class="oe">A5543</td><td class="pos">下右</td><td class="coord">67.8%,87.6%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO52800">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div><div class="card"><div class="chead"><div><span class="code">OO1EMO53100</span>
 <span class="pcode">1EMO5310</span></div><span class="bg ok">✓ 5件</span></div>
 <div class="cbody"><div class="cimg"><a href="em-images/annotated/OO1EMO53100.jpg?v=v3" target="_blank">
 <img src="em-images/ann-thumbs/OO1EMO53100.jpg?v=v3" loading="lazy" alt="OO1EMO53100"></a></div>
 <div class="cinfo"><table class="items"><thead><tr><th>标记号</th><th>支架名称</th><th>大厂号(OE)</th>
-<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A6597</td><td class="pos">上左</td><td class="coord">23.5%,29.4%</td></tr><tr><td class="nb">2</td><td class="nm">Front Right Motor Mount</td><td class="oe">A6596</td><td class="pos">中右</td><td class="coord">74.6%,34.8%</td></tr><tr><td class="nb">3</td><td class="nm">Rear Differential Mount</td><td class="oe">A65010</td><td class="pos">中中</td><td class="coord">46.2%,57.1%</td></tr><tr><td class="nb">4</td><td class="nm">Rear Motor Mount</td><td class="oe">A4504</td><td class="pos">下左</td><td class="coord">20.1%,81.0%</td></tr><tr><td class="nb">5</td><td class="nm">Transmission Mount</td><td class="oe">A4506</td><td class="pos">下右</td><td class="coord">69.9%,85.9%</td></tr></tbody></table></div></div></div></div>
-<footer>数据源:商品属性管理-商品数据.xlsx + 发动机支架新品/*.jpg ｜ 标记样式对齐参考文件《发动机支架名称对应.xlsx》</footer>
-</div></body></html>
+<th>包装位置</th><th>图片内位置</th></tr></thead><tbody><tr><td class="nb">1</td><td class="nm">Front Motor Mount</td><td class="oe">A6597</td><td class="pos">上左</td><td class="coord">23.5%,29.4%</td></tr><tr><td class="nb">2</td><td class="nm">Front Right Motor Mount</td><td class="oe">A6596</td><td class="pos">中右</td><td class="coord">74.6%,34.8%</td></tr><tr><td class="nb">3</td><td class="nm">Rear Differential Mount</td><td class="oe">A65010</td><td class="pos">中中</td><td class="coord">46.2%,57.1%</td></tr><tr><td class="nb">4</td><td class="nm">Rear Motor Mount</td><td class="oe">A4504</td><td class="pos">下左</td><td class="coord">20.1%,81.0%</td></tr><tr><td class="nb">5</td><td class="nm">Transmission Mount</td><td class="oe">A4506</td><td class="pos">下右</td><td class="coord">69.9%,85.9%</td></tr></tbody></table>
+<div class="review" data-code="OO1EMO53100">
+  <div class="rvhead"><span class="rvlbl">名称对应核对</span>
+    <span class="rvbtns">
+      <button class="rvb" data-st="ok">✓ 正确</button>
+      <button class="rvb" data-st="bad">✗ 有问题</button>
+      <button class="rvb" data-st="skip">? 待核</button>
+    </span>
+  </div>
+  <textarea class="rvnote" placeholder="备注（不限字数）：例如「1和2对调，变速箱支架应标2；OE应为A2292」"></textarea>
+</div></div></div></div>
+<footer>数据源:商品属性管理-商品数据.xlsx + 发动机支架新品/*.jpg ｜ 标记样式对齐参考文件《发动机支架名称对应.xlsx》<br>
+核对记录自动保存在<b>本机浏览器</b>(localStorage) ｜ 改完请点「导出JSON」发我，我据此批量重排</footer>
+</div><script>(function(){
+  var KEY='em_annot_review_v1';
+  var store={};
+  try{ store=JSON.parse(localStorage.getItem(KEY)||'{}'); }catch(e){ store={}; }
+  var t=null;
+
+  function save(){
+    try{ localStorage.setItem(KEY, JSON.stringify(store)); }
+    catch(e){ alert('本机浏览器存储不可用，请用「导出JSON」备份'); }
+    updStat();
+  }
+  function cards(){ return document.querySelectorAll('.review'); }
+  function updStat(){
+    var ok=0,bad=0,skip=0,note=0;
+    cards().forEach(function(rv){
+      var v=store[rv.dataset.code]||{};
+      if(v.st==='ok')ok++; else if(v.st==='bad')bad++; else if(v.st==='skip')skip++;
+      if(v.note && v.note.trim())note++;
+    });
+    var el=document.getElementById('stat');
+    if(el) el.innerHTML='已核对 <b>'+(ok+bad+skip)+'</b>/'+cards().length+
+      ' &nbsp;|&nbsp; 正确 <b>'+ok+'</b> &nbsp;|&nbsp; 有问题 <i>'+bad+
+      '</i> &nbsp;|&nbsp; 待核 '+skip+' &nbsp;|&nbsp; 已写备注 '+note;
+  }
+  function paint(rv){
+    var c=rv.dataset.code, v=store[c]||{};
+    rv.querySelectorAll('.rvb').forEach(function(b){ b.classList.toggle('on', b.dataset.st===v.st); });
+    var card=rv.closest('.card');
+    if(card){ if(v.st) card.dataset.st=v.st; else card.removeAttribute('data-st'); }
+    var ta=rv.querySelector('.rvnote');
+    if(ta && ta.value!==(v.note||'')) ta.value=v.note||'';
+  }
+
+  cards().forEach(function(rv){
+    rv.querySelectorAll('.rvb').forEach(function(b){
+      b.addEventListener('click',function(){
+        var c=rv.dataset.code; store[c]=store[c]||{};
+        store[c].st = (store[c].st===b.dataset.st) ? '' : b.dataset.st;
+        save(); paint(rv); applyFilter();
+      });
+    });
+    var ta=rv.querySelector('.rvnote');
+    if(ta) ta.addEventListener('input',function(){
+      var c=rv.dataset.code; store[c]=store[c]||{}; store[c].note=ta.value;
+      clearTimeout(t); t=setTimeout(save,400);
+    });
+    paint(rv);
+  });
+
+  function dl(name,text,mime){
+    var a=document.createElement('a');
+    a.href=URL.createObjectURL(new Blob([text],{type:mime||'text/plain;charset=utf-8'}));
+    a.download=name; document.body.appendChild(a); a.click(); a.remove();
+  }
+  function stamp(){
+    var d=new Date(), p=function(n){return String(n).padStart(2,'0')};
+    return d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+'_'+p(d.getHours())+p(d.getMinutes());
+  }
+  window.rvExportJSON=function(){
+    dl('发动机支架_名称核对_'+stamp()+'.json', JSON.stringify(store,null,2), 'application/json');
+  };
+  window.rvExportCSV=function(){
+    var rows=['商编,产品编码,核对状态,备注'];
+    cards().forEach(function(rv){
+      var c=rv.dataset.code, v=store[c]||{};
+      var card=rv.closest('.card');
+      var pc=card && card.querySelector('.pcode') ? card.querySelector('.pcode').textContent.trim() : '';
+      var st = v.st==='ok'?'正确' : v.st==='bad'?'有问题' : v.st==='skip'?'待核' : '未核';
+      var note=(v.note||'').replace(/"/g,'""').replace(/\r?\n/g,' / ');
+      rows.push('"'+c+'","'+pc+'","'+st+'","'+note+'"');
+    });
+    dl('发动机支架_名称核对_'+stamp()+'.csv', '\ufeff'+rows.join('\r\n'), 'text/csv;charset=utf-8');
+  };
+  window.rvImport=function(inp){
+    var f=inp.files[0]; if(!f) return;
+    var r=new FileReader();
+    r.onload=function(){
+      try{
+        var o=JSON.parse(r.result)||{};
+        Object.keys(o).forEach(function(k){ store[k]=o[k]; });
+        save(); cards().forEach(paint);
+        alert('已导入 '+Object.keys(o).length+' 条记录');
+      }catch(e){ alert('导入失败：文件不是本页导出的 JSON'); }
+      inp.value='';
+    };
+    r.readAsText(f);
+  };
+  window.rvClear=function(){
+    if(!confirm('清空本机保存的全部核对记录？（建议先「导出JSON」备份）')) return;
+    store={}; save(); cards().forEach(paint); applyFilter();
+  };
+
+  var curFilter='';
+  function applyFilter(){
+    document.querySelectorAll('.card').forEach(function(c){
+      var rv=c.querySelector('.review');
+      var st=(rv && store[rv.dataset.code] ? store[rv.dataset.code].st : '')||'';
+      var show = (!curFilter) ? true : (st===curFilter);
+      c.style.display = show ? '' : 'none';
+    });
+  }
+  window.rvFilter=function(v){ curFilter = (v==='all'? '' : v); applyFilter(); };
+  updStat();
+})();
+</script></body></html>
