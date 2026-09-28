@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>发动机支架 · 新品流量诊断看板</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Microsoft YaHei',sans-serif; background:#f0f2f5; color:#1a2332; padding:20px; max-width:1560px; margin:0 auto; }
+.header { background:linear-gradient(135deg,#C0392B,#E67E22); color:#fff; border-radius:12px; padding:22px 28px; margin-bottom:16px; }
+.header h1 { font-size:24px; font-weight:700; }
+.header .meta { font-size:13px; opacity:.94; margin-top:6px; line-height:1.7; }
+.kpi-row { display:flex; flex-wrap:nowrap; gap:10px; margin-bottom:16px; overflow-x:auto; }
+.kpi { background:#fff; border-radius:10px; padding:12px 14px; box-shadow:0 1px 3px rgba(0,0,0,.08); flex:1 1 0; min-width:150px; }
+.k-label { font-size:12px; color:#5f6b7a; }
+.k-val { font-size:20px; font-weight:700; margin:2px 0; color:#1F4E78; }
+.k-val.good { color:#2A9D48; } .k-val.warn { color:#E67E22; } .k-val.bad { color:#C0392B; }
+.k-note { font-size:11px; color:#8494a5; }
+.card { background:#fff; border-radius:12px; padding:18px 20px; box-shadow:0 1px 3px rgba(0,0,0,.08); margin-bottom:16px; }
+.chapter { background:linear-gradient(90deg,#1F4E78,#2E86AB); color:#fff; border-radius:10px; padding:10px 20px; margin:22px auto 14px; font-size:17px; font-weight:700; }
+.c-title { font-size:15px; font-weight:700; color:#1F4E78; margin-bottom:4px; }
+.c-sub { font-size:12px; color:#8494a5; margin-bottom:10px; }
+.chart { width:100%; height:320px; }
+table { width:100%; border-collapse:collapse; font-size:12.5px; margin:8px 0; }
+th { background:#1F4E78; color:#fff; font-weight:600; padding:8px 6px; text-align:center; font-size:12px; }
+td { padding:7px 6px; text-align:center; border-bottom:1px solid #eef2f6; }
+tbody tr:nth-child(even) { background:#f9fbfd; }
+tbody tr:hover { background:#eef6fc; }
+.tag { font-size:11px; padding:2px 8px; border-radius:10px; background:#eef6fc; color:#1F4E78; }
+.tag.good { background:#e6f6ea; color:#1e7a37; } .tag.bad { background:#fdeaea; color:#b52d1b; }
+.tag.warn { background:#fdf1e6; color:#a95c14; }
+.insight { background:#f7fafd; border-left:3px solid #2E86AB; border-radius:6px; padding:11px 14px; margin:10px 0 4px; font-size:12.5px; line-height:1.75; }
+.insight .ins-line { margin:3px 0; }
+.insight b { color:#1F4E78; }
+.insight.warn { background:#fffaf5; border-left-color:#E67E22; }
+.insight.good { background:#f6fbf7; border-left-color:#2A9D48; }
+.footer { text-align:center; color:#8494a5; font-size:11.5px; padding:18px 0; }
+
+/* ==== 增强器注入样式 (enhance_panel.py) ==== */
+.topnav { position:sticky; top:0; z-index:99; display:flex; gap:6px; flex-wrap:wrap;
+  background:rgba(255,255,255,.96); backdrop-filter:blur(8px); border-radius:10px;
+  padding:9px 12px; margin:0 auto 14px; max-width:1560px; box-shadow:0 2px 10px rgba(31,78,120,.13); }
+.topnav a { font-size:12.5px; color:#1F4E78; text-decoration:none; padding:5px 11px; border-radius:16px;
+  background:#f1f6fa; border:1px solid #e2ecf4; white-space:nowrap; transition:.14s; font-weight:600; }
+.topnav a:hover { background:#2E86AB; color:#fff; border-color:#2E86AB; }
+.topnav a.active { background:#1F4E78; color:#fff; border-color:#1F4E78; }
+.tbl-tools { display:flex; align-items:center; gap:10px; margin:8px 0 6px; wrap:nowrap; }
+.tbl-tools input { flex:0 0 220px; border:1px solid #d6e2ec; border-radius:16px; padding:5px 12px;
+  font-size:12px; font-family:inherit; outline:none; }
+.tbl-tools input:focus { border-color:#2E86AB; box-shadow:0 0 0 2px rgba(46,134,171,.14); }
+.tbl-tools .cnt { font-size:11.5px; color:#8a94a3; }
+.tbl-tools .btn-mini { font-size:11.5px; color:#2E86AB; background:#f1f6fa; border:1px solid #e2ecf4;
+  border-radius:14px; padding:4px 10px; cursor:pointer; font-family:inherit; }
+.tbl-tools .btn-mini:hover { background:#2E86AB; color:#fff; }
+.tbl-wrap.collapsed table tbody tr:nth-child(n+13) { display:none; }
+#toTop { position:fixed; right:22px; bottom:26px; width:44px; height:44px; border-radius:50%;
+  background:#1F4E78; color:#fff; border:none; cursor:pointer; font-size:19px; box-shadow:0 4px 14px rgba(31,78,120,.35);
+  opacity:0; pointer-events:none; transition:.25s; z-index:120; }
+#toTop.show { opacity:1; pointer-events:auto; }
+#toTop:hover { background:#2E86AB; }
+
+
+/* ==== 下拉筛选 (v4) ==== */
+select.flt { border:1px solid #d6e2ec; border-radius:14px; padding:5px 10px; font-size:11.5px;
+  font-family:inherit; color:#1F4E78; background:#f8fbfd; cursor:pointer; max-width:200px; }
+select.flt:hover { border-color:#2E86AB; }
+select.flt:focus { outline:none; border-color:#2E86AB; box-shadow:0 0 0 2px rgba(46,134,171,.14); }
+select.flt.on { background:#1F4E78; color:#fff; border-color:#1F4E78; font-weight:600; }
+
+</style>
+</head>
+<body>
+<div class="header">
+<h1>&#128269; 发动机支架 · 新品流量诊断看板</h1>
+<div class="meta">诊断对象: 新品 70 个 ASIN ｜ 数据周期: W39(2026-09-20 ~ 09-25)销售 + 09-28 库存快照<br>
+子分类: 到仓无流量 / 有曝光零点击 / 有流量零转化 ｜ 店铺: US22(纯FBA) ｜ 金额单位: 人民币(¥)</div>
+</div>
+<div class="kpi-row"><div class="kpi"><div class="k-label">新品总数</div><div class="k-val brand">70 个</div><div class="k-note">交付中 67 + 推新 3</div></div><div class="kpi"><div class="k-label">零流量 ASIN</div><div class="k-val bad">38 个</div><div class="k-note">占新品 54%</div></div><div class="kpi"><div class="k-label">到仓却无流量</div><div class="k-val warn">15 个</div><div class="k-note">可售=0(待上架)</div></div><div class="kpi"><div class="k-label">有曝光零点击</div><div class="k-val warn">20 个</div><div class="k-note">CTR = 0</div></div><div class="kpi"><div class="k-label">有流量零转化</div><div class="k-val bad">26 个</div><div class="k-note">有访客不成交</div></div><div class="kpi"><div class="k-label">需优先处理</div><div class="k-val brand">43 个</div><div class="k-note">去重后合计</div></div></div>
+<div class="chapter"><span class="bar"></span>&#128202; 一、诊断总览</div><div class="card"><div class="c-title">新品漏斗(广告展示 &rarr; 点击 &rarr; 流量 &rarr; 成交)</div><div class="c-sub">W39 新品整体:展示 1,258 → 点击 14 → 流量 133 → 成交 8 件</div><div id="c1" class="chart"></div><table><thead><tr><th>环节</th><th>数量</th><th>转化率</th><th>健康基准</th><th>判断</th></tr></thead><tbody><tr><td>广告展示(Impression)</td><td>1,258</td><td>—</td><td>—</td><td>—</td></tr><tr><td>广告点击(Click)</td><td>14</td><td>1.11%</td><td>CTR 0.3-0.6%</td><td><span class="tag good">正常</span></td></tr><tr><td>流量(UV)</td><td>133</td><td>—</td><td>—</td><td>—</td></tr><tr><td>成交(Orders)</td><td>8</td><td>6.02%</td><td>全店 11.7%</td><td><span class="tag bad">远低于基准</span></td></tr></tbody></table><div class="insight "><div class="ins-line"><b>📊 数据解读:</b>W39 新品广告展示 1,258 次、点击 14 次(CTR 1.11%)、流量 133、成交 8 件(转化率 6.02%)。</div><div class="ins-line"><b>🔍 原因分析:</b>漏斗最大断点有两处: ①<b>展示→点击</b>(CTR 偏低 → 主图/价格竞争力不足) ②<b>流量→成交</b>(转化率远低于全店 11.7% → 新品无评价、Fitment 信息不足)。</div><div class="ins-line"><b>✅ 建议动作:</b>①本周优先优化 CTR 最低的款的主图与价格锚点;②加大可售库存款的广告预算,抢首批评价;③用 A+ 页面补充 Fitment 与产品对比,提升转化。</div></div><div class="card"><div class="c-title">问题分类分布(70 个新品)</div><div id="c2" class="chart"></div><table><thead><tr><th>分类</th><th>数量</th><th>占新品</th><th>说明</th><th>严重度</th></tr></thead><tbody><tr><td>到仓但无流量</td><td>15 个</td><td>21%</td><td>货已到仓(部分),但 W39 零访客</td><td><span class="tag warn">中</span></td></tr><tr><td>有曝光但零点击</td><td>20 个</td><td>29%</td><td>广告有展示,但无人点击(CTR=0)</td><td><span class="tag bad">高</span></td></tr><tr><td>有流量但零转化</td><td>26 个</td><td>37%</td><td>有访客进店,但一单未成交</td><td><span class="tag bad">高</span></td></tr><tr><td>完全零流量(含未到仓)</td><td>38 个</td><td>54%</td><td>其中 0 个尚在头程未到仓</td><td><span class="tag">低</span></td></tr></tbody></table></div><div class="chapter"><span class="bar"></span>&#9888;&#65039; 二、到仓但无流量(15 个)</div><div class="card"><div class="c-title">已到仓、却零访客 &mdash; 上架/可售环节卡住</div><div class="c-sub">这些款已有实物到仓,但可售库存全部为 0(待上架/质检中),平台端无货可卖</div><table><thead><tr><th>ASIN</th><th>SKU</th><th>状态</th><th>到仓(件)</th><th>在途(件)</th><th>可售(件)</th><th>待上架</th><th>库存金额</th></tr></thead><tbody><tr><td>B0HBBHPCMR</td><td>OO1EMO49300</td><td><span class="tag">交付中</span></td><td>4</td><td>20</td><td><span class="tag bad">0</span></td><td>0</td><td>¥10,874</td></tr><tr><td>B0HBBHG53J</td><td>OO1EMO50400</td><td><span class="tag">交付中</span></td><td>3</td><td>16</td><td><span class="tag bad">0</span></td><td>0</td><td>¥5,381</td></tr><tr><td>B0HBBB9K9D</td><td>OO1EMO52400</td><td><span class="tag">交付中</span></td><td>3</td><td>16</td><td><span class="tag bad">0</span></td><td>0</td><td>¥4,684</td></tr><tr><td>B0HBB7R99T</td><td>OO1EMO46500</td><td><span class="tag">交付中</span></td><td>3</td><td>16</td><td><span class="tag bad">0</span></td><td>0</td><td>¥3,497</td></tr><tr><td>B0HBBL94NL</td><td>OO1EMO41000</td><td><span class="tag">交付中</span></td><td>3</td><td>16</td><td><span class="tag bad">0</span></td><td>0</td><td>¥3,418</td></tr><tr><td>B0HBB942V3</td><td>OO1EMO47700</td><td><span class="tag">交付中</span></td><td>3</td><td>16</td><td><span class="tag bad">0</span></td><td>0</td><td>¥3,355</td></tr><tr><td>B0HBB4L2SL</td><td>OO1EMO45100</td><td><span class="tag">交付中</span></td><td>3</td><td>16</td><td><span class="tag bad">0</span></td><td>0</td><td>¥3,276</td></tr><tr><td>B0HBB5ZSZ4</td><td>OO1EMO44000</td><td><span class="tag">交付中</span></td><td>3</td><td>16</td><td><span class="tag bad">0</span></td><td>0</td><td>¥3,276</td></tr><tr><td>B0HBBDHYTJ</td><td>OO1EMO39400</td><td><span class="tag">交付中</span></td><td>3</td><td>16</td><td><span class="tag bad">0</span></td><td>0</td><td>¥3,102</td></tr><tr><td>B0HB9WFVZG</td><td>OO1EMO42700</td><td><span class="tag">交付中</span></td><td>3</td><td>16</td><td><span class="tag bad">0</span></td><td>0</td><td>¥2,738</td></tr><tr><td>B0HBB8N3CV</td><td>OO1EMO50100</td><td><span class="tag">交付中</span></td><td>3</td><td>16</td><td><span class="tag bad">0</span></td><td>0</td><td>¥2,374</td></tr><tr><td>B0HBBHLP5N</td><td>OO1EMO44400</td><td><span class="tag">交付中</span></td><td>3</td><td>16</td><td><span class="tag bad">0</span></td><td>0</td><td>¥2,216</td></tr><tr><td>B0HBBFGZ1L</td><td>OO1EMO51800</td><td><span class="tag">交付中</span></td><td>2</td><td>16</td><td><span class="tag bad">0</span></td><td>0</td><td>¥1,896</td></tr><tr><td>B0HBB97HM6</td><td>OO1EMO50900</td><td><span class="tag">交付中</span></td><td>2</td><td>16</td><td><span class="tag bad">0</span></td><td>0</td><td>¥1,469</td></tr><tr><td>B0HBB1FHKP</td><td>OO1EMO49600</td><td><span class="tag">交付中</span></td><td>1</td><td>11</td><td><span class="tag bad">0</span></td><td>0</td><td>¥2,124</td></tr></tbody></table><div class="insight warn"><div class="ins-line"><b>📊 数据解读:</b>15 个新品已有实物到仓(合计 42 件),但 W39 流量为 0;这些款的可售库存<b>全部为 0</b>,在途合计 239 件。涉及库存金额 ¥53,679。</div><div class="ins-line"><b>🔍 原因分析:</b>根因不是"没流量",而是<b>"无货可卖"</b> —— 平台端可售库存为 0,自然流量不会导入。这批款的到仓量普遍很小(1-4 件),很可能是<b>分批到仓的首批</b>,需等主批次或完成上架质检流程。</div><div class="ins-line"><b>✅ 建议动作:</b>①立即核查这批 ASIN 的上架状态(是否待质检/未上架/被抑制);②对已到仓的小批量款,优先走完上架流程,让平台先有可售库存;③跟踪在途主批次到仓时间,到仓后 7 天内完成上架。</div></div><div class="chapter"><span class="bar"></span>&#128269; 三、有曝光但零点击(20 个)</div><div class="card"><div class="c-title">广告曝光了、却没人点 &mdash; 主图/价格/位置问题</div><div class="c-sub">这些款 W39 有广告展示,但点击数为 0(CTR = 0)</div><table><thead><tr><th>ASIN</th><th>SKU</th><th>广告展示</th><th>点击</th><th>CTR</th><th>广告花费</th><th>总流量</th><th>可售(件)</th></tr></thead><tbody><tr><td>B0HBBCSSZD</td><td>OO1EMO46200</td><td>47</td><td>0</td><td><span class="tag bad">0.00%</span></td><td>¥0.00</td><td>3</td><td>5</td></tr><tr><td>B0HBB1WK3K</td><td>OO1EMO50200</td><td>46</td><td>0</td><td><span class="tag bad">0.00%</span></td><td>¥0.00</td><td>8</td><td>8</td></tr><tr><td>B0HB9Z5MHY</td><td>OO1EMO53100</td><td>44</td><td>0</td><td><span class="tag bad">0.00%</span></td><td>¥0.00</td><td>4</td><td>8</td></tr><tr><td>B0HBB4PFLM</td><td>OO1EMO46800</td><td>41</td><td>0</td><td><span class="tag bad">0.00%</span></td><td>¥0.00</td><td>3</td><td>5</td></tr><tr><td>B0HBBFLMPX</td><td>OO1EMO48400</td><td>39</td><td>0</td><td><span class="tag bad">0.00%</span></td><td>¥0.00</td><td>2</td><td>5</td></tr><tr><td>B0HBB485VJ</td><td>OO1EMO45500</td><td>36</td><td>0</td><td><span class="tag bad">0.00%</span></td><td>¥0.00</td><td>2</td><td>3</td></tr><tr><td>B0HBBBNJ18</td><td>OO1EMO43600</td><td>35</td><td>0</td><td><span class="tag bad">0.00%</span></td><td>¥0.00</td><td>3</td><td>10</td></tr><tr><td>B0HBBBCPVD</td><td>OO1EMO43800</td><td>33</td><td>0</td><td><span class="tag bad">0.00%</span></td><td>¥0.00</td><td>2</td><td>4</td></tr><tr><td>B0HBBF5R79</td><td>OO1EMO41500</td><td>33</td><td>0</td><td><span class="tag bad">0.00%</span></td><td>¥0.00</td><td>6</td><td>5</td></tr><tr><td>B0HBB1X23V</td><td>OO1EMO43200</td><td>30</td><td>0</td><td><span class="tag bad">0.00%</span></td><td>¥0.00</td><td>2</td><td>0</td></tr><tr><td>B0HBB1HWWT</td><td>OO1EMO45800</td><td>29</td><td>0</td><td><span class="tag bad">0.00%</span></td><td>¥0.00</td><td>2</td><td>6</td></tr><tr><td>B0HB9WBVK5</td><td>OO1EMO50300</td><td>25</td><td>0</td><td><span class="tag bad">0.00%</span></td><td>¥0.00</td><td>3</td><td>0</td></tr><tr><td>B0HBB74GT5</td><td>OO1EMO42300</td><td>22</td><td>0</td><td><span class="tag bad">0.00%</span></td><td>¥0.00</td><td>10</td><td>1</td></tr><tr><td>B0HBB4SWVX</td><td>OO1EMO39300</td><td>21</td><td>0</td><td><span class="tag bad">0.00%</span></td><td>¥0.00</td><td>5</td><td>2</td></tr><tr><td>B0HBBLGNYT</td><td>OO1EMO44800</td><td>17</td><td>0</td><td><span class="tag bad">0.00%</span></td><td>¥0.00</td><td>5</td><td>7</td></tr><tr><td>B0HBB9PSRF</td><td>OO1EMO41800</td><td>16</td><td>0</td><td><span class="tag bad">0.00%</span></td><td>¥0.00</td><td>2</td><td>5</td></tr><tr><td>B0HBB98X8B</td><td>OO1EMO51500</td><td>14</td><td>0</td><td><span class="tag bad">0.00%</span></td><td>¥0.00</td><td>2</td><td>4</td></tr><tr><td>B0HBB9C2XG</td><td>OO1EMO40300</td><td>12</td><td>0</td><td><span class="tag bad">0.00%</span></td><td>¥0.00</td><td>2</td><td>4</td></tr><tr><td>B0HBBCCYX4</td><td>OO1EMO46300</td><td>11</td><td>0</td><td><span class="tag bad">0.00%</span></td><td>¥0.00</td><td>3</td><td>3</td></tr><tr><td>B0HBBF4YL7</td><td>OO1EMO43100</td><td>3</td><td>0</td><td><span class="tag bad">0.00%</span></td><td>¥0.00</td><td>3</td><td>6</td></tr></tbody></table><div class="insight "><div class="ins-line"><b>📊 数据解读:</b>20 个新品有广告展示(合计 554 次),<b>点击数全部为 0</b>。展示量普遍偏低(多数 < 50 次)。</div><div class="ins-line"><b>🔍 原因分析:</b>CTR = 0 有三个典型原因: ①<b>主图与竞品差距明显</b>(同屏对比时不被选择) ②<b>价格无竞争力</b>(展示位置下方价格被比下去) ③<b>展示量太小</b>(不足 50 次,统计上尚未形成有效样本)。结合"展示量偏低",第 ③ 点占主导 —— 竞价过低导致曝光不足。</div><div class="ins-line"><b>✅ 建议动作:</b>①把广告竞价从当前水平<b>上调 30-50%%</b>,先拿到有效曝光样本(≥ 500 次);②曝光上来后若 CTR 仍 < 0.2%%,再优化主图;③对标同类目 TOP 款的售价与主图风格。</div></div><div class="chapter"><span class="bar"></span>&#128200; 四、有流量但零转化(26 个)</div><div class="card"><div class="c-title">有访客、无一单 &mdash; 详情页承接力不足</div><div class="c-sub">这些款 W39 有流量,但成交为 0;均有可售库存</div><table><thead><tr><th>ASIN</th><th>SKU</th><th>流量</th><th>广告展示</th><th>点击</th><th>广告花费</th><th>可售(件)</th><th>库存金额</th></tr></thead><tbody><tr><td>B0HBB1WK3K</td><td>OO1EMO50200</td><td>8</td><td>46</td><td>0</td><td>¥0.00</td><td>8</td><td>¥2,804</td></tr><tr><td>B0HBBF5R79</td><td>OO1EMO41500</td><td>6</td><td>33</td><td>0</td><td>¥0.00</td><td>5</td><td>¥4,619</td></tr><tr><td>B0HB9ZK2ZK</td><td>OO1EMO51600</td><td>5</td><td>39</td><td>1</td><td>¥5.71</td><td>1</td><td>¥2,517</td></tr><tr><td>B0HBB919W9</td><td>OO1EMO51100</td><td>5</td><td>87</td><td>0</td><td>¥0.00</td><td>4</td><td>¥4,071</td></tr><tr><td>B0HBBLGNYT</td><td>OO1EMO44800</td><td>5</td><td>17</td><td>0</td><td>¥0.00</td><td>7</td><td>¥708</td></tr><tr><td>B0HBBJ6YQC</td><td>OO1EMO51701</td><td>4</td><td>75</td><td>1</td><td>¥5.71</td><td>5</td><td>¥3,363</td></tr><tr><td>B0HB9Z5MHY</td><td>OO1EMO53100</td><td>4</td><td>44</td><td>0</td><td>¥0.00</td><td>8</td><td>¥3,080</td></tr><tr><td>B0HBB4WFRS</td><td>OO1EMO43900</td><td>4</td><td>16</td><td>1</td><td>¥3.47</td><td>4</td><td>¥8,389</td></tr><tr><td>B0HBBBNJ18</td><td>OO1EMO43600</td><td>3</td><td>35</td><td>0</td><td>¥0.00</td><td>10</td><td>¥7,985</td></tr><tr><td>B0HBB9LDM7</td><td>OO1EMO40100</td><td>3</td><td>50</td><td>0</td><td>¥0.00</td><td>8</td><td>¥2,657</td></tr><tr><td>B0HBBF4YL7</td><td>OO1EMO43100</td><td>3</td><td>3</td><td>0</td><td>¥0.00</td><td>6</td><td>¥6,305</td></tr><tr><td>B0HBBCSSZD</td><td>OO1EMO46200</td><td>3</td><td>47</td><td>0</td><td>¥0.00</td><td>5</td><td>¥2,219</td></tr><tr><td>B0HBB9NPTV</td><td>OO1EMO44600</td><td>3</td><td>37</td><td>1</td><td>¥0.41</td><td>3</td><td>¥690</td></tr><tr><td>B0HBB4PFLM</td><td>OO1EMO46800</td><td>3</td><td>41</td><td>0</td><td>¥0.00</td><td>5</td><td>¥1,765</td></tr><tr><td>B0HBBDG7TV</td><td>OO1EMO42400</td><td>3</td><td>31</td><td>0</td><td>¥0.00</td><td>9</td><td>¥2,186</td></tr><tr><td>B0HB9WBVK5</td><td>OO1EMO50300</td><td>3</td><td>25</td><td>0</td><td>¥0.00</td><td>0</td><td>¥1,246</td></tr><tr><td>B0HBBCCYX4</td><td>OO1EMO46300</td><td>3</td><td>11</td><td>0</td><td>¥0.00</td><td>3</td><td>¥6,602</td></tr><tr><td>B0HBBBCPVD</td><td>OO1EMO43800</td><td>2</td><td>33</td><td>0</td><td>¥0.00</td><td>4</td><td>¥3,884</td></tr><tr><td>B0HBB1HWWT</td><td>OO1EMO45800</td><td>2</td><td>29</td><td>0</td><td>¥0.00</td><td>6</td><td>¥4,106</td></tr><tr><td>B0HBB1X23V</td><td>OO1EMO43200</td><td>2</td><td>30</td><td>0</td><td>¥0.00</td><td>0</td><td>¥1,657</td></tr><tr><td>B0HBB98X8B</td><td>OO1EMO51500</td><td>2</td><td>14</td><td>0</td><td>¥0.00</td><td>4</td><td>¥2,740</td></tr><tr><td>B0HBBL8N35</td><td>OO1EMO40800</td><td>2</td><td>35</td><td>0</td><td>¥0.00</td><td>2</td><td>¥4,691</td></tr><tr><td>B0HBB9C2XG</td><td>OO1EMO40300</td><td>2</td><td>12</td><td>0</td><td>¥0.00</td><td>4</td><td>¥5,784</td></tr><tr><td>B0HBBFLMPX</td><td>OO1EMO48400</td><td>2</td><td>39</td><td>0</td><td>¥0.00</td><td>5</td><td>¥8,004</td></tr><tr><td>B0HBB485VJ</td><td>OO1EMO45500</td><td>2</td><td>36</td><td>0</td><td>¥0.00</td><td>3</td><td>¥3,494</td></tr><tr><td>B0HBB9PSRF</td><td>OO1EMO41800</td><td>2</td><td>16</td><td>0</td><td>¥0.00</td><td>5</td><td>¥4,071</td></tr></tbody></table><div class="insight warn"><div class="ins-line"><b>📊 数据解读:</b>26 个新品有流量(合计 86 访客)但零成交,均有可售库存(合计 124 件)。其中 18 个同时属于"零点击"款。</div><div class="ins-line"><b>🔍 原因分析:</b>有流量不成交,通常是<b>页面承接</b>问题: ①新品<b>零评价</b>(买家不敢下单) ②<b>价格高于同类</b> ③<b>Fitment(适配信息)不清晰</b>(汽车配件买家最在意) ④主图未展示安装效果/对比。</div><div class="ins-line"><b>✅ 建议动作:</b>①<b>最优先:积累评价</b> —— 开自动广告 + 索评邮件,先把前 5 个评价拿到;②核查 Fitment 数据完整性(是否标注车型年份);③对比同类目 TOP 款价格,必要时做限时折扣;④补充 A+ 页面强化适配说明。</div></div><div class="chapter"><span class="bar"></span>&#127919; 五、处理优先级</div><div class="card"><div class="c-title">按"投入产出比"排序的处理建议</div><table><thead><tr><th>优先级</th><th>对象</th><th>数量</th><th>动作</th><th>预期效果</th></tr></thead><tbody><tr><td><span class="tag bad">P0</span></td><td>可售>0 且有流量零转化</td><td>24 个</td><td>索评 + 检查 Fitment + 限时折扣</td><td>最快产生首单</td></tr><tr><td><span class="tag warn">P1</span></td><td>可售>0 有曝光零点击</td><td>20 个</td><td>上调竞价拿到有效曝光;再优化主图</td><td>提升 CTR</td></tr><tr><td><span class="tag warn">P2</span></td><td>到仓但可售=0</td><td>15 个</td><td>疏通上架/质检流程</td><td>释放可售库存</td></tr><tr><td><span class="tag">P3</span></td><td>未到仓(在途)</td><td>0 个</td><td>跟踪到仓时间表</td><td>按批次推进上架</td></tr><tr><td><span class="tag">P4</span></td><td>完全零流量且无可售</td><td>0 个</td><td>等待到仓,无需额外动作</td><td>—</td></tr></tbody></table><div class="insight good"><div class="ins-line"><b>📊 数据解读:</b>去重后共 <b>43 个</b>新品存在"流量异常"(占 70 个新品的 61%)。其中 P0(可售有流量零转化)24 个、P1(有曝光零点击)20 个、P2(到仓无可售)15 个。</div><div class="ins-line"><b>🔍 原因分析:</b>这些问题<b>不是流量不够,而是"流量来了接不住"或"货到了卖不了"</b>。真正需要外部流量(广告)解决的比例不高,大部分是内部流程(上架、评价、Fitment)造成的。</div><div class="ins-line"><b>✅ 建议动作:</b>①P0/P1 类本周内完成一次优化(索评文案 + 竞价调整);②P2 类指派专人疏通上架;③建立"周度流量诊断"机制,每周跟踪异常 ASIN 数的下降曲线;④下周复测,目标把异常数从 43 降到 30 以内。</div></div>
+<div class="footer">数据源: 运营综合分析明细39周.xlsx + 库存明细报表0928_全部.xlsx ｜ 诊断口径: W39 流量=0 / 点击=0 / 销量=0</div>
+<script>
+var D = {"cat": [{"name": "到仓无流量", "value": 15, "color": "#E67E22"}, {"name": "有曝光零点击", "value": 20, "color": "#C0392B"}, {"name": "有流量零转化", "value": 26, "color": "#8E44AD"}, {"name": "完全零流量", "value": 23, "color": "#9BBBCC"}], "funnel": [{"value": 1257.812014, "name": "广告展示"}, {"value": 14.007892000000002, "name": "广告点击"}, {"value": 133.0, "name": "流量(UV)"}, {"value": 8.0, "name": "成交"}]};
+var baseOpt = { grid:{left:66,right:36,top:40,bottom:34}, tooltip:{trigger:'axis'}, legend:{top:4,textStyle:{fontSize:11}} };
+(function(){
+var el = echarts.init(document.getElementById('c1'));
+el.setOption({
+tooltip:{trigger:'item', formatter:'{b}: {c}'},
+series:[{type:'funnel', left:'10%', width:'80%', top:24, bottom:24, minSize:'20%',
+  label:{fontSize:12, formatter:'{b}: {c}'}, itemStyle:{borderColor:'#fff', borderWidth:2},
+  data:D.funnel}]
+});
+})();
+(function(){
+var el = echarts.init(document.getElementById('c2'));
+el.setOption({
+tooltip:{trigger:'item', formatter:'{b}: {c} 个 ({d}%)'},
+legend:{bottom:4, textStyle:{fontSize:11}},
+series:[{type:'pie', radius:['42%','68%'], center:['50%','44%'],
+  data:D.cat.map(function(x){ return {name:x.name, value:x.value, itemStyle:{color:x.color}}; }),
+  label:{fontSize:11, formatter:'{b}\n{c} 个'}, itemStyle:{borderColor:'#fff', borderWidth:2}}]
+});
+})();
+window.addEventListener('resize', function(){
+ ['c1','c2'].forEach(function(id){ var el = echarts.getInstanceByDom(document.getElementById(id)); if (el) el.resize(); });
+});
+</script>
+
+<script>
+/* ==== 增强器注入脚本 (enhance_panel.py) ==== */
+(function(){
+  // 1) 图表工具箱: 保存图片 / 数据视图 / 还原
+  function injectToolbox(){
+    var n = 0;
+    document.querySelectorAll('.chart').forEach(function(el){
+      if (typeof echarts === 'undefined') return;
+      var inst = echarts.getInstanceByDom(el);
+      if (!inst) return;
+      var op = inst.getOption();
+      var tb = op.toolbox;
+      if (tb && (Array.isArray(tb) ? tb.length : true) && op.__enh) return;
+      try {
+        inst.setOption({
+          toolbox: {
+            show: true, right: 6, top: 0, itemSize: 13, itemGap: 8,
+            iconStyle: { borderColor: '#2E86AB', borderWidth: 1.4 },
+            emphasis: { iconStyle: { borderColor: '#1F4E78' } },
+            feature: {
+              saveAsImage: { title: '保存图片', name: (el.id || 'chart'), backgroundColor: '#fff', pixelRatio: 2,
+                             lang: ['保存为图片'] },
+              dataView: { title: '数据表', readOnly: true, lang: ['数据视图', '关闭', '刷新'] },
+              restore: { title: '还原', lang: ['还原'] }
+            }
+          },
+          __enh: true
+        });
+        n++;
+      } catch(e) {}
+    });
+    return n;
+  }
+
+  // 2) 表格: 搜索 + 行数 + 折叠(Top12)
+  function enhanceTables(){
+    document.querySelectorAll('table').forEach(function(t){
+      if (t.closest('.tbl-wrap')) return;
+      var tbody = t.querySelector('tbody');
+      if (!tbody) return;
+      var rows = tbody.querySelectorAll('tr');
+      if (rows.length < 8) return;
+
+      var parent = t.parentNode;
+      var wrap = document.createElement('div');
+      wrap.className = 'tbl-wrap';
+      parent.insertBefore(wrap, t);
+      wrap.appendChild(t);
+
+      var tools = document.createElement('div');
+      tools.className = 'tbl-tools';
+      tools.innerHTML = '<input type="text" placeholder="搜索 ' + rows.length + ' 行(输入 ASIN / SKU / 关键词)">'
+        + '<span class="cnt"></span>'
+        + ((rows.length > 12 && !t.hasAttribute('data-nofold')) ? '<button class="btn-mini" type="button">展开全部</button>' : '');
+      wrap.insertBefore(tools, t);
+
+      var input = tools.querySelector('input');
+      var cnt = tools.querySelector('.cnt');
+      var btn = tools.querySelector('.btn-mini');
+
+      function setCnt(shown){
+        cnt.textContent = '显示 ' + shown + ' / ' + rows.length + ' 行';
+      }
+      setCnt(rows.length);
+      if (rows.length > 12 && btn && !t.hasAttribute('data-nofold')) {
+        wrap.classList.add('collapsed');
+        btn.textContent = '展开全部(' + rows.length + ' 行)';
+        setCnt(Math.min(12, rows.length));
+        btn.onclick = function(){
+          wrap.classList.toggle('collapsed');
+          var c = wrap.classList.contains('collapsed');
+          btn.textContent = c ? ('展开全部(' + rows.length + ' 行)') : '收起';
+          setCnt(c ? Math.min(12, rows.length) : rows.length);
+        };
+      }
+
+      input.addEventListener('input', function(){
+        var q = this.value.trim().toLowerCase();
+        var shown = 0;
+        rows.forEach(function(tr){
+          var hit = !q || tr.textContent.toLowerCase().indexOf(q) >= 0;
+          tr.style.display = hit ? '' : 'none';
+          if (hit) shown++;
+        });
+        setCnt(shown);
+        if (q) wrap.classList.remove('collapsed');
+      });
+    });
+  }
+
+  // 3) 锚点导航(基于 sec-title / chapter 自动生成)
+  function buildNav(){
+    var heads = document.querySelectorAll('.sec-title, .chapter');
+    if (heads.length < 3) return;
+    var nav = document.createElement('nav');
+    nav.className = 'topnav';
+    heads.forEach(function(h, i){
+      var txt = (h.textContent || '').replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu, '').trim();
+      if (!txt) return;
+      if (!h.id) h.id = 'sec-' + (i + 1);
+      var a = document.createElement('a');
+      a.href = '#' + h.id;
+      a.textContent = txt.length > 22 ? txt.slice(0, 22) + '…' : txt;
+      nav.appendChild(a);
+    });
+    var anchor = document.querySelector('.header') || document.body.firstChild;
+    anchor.parentNode.insertBefore(nav, anchor.nextSibling);
+
+    // 平滑滚动 + 高亮
+    nav.addEventListener('click', function(e){
+      var a = e.target.closest('a');
+      if (!a) return;
+      e.preventDefault();
+      var t = document.getElementById(a.getAttribute('href').slice(1));
+      if (t) { window.scrollTo({ top: t.getBoundingClientRect().top + window.pageYOffset - 70, behavior: 'smooth' }); }
+      nav.querySelectorAll('a').forEach(function(x){ x.classList.remove('active'); });
+      a.classList.add('active');
+    });
+    // 滚动高亮
+    var obs = new IntersectionObserver(function(es){
+      es.forEach(function(en){
+        if (en.isIntersecting) {
+          nav.querySelectorAll('a').forEach(function(x){
+            x.classList.toggle('active', x.getAttribute('href') === '#' + en.target.id);
+          });
+        }
+      });
+    }, { rootMargin: '-80px 0px -70% 0px' });
+    heads.forEach(function(h){ if (h.id) obs.observe(h); });
+  }
+
+  // 4) 回到顶部
+  function addToTop(){
+    var b = document.createElement('button');
+    b.id = 'toTop'; b.innerHTML = '&#8593;'; b.title = '回到顶部';
+    b.onclick = function(){ window.scrollTo({ top: 0, behavior: 'smooth' }); };
+    document.body.appendChild(b);
+    window.addEventListener('scroll', function(){
+      b.classList.toggle('show', window.pageYOffset > 500);
+    });
+  }
+
+  function run(){
+    var n = injectToolbox();
+    enhanceTables();
+    buildNav();
+    addToTop();
+    console.log('[enhance] toolbox charts=' + n);
+  }
+  if (document.readyState === 'complete') setTimeout(run, 900);
+  else window.addEventListener('load', function(){ setTimeout(run, 900); });
+})();
+</script>
+<!--__enhanced_v1__-->
+
+<script>
+/* ==== 下拉筛选 (enhance v4: 仅分类列) ==== */
+(function(){
+  var KW = ['状态','类型','等级','预警','分类','店铺','品牌','标签','阶段','是否','渠道','系列','品线','动销'];
+  function build(){
+    var total = 0, tables = 0;
+    document.querySelectorAll('.tbl-wrap table').forEach(function(t){
+      var wrap = t.closest('.tbl-wrap');
+      var tools = wrap && wrap.querySelector('.tbl-tools');
+      if (!tools || tools.querySelector('select.flt')) return;
+      var ths = Array.prototype.slice.call(t.querySelectorAll('thead th'));
+      var rows = Array.prototype.slice.call(t.querySelectorAll('tbody tr'));
+      if (rows.length < 6 || ths.length < 2) return;
+
+      var cands = [], kwCands = [];
+      ths.forEach(function(th, ci){
+        var name = (th.textContent || '').trim();
+        var vals = {}, editable = 0;
+        rows.forEach(function(r){
+          var c = r.children[ci];
+          if (!c) return;
+          if (c.querySelector('input, select, textarea')) editable++;
+          var v = (c.textContent || '').trim();
+          if (v && v.length <= 24) vals[v] = (vals[v] || 0) + 1;
+        });
+        if (editable > rows.length * 0.4) return;                 // 可编辑列 → 跳过
+        var keys = Object.keys(vals);
+        if (keys.length < 2 || keys.length > 12) return;
+        if (rows.length / keys.length < 1.5) return;              // 近似唯一值 → ID 列
+        if (keys.every(function(v){ return /^[\d,.\-+¥$%\s()]+$/.test(v); })) return;  // 纯数值列 → 跳过
+        var item = { ci: ci, name: name.slice(0, 10), vals: keys.sort() };
+        if (KW.some(function(k){ return name.indexOf(k) >= 0; })) kwCands.push(item);
+        else cands.push(item);
+      });
+
+      var picks = kwCands.length ? kwCands : cands;               // 有关键词列就只用它们
+      if (!picks.length) return;
+      picks = picks.slice(0, 2);                                  // 每表最多 2 个
+
+      var input = tools.querySelector('input');
+      var cnt = tools.querySelector('.cnt');
+      picks.forEach(function(p){
+        var sel = document.createElement('select');
+        sel.className = 'flt';
+        sel.setAttribute('data-ci', p.ci);
+        var html = '<option value="">' + p.name + ': 全部(' + p.vals.length + ')</option>';
+        p.vals.forEach(function(v){ html += '<option value="' + v.replace(/"/g, '&quot;') + '">' + v + '</option>'; });
+        sel.innerHTML = html;
+        tools.appendChild(sel);
+        total++;
+      });
+      tables++;
+
+      var sels = Array.prototype.slice.call(tools.querySelectorAll('select.flt'));
+      function apply(){
+        var active = false;
+        rows.forEach(function(r){
+          var show = true;
+          sels.forEach(function(s){
+            if (s.value) {
+              active = true;
+              var c = r.children[+s.getAttribute('data-ci')];
+              if (!c || (c.textContent || '').trim() !== s.value) show = false;
+            }
+          });
+          r.style.display = show ? '' : 'none';
+        });
+        sels.forEach(function(s){ s.classList.toggle('on', !!s.value); });
+        if (cnt) {
+          var shown = rows.filter(function(r){ return r.style.display !== 'none'; }).length;
+          cnt.textContent = '显示 ' + shown + ' / ' + rows.length + ' 行' + (active ? ' (已筛选)' : '');
+        }
+        if (active) wrap.classList.remove('collapsed');
+      }
+      sels.forEach(function(s){
+        s.addEventListener('change', function(){
+          if (input && input.value) { input.value = ''; input.dispatchEvent(new Event('input')); }
+          apply();
+        });
+      });
+      if (input) input.addEventListener('input', function(){
+        if (this.value) sels.forEach(function(s){ s.value = ''; s.classList.remove('on'); });
+      });
+      apply();
+    });
+    console.log('[enhance v4] 筛选器 ' + total + ' 个 / 覆盖 ' + tables + ' 张表');
+    return total;
+  }
+  var tries = 0;
+  function waitAndBuild(){
+    tries++;
+    if (document.querySelectorAll('.tbl-wrap').length === 0 && tries < 25) { setTimeout(waitAndBuild, 400); return; }
+    var n = build();
+    if (n === 0 && tries < 25) setTimeout(waitAndBuild, 400);
+  }
+  if (document.readyState === 'complete') setTimeout(waitAndBuild, 300);
+  else window.addEventListener('load', function(){ setTimeout(waitAndBuild, 300); });
+})();
+</script>
+<!--__enhanced_v4__-->
+</body>
+</html>
