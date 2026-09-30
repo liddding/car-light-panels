@@ -2,108 +2,34 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>数据看板中心 · Panels</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0">
+<title>面板总目录 · 发动机支架 &amp; 车灯总成</title>
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:'Microsoft YaHei',-apple-system,sans-serif; background:#f0f2f5; color:#1a2332; padding:24px; max-width:1040px; margin:0 auto; }
-.header { background:linear-gradient(135deg,#7A2E2E,#C1121F); color:#fff; border-radius:12px; padding:26px 30px; margin-bottom:22px; }
-.header h1 { font-size:25px; }
-.header p { font-size:13px; opacity:.93; margin-top:8px; line-height:1.7; }
-h2 { font-size:16px; color:#7A2E2E; margin:22px 0 12px; border-left:4px solid #C1121F; padding-left:10px; }
-.grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-a.card { display:block; background:#fff; border-radius:10px; padding:18px 20px; text-decoration:none; color:#1a2332; box-shadow:0 1px 3px rgba(0,0,0,.08); border-left:4px solid #C1121F; transition:.15s; }
-a.card:hover { transform:translateY(-2px); box-shadow:0 6px 18px rgba(193,18,31,.18); }
-a.card.blue { border-left-color:#1F4E78; }
-.card .t { font-size:16px; font-weight:700; color:#7A2E2E; margin-bottom:6px; }
-a.card.blue .t { color:#1F4E78; }
-.card .d { font-size:12.5px; color:#5f6b7a; line-height:1.7; }
-.card .tag { display:inline-block; font-size:11px; background:#fdf1f0; color:#C1121F; border-radius:10px; padding:2px 9px; margin-top:8px; }
-.footer { text-align:center; font-size:11.5px; color:#8a94a3; margin-top:26px; line-height:1.9; }
-@media (max-width:760px){ .grid { grid-template-columns:1fr; } }
+body { font-family:'Microsoft YaHei',-apple-system,'PingFang SC',sans-serif; background:#f0f2f5; color:#1a2332; padding:18px; max-width:1400px; margin:0 auto; -webkit-text-size-adjust:100%; }
+.header { background:linear-gradient(135deg,#1F4E78,#2E86AB); color:#fff; border-radius:14px; padding:24px 26px; margin-bottom:18px; }
+.header h1 { font-size:26px; font-weight:700; margin-bottom:6px; }
+.header .sub { font-size:13.5px; opacity:.95; line-height:1.8; }
+.header .kpi-inline { margin-top:12px; display:flex; flex-wrap:wrap; gap:16px; font-size:13px; }
+.header .kpi-inline span { background:rgba(255,255,255,.18); padding:5px 12px; border-radius:8px; }
+.tip { background:#fff8e6; border-left:4px solid #E6A23C; border-radius:8px; padding:12px 16px; margin-bottom:18px; font-size:13px; line-height:1.8; }
+.tip b { color:#b8860b; }
+.cat { margin:22px 0 12px; font-size:18px; font-weight:700; color:#1F4E78; display:flex; align-items:center; gap:8px; }
+.cat::before { content:''; width:5px; height:20px; background:#2E86AB; border-radius:3px; display:inline-block; }
+.grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:14px; }
+.card { background:#fff; border-radius:12px; padding:16px 18px; box-shadow:0 1px 4px rgba(0,0,0,.08); transition:.2s; border:1px solid #eef2f6; display:flex; flex-direction:column; }
+.card:hover { box-shadow:0 4px 14px rgba(31,78,120,.16); transform:translateY(-2px); border-color:#2E86AB; }
+.card h3 { font-size:16.5px; color:#1F4E78; margin-bottom:6px; }
+.card .desc { font-size:12.5px; color:#5f6b7a; line-height:1.65; margin-bottom:10px; flex:1; }
+.card .meta { font-size:11.5px; color:#8494a5; margin-bottom:10px; }
+.btn { display:block; text-align:center; background:linear-gradient(135deg,#1F4E78,#2E86AB); color:#fff; padding:10px; border-radius:8px; text-decoration:none; font-size:14px; font-weight:600; transition:.2s; }
+.btn:hover { opacity:.9; }
+.btn.alt { background:#eef6fc; color:#1F4E78; margin-top:7px; padding:7px; font-size:12.5px; font-weight:500; }
+.btn.off { background:#e8e8e8; color:#999; cursor:not-allowed; }
+.footer { text-align:center; color:#8494a5; font-size:12px; padding:26px 0 12px; line-height:1.9; }
+@media (max-width:640px){ body{padding:12px;} .header h1{font-size:21px;} .grid{grid-template-columns:1fr;} .header .kpi-inline{font-size:12px;gap:8px;} }
 </style>
 </head>
-<body>
-<div class="header">
-<h1>&#128202; 数据看板中心</h1>
-<p>亚马逊运营数据看板集合 ｜ 金额单位: 人民币(&yen;)<br>数据窗口: 2026年 7-9月 · W36-W37 ｜ 库龄快照: 2026-09</p>
-</div>
-
-<h2>车灯总成</h2>
-<div class="grid">
-<a class="card" href="slow-panel.html">
-  <div class="t">&#128680; 滞销清理追踪看板</div>
-  <div class="d">库存现状 · 商编动销分层 · 广告/流量/转化多维诊断(D1-D7)· 周度记录追踪(可编辑)</div>
-  <span class="tag">可录入 · 自动保存在本机浏览器</span>
-</a>
-<a class="card" href="car-light-merged-panel.html">
-  <div class="t">&#128200; 周环比整合看板(W36→W37)</div>
-  <div class="d">品牌维度 + 新/旧链接维度 + 广告环比变化(整体与分品牌)</div>
-</a>
-<a class="card" href="car-light-newold-panel.html">
-  <div class="t">&#128279; 新链接 vs 旧链接维度</div>
-  <div class="d">PHILTOP / Torchbeam 新旧链接销量、销售额、转化率、广告对比</div>
-</a>
-<a class="card" href="car-light-brand-panel.html">
-  <div class="t">&#127991; 品牌维度周环比</div>
-  <div class="d">各品牌销量/销售额/份额/转化率/广告效率对比</div>
-</a>
-<a class="card" href="car-light-peak-panel.html">
-  <div class="t">&#127942; 2026 旺季规划看板</div>
-  <div class="d">9-12月销售目标(保守+30%/中性+40%/冲刺+50%)· PHILTOP 60% / Torchbeam 40%</div>
-</a>
-</div>
-
-<h2>发动机支架 · 商品资料</h2>
-<div class="grid">
-<a class="card blue" href="em-mount-annotation.xlsx?v=v2">
-  <div class="t">&#128229; 标注图与包装内容对照表（Excel·含图）</div>
-  <div class="d">78 个商编 · 每个商编一行：商编/产品编码/包装内容(按标记号排序)/标记号→位置/<b>内嵌带编号标注图</b></div>
-  <span class="tag">下载 · 格式同《发动机支架名称对应.xlsx》</span>
-</a>
-<a class="card blue" href="em-mount-annotated-images.zip?v=v2">
-  <div class="t">&#128230; 标注图打包下载（78张 JPG）</div>
-  <div class="d">1000px 带编号标注图，文件名 = 商编 · 含说明文件 · 可直接用于上架/A+ 素材</div>
-  <span class="tag">下载 · 5.7 MB</span>
-</a>
-<a class="card blue" href="em-annotation-gallery.html">
-  <div class="t">&#127912; 图片位置标注核验（在线浏览）</div>
-  <div class="d">78 个商编 · 按包装内容顺序标出各支架位置(红色标记+白色数字)· 标记号↔名称↔OE号↔位置对照</div>
-  <span class="tag">78/78 件数精确匹配</span>
-</a>
-<a class="card blue" href="em-code-image-gallery.html">
-  <div class="t">&#128269; 商编图片对应核验</div>
-  <div class="d">83 个商品 · 商编↔图片↔配件名称↔OE号 一一对应(可搜索/筛选)· 缺图片 5 个已标出</div>
-  <span class="tag">匹配率 94%</span>
-</a>
-<a class="card blue" href="em-shipping-panel.html">
-  <div class="t">&#128666; 发运盘点看板(W27-W38)</div>
-  <div class="d">库销比=6 口径 · 老品口径(排除70个新品)· 周维度动销分级 · 需发货 864 件/50 个 SKU</div>
-  <span class="tag">最新版</span>
-</a>
-</div>
-
-<h2>发动机支架</h2>
-<div class="grid">
-<a class="card blue" href="engine-mount-old-panel.html">
-  <div class="t">&#128295; 发动机支架 · 老品看板(W37)</div>
-  <div class="d">US22 主店 9 周趋势 · 库存周转 · 断货预警 · 连续下滑监控 · 周环比分析(94 个老品)</div>
-  <span class="tag">主力看板</span>
-</a>
-<a class="card blue" href="engine-mount-new-panel.html">
-  <div class="t">&#127793; 发动机支架 · 新品看板(W37)</div>
-  <div class="d">新品管线进度(交付中→推新→出单)· 头程在途 · 资金占用 · 70 个新品清单</div>
-  <span class="tag">新品追踪</span>
-</a>
-<a class="card blue" href="engine-mount-panel.html">
-  <div class="t">&#128202; 发动机支架 · 全部商品看板(W37)</div>
-  <div class="d">新品 + 老品合并视角(164 个 ASIN 全量)</div>
-</a>
-</div>
-
-<div class="footer">
-部署于 GitHub Pages(永久固定链接)｜ 滞销看板记录保存在浏览器本地(localStorage),可导出 JSON 备份<br>
-自动生成 · 数据看板中心
-</div>
+<body><div class="header"><h1>&#128202; 面板总目录</h1><div class="sub">发动机支架 · 车灯总成 ｜ 共 14 个分析看板<br>最后更新: 2026-09-30(W39 / 车灯 W38-39)</div><div class="kpi-inline"><span>发动机支架 8 个</span><span>车灯总成 6 个</span><span>数据周期 W38-W39</span><span>在线版</span></div></div><div class="tip"><b>💡 访问提示</b>:①点击卡片直接打开看板;②若打开慢或打不开(<b>GitHub Pages 在国内偶发不稳定</b>),请使用<b>离线包</b>(见下方说明);③手机上可用浏览器"添加到主屏幕"方便下次访问。</div><div class="cat">发动机支架</div><div class="grid"><div class="card"><h3>老品周报看板</h3><div class="desc">W39 · 134 件 / ¥55,553 · 闭环归因</div><div class="meta">发动机支架 ｜ 152 KB</div><a class="btn" href="https://liddding.github.io/car-light-panels/engine-mount-old-panel.html" target="_blank" rel="noopener">在线打开</a><a class="btn alt" href="https://github.com/liddding/car-light-panels/blob/main/engine-mount-old-panel.html" target="_blank" rel="noopener">备用链接(GitHub)</a></div><div class="card"><h3>新品周报看板</h3><div class="desc">W39 · 出单 9 个 · 9 图表</div><div class="meta">发动机支架 ｜ 96 KB</div><a class="btn" href="https://liddding.github.io/car-light-panels/engine-mount-new-panel.html" target="_blank" rel="noopener">在线打开</a><a class="btn alt" href="https://github.com/liddding/car-light-panels/blob/main/engine-mount-new-panel.html" target="_blank" rel="noopener">备用链接(GitHub)</a></div><div class="card"><h3>全部商品看板</h3><div class="desc">W39 · 147 件 / ¥60,951</div><div class="meta">发动机支架 ｜ 153 KB</div><a class="btn" href="https://liddding.github.io/car-light-panels/engine-mount-panel.html" target="_blank" rel="noopener">在线打开</a><a class="btn alt" href="https://github.com/liddding/car-light-panels/blob/main/engine-mount-panel.html" target="_blank" rel="noopener">备用链接(GitHub)</a></div><div class="card"><h3>近30天分析看板</h3><div class="desc">5 周 481 件 · ACOS vs 平衡线 21%</div><div class="meta">发动机支架 ｜ 54 KB</div><a class="btn" href="https://liddding.github.io/car-light-panels/engine-mount-month-panel.html" target="_blank" rel="noopener">在线打开</a><a class="btn alt" href="https://github.com/liddding/car-light-panels/blob/main/engine-mount-month-panel.html" target="_blank" rel="noopener">备用链接(GitHub)</a></div><div class="card"><h3>老品诊断看板</h3><div class="desc">广告浪费 $/¥542 · 无流量 6 个</div><div class="meta">发动机支架 ｜ 36 KB</div><a class="btn" href="https://liddding.github.io/car-light-panels/engine-mount-old-diag-panel.html" target="_blank" rel="noopener">在线打开</a><a class="btn alt" href="https://github.com/liddding/car-light-panels/blob/main/engine-mount-old-diag-panel.html" target="_blank" rel="noopener">备用链接(GitHub)</a></div><div class="card"><h3>新品流量诊断看板</h3><div class="desc">零流量 38 · 零转化 23</div><div class="meta">发动机支架 ｜ 33 KB</div><a class="btn" href="https://liddding.github.io/car-light-panels/engine-mount-noflow-panel.html" target="_blank" rel="noopener">在线打开</a><a class="btn alt" href="https://github.com/liddding/car-light-panels/blob/main/engine-mount-noflow-panel.html" target="_blank" rel="noopener">备用链接(GitHub)</a></div><div class="card"><h3>30天无销库存看板</h3><div class="desc">老品 15 个 / ¥39,758</div><div class="meta">发动机支架 ｜ 30 KB</div><a class="btn" href="https://liddding.github.io/car-light-panels/engine-mount-nosale-inv-panel.html" target="_blank" rel="noopener">在线打开</a><a class="btn alt" href="https://github.com/liddding/car-light-panels/blob/main/engine-mount-nosale-inv-panel.html" target="_blank" rel="noopener">备用链接(GitHub)</a></div><div class="card"><h3>新品Q4目标看板</h3><div class="desc">中性目标 716 件 / ¥322,112</div><div class="meta">发动机支架 ｜ 45 KB</div><a class="btn" href="https://liddding.github.io/car-light-panels/engine-mount-q4-target.html" target="_blank" rel="noopener">在线打开</a><a class="btn alt" href="https://github.com/liddding/car-light-panels/blob/main/engine-mount-q4-target.html" target="_blank" rel="noopener">备用链接(GitHub)</a></div></div><div class="cat">车灯总成</div><div class="grid"><div class="card"><h3>新旧链接对比</h3><div class="desc">W38-39 · 两品牌 270 件 / ¥173,022</div><div class="meta">车灯总成 ｜ 56 KB</div><a class="btn" href="https://liddding.github.io/car-light-panels/car-light-newold-panel.html" target="_blank" rel="noopener">在线打开</a><a class="btn alt" href="https://github.com/liddding/car-light-panels/blob/main/car-light-newold-panel.html" target="_blank" rel="noopener">备用链接(GitHub)</a></div><div class="card"><h3>品类维度看板</h3><div class="desc">W38-39 · 品类 276 件 / ¥180,566</div><div class="meta">车灯总成 ｜ 53 KB</div><a class="btn" href="https://liddding.github.io/car-light-panels/car-light-brand-panel.html" target="_blank" rel="noopener">在线打开</a><a class="btn alt" href="https://github.com/liddding/car-light-panels/blob/main/car-light-brand-panel.html" target="_blank" rel="noopener">备用链接(GitHub)</a></div><div class="card"><h3>整合看板</h3><div class="desc">品牌 + 新旧链接双维度</div><div class="meta">车灯总成 ｜ 93 KB</div><a class="btn" href="https://liddding.github.io/car-light-panels/car-light-merged-panel.html" target="_blank" rel="noopener">在线打开</a><a class="btn alt" href="https://github.com/liddding/car-light-panels/blob/main/car-light-merged-panel.html" target="_blank" rel="noopener">备用链接(GitHub)</a></div><div class="card"><h3>搜索词根分析</h3><div class="desc">3,756 词 · 六类词 · 词根 8 维度</div><div class="meta">车灯总成 ｜ 68 KB</div><a class="btn" href="https://liddding.github.io/car-light-panels/car-light-kw-root-panel.html" target="_blank" rel="noopener">在线打开</a><a class="btn alt" href="https://github.com/liddding/car-light-panels/blob/main/car-light-kw-root-panel.html" target="_blank" rel="noopener">备用链接(GitHub)</a></div><div class="card"><h3>旺季规划看板</h3><div class="desc">Q4 三档目标</div><div class="meta">车灯总成 ｜ 59 KB</div><a class="btn" href="https://liddding.github.io/car-light-panels/car-light-peak-panel.html" target="_blank" rel="noopener">在线打开</a><a class="btn alt" href="https://github.com/liddding/car-light-panels/blob/main/car-light-peak-panel.html" target="_blank" rel="noopener">备用链接(GitHub)</a></div><div class="card"><h3>滞销清理追踪</h3><div class="desc">可录入处置状态</div><div class="meta">车灯总成 ｜ 257 KB</div><a class="btn" href="https://liddding.github.io/car-light-panels/slow-panel.html" target="_blank" rel="noopener">在线打开</a><a class="btn alt" href="https://github.com/liddding/car-light-panels/blob/main/slow-panel.html" target="_blank" rel="noopener">备用链接(GitHub)</a></div></div><div class="footer">数据源: 运营综合分析明细(US22) + 库存明细报表 + 搜索词报告<br>生成时间: 2026-09-30 ｜ 由 Hermes Agent 自动生成</div>
 </body>
 </html>
