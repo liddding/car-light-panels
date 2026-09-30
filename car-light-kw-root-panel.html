@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>车灯总成 · 搜索词根分析看板</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Microsoft YaHei',sans-serif; background:#f0f2f5; color:#1a2332; padding:20px; max-width:1560px; margin:0 auto; }
+.header { background:linear-gradient(135deg,#1F4E78,#2E86AB); color:#fff; border-radius:12px; padding:22px 28px; margin-bottom:16px; }
+.header h1 { font-size:24px; font-weight:700; }
+.header .meta { font-size:13px; opacity:.94; margin-top:6px; line-height:1.7; }
+.kpi-row { display:flex; flex-wrap:nowrap; gap:10px; margin-bottom:16px; overflow-x:auto; }
+.kpi { background:#fff; border-radius:10px; padding:12px 14px; box-shadow:0 1px 3px rgba(0,0,0,.08); flex:1 1 0; min-width:150px; }
+.k-label { font-size:12px; color:#5f6b7a; }
+.k-val { font-size:19px; font-weight:700; margin:2px 0; color:#1F4E78; }
+.k-val.good { color:#2A9D48; } .k-val.warn { color:#E67E22; } .k-val.bad { color:#C0392B; }
+.k-note { font-size:11px; color:#8494a5; }
+.card { background:#fff; border-radius:12px; padding:18px 20px; box-shadow:0 1px 3px rgba(0,0,0,.08); margin-bottom:16px; }
+.chapter { background:linear-gradient(90deg,#1F4E78,#2E86AB); color:#fff; border-radius:10px; padding:10px 20px; margin:22px auto 14px; font-size:17px; font-weight:700; max-width:1240px; }
+.c-title { font-size:15px; font-weight:700; color:#1F4E78; margin-bottom:4px; }
+.c-sub { font-size:12px; color:#8494a5; margin-bottom:10px; }
+.chart { width:100%; height:320px; }
+.chart-tall { width:100%; height:420px; }
+table { width:100%; border-collapse:collapse; font-size:12.5px; margin:8px 0; }
+th { background:#1F4E78; color:#fff; font-weight:600; padding:8px 6px; text-align:center; font-size:12px; }
+td { padding:7px 6px; text-align:center; border-bottom:1px solid #eef2f6; }
+tbody tr:nth-child(even) { background:#f9fbfd; }
+tbody tr:hover { background:#eef6fc; }
+.tag { font-size:11px; padding:2px 7px; border-radius:9px; }
+.tag.good { background:#e6f6ea; color:#1e7a37; } .tag.bad { background:#fdeaea; color:#b52d1b; }
+.tag.warn { background:#fdf1e6; color:#a95c14; }
+.insight { background:#f7fafd; border-left:3px solid #2E86AB; border-radius:6px; padding:11px 14px; margin:10px 0 4px; font-size:12.5px; line-height:1.75; }
+.insight .ins-line { margin:3px 0; }
+.insight b { color:#1F4E78; }
+.insight.warn { background:#fffaf5; border-left-color:#E67E22; }
+.insight.good { background:#f6fbf7; border-left-color:#2A9D48; }
+.footer { text-align:center; color:#8494a5; font-size:11.5px; padding:18px 0; }
+
+/* ==== 增强器注入样式 (enhance_panel.py) ==== */
+.topnav { position:sticky; top:0; z-index:99; display:flex; gap:6px; flex-wrap:wrap;
+  background:rgba(255,255,255,.96); backdrop-filter:blur(8px); border-radius:10px;
+  padding:9px 12px; margin:0 auto 14px; max-width:1560px; box-shadow:0 2px 10px rgba(31,78,120,.13); }
+.topnav a { font-size:12.5px; color:#1F4E78; text-decoration:none; padding:5px 11px; border-radius:16px;
+  background:#f1f6fa; border:1px solid #e2ecf4; white-space:nowrap; transition:.14s; font-weight:600; }
+.topnav a:hover { background:#2E86AB; color:#fff; border-color:#2E86AB; }
+.topnav a.active { background:#1F4E78; color:#fff; border-color:#1F4E78; }
+.tbl-tools { display:flex; align-items:center; gap:10px; margin:8px 0 6px; wrap:nowrap; }
+.tbl-tools input { flex:0 0 220px; border:1px solid #d6e2ec; border-radius:16px; padding:5px 12px;
+  font-size:12px; font-family:inherit; outline:none; }
+.tbl-tools input:focus { border-color:#2E86AB; box-shadow:0 0 0 2px rgba(46,134,171,.14); }
+.tbl-tools .cnt { font-size:11.5px; color:#8a94a3; }
+.tbl-tools .btn-mini { font-size:11.5px; color:#2E86AB; background:#f1f6fa; border:1px solid #e2ecf4;
+  border-radius:14px; padding:4px 10px; cursor:pointer; font-family:inherit; }
+.tbl-tools .btn-mini:hover { background:#2E86AB; color:#fff; }
+.tbl-wrap.collapsed table tbody tr:nth-child(n+13) { display:none; }
+#toTop { position:fixed; right:22px; bottom:26px; width:44px; height:44px; border-radius:50%;
+  background:#1F4E78; color:#fff; border:none; cursor:pointer; font-size:19px; box-shadow:0 4px 14px rgba(31,78,120,.35);
+  opacity:0; pointer-events:none; transition:.25s; z-index:120; }
+#toTop.show { opacity:1; pointer-events:auto; }
+#toTop:hover { background:#2E86AB; }
+
+
+/* ==== 下拉筛选 (v4) ==== */
+select.flt { border:1px solid #d6e2ec; border-radius:14px; padding:5px 10px; font-size:11.5px;
+  font-family:inherit; color:#1F4E78; background:#f8fbfd; cursor:pointer; max-width:200px; }
+select.flt:hover { border-color:#2E86AB; }
+select.flt:focus { outline:none; border-color:#2E86AB; box-shadow:0 0 0 2px rgba(46,134,171,.14); }
+select.flt.on { background:#1F4E78; color:#fff; border-color:#1F4E78; font-weight:600; }
+
+</style>
+</head>
+<body>
+<div class="header">
+<h1>&#128269; 车灯总成 · 搜索词根分析看板</h1>
+<div class="meta">数据周期: 2026-08-01 ~ 09-30(2 个月) ｜ 搜索词 3,756 条 ｜ 曝光 98,488 ｜ 点击 6,956<br>
+花费 $5,087.44 ｜ 广告销售额 $48,104.31 ｜ 订单 418 单 ｜ ACOS 10.58% ｜ 金额单位: 美元(广告后台原币种)<br>
+词根口径: 某词根指标 = 所有包含该词的搜索词指标之和</div>
+</div>
+<div class="kpi-row"><div class="kpi"><div class="k-label">搜索词数</div><div class="k-val brand">3,756</div><div class="k-note">2026-08-01 ~ 09-30</div></div><div class="kpi"><div class="k-label">总曝光</div><div class="k-val brand">98,488</div><div class="k-note">点击 6,956</div></div><div class="kpi"><div class="k-label">总花费</div><div class="k-val warn">$5,087.44</div><div class="k-note">CPC $0.73</div></div><div class="kpi"><div class="k-label">广告销售额</div><div class="k-val good">$48,104.31</div><div class="k-note">ACOS 10.58%</div></div><div class="kpi"><div class="k-label">总订单</div><div class="k-val good">418 单</div><div class="k-note">CVR 6.01%</div></div><div class="kpi"><div class="k-label">词根覆盖</div><div class="k-val brand">935 个</div><div class="k-note">单词词根</div></div></div>
+<div class="chapter"><span class="bar"></span>&#128202; 一、词根总览</div><div class="card"><div class="c-title">订单 TOP15 词根(谁在真正带来订单)</div><div class="c-sub">口径: 某词根指标 = 所有包含该词的搜索词指标之和 ｜ 单位: 美元(广告后台原币种)</div><div id="c1" class="chart chart-tall"></div><table><thead><tr><th>词根</th><th>词数</th><th>曝光</th><th>点击</th><th>花费</th><th>广告销售额</th><th>订单</th><th>ACOS</th><th>CVR</th></tr></thead><tbody><tr><td>headlights</td><td>1,625</td><td>78,792</td><td>3,972</td><td>$3,084.03</td><td>$28,309.05</td><td>248</td><td><span class="tag warn">10.89%</span></td><td>6.24%</td></tr><tr><td>headlight</td><td>972</td><td>7,877</td><td>1,503</td><td>$1,195.53</td><td>$13,555.68</td><td>110</td><td><span class="tag good">8.82%</span></td><td>7.32%</td></tr><tr><td>chevy</td><td>473</td><td>23,386</td><td>1,054</td><td>$831.21</td><td>$9,976.35</td><td>94</td><td><span class="tag good">8.33%</span></td><td>8.92%</td></tr><tr><td>assembly</td><td>624</td><td>9,123</td><td>1,120</td><td>$842.58</td><td>$9,655.76</td><td>78</td><td><span class="tag good">8.73%</span></td><td>6.96%</td></tr><tr><td>malibu</td><td>316</td><td>4,874</td><td>578</td><td>$531.81</td><td>$5,922.84</td><td>69</td><td><span class="tag good">8.98%</span></td><td>11.94%</td></tr><tr><td>hyundai</td><td>420</td><td>23,771</td><td>1,052</td><td>$858.94</td><td>$7,492.38</td><td>61</td><td><span class="tag warn">11.46%</span></td><td>5.80%</td></tr><tr><td>silverado</td><td>327</td><td>20,109</td><td>774</td><td>$582.63</td><td>$7,501.46</td><td>46</td><td><span class="tag good">7.77%</span></td><td>5.94%</td></tr><tr><td>2014</td><td>352</td><td>15,617</td><td>764</td><td>$617.84</td><td>$7,135.27</td><td>46</td><td><span class="tag good">8.66%</span></td><td>6.02%</td></tr><tr><td>elantra</td><td>315</td><td>11,633</td><td>729</td><td>$629.75</td><td>$5,400.57</td><td>42</td><td><span class="tag warn">11.66%</span></td><td>5.76%</td></tr><tr><td>mazda</td><td>274</td><td>12,350</td><td>690</td><td>$426.24</td><td>$5,459.06</td><td>40</td><td><span class="tag good">7.81%</span></td><td>5.80%</td></tr><tr><td>2015</td><td>271</td><td>8,214</td><td>555</td><td>$391.54</td><td>$5,826.84</td><td>37</td><td><span class="tag good">6.72%</span></td><td>6.67%</td></tr><tr><td>1500</td><td>387</td><td>13,585</td><td>727</td><td>$562.88</td><td>$5,392.45</td><td>35</td><td><span class="tag good">10.44%</span></td><td>4.81%</td></tr><tr><td>2013</td><td>308</td><td>11,341</td><td>669</td><td>$501.18</td><td>$3,853.42</td><td>33</td><td><span class="tag warn">13.01%</span></td><td>4.93%</td></tr><tr><td>2005</td><td>159</td><td>3,482</td><td>260</td><td>$255.86</td><td>$2,404.23</td><td>29</td><td><span class="tag warn">10.64%</span></td><td>11.15%</td></tr><tr><td>2016</td><td>198</td><td>3,436</td><td>345</td><td>$260.88</td><td>$3,895.18</td><td>28</td><td><span class="tag good">6.70%</span></td><td>8.12%</td></tr></tbody></table><div class="insight good"><div class="ins-line"><b>📊 数据解读:</b>3,756 个搜索词共产生 418 单,<b>headlights / headlight 两个词根就贡献 358 单(86%%)</b>;车型词里 <b>chevy 系列(94 单)</b>最强。</div><div class="ins-line"><b>🔍 原因分析:</b>车灯是高适配品类,买家搜索习惯集中在「品类词 + 车型词」两类。<b>headlight(单数)ACOS 8.82%% 优于 headlights(复数)的 10.89%%</b> —— 单数词意图更明确,通常对应"单个大灯"的替换需求。</div><div class="ins-line"><b>✅ 建议动作:</b>①<b>headlight/headlights 作为核心大词继续加投</b>;②车型词按品牌分层出价(chevy/mazda/gmc 加投,ford 降价);③订单 TOP 词根单独建组,持续观察 ACOS 趋势。</div></div><div class="chapter"><span class="bar"></span>&#9889; 二、词根效率分层(该加投 vs 该砍)</div><div class="card"><div class="c-title">词根 ACOS 分层(整体基准 10.58%)</div><div class="c-sub">绿=优于基准 ｜ 黄=10.58%~20% ｜ 红=超 20%(亏损风险)</div><div id="c2" class="chart"></div><div class="c-title" style="margin-top:14px">✅ 高效词根(ACOS &lt; 8% 且订单 ≥3) — 建议加投</div><table><thead><tr><th>词根</th><th>词数</th><th>花费</th><th>广告销售额</th><th>订单</th><th>ACOS</th><th>CVR</th></tr></thead><tbody><tr><td>silverado</td><td>327</td><td>$582.63</td><td>$7,501.46</td><td>46</td><td><span class="tag good">7.77%</span></td><td>5.94%</td></tr><tr><td>mazda</td><td>274</td><td>$426.24</td><td>$5,459.06</td><td>40</td><td><span class="tag good">7.81%</span></td><td>5.80%</td></tr><tr><td>2015</td><td>271</td><td>$391.54</td><td>$5,826.84</td><td>37</td><td><span class="tag good">6.72%</span></td><td>6.67%</td></tr><tr><td>2016</td><td>198</td><td>$260.88</td><td>$3,895.18</td><td>28</td><td><span class="tag good">6.70%</span></td><td>8.12%</td></tr><tr><td>terrain</td><td>154</td><td>$180.07</td><td>$3,138.94</td><td>27</td><td><span class="tag good">5.74%</span></td><td>8.74%</td></tr><tr><td>gmc</td><td>180</td><td>$200.12</td><td>$2,838.02</td><td>25</td><td><span class="tag good">7.05%</span></td><td>7.31%</td></tr><tr><td>cx5</td><td>63</td><td>$159.52</td><td>$2,408.40</td><td>15</td><td><span class="tag good">6.62%</span></td><td>8.33%</td></tr><tr><td>left</td><td>55</td><td>$41.41</td><td>$916.82</td><td>9</td><td><span class="tag good">4.52%</span></td><td>14.29%</td></tr><tr><td>ltz</td><td>50</td><td>$57.12</td><td>$1,524.92</td><td>8</td><td><span class="tag good">3.75%</span></td><td>9.76%</td></tr><tr><td>rsx</td><td>29</td><td>$38.17</td><td>$900.54</td><td>8</td><td><span class="tag good">4.24%</span></td><td>12.90%</td></tr><tr><td>assemblies</td><td>16</td><td>$72.37</td><td>$1,115.92</td><td>8</td><td><span class="tag good">6.49%</span></td><td>7.14%</td></tr><tr><td>automotive</td><td>6</td><td>$63.31</td><td>$1,040.93</td><td>7</td><td><span class="tag good">6.08%</span></td><td>6.93%</td></tr><tr><td>beetle</td><td>47</td><td>$31.18</td><td>$430.93</td><td>7</td><td><span class="tag good">7.24%</span></td><td>9.59%</td></tr><tr><td>right</td><td>39</td><td>$33.86</td><td>$759.94</td><td>6</td><td><span class="tag good">4.46%</span></td><td>12.24%</td></tr><tr><td>replacement</td><td>47</td><td>$38.01</td><td>$744.20</td><td>5</td><td><span class="tag good">5.11%</span></td><td>9.62%</td></tr></tbody></table><div class="c-title" style="margin-top:14px">🔴 低效词根(ACOS &gt; 15%) — 建议降价或暂停</div><table><thead><tr><th>词根</th><th>词数</th><th>花费</th><th>广告销售额</th><th>订单</th><th>ACOS</th><th>CVR</th></tr></thead><tbody><tr><td>2019</td><td>85</td><td>$67.62</td><td>$94.99</td><td>1</td><td><span class="tag bad">71.19%</span></td><td>0.86%</td></tr><tr><td>2018</td><td>54</td><td>$46.99</td><td>$89.67</td><td>1</td><td><span class="tag bad">52.40%</span></td><td>1.49%</td></tr><tr><td>bulbs</td><td>44</td><td>$38.21</td><td>$84.99</td><td>1</td><td><span class="tag bad">44.96%</span></td><td>2.00%</td></tr><tr><td>ford</td><td>171</td><td>$194.21</td><td>$557.97</td><td>6</td><td><span class="tag bad">34.81%</span></td><td>2.51%</td></tr><tr><td>focus</td><td>84</td><td>$117.24</td><td>$337.97</td><td>3</td><td><span class="tag bad">34.69%</span></td><td>2.19%</td></tr><tr><td>2001</td><td>37</td><td>$25.89</td><td>$74.99</td><td>1</td><td><span class="tag bad">34.52%</span></td><td>1.96%</td></tr><tr><td>f150</td><td>74</td><td>$102.71</td><td>$299.99</td><td>2</td><td><span class="tag bad">34.24%</span></td><td>2.30%</td></tr><tr><td>camry</td><td>57</td><td>$68.11</td><td>$201.34</td><td>2</td><td><span class="tag bad">33.83%</span></td><td>2.63%</td></tr><tr><td>led</td><td>301</td><td>$293.56</td><td>$1,004.56</td><td>9</td><td><span class="tag bad">29.22%</span></td><td>2.59%</td></tr><tr><td>rear</td><td>21</td><td>$16.57</td><td>$59.99</td><td>1</td><td><span class="tag bad">27.62%</span></td><td>2.94%</td></tr><tr><td>car</td><td>26</td><td>$19.07</td><td>$74.99</td><td>1</td><td><span class="tag bad">25.43%</span></td><td>3.33%</td></tr><tr><td>ranger</td><td>27</td><td>$17.66</td><td>$69.99</td><td>1</td><td><span class="tag bad">25.23%</span></td><td>2.70%</td></tr><tr><td>corolla</td><td>50</td><td>$34.86</td><td>$150.62</td><td>2</td><td><span class="tag bad">23.14%</span></td><td>3.70%</td></tr><tr><td>equinox</td><td>51</td><td>$34.36</td><td>$148.97</td><td>2</td><td><span class="tag bad">23.07%</span></td><td>3.28%</td></tr><tr><td>light</td><td>207</td><td>$145.97</td><td>$634.52</td><td>7</td><td><span class="tag bad">23.00%</span></td><td>3.03%</td></tr></tbody></table><div class="insight warn"><div class="ins-line"><b>📊 数据解读:</b>高效词根 <b>15 个</b>(ACOS&lt;8%),低效词根 <b>15 个</b>(ACOS&gt;15%)。最差的 <b>ford 品牌词 ACOS 34.81%</b>($194 花费只换 6 单)。</div><div class="ins-line"><b>🔍 原因分析:</b>低效词根集中在两类:①<b>品牌错配</b>(ford 车系与我们适配的车型不匹配,点了不买);②<b>品类错配</b>(led 类词多为买灯泡的,不是买总成的)。高效词根则是<b>精准车型词 + 左右侧词</b>。</div><div class="ins-line"><b>✅ 建议动作:</b>①<b>ford 品牌词立即降价 50%% 或暂停</b>;②led 相关词加否词("led bulb"类);③高效词根逐个提价 10-20%% 抢曝光;④每周复查低效词根,连续 2 周 ACOS&gt;20%% 即暂停。</div></div><div class="chapter"><span class="bar"></span>&#128663; 三、车型词根(品牌维度)</div><div class="card"><div class="c-title">37 个汽车品牌搜索词表现</div><div class="c-sub">按订单降序 ｜ 高频车型 = 该品牌词后出现最多的车型</div><div id="c3" class="chart chart-tall"></div><table><thead><tr><th>品牌</th><th>词数</th><th>曝光</th><th>点击</th><th>花费</th><th>广告销售额</th><th>订单</th><th>ACOS</th><th>CVR</th><th>高频车型</th></tr></thead><tbody><tr><td>chevy</td><td>473</td><td>23,386</td><td>1,054</td><td>$831.21</td><td>$9,976.35</td><td>94</td><td><span class="tag good">8.33%</span></td><td>8.92%</td><td>silverado(172) | malibu(154) | trailblazer(56) | equinox(26) | 1500(12) | hhr(7)</td></tr><tr><td>hyundai</td><td>420</td><td>23,771</td><td>1,052</td><td>$858.94</td><td>$7,492.38</td><td>61</td><td><span class="tag warn">11.46%</span></td><td>5.80%</td><td>elantra(250) | sonata(144) | genesis(3) | santa(2) | 2013(2) | tucson(1)</td></tr><tr><td>mazda</td><td>274</td><td>12,350</td><td>690</td><td>$426.24</td><td>$5,459.06</td><td>40</td><td><span class="tag good">7.81%</span></td><td>5.80%</td><td>cx5(51) | cx-5(13) | cx(8) | cx9(4) | three(3) | cx7(2)</td></tr><tr><td>gmc</td><td>180</td><td>3,102</td><td>342</td><td>$200.12</td><td>$2,838.02</td><td>25</td><td><span class="tag good">7.05%</span></td><td>7.31%</td><td>terrain(130) | yukon(29) | 2016(7) | sierra(4) | 1500(2) | 2015(1)</td></tr><tr><td>honda</td><td>288</td><td>9,695</td><td>475</td><td>$395.83</td><td>$2,636.09</td><td>24</td><td><span class="tag warn">15.02%</span></td><td>5.05%</td><td>civic(103) | crv(86) | accord(69) | fit(6) | cr-v(6) | elantra(3)</td></tr><tr><td>ram</td><td>327</td><td>2,186</td><td>427</td><td>$408.77</td><td>$2,709.51</td><td>19</td><td><span class="tag warn">15.09%</span></td><td>4.45%</td><td>1500(181) | 2500(36) | classic(23) | 3500(12) | 2019(5) | 2003(3)</td></tr><tr><td>dodge</td><td>163</td><td>491</td><td>191</td><td>$199.55</td><td>$1,226.53</td><td>10</td><td><span class="tag warn">16.27%</span></td><td>5.24%</td><td>ram(122) | journey(17) | 2500(5) | 1500(4) | grand(3) | 3500(2)</td></tr><tr><td>toyota</td><td>129</td><td>620</td><td>153</td><td>$110.82</td><td>$786.49</td><td>8</td><td><span class="tag warn">14.09%</span></td><td>5.23%</td><td>camry(40) | corolla(35) | highlander(21) | tundra(14) | tacoma(10) | sequoia(5)</td></tr><tr><td>chevrolet</td><td>101</td><td>279</td><td>116</td><td>$84.62</td><td>$905.29</td><td>7</td><td><span class="tag good">9.35%</span></td><td>6.03%</td><td>malibu(39) | silverado(22) | trailblazer(12) | equinox(9) | impala(3) | ltz(2)</td></tr><tr><td>ford</td><td>171</td><td>1,101</td><td>239</td><td>$194.21</td><td>$557.97</td><td>6</td><td><span class="tag bad">34.81%</span></td><td>2.51%</td><td>focus(70) | f150(35) | ranger(24) | fusion(5) | raptor(4) | 150(3)</td></tr><tr><td>nissan</td><td>51</td><td>192</td><td>61</td><td>$35.14</td><td>$418.26</td><td>5</td><td><span class="tag good">8.40%</span></td><td>8.20%</td><td>rogue(22) | titan(15) | armada(9) | altima(3) | xterra(1) | maximum(1)</td></tr><tr><td>acura</td><td>21</td><td>214</td><td>48</td><td>$30.07</td><td>$563.02</td><td>5</td><td><span class="tag good">5.34%</span></td><td>10.42%</td><td>rsx(18) | legend(1)</td></tr><tr><td>volkswagen</td><td>39</td><td>64</td><td>40</td><td>$20.06</td><td>$297.09</td><td>4</td><td><span class="tag good">6.75%</span></td><td>10.00%</td><td>jetta(20) | beetle(14) | pairs(1) | 2016(1) | bug(1) | emblem(1)</td></tr><tr><td>vw</td><td>42</td><td>305</td><td>70</td><td>$35.63</td><td>$268.36</td><td>4</td><td><span class="tag warn">13.28%</span></td><td>5.71%</td><td>beetle(20) | jetta(14) | passat(1) | gti(1) | tourag(1) | 2007(1)</td></tr><tr><td>jeep</td><td>9</td><td>11</td><td>9</td><td>$5.29</td><td>$0.00</td><td>0</td><td>—</td><td>0.00%</td><td>compass(9)</td></tr><tr><td>kia</td><td>1</td><td>2</td><td>1</td><td>$0.51</td><td>$0.00</td><td>0</td><td>—</td><td>0.00%</td><td>sorento(1)</td></tr><tr><td>subaru</td><td>1</td><td>1</td><td>1</td><td>$0.56</td><td>$0.00</td><td>0</td><td>—</td><td>0.00%</td><td>impreza(1)</td></tr><tr><td>lexus</td><td>1</td><td>1</td><td>1</td><td>$1.43</td><td>$0.00</td><td>0</td><td>—</td><td>0.00%</td><td></td></tr><tr><td>chrysler</td><td>8</td><td>11</td><td>8</td><td>$2.52</td><td>$0.00</td><td>0</td><td>—</td><td>0.00%</td><td>pt(6) | town(1) | 2001(1)</td></tr><tr><td>mercedes</td><td>1</td><td>1</td><td>1</td><td>$0.64</td><td>$0.00</td><td>0</td><td>—</td><td>0.00%</td><td></td></tr><tr><td>lincoln</td><td>1</td><td>1</td><td>1</td><td>$0.50</td><td>$0.00</td><td>0</td><td>—</td><td>0.00%</td><td>mark(1)</td></tr><tr><td>scion</td><td>1</td><td>1</td><td>1</td><td>$0.44</td><td>$0.00</td><td>0</td><td>—</td><td>0.00%</td><td>tc(1)</td></tr><tr><td>tesla</td><td>1</td><td>1</td><td>1</td><td>$0.46</td><td>$0.00</td><td>0</td><td>—</td><td>0.00%</td><td>model(1)</td></tr></tbody></table><div class="insight "><div class="ins-line"><b>📊 数据解读:</b>chevy 是绝对主力(<b>94 单,ACOS 8.33%%</b>),其次 hyundai(61 单)、mazda(40 单)、gmc(25 单)。<b>ford 表现最差(6 单,ACOS 34.81%%)</b>。</div><div class="ins-line"><b>🔍 原因分析:</b>chevy/mazda/gmc 的适配覆盖率好、车型聚焦;<b>ford 的搜索量大(171 词)但成交少</b>,说明我们的产品在这些 ford 车型上适配度低或价格无优势。honda/ram/dodge/toyota 的 ACOS 14-16%%,属"可以但要优化"。</div><div class="ins-line"><b>✅ 建议动作:</b>①<b>chevy / mazda / gmc 品牌词加投 20-30%%</b>;②ford 词降价或暂停,把预算转给 chevy;③honda/ram/dodge/toyota 逐词检查,否掉无转化的;④按品牌建独立广告组,便于分层管理。</div></div><div class="chapter"><span class="bar"></span>&#128279; 四、双词组合(最精准的投放单位)</div><div class="card"><div class="c-title">双词组合 TOP30(按订单)</div><div class="c-sub">词组比单词更精准,是实际建议投放的粒度</div><table><thead><tr><th>词组</th><th>词数</th><th>曝光</th><th>点击</th><th>花费</th><th>广告销售额</th><th>订单</th><th>ACOS</th><th>CVR</th></tr></thead><tbody><tr><td>light assembly</td><td>509</td><td>4,628</td><td>834</td><td>$665.87</td><td>$7,475.13</td><td>61</td><td><span class="tag good">8.91%</span></td><td>7.31%</td></tr><tr><td>headlight assembly</td><td>469</td><td>4,530</td><td>784</td><td>$637.63</td><td>$7,404.14</td><td>60</td><td><span class="tag good">8.61%</span></td><td>7.65%</td></tr><tr><td>malibu headlight</td><td>103</td><td>4,224</td><td>317</td><td>$308.21</td><td>$3,852.29</td><td>45</td><td><span class="tag good">8.00%</span></td><td>14.20%</td></tr><tr><td>chevy malibu</td><td>156</td><td>4,010</td><td>331</td><td>$319.18</td><td>$3,733.74</td><td>44</td><td><span class="tag good">8.55%</span></td><td>13.29%</td></tr><tr><td>hyundai elantra</td><td>252</td><td>11,326</td><td>644</td><td>$555.22</td><td>$4,880.61</td><td>38</td><td><span class="tag warn">11.38%</span></td><td>5.90%</td></tr><tr><td>chevy silverado</td><td>175</td><td>17,095</td><td>473</td><td>$353.77</td><td>$4,405.82</td><td>29</td><td><span class="tag good">8.03%</span></td><td>6.13%</td></tr><tr><td>malibu headlights</td><td>56</td><td>3,810</td><td>214</td><td>$203.84</td><td>$2,195.14</td><td>26</td><td><span class="tag good">9.29%</span></td><td>12.15%</td></tr><tr><td>trailblazer headlight</td><td>61</td><td>3,774</td><td>201</td><td>$138.87</td><td>$1,951.85</td><td>23</td><td><span class="tag good">7.11%</span></td><td>11.44%</td></tr><tr><td>gmc terrain</td><td>131</td><td>2,666</td><td>275</td><td>$162.80</td><td>$2,596.04</td><td>23</td><td><span class="tag good">6.27%</span></td><td>8.36%</td></tr><tr><td>hyundai sonata</td><td>145</td><td>12,390</td><td>381</td><td>$283.17</td><td>$2,481.78</td><td>22</td><td><span class="tag warn">11.41%</span></td><td>5.77%</td></tr><tr><td>elantra headlight</td><td>78</td><td>10,270</td><td>378</td><td>$332.14</td><td>$2,742.13</td><td>21</td><td><span class="tag warn">12.11%</span></td><td>5.56%</td></tr><tr><td>trailblazer headlights</td><td>34</td><td>3,529</td><td>162</td><td>$107.24</td><td>$1,765.87</td><td>21</td><td><span class="tag good">6.07%</span></td><td>12.96%</td></tr><tr><td>silverado 1500</td><td>147</td><td>11,850</td><td>404</td><td>$288.25</td><td>$3,301.31</td><td>20</td><td><span class="tag good">8.73%</span></td><td>4.95%</td></tr><tr><td>sonata headlight</td><td>57</td><td>10,840</td><td>273</td><td>$240.91</td><td>$2,141.81</td><td>19</td><td><span class="tag warn">11.25%</span></td><td>6.96%</td></tr><tr><td>2005 chevy</td><td>29</td><td>2,894</td><td>93</td><td>$96.83</td><td>$1,343.22</td><td>17</td><td><span class="tag good">7.21%</span></td><td>18.28%</td></tr><tr><td>elantra headlights</td><td>34</td><td>9,222</td><td>261</td><td>$226.34</td><td>$2,217.83</td><td>17</td><td><span class="tag good">10.21%</span></td><td>6.51%</td></tr><tr><td>2013 hyundai</td><td>62</td><td>8,956</td><td>236</td><td>$175.70</td><td>$1,900.30</td><td>16</td><td><span class="tag good">9.25%</span></td><td>6.78%</td></tr><tr><td>headlights assembly</td><td>80</td><td>4,358</td><td>244</td><td>$150.06</td><td>$1,771.83</td><td>15</td><td><span class="tag good">8.47%</span></td><td>6.15%</td></tr><tr><td>cx5 headlight</td><td>34</td><td>3,600</td><td>149</td><td>$144.48</td><td>$2,408.40</td><td>15</td><td><span class="tag good">6.00%</span></td><td>10.07%</td></tr><tr><td>honda crv</td><td>86</td><td>5,944</td><td>187</td><td>$234.76</td><td>$1,670.44</td><td>14</td><td><span class="tag warn">14.05%</span></td><td>7.49%</td></tr><tr><td>mazda cx</td><td>80</td><td>3,677</td><td>196</td><td>$158.98</td><td>$2,247.41</td><td>14</td><td><span class="tag good">7.07%</span></td><td>7.14%</td></tr><tr><td>chevy trailblazer</td><td>58</td><td>2,026</td><td>144</td><td>$97.77</td><td>$1,156.77</td><td>14</td><td><span class="tag good">8.45%</span></td><td>9.72%</td></tr><tr><td>2006 chevy</td><td>39</td><td>2,156</td><td>108</td><td>$104.08</td><td>$1,222.10</td><td>14</td><td><span class="tag good">8.52%</span></td><td>12.96%</td></tr><tr><td>sonata headlights</td><td>27</td><td>10,204</td><td>206</td><td>$182.44</td><td>$1,587.86</td><td>14</td><td><span class="tag warn">11.49%</span></td><td>6.80%</td></tr><tr><td>mazda cx5</td><td>52</td><td>3,629</td><td>165</td><td>$141.65</td><td>$2,092.42</td><td>13</td><td><span class="tag good">6.77%</span></td><td>7.88%</td></tr><tr><td>crv headlight</td><td>40</td><td>6,205</td><td>145</td><td>$182.65</td><td>$1,434.62</td><td>12</td><td><span class="tag warn">12.73%</span></td><td>8.28%</td></tr><tr><td>2014 chevy</td><td>82</td><td>8,962</td><td>249</td><td>$182.36</td><td>$1,950.82</td><td>12</td><td><span class="tag good">9.35%</span></td><td>4.82%</td></tr><tr><td>terrain headlight</td><td>33</td><td>2,403</td><td>160</td><td>$93.95</td><td>$1,331.33</td><td>12</td><td><span class="tag good">7.06%</span></td><td>7.50%</td></tr><tr><td>1500 head</td><td>112</td><td>10,069</td><td>319</td><td>$256.28</td><td>$1,992.75</td><td>11</td><td><span class="tag warn">12.86%</span></td><td>3.45%</td></tr><tr><td>2015 chevy</td><td>69</td><td>2,822</td><td>153</td><td>$96.22</td><td>$1,908.45</td><td>11</td><td><span class="tag good">5.04%</span></td><td>7.19%</td></tr></tbody></table><div class="insight good"><div class="ins-line"><b>📊 数据解读:</b>最佳词组是 <b>malibu headlight(CVR 14.20%%,ACOS 8.00%%)</b>、trailblazer headlight(ACOS 7.11%%)、gmc terrain(ACOS 6.27%%)。品类词组 <b>headlight assembly 贡献 60 单</b>。</div><div class="ins-line"><b>🔍 原因分析:</b><b>"车型 + headlight"的组合 CVR 普遍在 11-14%%,远高于品类词的 6-7%%</b> —— 因为买家已经明确知道自己要什么车的大灯,购买意图最强。</div><div class="ins-line"><b>✅ 建议动作:</b>①把这些词组做成<b>词组匹配</b>广告活动(不要用广泛匹配,避免跑偏);②按 CVR 排序,优先投 CVR&gt;10%% 的组合;③每个词组单独设 bid 上限,避免高 ACOS 词组吃掉预算。</div></div><div class="chapter"><span class="bar"></span>&#128295; 五、品类·修饰·年份词根</div><div class="card"><div class="c-title">品类词根</div><table><thead><tr><th>词根</th><th>词数</th><th>花费</th><th>广告销售额</th><th>订单</th><th>ACOS</th><th>CVR</th></tr></thead><tbody><tr><td>headlights</td><td>1,625</td><td>$3,084.03</td><td>$28,309.05</td><td>248</td><td><span class="tag warn">10.89%</span></td><td>6.24%</td></tr><tr><td>headlight</td><td>972</td><td>$1,195.53</td><td>$13,555.68</td><td>110</td><td><span class="tag good">8.82%</span></td><td>7.32%</td></tr><tr><td>assembly</td><td>624</td><td>$842.58</td><td>$9,655.76</td><td>78</td><td><span class="tag good">8.73%</span></td><td>6.96%</td></tr><tr><td>lights</td><td>247</td><td>$208.97</td><td>$1,848.39</td><td>19</td><td><span class="tag warn">11.31%</span></td><td>5.38%</td></tr><tr><td>projector</td><td>142</td><td>$179.17</td><td>$1,807.59</td><td>12</td><td><span class="tag good">9.91%</span></td><td>5.43%</td></tr><tr><td>led</td><td>301</td><td>$293.56</td><td>$1,004.56</td><td>9</td><td><span class="tag bad">29.22%</span></td><td>2.59%</td></tr><tr><td>tail</td><td>60</td><td>$61.36</td><td>$527.92</td><td>8</td><td><span class="tag warn">11.62%</span></td><td>5.97%</td></tr><tr><td>assemblies</td><td>16</td><td>$72.37</td><td>$1,115.92</td><td>8</td><td><span class="tag good">6.49%</span></td><td>7.14%</td></tr><tr><td>light</td><td>207</td><td>$145.97</td><td>$634.52</td><td>7</td><td><span class="tag bad">23.00%</span></td><td>3.03%</td></tr><tr><td>housing</td><td>68</td><td>$51.31</td><td>$532.07</td><td>4</td><td><span class="tag good">9.64%</span></td><td>5.33%</td></tr><tr><td>fog</td><td>12</td><td>$7.11</td><td>$96.98</td><td>2</td><td><span class="tag good">7.33%</span></td><td>14.29%</td></tr><tr><td>lamps</td><td>12</td><td>$7.77</td><td>$87.99</td><td>1</td><td><span class="tag good">8.83%</span></td><td>7.14%</td></tr><tr><td>bumper</td><td>22</td><td>$15.86</td><td>$119.99</td><td>1</td><td><span class="tag warn">13.22%</span></td><td>4.00%</td></tr><tr><td>bulbs</td><td>44</td><td>$38.21</td><td>$84.99</td><td>1</td><td><span class="tag bad">44.96%</span></td><td>2.00%</td></tr><tr><td>lamp</td><td>22</td><td>$12.17</td><td>$0.00</td><td>0</td><td>—</td><td>0.00%</td></tr></tbody></table><div class="c-title" style="margin-top:14px">修饰词根(左右侧/属性/位置)—— 最赚钱的细分</div><table><thead><tr><th>词根</th><th>词数</th><th>花费</th><th>广告销售额</th><th>订单</th><th>ACOS</th><th>CVR</th></tr></thead><tbody><tr><td>front</td><td>201</td><td>$158.15</td><td>$1,640.75</td><td>13</td><td><span class="tag good">9.64%</span></td><td>5.37%</td></tr><tr><td>projector</td><td>142</td><td>$179.17</td><td>$1,807.59</td><td>12</td><td><span class="tag good">9.91%</span></td><td>5.43%</td></tr><tr><td>left</td><td>55</td><td>$41.41</td><td>$916.82</td><td>9</td><td><span class="tag good">4.52%</span></td><td>14.29%</td></tr><tr><td>led</td><td>301</td><td>$293.56</td><td>$1,004.56</td><td>9</td><td><span class="tag bad">29.22%</span></td><td>2.59%</td></tr><tr><td>right</td><td>39</td><td>$33.86</td><td>$759.94</td><td>6</td><td><span class="tag good">4.46%</span></td><td>12.24%</td></tr><tr><td>side</td><td>89</td><td>$73.97</td><td>$680.41</td><td>5</td><td><span class="tag warn">10.87%</span></td><td>4.90%</td></tr><tr><td>replacement</td><td>47</td><td>$38.01</td><td>$744.20</td><td>5</td><td><span class="tag good">5.11%</span></td><td>9.62%</td></tr><tr><td>with</td><td>81</td><td>$67.35</td><td>$411.93</td><td>4</td><td><span class="tag warn">16.35%</span></td><td>4.17%</td></tr><tr><td>pair</td><td>26</td><td>$19.87</td><td>$603.32</td><td>4</td><td><span class="tag good">3.29%</span></td><td>12.12%</td></tr><tr><td>oem</td><td>28</td><td>$30.35</td><td>$447.08</td><td>3</td><td><span class="tag good">6.79%</span></td><td>8.11%</td></tr><tr><td>driver</td><td>54</td><td>$41.43</td><td>$194.44</td><td>2</td><td><span class="tag bad">21.31%</span></td><td>3.45%</td></tr><tr><td>aftermarket</td><td>17</td><td>$15.09</td><td>$254.98</td><td>2</td><td><span class="tag good">5.92%</span></td><td>10.53%</td></tr><tr><td>passenger</td><td>52</td><td>$38.52</td><td>$264.98</td><td>2</td><td><span class="tag warn">14.54%</span></td><td>3.51%</td></tr><tr><td>chrome</td><td>33</td><td>$22.19</td><td>$275.83</td><td>2</td><td><span class="tag good">8.04%</span></td><td>5.13%</td></tr><tr><td>hid</td><td>42</td><td>$39.87</td><td>$337.98</td><td>2</td><td><span class="tag warn">11.80%</span></td><td>4.35%</td></tr></tbody></table><div id="c4" class="chart"></div><div class="c-title" style="margin-top:14px">年份词根 TOP15(按订单)</div><table><thead><tr><th>年份</th><th>词数</th><th>花费</th><th>广告销售额</th><th>订单</th><th>ACOS</th><th>CVR</th></tr></thead><tbody><tr><td>2014</td><td>363</td><td>$629.20</td><td>$7,135.27</td><td>46</td><td><span class="tag good">8.82%</span></td><td>5.94%</td></tr><tr><td>2015</td><td>279</td><td>$397.77</td><td>$5,826.84</td><td>37</td><td><span class="tag good">6.83%</span></td><td>6.56%</td></tr><tr><td>2013</td><td>314</td><td>$505.45</td><td>$3,853.42</td><td>33</td><td><span class="tag warn">13.12%</span></td><td>4.87%</td></tr><tr><td>2006</td><td>141</td><td>$236.14</td><td>$2,681.04</td><td>31</td><td><span class="tag good">8.81%</span></td><td>11.65%</td></tr><tr><td>2005</td><td>174</td><td>$271.63</td><td>$2,587.21</td><td>31</td><td><span class="tag good">10.50%</span></td><td>11.23%</td></tr><tr><td>2016</td><td>200</td><td>$261.54</td><td>$3,895.18</td><td>28</td><td><span class="tag good">6.71%</span></td><td>8.07%</td></tr><tr><td>2004</td><td>158</td><td>$203.06</td><td>$1,934.76</td><td>22</td><td><span class="tag good">10.50%</span></td><td>9.28%</td></tr><tr><td>2011</td><td>199</td><td>$341.11</td><td>$2,215.02</td><td>20</td><td><span class="tag warn">15.40%</span></td><td>4.93%</td></tr><tr><td>2007</td><td>183</td><td>$295.30</td><td>$1,545.57</td><td>18</td><td><span class="tag warn">19.11%</span></td><td>5.28%</td></tr><tr><td>2012</td><td>191</td><td>$265.29</td><td>$2,096.86</td><td>17</td><td><span class="tag warn">12.65%</span></td><td>4.80%</td></tr><tr><td>2010</td><td>131</td><td>$159.11</td><td>$1,811.17</td><td>15</td><td><span class="tag good">8.78%</span></td><td>6.38%</td></tr><tr><td>2003</td><td>107</td><td>$109.55</td><td>$998.69</td><td>11</td><td><span class="tag warn">10.97%</span></td><td>7.75%</td></tr><tr><td>2009</td><td>72</td><td>$97.42</td><td>$1,161.20</td><td>11</td><td><span class="tag good">8.39%</span></td><td>10.09%</td></tr><tr><td>2008</td><td>122</td><td>$162.25</td><td>$802.00</td><td>9</td><td><span class="tag bad">20.23%</span></td><td>4.66%</td></tr><tr><td>2000</td><td>52</td><td>$44.82</td><td>$499.43</td><td>7</td><td><span class="tag good">8.97%</span></td><td>7.45%</td></tr></tbody></table><div class="insight good"><div class="ins-line"><b>📊 数据解读:</b><b>左右侧词(left/right/driver/passenger)ACOS 仅 4.5%%,CVR 12-14%%</b>,是全表最赚钱的细分;年份词集中在 <b>2013-2016</b>(占订单 60%%+)。</div><div class="ins-line"><b>🔍 原因分析:</b>买家搜"left headlight"时已经确定了左右侧,适配精准度最高;<b>led 词 ACOS 29.22%%,CVR 仅 2.59%%</b> —— 这是"想买 LED 灯泡"的人,不是买总成的。年份集中在 2013-2016 说明我们的主力适配车型就是这几年款。</div><div class="ins-line"><b>✅ 建议动作:</b>①<b>新增"left/right + headlight assembly"词组投放</b>(ACOS 4.5%%,可大幅加投);②<b>led 词加否词或降 bid</b>;③年份词按 2013-2016 重点投放,2005-2006 虽老但 CVR 11%%+ 值得保留。</div></div><div class="chapter"><span class="bar"></span>&#128273; 六、零件号词(意图最强)</div><div class="card"><div class="c-title">零件号搜索词 200 个</div><div class="c-sub">零件号搜索意图最明确,ACOS 普遍极低</div><table><thead><tr><th>零件号</th><th>词数</th><th>曝光</th><th>点击</th><th>花费</th><th>广告销售额</th><th>订单</th><th>ACOS</th><th>CVR</th></tr></thead><tbody><tr><td>MAZDASPEED3</td><td>3</td><td>7</td><td>4</td><td>$2.14</td><td>$119.99</td><td>1</td><td><span class="tag good">1.78%</span></td><td>25.00%</td></tr><tr><td>99-00</td><td>2</td><td>15</td><td>4</td><td>$2.01</td><td>$81.74</td><td>1</td><td><span class="tag good">2.46%</span></td><td>25.00%</td></tr><tr><td>22853027</td><td>1</td><td>3</td><td>2</td><td>$0.96</td><td>$84.26</td><td>1</td><td><span class="tag good">1.14%</span></td><td>50.00%</td></tr><tr><td>-2013MAZDA</td><td>1</td><td>3</td><td>2</td><td>$0.76</td><td>$119.99</td><td>1</td><td><span class="tag good">0.63%</span></td><td>50.00%</td></tr><tr><td>FO2502298</td><td>1</td><td>1</td><td>1</td><td>$0.45</td><td>$103.99</td><td>1</td><td><span class="tag good">0.43%</span></td><td>100.00%</td></tr><tr><td>HY2503187</td><td>2</td><td>2</td><td>2</td><td>$1.31</td><td>$135.90</td><td>1</td><td><span class="tag good">0.96%</span></td><td>50.00%</td></tr><tr><td>2012-2014</td><td>2</td><td>2</td><td>2</td><td>$1.27</td><td>$103.99</td><td>1</td><td><span class="tag good">1.22%</span></td><td>50.00%</td></tr><tr><td>SPEED3</td><td>4</td><td>9</td><td>6</td><td>$3.02</td><td>$119.99</td><td>1</td><td><span class="tag good">2.52%</span></td><td>16.67%</td></tr><tr><td>B092W2FZ6Z</td><td>1</td><td>5</td><td>1</td><td>$0.55</td><td>$91.99</td><td>1</td><td><span class="tag good">0.60%</span></td><td>100.00%</td></tr><tr><td>B0B82HJFT2</td><td>1</td><td>1</td><td>1</td><td>$0.62</td><td>$116.66</td><td>1</td><td><span class="tag good">0.53%</span></td><td>100.00%</td></tr><tr><td>B0CYZM6GWY</td><td>1</td><td>3</td><td>1</td><td>$0.36</td><td>$98.95</td><td>1</td><td><span class="tag good">0.36%</span></td><td>100.00%</td></tr><tr><td>B0CF4XDCMH</td><td>1</td><td>106</td><td>11</td><td>$6.30</td><td>$74.99</td><td>1</td><td><span class="tag good">8.40%</span></td><td>9.09%</td></tr><tr><td>B0CPXWHM6S</td><td>1</td><td>6</td><td>1</td><td>$0.23</td><td>$116.66</td><td>1</td><td><span class="tag good">0.20%</span></td><td>100.00%</td></tr><tr><td>B08B3DPFDM</td><td>1</td><td>2</td><td>2</td><td>$0.99</td><td>$61.05</td><td>1</td><td><span class="tag good">1.62%</span></td><td>50.00%</td></tr><tr><td>B07D4YYCM5</td><td>1</td><td>12</td><td>3</td><td>$1.87</td><td>$75.59</td><td>1</td><td><span class="tag good">2.47%</span></td><td>33.33%</td></tr><tr><td>B0CQ1ZBJ6F</td><td>1</td><td>12</td><td>4</td><td>$1.99</td><td>$81.39</td><td>1</td><td><span class="tag good">2.45%</span></td><td>25.00%</td></tr><tr><td>2010-2013</td><td>4</td><td>6</td><td>4</td><td>$2.24</td><td>$0.00</td><td>0</td><td>—</td><td>0.00%</td></tr><tr><td>2004-2007</td><td>3</td><td>12</td><td>3</td><td>$1.84</td><td>$0.00</td><td>0</td><td>—</td><td>0.00%</td></tr><tr><td>2500HD</td><td>3</td><td>5</td><td>3</td><td>$2.98</td><td>$0.00</td><td>0</td><td>—</td><td>0.00%</td></tr><tr><td>09-14</td><td>3</td><td>8</td><td>3</td><td>$3.38</td><td>$0.00</td><td>0</td><td>—</td><td>0.00%</td></tr><tr><td>F-150</td><td>14</td><td>46</td><td>15</td><td>$15.60</td><td>$0.00</td><td>0</td><td>—</td><td>0.00%</td></tr><tr><td>2014-2015</td><td>9</td><td>29</td><td>11</td><td>$7.69</td><td>$0.00</td><td>0</td><td>—</td><td>0.00%</td></tr><tr><td>14-15</td><td>3</td><td>4</td><td>3</td><td>$2.75</td><td>$0.00</td><td>0</td><td>—</td><td>0.00%</td></tr><tr><td>RAM1500</td><td>4</td><td>10</td><td>4</td><td>$4.67</td><td>$0.00</td><td>0</td><td>—</td><td>0.00%</td></tr><tr><td>2003-2008</td><td>2</td><td>3</td><td>2</td><td>$1.83</td><td>$0.00</td><td>0</td><td>—</td><td>0.00%</td></tr></tbody></table><div class="insight good"><div class="ins-line"><b>📊 数据解读:</b>零件号词共 200 个,有订单的 ACOS 大多在 <b>0.4%-2.5%</b>,CVR 高达 25%-100%。</div><div class="ins-line"><b>🔍 原因分析:</b>按零件号搜索的买家<b>已经知道要买什么</b>(可能来自维修手册或旧件编号),转化率天然极高,而且竞价成本低(CPC $0.45-0.63)。</div><div class="ins-line"><b>✅ 建议动作:</b>①<b>单独建"零件号精准组"</b>,用 OE 号做精准匹配;②从产品 OE 号表(62 商编 / 940 个号)批量提取,补齐未投放的零件号;③零件号词页面上要保证零件号可见(标题/A+/图片),否则买家会跳走。</div></div>
+<div class="footer">数据源: 车灯搜索词_0801-0930.xlsx ｜ 词根提取: 单词(935) / 双词(400) / 三词(300) / 车型(23) / 品类(28) / 修饰(31) / 年份(30) / 零件号(200)</div>
+<script>
+var D = {"top15": [{"n": "headlights", "v": 248, "amt": 3084.03}, {"n": "headlight", "v": 110, "amt": 1195.53}, {"n": "chevy", "v": 94, "amt": 831.21}, {"n": "assembly", "v": 78, "amt": 842.58}, {"n": "malibu", "v": 69, "amt": 531.81}, {"n": "hyundai", "v": 61, "amt": 858.94}, {"n": "silverado", "v": 46, "amt": 582.63}, {"n": "2014", "v": 46, "amt": 617.84}, {"n": "elantra", "v": 42, "amt": 629.75}, {"n": "mazda", "v": 40, "amt": 426.24}, {"n": "2015", "v": 37, "amt": 391.54}, {"n": "1500", "v": 35, "amt": 562.88}, {"n": "2013", "v": 33, "amt": 501.18}, {"n": "2005", "v": 29, "amt": 255.86}, {"n": "2016", "v": 28, "amt": 260.88}], "eff": [{"n": "silverado", "acos": 7.77, "ord": 46}, {"n": "mazda", "acos": 7.81, "ord": 40}, {"n": "2015", "acos": 6.72, "ord": 37}, {"n": "2016", "acos": 6.7, "ord": 28}, {"n": "terrain", "acos": 5.74, "ord": 27}, {"n": "gmc", "acos": 7.05, "ord": 25}, {"n": "cx5", "acos": 6.62, "ord": 15}, {"n": "left", "acos": 4.52, "ord": 9}, {"n": "ltz", "acos": 3.75, "ord": 8}, {"n": "rsx", "acos": 4.24, "ord": 8}, {"n": "assemblies", "acos": 6.49, "ord": 8}, {"n": "automotive", "acos": 6.08, "ord": 7}, {"n": "beetle", "acos": 7.24, "ord": 7}, {"n": "right", "acos": 4.46, "ord": 6}, {"n": "replacement", "acos": 5.11, "ord": 5}, {"n": "2019", "acos": 71.19, "ord": 1}, {"n": "2018", "acos": 52.4, "ord": 1}, {"n": "bulbs", "acos": 44.96, "ord": 1}, {"n": "ford", "acos": 34.81, "ord": 6}, {"n": "focus", "acos": 34.69, "ord": 3}, {"n": "2001", "acos": 34.52, "ord": 1}, {"n": "f150", "acos": 34.24, "ord": 2}, {"n": "camry", "acos": 33.83, "ord": 2}, {"n": "led", "acos": 29.22, "ord": 9}, {"n": "rear", "acos": 27.62, "ord": 1}, {"n": "car", "acos": 25.43, "ord": 1}, {"n": "ranger", "acos": 25.23, "ord": 1}, {"n": "corolla", "acos": 23.14, "ord": 2}, {"n": "equinox", "acos": 23.07, "ord": 2}, {"n": "light", "acos": 23.0, "ord": 7}], "car": [{"n": "chevy", "ord": 94, "spend": 831.21, "sales": 9976.35, "acos": 8.33}, {"n": "hyundai", "ord": 61, "spend": 858.94, "sales": 7492.38, "acos": 11.46}, {"n": "mazda", "ord": 40, "spend": 426.24, "sales": 5459.06, "acos": 7.81}, {"n": "gmc", "ord": 25, "spend": 200.12, "sales": 2838.02, "acos": 7.05}, {"n": "honda", "ord": 24, "spend": 395.83, "sales": 2636.09, "acos": 15.02}, {"n": "ram", "ord": 19, "spend": 408.77, "sales": 2709.51, "acos": 15.09}, {"n": "dodge", "ord": 10, "spend": 199.55, "sales": 1226.53, "acos": 16.27}, {"n": "toyota", "ord": 8, "spend": 110.82, "sales": 786.49, "acos": 14.09}, {"n": "chevrolet", "ord": 7, "spend": 84.62, "sales": 905.29, "acos": 9.35}, {"n": "ford", "ord": 6, "spend": 194.21, "sales": 557.97, "acos": 34.81}, {"n": "nissan", "ord": 5, "spend": 35.14, "sales": 418.26, "acos": 8.4}, {"n": "acura", "ord": 5, "spend": 30.07, "sales": 563.02, "acos": 5.34}, {"n": "volkswagen", "ord": 4, "spend": 20.06, "sales": 297.09, "acos": 6.75}, {"n": "vw", "ord": 4, "spend": 35.63, "sales": 268.36, "acos": 13.28}, {"n": "jeep", "ord": 0, "spend": 5.29, "sales": 0.0, "acos": 0}], "mod": [{"n": "front", "acos": 9.64, "ord": 13, "cvr": 5.37}, {"n": "projector", "acos": 9.91, "ord": 12, "cvr": 5.43}, {"n": "left", "acos": 4.52, "ord": 9, "cvr": 14.29}, {"n": "led", "acos": 29.22, "ord": 9, "cvr": 2.59}, {"n": "right", "acos": 4.46, "ord": 6, "cvr": 12.24}, {"n": "side", "acos": 10.87, "ord": 5, "cvr": 4.9}, {"n": "replacement", "acos": 5.11, "ord": 5, "cvr": 9.62}, {"n": "with", "acos": 16.35, "ord": 4, "cvr": 4.17}, {"n": "pair", "acos": 3.29, "ord": 4, "cvr": 12.12}, {"n": "oem", "acos": 6.79, "ord": 3, "cvr": 8.11}, {"n": "driver", "acos": 21.31, "ord": 2, "cvr": 3.45}, {"n": "aftermarket", "acos": 5.92, "ord": 2, "cvr": 10.53}]};
+var baseOpt = { grid:{left:80,right:60,top:40,bottom:34}, tooltip:{trigger:'axis'}, legend:{top:4,textStyle:{fontSize:11}} };
+(function(){
+var el = echarts.init(document.getElementById('c1'));
+var t = D.top15.slice().reverse();
+el.setOption(Object.assign({}, baseOpt, {
+grid:{left:110,right:80,top:26,bottom:30},
+xAxis:{type:'value',name:'订单'},
+yAxis:{type:'category',data:t.map(function(r){return r.n;}),axisLabel:{fontSize:11}},
+series:[{type:'bar',data:t.map(function(r){return r.v;}),itemStyle:{color:'#2E86AB'},barWidth:'56%',
+ label:{show:true,position:'right',fontSize:11,formatter:'{c} 单'}}]
+}));
+})();
+(function(){
+var el = echarts.init(document.getElementById('c2'));
+el.setOption(Object.assign({}, baseOpt, {
+xAxis:{type:'category',data:D.eff.map(function(r){return r.n;}),axisLabel:{fontSize:9,rotate:40}},
+yAxis:{type:'value',name:'ACOS(%)'},
+series:[{type:'bar',data:D.eff.map(function(r){return {value:r.acos,itemStyle:{color: r.acos<8?'#2A9D48':(r.acos<20?'#E67E22':'#C0392B')}};}),
+ label:{show:true,position:'top',fontSize:9,formatter:function(p){return p.value.toFixed(1)+'%';}}},
+ {name:'基准10.58%',type:'line',data:D.eff.map(function(){return 10.58;}),symbol:'none',lineStyle:{color:'#5f6b7a',type:'dashed',width:2}}]
+}));
+})();
+(function(){
+var el = echarts.init(document.getElementById('c3'));
+var t = D.car.slice().reverse();
+el.setOption(Object.assign({}, baseOpt, {
+grid:{left:90,right:80,top:30,bottom:40},
+xAxis:{type:'value',name:'订单'},
+yAxis:{type:'category',data:t.map(function(r){return r.n;}),axisLabel:{fontSize:10}},
+series:[{type:'bar',data:t.map(function(r){return {value:r.ord,itemStyle:{color: r.acos<9?'#2A9D48':(r.acos<15?'#E67E22':'#C0392B')}};}),barWidth:'58%',
+ label:{show:true,position:'right',fontSize:10,formatter:function(p){return p.value+' 单 ('+t[p.dataIndex].acos.toFixed(1)+'%)';}}}]
+}));
+})();
+(function(){
+var el = echarts.init(document.getElementById('c4'));
+el.setOption(Object.assign({}, baseOpt, {
+legend:{top:4,textStyle:{fontSize:11}},
+tooltip:{trigger:'axis'},
+xAxis:{type:'category',data:D.mod.map(function(r){return r.n;}),axisLabel:{fontSize:10}},
+yAxis:[{type:'value',name:'ACOS(%)'},{type:'value',name:'订单'}],
+series:[
+ {name:'ACOS(%)',type:'bar',data:D.mod.map(function(r){return {value:r.acos,itemStyle:{color: r.acos<8?'#2A9D48':'#E67E22'}};}),barWidth:'40%',
+  label:{show:true,position:'top',fontSize:9,formatter:function(p){return p.value.toFixed(1);}}},
+ {name:'订单',type:'line',yAxisIndex:1,data:D.mod.map(function(r){return r.ord;}),itemStyle:{color:'#1F4E78'},lineStyle:{width:2.5}}
+]}));
+})();
+window.addEventListener('resize', function(){
+ ['c1','c2','c3','c4'].forEach(function(id){ var el = echarts.getInstanceByDom(document.getElementById(id)); if (el) el.resize(); });
+});
+</script>
+
+<script>
+/* ==== 增强器注入脚本 (enhance_panel.py) ==== */
+(function(){
+  // 1) 图表工具箱: 保存图片 / 数据视图 / 还原
+  function injectToolbox(){
+    var n = 0;
+    document.querySelectorAll('.chart').forEach(function(el){
+      if (typeof echarts === 'undefined') return;
+      var inst = echarts.getInstanceByDom(el);
+      if (!inst) return;
+      var op = inst.getOption();
+      var tb = op.toolbox;
+      if (tb && (Array.isArray(tb) ? tb.length : true) && op.__enh) return;
+      try {
+        inst.setOption({
+          toolbox: {
+            show: true, right: 6, top: 0, itemSize: 13, itemGap: 8,
+            iconStyle: { borderColor: '#2E86AB', borderWidth: 1.4 },
+            emphasis: { iconStyle: { borderColor: '#1F4E78' } },
+            feature: {
+              saveAsImage: { title: '保存图片', name: (el.id || 'chart'), backgroundColor: '#fff', pixelRatio: 2,
+                             lang: ['保存为图片'] },
+              dataView: { title: '数据表', readOnly: true, lang: ['数据视图', '关闭', '刷新'] },
+              restore: { title: '还原', lang: ['还原'] }
+            }
+          },
+          __enh: true
+        });
+        n++;
+      } catch(e) {}
+    });
+    return n;
+  }
+
+  // 2) 表格: 搜索 + 行数 + 折叠(Top12)
+  function enhanceTables(){
+    document.querySelectorAll('table').forEach(function(t){
+      if (t.closest('.tbl-wrap')) return;
+      var tbody = t.querySelector('tbody');
+      if (!tbody) return;
+      var rows = tbody.querySelectorAll('tr');
+      if (rows.length < 8) return;
+
+      var parent = t.parentNode;
+      var wrap = document.createElement('div');
+      wrap.className = 'tbl-wrap';
+      parent.insertBefore(wrap, t);
+      wrap.appendChild(t);
+
+      var tools = document.createElement('div');
+      tools.className = 'tbl-tools';
+      tools.innerHTML = '<input type="text" placeholder="搜索 ' + rows.length + ' 行(输入 ASIN / SKU / 关键词)">'
+        + '<span class="cnt"></span>'
+        + ((rows.length > 12 && !t.hasAttribute('data-nofold')) ? '<button class="btn-mini" type="button">展开全部</button>' : '');
+      wrap.insertBefore(tools, t);
+
+      var input = tools.querySelector('input');
+      var cnt = tools.querySelector('.cnt');
+      var btn = tools.querySelector('.btn-mini');
+
+      function setCnt(shown){
+        cnt.textContent = '显示 ' + shown + ' / ' + rows.length + ' 行';
+      }
+      setCnt(rows.length);
+      if (rows.length > 12 && btn && !t.hasAttribute('data-nofold')) {
+        wrap.classList.add('collapsed');
+        btn.textContent = '展开全部(' + rows.length + ' 行)';
+        setCnt(Math.min(12, rows.length));
+        btn.onclick = function(){
+          wrap.classList.toggle('collapsed');
+          var c = wrap.classList.contains('collapsed');
+          btn.textContent = c ? ('展开全部(' + rows.length + ' 行)') : '收起';
+          setCnt(c ? Math.min(12, rows.length) : rows.length);
+        };
+      }
+
+      input.addEventListener('input', function(){
+        var q = this.value.trim().toLowerCase();
+        var shown = 0;
+        rows.forEach(function(tr){
+          var hit = !q || tr.textContent.toLowerCase().indexOf(q) >= 0;
+          tr.style.display = hit ? '' : 'none';
+          if (hit) shown++;
+        });
+        setCnt(shown);
+        if (q) wrap.classList.remove('collapsed');
+      });
+    });
+  }
+
+  // 3) 锚点导航(基于 sec-title / chapter 自动生成)
+  function buildNav(){
+    var heads = document.querySelectorAll('.sec-title, .chapter');
+    if (heads.length < 3) return;
+    var nav = document.createElement('nav');
+    nav.className = 'topnav';
+    heads.forEach(function(h, i){
+      var txt = (h.textContent || '').replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu, '').trim();
+      if (!txt) return;
+      if (!h.id) h.id = 'sec-' + (i + 1);
+      var a = document.createElement('a');
+      a.href = '#' + h.id;
+      a.textContent = txt.length > 22 ? txt.slice(0, 22) + '…' : txt;
+      nav.appendChild(a);
+    });
+    var anchor = document.querySelector('.header') || document.body.firstChild;
+    anchor.parentNode.insertBefore(nav, anchor.nextSibling);
+
+    // 平滑滚动 + 高亮
+    nav.addEventListener('click', function(e){
+      var a = e.target.closest('a');
+      if (!a) return;
+      e.preventDefault();
+      var t = document.getElementById(a.getAttribute('href').slice(1));
+      if (t) { window.scrollTo({ top: t.getBoundingClientRect().top + window.pageYOffset - 70, behavior: 'smooth' }); }
+      nav.querySelectorAll('a').forEach(function(x){ x.classList.remove('active'); });
+      a.classList.add('active');
+    });
+    // 滚动高亮
+    var obs = new IntersectionObserver(function(es){
+      es.forEach(function(en){
+        if (en.isIntersecting) {
+          nav.querySelectorAll('a').forEach(function(x){
+            x.classList.toggle('active', x.getAttribute('href') === '#' + en.target.id);
+          });
+        }
+      });
+    }, { rootMargin: '-80px 0px -70% 0px' });
+    heads.forEach(function(h){ if (h.id) obs.observe(h); });
+  }
+
+  // 4) 回到顶部
+  function addToTop(){
+    var b = document.createElement('button');
+    b.id = 'toTop'; b.innerHTML = '&#8593;'; b.title = '回到顶部';
+    b.onclick = function(){ window.scrollTo({ top: 0, behavior: 'smooth' }); };
+    document.body.appendChild(b);
+    window.addEventListener('scroll', function(){
+      b.classList.toggle('show', window.pageYOffset > 500);
+    });
+  }
+
+  function run(){
+    var n = injectToolbox();
+    enhanceTables();
+    buildNav();
+    addToTop();
+    console.log('[enhance] toolbox charts=' + n);
+  }
+  if (document.readyState === 'complete') setTimeout(run, 900);
+  else window.addEventListener('load', function(){ setTimeout(run, 900); });
+})();
+</script>
+<!--__enhanced_v1__-->
+
+<script>
+/* ==== 下拉筛选 (enhance v4: 仅分类列) ==== */
+(function(){
+  var KW = ['状态','类型','等级','预警','分类','店铺','品牌','标签','阶段','是否','渠道','系列','品线','动销'];
+  function build(){
+    var total = 0, tables = 0;
+    document.querySelectorAll('.tbl-wrap table').forEach(function(t){
+      var wrap = t.closest('.tbl-wrap');
+      var tools = wrap && wrap.querySelector('.tbl-tools');
+      if (!tools || tools.querySelector('select.flt')) return;
+      var ths = Array.prototype.slice.call(t.querySelectorAll('thead th'));
+      var rows = Array.prototype.slice.call(t.querySelectorAll('tbody tr'));
+      if (rows.length < 6 || ths.length < 2) return;
+
+      var cands = [], kwCands = [];
+      ths.forEach(function(th, ci){
+        var name = (th.textContent || '').trim();
+        var vals = {}, editable = 0;
+        rows.forEach(function(r){
+          var c = r.children[ci];
+          if (!c) return;
+          if (c.querySelector('input, select, textarea')) editable++;
+          var v = (c.textContent || '').trim();
+          if (v && v.length <= 24) vals[v] = (vals[v] || 0) + 1;
+        });
+        if (editable > rows.length * 0.4) return;                 // 可编辑列 → 跳过
+        var keys = Object.keys(vals);
+        if (keys.length < 2 || keys.length > 12) return;
+        if (rows.length / keys.length < 1.5) return;              // 近似唯一值 → ID 列
+        if (keys.every(function(v){ return /^[\d,.\-+¥$%\s()]+$/.test(v); })) return;  // 纯数值列 → 跳过
+        var item = { ci: ci, name: name.slice(0, 10), vals: keys.sort() };
+        if (KW.some(function(k){ return name.indexOf(k) >= 0; })) kwCands.push(item);
+        else cands.push(item);
+      });
+
+      var picks = kwCands.length ? kwCands : cands;               // 有关键词列就只用它们
+      if (!picks.length) return;
+      picks = picks.slice(0, 2);                                  // 每表最多 2 个
+
+      var input = tools.querySelector('input');
+      var cnt = tools.querySelector('.cnt');
+      picks.forEach(function(p){
+        var sel = document.createElement('select');
+        sel.className = 'flt';
+        sel.setAttribute('data-ci', p.ci);
+        var html = '<option value="">' + p.name + ': 全部(' + p.vals.length + ')</option>';
+        p.vals.forEach(function(v){ html += '<option value="' + v.replace(/"/g, '&quot;') + '">' + v + '</option>'; });
+        sel.innerHTML = html;
+        tools.appendChild(sel);
+        total++;
+      });
+      tables++;
+
+      var sels = Array.prototype.slice.call(tools.querySelectorAll('select.flt'));
+      function apply(){
+        var active = false;
+        rows.forEach(function(r){
+          var show = true;
+          sels.forEach(function(s){
+            if (s.value) {
+              active = true;
+              var c = r.children[+s.getAttribute('data-ci')];
+              if (!c || (c.textContent || '').trim() !== s.value) show = false;
+            }
+          });
+          r.style.display = show ? '' : 'none';
+        });
+        sels.forEach(function(s){ s.classList.toggle('on', !!s.value); });
+        if (cnt) {
+          var shown = rows.filter(function(r){ return r.style.display !== 'none'; }).length;
+          cnt.textContent = '显示 ' + shown + ' / ' + rows.length + ' 行' + (active ? ' (已筛选)' : '');
+        }
+        if (active) wrap.classList.remove('collapsed');
+      }
+      sels.forEach(function(s){
+        s.addEventListener('change', function(){
+          if (input && input.value) { input.value = ''; input.dispatchEvent(new Event('input')); }
+          apply();
+        });
+      });
+      if (input) input.addEventListener('input', function(){
+        if (this.value) sels.forEach(function(s){ s.value = ''; s.classList.remove('on'); });
+      });
+      apply();
+    });
+    console.log('[enhance v4] 筛选器 ' + total + ' 个 / 覆盖 ' + tables + ' 张表');
+    return total;
+  }
+  var tries = 0;
+  function waitAndBuild(){
+    tries++;
+    if (document.querySelectorAll('.tbl-wrap').length === 0 && tries < 25) { setTimeout(waitAndBuild, 400); return; }
+    var n = build();
+    if (n === 0 && tries < 25) setTimeout(waitAndBuild, 400);
+  }
+  if (document.readyState === 'complete') setTimeout(waitAndBuild, 300);
+  else window.addEventListener('load', function(){ setTimeout(waitAndBuild, 300); });
+})();
+</script>
+<!--__enhanced_v4__-->
+</body>
+</html>
