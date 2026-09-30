@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>车灯总成 · 周环比整合看板 W37-W38</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Microsoft YaHei',sans-serif; background:#f0f2f5; color:#1a2332; padding:20px; max-width:1560px; margin:0 auto; }
+.header { background:linear-gradient(135deg,#1F4E78,#2E86AB); color:#fff; border-radius:12px; padding:20px 28px; margin-bottom:14px; }
+.header h1 { font-size:24px; font-weight:700; }
+.header .meta { font-size:13px; opacity:.92; margin-top:6px; line-height:1.7; }
+.nav { display:flex; gap:10px; margin-bottom:14px; flex-wrap:wrap; }
+.nav a { background:#fff; border:1px solid #d6e0ea; border-radius:20px; padding:6px 16px; font-size:13px; color:#1F4E78; text-decoration:none; font-weight:600; }
+.nav a:hover { background:#1F4E78; color:#fff; }
+.kpi-row { display:flex; flex-wrap:nowrap; gap:10px; margin-bottom:18px; overflow-x:auto; }
+.kpi { background:#fff; border-radius:10px; padding:12px 14px; box-shadow:0 1px 3px rgba(0,0,0,.08); flex:1 1 0; min-width:150px; }
+.k-label { font-size:12px; color:#5f6b7a; }
+.k-val { font-size:20px; font-weight:700; margin:2px 0; color:#1F4E78; }
+.k-val.good { color:#2A9D48; } .k-val.bad { color:#C1121F; }
+.k-note { font-size:11px; color:#8a94a3; line-height:1.5; }
+.chapter { background:linear-gradient(90deg,#1F4E78,#2E86AB); color:#fff; border-radius:10px; padding:10px 20px; margin:24px auto 14px; font-size:17px; font-weight:700; max-width:1500px; }
+.grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px; max-width:1500px; margin-left:auto; margin-right:auto; }
+.card { background:#fff; border-radius:10px; padding:14px 16px; box-shadow:0 1px 3px rgba(0,0,0,.08); }
+.card.center { margin:0 auto 16px; display:block; }
+.c-title { font-size:15px; font-weight:700; color:#1F4E78; margin-bottom:2px; }
+.c-sub { font-size:11px; color:#8a94a3; margin-bottom:8px; }
+.chart { width:100%; height:285px; }
+.tbl-scroll { overflow-x:auto; }
+table { width:100%; border-collapse:collapse; font-size:12px; }
+th { background:#1F4E78; color:#fff; padding:7px 8px; text-align:center; font-weight:600; white-space:nowrap; }
+td { padding:6px 8px; border-bottom:1px solid #edf0f4; text-align:center; }
+tr:hover td { background:#f5f9fc; }
+.num { text-align:center; font-variant-numeric:tabular-nums; }
+.tag { font-size:11px; padding:2px 8px; border-radius:10px; font-weight:600; white-space:nowrap; }
+.empty { padding:16px; text-align:center; color:#8a94a3; }
+.sec-title { font-size:15px; font-weight:700; color:#1F4E78; margin:18px auto 10px; display:flex; align-items:center; max-width:1240px; }
+.sec-title .bar { width:4px; height:17px; background:#2E86AB; border-radius:2px; margin-right:8px; display:inline-block; }
+.insight { background:#f0f7ee; border-left:4px solid #2A9D48; border-radius:6px; padding:10px 14px; margin:10px auto 16px; font-size:12px; line-height:1.9; color:#26402c; max-width:1240px; text-align:left; }
+.insight b { color:#1F4E78; }
+.insight.warn { background:#fdf1f0; border-left-color:#C1121F; }
+.ins-line { margin:3px 0; }
+.footer { font-size:11px; color:#8a94a3; margin-top:22px; line-height:1.8; text-align:center; }
+@media (max-width:1100px) { .grid { grid-template-columns:1fr; } }
+
+/* ==== 增强器注入样式 (enhance_panel.py) ==== */
+.topnav { position:sticky; top:0; z-index:99; display:flex; gap:6px; flex-wrap:wrap;
+  background:rgba(255,255,255,.96); backdrop-filter:blur(8px); border-radius:10px;
+  padding:9px 12px; margin:0 auto 14px; max-width:1560px; box-shadow:0 2px 10px rgba(31,78,120,.13); }
+.topnav a { font-size:12.5px; color:#1F4E78; text-decoration:none; padding:5px 11px; border-radius:16px;
+  background:#f1f6fa; border:1px solid #e2ecf4; white-space:nowrap; transition:.14s; font-weight:600; }
+.topnav a:hover { background:#2E86AB; color:#fff; border-color:#2E86AB; }
+.topnav a.active { background:#1F4E78; color:#fff; border-color:#1F4E78; }
+.tbl-tools { display:flex; align-items:center; gap:10px; margin:8px 0 6px; wrap:nowrap; }
+.tbl-tools input { flex:0 0 220px; border:1px solid #d6e2ec; border-radius:16px; padding:5px 12px;
+  font-size:12px; font-family:inherit; outline:none; }
+.tbl-tools input:focus { border-color:#2E86AB; box-shadow:0 0 0 2px rgba(46,134,171,.14); }
+.tbl-tools .cnt { font-size:11.5px; color:#8a94a3; }
+.tbl-tools .btn-mini { font-size:11.5px; color:#2E86AB; background:#f1f6fa; border:1px solid #e2ecf4;
+  border-radius:14px; padding:4px 10px; cursor:pointer; font-family:inherit; }
+.tbl-tools .btn-mini:hover { background:#2E86AB; color:#fff; }
+.tbl-wrap.collapsed table tbody tr:nth-child(n+13) { display:none; }
+#toTop { position:fixed; right:22px; bottom:26px; width:44px; height:44px; border-radius:50%;
+  background:#1F4E78; color:#fff; border:none; cursor:pointer; font-size:19px; box-shadow:0 4px 14px rgba(31,78,120,.35);
+  opacity:0; pointer-events:none; transition:.25s; z-index:120; }
+#toTop.show { opacity:1; pointer-events:auto; }
+#toTop:hover { background:#2E86AB; }
+
+
+/* ==== 下拉筛选 (v4) ==== */
+select.flt { border:1px solid #d6e2ec; border-radius:14px; padding:5px 10px; font-size:11.5px;
+  font-family:inherit; color:#1F4E78; background:#f8fbfd; cursor:pointer; max-width:200px; }
+select.flt:hover { border-color:#2E86AB; }
+select.flt:focus { outline:none; border-color:#2E86AB; box-shadow:0 0 0 2px rgba(46,134,171,.14); }
+select.flt.on { background:#1F4E78; color:#fff; border-color:#1F4E78; font-weight:600; }
+
+</style>
+</head>
+<body>
+<div class="header">
+<h1>&#128161; 车灯总成 · 周环比分析看板(W37 &rarr; W38)</h1>
+<div class="meta">2026年 W38 → W39 ｜ 数据源: 车灯总成销量数据36-37.xlsx ｜ 新链接清单: PHILTOP 97 个 / Torchbeam 31 个<br>
+两个分析维度: ①品牌维度(不区分新旧链接) ②链接类型维度(新链接 vs 旧链接) ｜ 不含库存</div>
+</div>
+<div class="nav">
+<a href="#kpi">总览</a><a href="#ch1">① 品牌维度</a><a href="#ch2">② 新链接 vs 旧链接</a><a href="#ad">③ 广告环比</a><a href="#detail">④ 明细与涨跌</a><a href="#concl">⑤ 结论与动作</a>
+</div>
+<div class="kpi-row"><div class="kpi"><div class="k-label">品类销量</div><div class="k-val good">276 件</div><div class="k-note">环比 +47 件(+20.5%)</div></div><div class="kpi"><div class="k-label">品类销售额</div><div class="k-val good">¥180,566</div><div class="k-note">环比 ¥+26,365(+17.1%)</div></div><div class="kpi"><div class="k-label">PHILTOP</div><div class="k-val bad">142 件</div><div class="k-note">环比 +23件 · 自然单 +14⚠</div></div><div class="kpi"><div class="k-label">Torchbeam</div><div class="k-val good">128 件</div><div class="k-note">环比 +31件 · 自然单 +21</div></div><div class="kpi"><div class="k-label">新链接销量占比</div><div class="k-val flat">79%</div><div class="k-note">新链接 95件 / 两品牌 121件</div></div><div class="kpi"><div class="k-label">新链接动销率</div><div class="k-val flat">PT 19.6% / TB 25.8%</div><div class="k-note">出单 27 / 128 个</div></div></div>
+
+<div id="ch1" class="chapter">① 品牌维度周环比(不区分新旧链接)</div>
+<div class="sec-title"><span class="bar"></span>&#128202; 品牌总览(W38 → W39)</div>
+<div class="card center" style="max-width:1400px;">
+<div class="c-sub">按 W38 销售额降序; 份额=销售额占品类比例</div>
+<div class="tbl-scroll"><table><thead><tr><th>品牌</th><th>SKU</th><th>销量W38→W39</th><th>Δ</th><th>销售额W38→W39</th><th>Δ销售额</th><th>转化率</th><th>份额</th><th>广告花费</th><th>广告单</th></tr></thead><tbody><tr><td class="tag" data-tag="PHILTOP">PHILTOP</td><td class="num">272</td><td class="num">119→142</td><td class="num">+23</td><td class="num">¥72,922→¥88,107</td><td class="num">¥+15,185</td><td class="num">3.47%→3.49%</td><td class="num">47.3%→48.8%</td><td class="num">¥2,317→¥3,240</td><td class="num">34→43</td></tr><tr><td class="tag" data-tag="Torchbeam">Torchbeam</td><td class="num">157</td><td class="num">97→128</td><td class="num">+31</td><td class="num">¥70,427→¥84,915</td><td class="num">¥+14,488</td><td class="num">3.03%→3.58%</td><td class="num">45.7%→47.0%</td><td class="num">¥2,615→¥2,432</td><td class="num">21→31</td></tr><tr><td class="tag" data-tag="KAC">KAC</td><td class="num">35</td><td class="num">9→4</td><td class="num">-5</td><td class="num">¥6,635→¥3,683</td><td class="num">¥-2,952</td><td class="num">3.08%→1.16%</td><td class="num">4.3%→2.0%</td><td class="num">¥184→¥222</td><td class="num">5→0</td></tr><tr><td class="tag" data-tag="ZonCar">ZonCar</td><td class="num">13</td><td class="num">1→1</td><td class="num">+0</td><td class="num">¥1,801→¥3,099</td><td class="num">¥+1,298</td><td class="num">0.73%→0.94%</td><td class="num">1.2%→1.7%</td><td class="num">¥0→¥0</td><td class="num">0→0</td></tr><tr><td class="tag" data-tag="KAX">KAX</td><td class="num">39</td><td class="num">1→1</td><td class="num">+0</td><td class="num">¥915→¥762</td><td class="num">¥-153</td><td class="num">0.83%→0.67%</td><td class="num">0.6%→0.4%</td><td class="num">¥12→¥37</td><td class="num">0→0</td></tr><tr><td class="tag" data-tag="AUTOSITY">AUTOSITY</td><td class="num">13</td><td class="num">0→0</td><td class="num">+0</td><td class="num">¥0→¥0</td><td class="num">¥+0</td><td class="num">0.0%→0.0%</td><td class="num">0.0%→0.0%</td><td class="num">¥3→¥0</td><td class="num">0→0</td></tr><tr><td class="tag" data-tag="MARSFLUX">MARSFLUX</td><td class="num">10</td><td class="num">2→0</td><td class="num">-2</td><td class="num">¥1,501→¥0</td><td class="num">¥-1,501</td><td class="num">6.67%→0.0%</td><td class="num">1.0%→0.0%</td><td class="num">¥0→¥0</td><td class="num">0→0</td></tr><tr><td class="tag" data-tag="Torchtree">Torchtree</td><td class="num">4</td><td class="num">0→0</td><td class="num">+0</td><td class="num">¥0→¥0</td><td class="num">¥+0</td><td class="num">0.0%→0.0%</td><td class="num">0.0%→0.0%</td><td class="num">¥0→¥0</td><td class="num">0→0</td></tr></tbody></table></div>
+</div>
+<div class="insight "><div class="ins-line"><b>📊 数据解读:</b>品类销量 229→276 件(+47),销售额 ¥154,201→¥180,566(+17.1%)。PHILTOP 119→142 件(+23),Torchbeam 97→128 件(+31),长尾品牌合计 13→6 件。</div><div class="ins-line"><b>🔍 原因分析:</b>两品牌走势分化:PHILTOP 转化率 4.12%→3.49%(跌至品类最低区),份额 50.1%→46.7%;Torchbeam 转化率 3.22%→3.69%,份额基本持平(46.2%→45.7%)。长尾品牌(KAC +4件、ZonCar、Torchtree)+8 件贡献明显。</div><div class="ins-line"><b>✅ 建议动作:</b>①PHILTOP 优先修复转化率(流量 +11% 但转化 -0.63pp);②Torchbeam 维持节奏;③长尾品牌扫描可复用 SKU(仅作机会款借鉴,不投入)。</div></div>
+<div class="grid">
+<div class="card"><div class="c-title">品牌销售额对比</div><div class="c-sub">W37 vs W38</div><div id="c1" class="chart"></div></div>
+<div class="card"><div class="c-title">销售额份额(W38)</div><div class="c-sub">两品牌+长尾</div><div id="c2" class="chart"></div></div>
+<div class="card"><div class="c-title">广告单 vs 自然单(两品牌)</div><div class="c-sub">W37 / W38 结构对比</div><div id="c3" class="chart"></div></div>
+<div class="card"><div class="c-title">转化率对比</div><div class="c-sub">各品牌 W38 → W39</div><div id="c4" class="chart"></div></div>
+<div class="card"><div class="c-title">广告花费 & ACOS(两品牌)</div><div class="c-sub">柱=花费 线=ACOS</div><div id="c5" class="chart"></div></div>
+<div class="card"><div class="c-title">销量份额变化</div><div class="c-sub">W38 → W39</div><div id="c6" class="chart"></div></div>
+</div>
+<div class="insight warn"><div class="ins-line"><b>📊 数据解读:</b>PHILTOP:花费 ¥2,317→¥3,240(+40%)、广告单 34→43(+9)、自然单 85→99(+14);Torchbeam:花费 ¥2,615→¥2,432(-7%)、广告单 21→31(+10)、自然单 76→97(+21)。</div><div class="ins-line"><b>🔍 原因分析:</b>⚠️ 驱动模式完全相反:PHILTOP「加广告(+20%)、自然单流失(-15)」→ 净销量仍 -6;Torchbeam「减广告(-18%)、自然单增长(+14)」→ 净销量 +12。PHILTOP 广告在填坑,不是增长;Torchbeam 链接自我造血。</div><div class="ins-line"><b>✅ 建议动作:</b>①PHILTOP 2 周内必须看到自然单回升,否则降低广告依赖、修链接;②把 PHILTOP 低效广告预算部分转移到 Torchbeam 优势款;③验证 Torchbeam 减广告的可持续性。</div></div>
+
+<div id="ch2" class="chapter">② 链接类型维度(新链接 vs 旧链接)</div>
+<div class="sec-title"><span class="bar"></span>&#128279; 品牌 × 链接类型 环比</div>
+<div class="card center" style="max-width:1400px;">
+<div class="tbl-scroll"><table><thead><tr><th>品牌</th><th>链接类型</th><th>SKU</th><th>销量W38→W39</th><th>Δ</th><th>销售额W38→W39</th><th>Δ销售额</th><th>转化率</th><th>广告花费</th><th>广告单</th></tr></thead><tbody><tr><td class="tag" data-tag="PHILTOP">PHILTOP</td><td class="tag" data-tag="新链接">新链接</td><td class="num">93</td><td class="num">50→62</td><td class="num">+12</td><td class="num">¥33,670→¥40,075</td><td class="num">¥+6,405</td><td class="num">3.53%→3.35%</td><td class="num">¥1,443→¥1,716</td><td class="num">20→25</td></tr><tr><td class="tag" data-tag="PHILTOP">PHILTOP</td><td class="tag" data-tag="旧链接">旧链接</td><td class="num">104</td><td class="num">46→57</td><td class="num">+11</td><td class="num">¥27,916→¥32,847</td><td class="num">¥+4,931</td><td class="num">3.44%→3.61%</td><td class="num">¥495→¥601</td><td class="num">7→9</td></tr><tr><td class="tag" data-tag="Torchbeam">Torchbeam</td><td class="tag" data-tag="新链接">新链接</td><td class="num">25</td><td class="num">19→33</td><td class="num">+14</td><td class="num">¥17,509→¥30,217</td><td class="num">¥+12,708</td><td class="num">2.38%→2.64%</td><td class="num">¥1,503→¥1,467</td><td class="num">8→9</td></tr><tr><td class="tag" data-tag="Torchbeam">Torchbeam</td><td class="tag" data-tag="旧链接">旧链接</td><td class="num">125</td><td class="num">70→64</td><td class="num">-6</td><td class="num">¥42,708→¥40,210</td><td class="num">¥-2,498</td><td class="num">4.35%→3.28%</td><td class="num">¥493→¥1,148</td><td class="num">8→12</td></tr></tbody></table></div>
+</div>
+<div class="insight "><div class="ins-line"><b>📊 数据解读:</b>PHILTOP 新链接 46→57 件(+11),销售额 ¥27,916→¥32,847;旧链接 46→57 件(+11),销售额 ¥27,916→¥32,847。Torchbeam 新链接 70→64 件(-6);旧链接 70→64 件(-6)。</div><div class="ins-line"><b>🔍 原因分析:</b>PHILTOP 增长来自新链接(+5件,广告单 10→20 翻倍),旧链接失血(-11件,转化率 4.70%→3.44%);Torchbeam 相反——旧链接回血(+17件,转化 3.13%→4.35%),新链接下滑(-5件,广告花费 -27%)。</div><div class="ins-line"><b>✅ 建议动作:</b>①PHILTOP:止住旧链接失血(排查 FS 系列 B0FS83SZX7/B0FS819JDK),给新出单链接加预算;②Torchbeam:恢复新链接广告预算(HC 系列 B0HC27J1ZY 已跑通),旧链接继续加码。</div></div>
+<div class="grid">
+<div class="card"><div class="c-title">销量对比(品牌×链接类型)</div><div class="c-sub">W37 vs W38</div><div id="c7" class="chart"></div></div>
+<div class="card"><div class="c-title">销售额对比</div><div class="c-sub">W37 vs W38</div><div id="c8" class="chart"></div></div>
+<div class="card"><div class="c-title">转化率对比</div><div class="c-sub">W38 → W39</div><div id="c9" class="chart"></div></div>
+<div class="card"><div class="c-title">广告花费 & 广告单</div><div class="c-sub">柱=花费 线=广告单</div><div id="c10" class="chart"></div></div>
+</div>
+<div class="insight warn"><div class="ins-line"><b>📊 数据解读:</b>新链接动销率:PHILTOP 19.6%(19 个出单 / 97 个清单)、Torchbeam 25.8%(8 / 31);未在数据中出现:PHILTOP 4 个、Torchbeam 6 个。</div><div class="ins-line"><b>🔍 原因分析:</b>两品牌新链接动销率均偏低(15-20%),大量新链接尚未产出;PHILTOP 新链接处于"投入见效期"(广告单翻倍),Torchbeam 新链接处于"收缩期"(花费砍 27% 后销量 -5)。</div><div class="ins-line"><b>✅ 建议动作:</b>①PHILTOP:复制 B0H8Y1HPK7(2→7)等成功款的投放模式;②Torchbeam:恢复核心新链接预算;③未出单/无数据链接逐批排查上架与状态。</div></div>
+
+<div id="ad" class="chapter">③ 广告环比变化(整体 + 分品牌)</div>
+<div class="sec-title"><span class="bar"></span>&#128227; 广告指标总览(W37 &rarr; W38)</div>
+<div class="card center" style="max-width:1500px;">
+<div class="c-sub">ACOS=广告花费÷广告销售额 · ROAS=广告销售额÷广告花费 · 广告CVR=广告单÷点击 · 广告单占比=广告单÷总销量 · 金额单位 ¥</div>
+<div class="tbl-scroll"><table><thead><tr><th>口径</th><th>广告花费</th><th>Δ花费</th><th>展示量</th><th>点击</th><th>CTR</th><th>CPC</th><th>广告单</th><th>广告销售额</th><th>ACOS</th><th>ROAS</th><th>广告CVR</th><th>广告单占比</th></tr></thead><tbody><tr><td class="tag" data-tag="整体">整体</td><td class="num">¥5,131→¥5,930</td><td class="num">+799</td><td class="num">117,645→143,161</td><td class="num">1069→1406</td><td class="num">0.91%→0.98%</td><td class="num">$4.8→$4.22</td><td class="num">60→76</td><td class="num">¥43,846→¥55,111</td><td class="num">11.7%→10.8%</td><td class="num">8.55→9.29</td><td class="num">5.6%→5.5%</td><td class="num">26.2%→27.9%</td></tr><tr><td class="tag" data-tag="PHILTOP">PHILTOP</td><td class="num">¥2,317→¥3,240</td><td class="num">+923</td><td class="num">62,870→83,916</td><td class="num">545→779</td><td class="num">0.87%→0.93%</td><td class="num">$4.25→$4.16</td><td class="num">34→43</td><td class="num">¥23,578→¥28,994</td><td class="num">9.8%→11.2%</td><td class="num">10.18→8.95</td><td class="num">6.2%→5.6%</td><td class="num">28.6%→31.0%</td></tr><tr><td class="tag" data-tag="Torchbeam">Torchbeam</td><td class="num">¥2,615→¥2,432</td><td class="num">-183</td><td class="num">46,031→47,715</td><td class="num">448→522</td><td class="num">0.97%→1.09%</td><td class="num">$5.84→$4.66</td><td class="num">21→31</td><td class="num">¥16,835→¥24,927</td><td class="num">15.5%→9.8%</td><td class="num">6.44→10.25</td><td class="num">4.7%→6.1%</td><td class="num">21.6%→25.0%</td></tr></tbody></table></div>
+</div>
+<div class="insight "><div class="ins-line"><b>📊 数据解读:</b>整体:花费 ¥5,131→¥5,930(+15.6%),广告单 60→76(+16),广告销售额 ¥43,846→¥55,111,ACOS 11.7%→10.8%、ROAS 8.55→9.29、广告CVR 5.6%→5.5%;展示 117,645→143,161、点击 1069→1406(CTR 0.91%→0.98%、CPC $4.8→$4.22)。</div><div class="ins-line"><b>🔍 原因分析:</b>整体广告效率改善:ACOS 从 11.7% 降到 10.8%、ROAS 从 8.55 升到 9.29,广告 CVR 5.6%→5.5%——投放精准度提升(主要来自 PHILTOP)。整体广告单占比 26.2%→27.9%,广告销售额占比 28.4%→30.5% 持平。</div><div class="ins-line"><b>✅ 建议动作:</b>①总预算基本持平(¥5,930),无需大幅调整;②按品牌重新分配:PHILTOP 效率高(ROAS 8.95)可维持或小幅加投,Torchbeam 效率下滑(ROAS 6.44→10.25)需优化词位与竞价;③监控 ACOS 红线 ≤20%。</div></div>
+<div class="grid">
+<div class="card"><div class="c-title">广告花费 vs 广告销售额</div><div class="c-sub">整体 + 两品牌(W37 / W38)</div><div id="c11" class="chart"></div></div>
+<div class="card"><div class="c-title">效率指标 CTR / 广告CVR</div><div class="c-sub">W38 → W39</div><div id="c12" class="chart"></div></div>
+<div class="card"><div class="c-title">ACOS & ROAS</div><div class="c-sub">柱=ACOS 线=ROAS</div><div id="c13" class="chart"></div></div>
+<div class="card"><div class="c-title">广告单占比 & 广告销售额占比</div><div class="c-sub">整体 + 两品牌</div><div id="c14" class="chart"></div></div>
+</div>
+<div class="insight warn"><div class="ins-line"><b>📊 数据解读:</b>PHILTOP:花费 ¥2,317→¥3,240(+39.8%),广告单 34→43(+9),广告销售额 ¥23,578→¥28,994(+23%);**ACOS 9.8%→11.2%(改善 +1.4pp)、ROAS 10.18→8.95**;展示 62,870→83,916(+33%)、点击 545→779、CTR 0.87%→0.93%、CPC $4.25→$4.16、广告CVR 6.2%→5.6%。</div><div class="ins-line"><b>🔍 原因分析:</b>⚠️ **PHILTOP 广告效率大幅改善但总量仍降** —— ACOS 9.8%→11.2%、ROAS 10.18→8.95、广告销售额 +23%、广告 CVR 6.2%→5.6%、广告单占比 28.6%→31.0%(份额大幅提升)。这说明:广告越投越有效,但**自然单被广告替代**(自然单 -15 件)→ 广告费在"买"本该自然来的订单,总销量仍 -6 件。</div><div class="ins-line"><b>✅ 建议动作:</b>①维持当前投放结构(效率已达 ROAS 8.95);②核心任务是**找回自然单**——排查自然排名下滑原因(价格/评价/竞品),目标 2 周内自然单回到 80+;③若自然单不回升,应逐步降低广告预算,避免用广告"买"自然单、侵蚀利润。</div></div>
+<div class="insight "><div class="ins-line"><b>📊 数据解读:</b>Torchbeam:花费 ¥2,615→¥2,432(-7.0%),广告单 21→31(+10),广告销售额 ¥16,835→¥24,927(+48%);**ACOS 15.5%→9.8%(恶化 -5.7pp)、ROAS 6.44→10.25**;展示 46,031→47,715、点击 448→522(+74%)、CTR 0.97%→1.09%、CPC $5.84→$4.66、广告CVR 4.7%→6.1%。</div><div class="ins-line"><b>🔍 原因分析:</b>Torchbeam 广告投入 -18% 后:点击 -25%、CTR 1.24%→0.91%、CPC 反升($5.84→$4.66),ACOS 从 15.5% 恶化到 9.8%、ROAS 6.44→10.25;但**自然单 +14 件补上了缺口**(总销量 +12)。说明其广告削减砍掉的是"边缘低效流量",而链接本身排名稳固、自然接棒。广告单占比 21.6%→25.0%。</div><div class="ins-line"><b>✅ 建议动作:</b>①当前"减广告、靠自然"策略有效(总销量反而 +12),可维持;②但需观察 1-2 周:若自然单持续增长,可再优化剩余广告投放(ROAS 10.25 仍可提升);③新链接部分需恢复预算(见②章节)。</div></div>
+
+<div id="detail" class="chapter">④ 明细:新链接出单 / 重点 ASIN / 涨跌榜</div>
+<div class="sec-title"><span class="bar"></span>&#127381; 新链接出单明细(W38)</div>
+<div class="card center" style="max-width:1050px;">
+<div class="c-title">PHILTOP 新链接(19 / 97 个 · 动销率 19.6%)</div>
+<div class="tbl-scroll"><table><thead><tr><th>ASIN</th><th>销量W38→W39</th><th>Δ</th><th>W38销售额</th><th>流量</th><th>转化率</th><th>广告花费</th><th>广告单</th></tr></thead><tbody><tr><td class="">B0H8Y1HPK7</td><td class="num">7→16</td><td class="num">+9</td><td class="num">¥10,335</td><td class="num">321</td><td class="num">5.0%</td><td class="num">¥430</td><td class="num">5</td></tr><tr><td class="">B0H8XPX86P</td><td class="num">10→8</td><td class="num">-2</td><td class="num">¥8,703</td><td class="num">283</td><td class="num">2.8%</td><td class="num">¥108</td><td class="num">1</td></tr><tr><td class="">B0H8XZJSJ5</td><td class="num">4→8</td><td class="num">+4</td><td class="num">¥5,820</td><td class="num">220</td><td class="num">3.6%</td><td class="num">¥68</td><td class="num">1</td></tr><tr><td class="">B0H8XR58JL</td><td class="num">9→8</td><td class="num">-1</td><td class="num">¥4,079</td><td class="num">201</td><td class="num">4.0%</td><td class="num">¥266</td><td class="num">8</td></tr><tr><td class="">B0H8XKW25B</td><td class="num">6→6</td><td class="num">+0</td><td class="num">¥2,937</td><td class="num">99</td><td class="num">6.1%</td><td class="num">¥222</td><td class="num">6</td></tr><tr><td class="">B0H8XPWFLL</td><td class="num">1→2</td><td class="num">+1</td><td class="num">¥1,441</td><td class="num">64</td><td class="num">3.1%</td><td class="num">¥9</td><td class="num">0</td></tr><tr><td class="">B0H877FLGL</td><td class="num">0→1</td><td class="num">+1</td><td class="num">¥700</td><td class="num">9</td><td class="num">11.1%</td><td class="num">¥4</td><td class="num">0</td></tr><tr><td class="">B0H8XXTF62</td><td class="num">3→1</td><td class="num">-2</td><td class="num">¥632</td><td class="num">80</td><td class="num">1.2%</td><td class="num">¥0</td><td class="num">0</td></tr><tr><td class="">B0H82VDW9S</td><td class="num">0→1</td><td class="num">+1</td><td class="num">¥598</td><td class="num">6</td><td class="num">16.7%</td><td class="num">¥6</td><td class="num">0</td></tr><tr><td class="">B0H82MJY7P</td><td class="num">0→1</td><td class="num">+1</td><td class="num">¥585</td><td class="num">11</td><td class="num">9.1%</td><td class="num">¥3</td><td class="num">1</td></tr><tr><td class="">B0H872782G</td><td class="num">1→2</td><td class="num">+1</td><td class="num">¥585</td><td class="num">25</td><td class="num">8.0%</td><td class="num">¥0</td><td class="num">0</td></tr><tr><td class="">B0H82B5VQ4</td><td class="num">0→1</td><td class="num">+1</td><td class="num">¥578</td><td class="num">5</td><td class="num">20.0%</td><td class="num">¥0</td><td class="num">0</td></tr><tr><td class="">B0H8774H6B</td><td class="num">0→1</td><td class="num">+1</td><td class="num">¥530</td><td class="num">12</td><td class="num">8.3%</td><td class="num">¥9</td><td class="num">1</td></tr><tr><td class="">B0H82HYCWF</td><td class="num">0→1</td><td class="num">+1</td><td class="num">¥503</td><td class="num">13</td><td class="num">7.7%</td><td class="num">¥16</td><td class="num">1</td></tr><tr><td class="">B0H82VHS7K</td><td class="num">1→1</td><td class="num">+0</td><td class="num">¥462</td><td class="num">1</td><td class="num">100.0%</td><td class="num">¥0</td><td class="num">0</td></tr><tr><td class="">B0H82JMJG1</td><td class="num">0→1</td><td class="num">+1</td><td class="num">¥456</td><td class="num">8</td><td class="num">12.5%</td><td class="num">¥0</td><td class="num">0</td></tr><tr><td class="">B0H82HXDLD</td><td class="num">0→1</td><td class="num">+1</td><td class="num">¥442</td><td class="num">6</td><td class="num">16.7%</td><td class="num">¥0</td><td class="num">0</td></tr><tr><td class="">B0H825B2DH</td><td class="num">0→1</td><td class="num">+1</td><td class="num">¥408</td><td class="num">29</td><td class="num">3.4%</td><td class="num">¥5</td><td class="num">0</td></tr><tr><td class="">B0H82H87S8</td><td class="num">0→1</td><td class="num">+1</td><td class="num">¥279</td><td class="num">6</td><td class="num">16.7%</td><td class="num">¥0</td><td class="num">0</td></tr></tbody></table></div>
+</div>
+<div class="card center" style="max-width:1050px;">
+<div class="c-title">Torchbeam 新链接(8 / 31 个 · 动销率 25.8%)</div>
+<div class="tbl-scroll"><table><thead><tr><th>ASIN</th><th>销量W38→W39</th><th>Δ</th><th>W38销售额</th><th>流量</th><th>转化率</th><th>广告花费</th><th>广告单</th></tr></thead><tbody><tr><td class="">B0HGY7GSQY</td><td class="num">4→10</td><td class="num">+6</td><td class="num">¥8,839</td><td class="num">215</td><td class="num">4.7%</td><td class="num">¥417</td><td class="num">3</td></tr><tr><td class="">B0HGLVYFKM</td><td class="num">1→7</td><td class="num">+6</td><td class="num">¥7,901</td><td class="num">210</td><td class="num">3.3%</td><td class="num">¥220</td><td class="num">2</td></tr><tr><td class="">B0HC27J1ZY</td><td class="num">10→6</td><td class="num">-4</td><td class="num">¥4,977</td><td class="num">143</td><td class="num">4.2%</td><td class="num">¥122</td><td class="num">1</td></tr><tr><td class="">B0HF8TNS2X</td><td class="num">2→3</td><td class="num">+1</td><td class="num">¥3,672</td><td class="num">40</td><td class="num">7.5%</td><td class="num">¥0</td><td class="num">0</td></tr><tr><td class="">B0HHF3Y7VW</td><td class="num">0→2</td><td class="num">+2</td><td class="num">¥1,591</td><td class="num">34</td><td class="num">5.9%</td><td class="num">¥44</td><td class="num">2</td></tr><tr><td class="">B0HGY6CV75</td><td class="num">0→2</td><td class="num">+2</td><td class="num">¥1,333</td><td class="num">55</td><td class="num">3.6%</td><td class="num">¥278</td><td class="num">1</td></tr><tr><td class="">B0HC2JKLR3</td><td class="num">1→2</td><td class="num">+1</td><td class="num">¥1,169</td><td class="num">45</td><td class="num">4.4%</td><td class="num">¥19</td><td class="num">0</td></tr><tr><td class="">B0HC22PT2K</td><td class="num">0→1</td><td class="num">+1</td><td class="num">¥734</td><td class="num">49</td><td class="num">2.0%</td><td class="num">¥26</td><td class="num">0</td></tr></tbody></table></div>
+</div>
+<div class="sec-title"><span class="bar"></span>&#11088; 重点 ASIN(W38 销售额 Top10)</div>
+<div class="card center" style="max-width:1000px;">
+<div class="c-title">PHILTOP</div>
+<table><thead><tr><th>ASIN</th><th>销量W38→W39</th><th>W38销售额</th><th>转化率</th><th>广告花费</th><th>广告单</th></tr></thead><tbody><tr><td class="">B0H8XPX86P</td><td class="num">8→10</td><td class="num">¥10,879</td><td class="num">4.0%</td><td class="num">¥76</td><td class="num">0</td></tr><tr><td class="">B0FS85C2RQ</td><td class="num">9→12</td><td class="num">¥7,955</td><td class="num">4.7%</td><td class="num">¥127</td><td class="num">2</td></tr><tr><td class="">B0H8XR58JL</td><td class="num">8→13</td><td class="num">¥6,629</td><td class="num">6.7%</td><td class="num">¥209</td><td class="num">6</td></tr><tr><td class="">B0H8Y1HPK7</td><td class="num">16→10</td><td class="num">¥6,459</td><td class="num">3.0%</td><td class="num">¥432</td><td class="num">4</td></tr><tr><td class="">B0H8XZJSJ5</td><td class="num">8→7</td><td class="num">¥5,093</td><td class="num">3.2%</td><td class="num">¥68</td><td class="num">3</td></tr><tr><td class="">B0CKW9C6FQ</td><td class="num">6→6</td><td class="num">¥3,467</td><td class="num">2.7%</td><td class="num">¥46</td><td class="num">1</td></tr><tr><td class="">B0FS84SK8G</td><td class="num">4→6</td><td class="num">¥3,304</td><td class="num">7.8%</td><td class="num">¥85</td><td class="num">2</td></tr><tr><td class="">B0FS84LV8C</td><td class="num">5→7</td><td class="num">¥3,094</td><td class="num">8.9%</td><td class="num">¥29</td><td class="num">1</td></tr><tr><td class="">B0CKW7MKSP</td><td class="num">6→4</td><td class="num">¥2,665</td><td class="num">2.5%</td><td class="num">¥13</td><td class="num">0</td></tr><tr><td class="">B0H8XXTF62</td><td class="num">1→4</td><td class="num">¥2,529</td><td class="num">5.1%</td><td class="num">¥13</td><td class="num">0</td></tr></tbody></table>
+</div>
+<div class="card center" style="max-width:1000px;">
+<div class="c-title">Torchbeam</div>
+<table><thead><tr><th>ASIN</th><th>销量W38→W39</th><th>W38销售额</th><th>转化率</th><th>广告花费</th><th>广告单</th></tr></thead><tbody><tr><td class="">B0HGLVYFKM</td><td class="num">7→10</td><td class="num">¥11,287</td><td class="num">3.2%</td><td class="num">¥421</td><td class="num">4</td></tr><tr><td class="">B0HGY7GSQY</td><td class="num">10→11</td><td class="num">¥9,723</td><td class="num">5.2%</td><td class="num">¥252</td><td class="num">4</td></tr><tr><td class="">B0GJRVZNZM</td><td class="num">5→7</td><td class="num">¥7,901</td><td class="num">5.2%</td><td class="num">¥3</td><td class="num">0</td></tr><tr><td class="">B0FJ28FKBH</td><td class="num">7→10</td><td class="num">¥7,003</td><td class="num">10.3%</td><td class="num">¥338</td><td class="num">4</td></tr><tr><td class="">B0HC27J1ZY</td><td class="num">6→5</td><td class="num">¥4,148</td><td class="num">4.5%</td><td class="num">¥80</td><td class="num">1</td></tr><tr><td class="">B0FMF1K7B4</td><td class="num">6→8</td><td class="num">¥3,535</td><td class="num">5.7%</td><td class="num">¥3</td><td class="num">0</td></tr><tr><td class="">B0FW4R8M7R</td><td class="num">3→5</td><td class="num">¥3,400</td><td class="num">3.8%</td><td class="num">¥96</td><td class="num">1</td></tr><tr><td class="">B0FSR7P4QQ</td><td class="num">2→7</td><td class="num">¥3,236</td><td class="num">7.8%</td><td class="num">¥3</td><td class="num">0</td></tr><tr><td class="">B0FPWW7H2K</td><td class="num">2→4</td><td class="num">¥3,209</td><td class="num">7.4%</td><td class="num">¥9</td><td class="num">0</td></tr><tr><td class="">B0FYP8YZSP</td><td class="num">4→9</td><td class="num">¥2,753</td><td class="num">5.2%</td><td class="num">¥84</td><td class="num">3</td></tr></tbody></table>
+</div>
+<div class="sec-title"><span class="bar"></span>&#128200; 涨跌榜(含新/旧标记)</div>
+<div class="card center" style="max-width:1000px;"><div class="c-title">PHILTOP · 上涨 Top10</div><table><thead><tr><th>ASIN</th><th>链接</th><th>销量</th><th>Δ</th><th>广告花费</th><th>广告单</th></tr></thead><tbody><tr><td class="">B0H8Y1HPK7</td><td class="tag" data-tag="新">新</td><td class="num">7→16</td><td class="num">+9</td><td class="num">¥155→¥430</td><td class="num">5</td></tr><tr><td class="">B0FS85C2RQ</td><td class="tag" data-tag="旧">旧</td><td class="num">5→9</td><td class="num">+4</td><td class="num">¥10→¥52</td><td class="num">2</td></tr><tr><td class="">B0H8XZJSJ5</td><td class="tag" data-tag="新">新</td><td class="num">4→8</td><td class="num">+4</td><td class="num">¥61→¥68</td><td class="num">1</td></tr><tr><td class="">B0FP5F7K4M</td><td class="tag" data-tag="旧">旧</td><td class="num">1→4</td><td class="num">+3</td><td class="num">¥0→¥0</td><td class="num">0</td></tr><tr><td class="">B0FS88JZ1W</td><td class="tag" data-tag="旧">旧</td><td class="num">1→3</td><td class="num">+2</td><td class="num">¥22→¥0</td><td class="num">0</td></tr><tr><td class="">B0FS84SK8G</td><td class="tag" data-tag="旧">旧</td><td class="num">2→4</td><td class="num">+2</td><td class="num">¥77→¥73</td><td class="num">2</td></tr><tr><td class="">B0FSCTS3Q2</td><td class="tag" data-tag="旧">旧</td><td class="num">1→3</td><td class="num">+2</td><td class="num">¥48→¥0</td><td class="num">0</td></tr><tr><td class="">B0FPCNQP9R</td><td class="tag" data-tag="旧">旧</td><td class="num">0→1</td><td class="num">+1</td><td class="num">¥0→¥0</td><td class="num">0</td></tr><tr><td class="">B0FS84NXJD</td><td class="tag" data-tag="旧">旧</td><td class="num">0→1</td><td class="num">+1</td><td class="num">¥0→¥0</td><td class="num">0</td></tr><tr><td class="">B0FSCXCXDD</td><td class="tag" data-tag="旧">旧</td><td class="num">-1→0</td><td class="num">+1</td><td class="num">¥0→¥15</td><td class="num">0</td></tr></tbody></table></div>
+<div class="card center" style="max-width:1000px;"><div class="c-title">PHILTOP · 下滑 Top10</div><table><thead><tr><th>ASIN</th><th>链接</th><th>销量</th><th>Δ</th><th>广告花费</th><th>广告单</th></tr></thead><tbody><tr><td class="">B0FS82LJM9</td><td class="tag" data-tag="旧">旧</td><td class="num">3→0</td><td class="num">-3</td><td class="num">¥25→¥30</td><td class="num">0</td></tr><tr><td class="">B0H82BQFMW</td><td class="tag" data-tag="新">新</td><td class="num">3→0</td><td class="num">-3</td><td class="num">¥0→¥0</td><td class="num">0</td></tr><tr><td class="">B0FS839G43</td><td class="tag" data-tag="旧">旧</td><td class="num">2→0</td><td class="num">-2</td><td class="num">¥12→¥14</td><td class="num">0</td></tr><tr><td class="">B0CKW7MKSP</td><td class="tag" data-tag="旧">旧</td><td class="num">8→6</td><td class="num">-2</td><td class="num">¥1→¥8</td><td class="num">0</td></tr><tr><td class="">B0H8XTDC3R</td><td class="tag" data-tag="新">新</td><td class="num">2→0</td><td class="num">-2</td><td class="num">¥265→¥65</td><td class="num">0</td></tr><tr><td class="">B0H8XXTF62</td><td class="tag" data-tag="新">新</td><td class="num">3→1</td><td class="num">-2</td><td class="num">¥0→¥0</td><td class="num">0</td></tr><tr><td class="">B0H8XPX86P</td><td class="tag" data-tag="新">新</td><td class="num">10→8</td><td class="num">-2</td><td class="num">¥167→¥108</td><td class="num">1</td></tr><tr><td class="">B0FS6VCLHJ</td><td class="tag" data-tag="旧">旧</td><td class="num">1→0</td><td class="num">-1</td><td class="num">¥4→¥3</td><td class="num">0</td></tr><tr><td class="">B0FSD6TMC7</td><td class="tag" data-tag="旧">旧</td><td class="num">1→0</td><td class="num">-1</td><td class="num">¥0→¥18</td><td class="num">0</td></tr><tr><td class="">B0FWQHK5YV</td><td class="tag" data-tag="旧">旧</td><td class="num">1→0</td><td class="num">-1</td><td class="num">¥0→¥9</td><td class="num">1</td></tr></tbody></table></div>
+<div class="card center" style="max-width:1000px;"><div class="c-title">Torchbeam · 上涨 Top10</div><table><thead><tr><th>ASIN</th><th>链接</th><th>销量</th><th>Δ</th><th>广告花费</th><th>广告单</th></tr></thead><tbody><tr><td class="">B0HGLVYFKM</td><td class="tag" data-tag="新">新</td><td class="num">1→7</td><td class="num">+6</td><td class="num">¥4→¥220</td><td class="num">2</td></tr><tr><td class="">B0HGY7GSQY</td><td class="tag" data-tag="新">新</td><td class="num">4→10</td><td class="num">+6</td><td class="num">¥36→¥417</td><td class="num">3</td></tr><tr><td class="">B0FMF1K7B4</td><td class="tag" data-tag="旧">旧</td><td class="num">1→6</td><td class="num">+5</td><td class="num">¥0→¥2</td><td class="num">0</td></tr><tr><td class="">B0FJ28FKBH</td><td class="tag" data-tag="旧">旧</td><td class="num">4→7</td><td class="num">+3</td><td class="num">¥143→¥620</td><td class="num">4</td></tr><tr><td class="">B0FP25CMN6</td><td class="tag" data-tag="旧">旧</td><td class="num">0→3</td><td class="num">+3</td><td class="num">¥0→¥23</td><td class="num">0</td></tr><tr><td class="">B0FQHQ7Y9R</td><td class="tag" data-tag="旧">旧</td><td class="num">0→2</td><td class="num">+2</td><td class="num">¥0→¥5</td><td class="num">0</td></tr><tr><td class="">B0FSR7P4QQ</td><td class="tag" data-tag="旧">旧</td><td class="num">0→2</td><td class="num">+2</td><td class="num">¥0→¥0</td><td class="num">0</td></tr><tr><td class="">B0FQP2Z5PB</td><td class="tag" data-tag="旧">旧</td><td class="num">0→2</td><td class="num">+2</td><td class="num">¥0→¥0</td><td class="num">0</td></tr><tr><td class="">B0CPSMCBGL</td><td class="tag" data-tag="旧">旧</td><td class="num">2→4</td><td class="num">+2</td><td class="num">¥2→¥46</td><td class="num">1</td></tr><tr><td class="">B0HHF3Y7VW</td><td class="tag" data-tag="新">新</td><td class="num">0→2</td><td class="num">+2</td><td class="num">¥7→¥44</td><td class="num">2</td></tr></tbody></table></div>
+<div class="card center" style="max-width:1000px;"><div class="c-title">Torchbeam · 下滑 Top10</div><table><thead><tr><th>ASIN</th><th>链接</th><th>销量</th><th>Δ</th><th>广告花费</th><th>广告单</th></tr></thead><tbody><tr><td class="">B0FQP68F2C</td><td class="tag" data-tag="旧">旧</td><td class="num">7→0</td><td class="num">-7</td><td class="num">¥0→¥0</td><td class="num">0</td></tr><tr><td class="">B0FYP8YZSP</td><td class="tag" data-tag="旧">旧</td><td class="num">11→4</td><td class="num">-7</td><td class="num">¥0→¥5</td><td class="num">0</td></tr><tr><td class="">B0HC27J1ZY</td><td class="tag" data-tag="新">新</td><td class="num">10→6</td><td class="num">-4</td><td class="num">¥428→¥122</td><td class="num">1</td></tr><tr><td class="">B0FSZMFFD5</td><td class="tag" data-tag="旧">旧</td><td class="num">3→0</td><td class="num">-3</td><td class="num">¥0→¥0</td><td class="num">0</td></tr><tr><td class="">B0FWJCVTLC</td><td class="tag" data-tag="旧">旧</td><td class="num">3→1</td><td class="num">-2</td><td class="num">¥36→¥48</td><td class="num">0</td></tr><tr><td class="">B0FWR9KD15</td><td class="tag" data-tag="旧">旧</td><td class="num">2→0</td><td class="num">-2</td><td class="num">¥0→¥0</td><td class="num">0</td></tr><tr><td class="">B0GJRVZNZM</td><td class="tag" data-tag="旧">旧</td><td class="num">7→5</td><td class="num">-2</td><td class="num">¥4→¥2</td><td class="num">0</td></tr><tr><td class="">B0FR99M3ZW</td><td class="tag" data-tag="旧">旧</td><td class="num">2→0</td><td class="num">-2</td><td class="num">¥0→¥1</td><td class="num">0</td></tr><tr><td class="">B0FPWW7H2K</td><td class="tag" data-tag="旧">旧</td><td class="num">3→2</td><td class="num">-1</td><td class="num">¥24→¥42</td><td class="num">0</td></tr><tr><td class="">B0FLJ8G5ZB</td><td class="tag" data-tag="旧">旧</td><td class="num">3→2</td><td class="num">-1</td><td class="num">¥0→¥0</td><td class="num">0</td></tr></tbody></table></div>
+
+<div id="concl" class="chapter">⑤ 结论与行动建议</div>
+<div class="card center" style="max-width:1240px;">
+<div class="c-title">&#127919; 本周三条主线</div>
+<div class="insight" style="margin:10px 0 0;">
+<div class="ins-line"><b>1️⃣ PHILTOP 警报:</b>自然单 -15 件、转化率 4.12%→3.49%、份额 -3.4pp;增长依赖广告加投(+20%),链接自身造血能力在退化 —— <b>2 周内必须修复自然单</b>。</div>
+<div class="ins-line"><b>2️⃣ Torchbeam 亮点:</b>减广告(-18%)反而自然单 +14、净增 12 件;链接排名已稳固 —— 可继续降本提效,预算转向优势款。</div>
+<div class="ins-line"><b>3️⃣ 新链接效率:</b>动销率仅 PT 16.5% / TB 19.4%,但 PHILTOP 新链接广告单已翻倍(10→20)——<b>PHILTOP 加大成功款投放,Torchbeam 恢复新链接预算</b>。</div>
+</div>
+</div>
+
+<div class="footer">
+数据口径: 销量/销售额/流量/广告=车灯总成销量数据36-37(周×品牌×ASIN, 已剔除品牌合计行); 新链接=PHILTOP/Torchbeam 新链接清单内 ASIN;
+转化率=销量÷流量; ACOS=广告花费÷销售额; 份额=品牌销售额÷品类合计; 金额单位: 人民币(¥) | 不含库存数据<br>
+自动生成 · 车灯总成 W38→W39 周环比整合看板(品牌维度 + 链接类型维度)
+</div>
+<script>
+var DB = {"brands": [{"品牌": "PHILTOP", "销量_36": 119, "销量_37": 142, "销售额_36": 72922, "销售额_37": 88107, "流量_36": 3431, "流量_37": 4072, "花费_36": 2316.6, "花费_37": 3239.7, "广告单_36": 34, "广告单_37": 43, "广告销售额_36": 23579, "广告销售额_37": 28994, "SKU_36": 197, "SKU_37": 272, "出单SKU_36": 39, "出单SKU_37": 53, "d销量": 23, "d销售额": 15185, "转化36": 3.47, "转化37": 3.49, "客单36": 612.8, "客单37": 620.5, "ACOS36": 3.2, "ACOS37": 3.7, "share36": 47.3, "share37": 48.8, "qshare36": 52.0, "qshare37": 51.4}, {"品牌": "Torchbeam", "销量_36": 97, "销量_37": 128, "销售额_36": 70427, "销售额_37": 84915, "流量_36": 3204, "流量_37": 3578, "花费_36": 2615.1, "花费_37": 2431.5, "广告单_36": 21, "广告单_37": 31, "广告销售额_36": 16835, "广告销售额_37": 24927, "SKU_36": 150, "SKU_37": 157, "出单SKU_36": 34, "出单SKU_37": 39, "d销量": 31, "d销售额": 14488, "转化36": 3.03, "转化37": 3.58, "客单36": 726.1, "客单37": 663.4, "ACOS36": 3.7, "ACOS37": 2.9, "share36": 45.7, "share37": 47.0, "qshare36": 42.4, "qshare37": 46.4}, {"品牌": "KAC", "销量_36": 9, "销量_37": 4, "销售额_36": 6635, "销售额_37": 3683, "流量_36": 292, "流量_37": 344, "花费_36": 183.9, "花费_37": 222.0, "广告单_36": 5, "广告单_37": 0, "广告销售额_36": 3432, "广告销售额_37": 1190, "SKU_36": 32, "SKU_37": 35, "出单SKU_36": 7, "出单SKU_37": 3, "d销量": -5, "d销售额": -2952, "转化36": 3.08, "转化37": 1.16, "客单36": 737.2, "客单37": 920.8, "ACOS36": 2.8, "ACOS37": 6.0, "share36": 4.3, "share37": 2.0, "qshare36": 3.9, "qshare37": 1.4}, {"品牌": "ZonCar", "销量_36": 1, "销量_37": 1, "销售额_36": 1801, "销售额_37": 3099, "流量_36": 137, "流量_37": 106, "花费_36": 0.0, "花费_37": 0.0, "广告单_36": 0, "广告单_37": 0, "广告销售额_36": 0, "广告销售额_37": 0, "SKU_36": 9, "SKU_37": 13, "出单SKU_36": 1, "出单SKU_37": 1, "d销量": 0, "d销售额": 1298, "转化36": 0.73, "转化37": 0.94, "客单36": 1801.0, "客单37": 3099.0, "ACOS36": 0.0, "ACOS37": 0.0, "share36": 1.2, "share37": 1.7, "qshare36": 0.4, "qshare37": 0.4}, {"品牌": "KAX", "销量_36": 1, "销量_37": 1, "销售额_36": 915, "销售额_37": 762, "流量_36": 120, "流量_37": 149, "花费_36": 12.0, "花费_37": 37.1, "广告单_36": 0, "广告单_37": 0, "广告销售额_36": 0, "广告销售额_37": 0, "SKU_36": 38, "SKU_37": 39, "出单SKU_36": 1, "出单SKU_37": 1, "d销量": 0, "d销售额": -153, "转化36": 0.83, "转化37": 0.67, "客单36": 915.0, "客单37": 762.0, "ACOS36": 1.3, "ACOS37": 4.9, "share36": 0.6, "share37": 0.4, "qshare36": 0.4, "qshare37": 0.4}, {"品牌": "AUTOSITY", "销量_36": 0, "销量_37": 0, "销售额_36": 0, "销售额_37": 0, "流量_36": 15, "流量_37": 19, "花费_36": 3.3, "花费_37": 0.0, "广告单_36": 0, "广告单_37": 0, "广告销售额_36": 0, "广告销售额_37": 0, "SKU_36": 9, "SKU_37": 13, "出单SKU_36": 0, "出单SKU_37": 0, "d销量": 0, "d销售额": 0, "转化36": 0.0, "转化37": 0.0, "客单36": 0, "客单37": 0, "ACOS36": 0, "ACOS37": 0, "share36": 0.0, "share37": 0.0, "qshare36": 0.0, "qshare37": 0.0}, {"品牌": "MARSFLUX", "销量_36": 2, "销量_37": 0, "销售额_36": 1501, "销售额_37": 0, "流量_36": 30, "流量_37": 17, "花费_36": 0.0, "花费_37": 0.0, "广告单_36": 0, "广告单_37": 0, "广告销售额_36": 0, "广告销售额_37": 0, "SKU_36": 11, "SKU_37": 10, "出单SKU_36": 2, "出单SKU_37": 0, "d销量": -2, "d销售额": -1501, "转化36": 6.67, "转化37": 0.0, "客单36": 750.5, "客单37": 0, "ACOS36": 0.0, "ACOS37": 0, "share36": 1.0, "share37": 0.0, "qshare36": 0.9, "qshare37": 0.0}, {"品牌": "Torchtree", "销量_36": 0, "销量_37": 0, "销售额_36": 0, "销售额_37": 0, "流量_36": 10, "流量_37": 10, "花费_36": 0.0, "花费_37": 0.0, "广告单_36": 0, "广告单_37": 0, "广告销售额_36": 0, "广告销售额_37": 0, "SKU_36": 2, "SKU_37": 4, "出单SKU_36": 0, "出单SKU_37": 0, "d销量": 0, "d销售额": 0, "转化36": 0.0, "转化37": 0.0, "客单36": 0, "客单37": 0, "ACOS36": 0, "ACOS37": 0, "share36": 0.0, "share37": 0.0, "qshare36": 0.0, "qshare37": 0.0}], "total": {"销量_36": 229, "销量_37": 276, "销售额_36": 154201, "销售额_37": 180566, "流量_36": 7239, "流量_37": 8295, "花费_36": 5130.9, "花费_37": 5930.3, "广告单_36": 60, "广告单_37": 74, "广告销售额_36": 43846, "广告销售额_37": 55111, "SKU_36": 448, "SKU_37": 543, "出单SKU_36": 84, "出单SKU_37": 97}, "share": {"sales36": 154201, "sales37": 180566, "qty36": 229, "qty37": 276}, "top": {"PHILTOP": {"best37": [{"asin": "B0H8XPX86P", "s36": 8, "s37": 10, "amt": 10879, "花费": 76.3, "广告单": 0, "转化": 4.0}, {"asin": "B0FS85C2RQ", "s36": 9, "s37": 12, "amt": 7955, "花费": 127.0, "广告单": 2, "转化": 4.7}, {"asin": "B0H8XR58JL", "s36": 8, "s37": 13, "amt": 6629, "花费": 209.3, "广告单": 6, "转化": 6.7}, {"asin": "B0H8Y1HPK7", "s36": 16, "s37": 10, "amt": 6459, "花费": 432.4, "广告单": 4, "转化": 3.0}, {"asin": "B0H8XZJSJ5", "s36": 8, "s37": 7, "amt": 5093, "花费": 68.2, "广告单": 3, "转化": 3.2}, {"asin": "B0CKW9C6FQ", "s36": 6, "s37": 6, "amt": 3467, "花费": 45.7, "广告单": 1, "转化": 2.7}, {"asin": "B0FS84SK8G", "s36": 4, "s37": 6, "amt": 3304, "花费": 85.2, "广告单": 2, "转化": 7.8}, {"asin": "B0FS84LV8C", "s36": 5, "s37": 7, "amt": 3094, "花费": 29.2, "广告单": 1, "转化": 8.9}, {"asin": "B0CKW7MKSP", "s36": 6, "s37": 4, "amt": 2665, "花费": 12.9, "广告单": 0, "转化": 2.5}, {"asin": "B0H8XXTF62", "s36": 1, "s37": 4, "amt": 2529, "花费": 12.9, "广告单": 0, "转化": 5.1}], "up": [{"asin": "B0H8XR58JL", "s36": 8, "s37": 13, "d": 5, "花费36": 265.5, "花费37": 209.3, "广告单37": 6}, {"asin": "B0FS6NN9QW", "s36": 0, "s37": 3, "d": 3, "花费36": 0.0, "花费37": 63.7, "广告单37": 2}, {"asin": "B0FS85C2RQ", "s36": 9, "s37": 12, "d": 3, "花费36": 51.6, "花费37": 127.0, "广告单37": 2}, {"asin": "B0FSCWKMMV", "s36": 0, "s37": 3, "d": 3, "花费36": 0.0, "花费37": 0.0, "广告单37": 0}, {"asin": "B0H8XRNSXC", "s36": 0, "s37": 3, "d": 3, "花费36": 312.9, "花费37": 184.1, "广告单37": 1}, {"asin": "B0H8XXTF62", "s36": 1, "s37": 4, "d": 3, "花费36": 0.0, "花费37": 12.9, "广告单37": 0}, {"asin": "B0FSCXKVYF", "s36": 0, "s37": 2, "d": 2, "花费36": 0.0, "花费37": 9.8, "广告单37": 1}, {"asin": "B0FS87PQGN", "s36": 0, "s37": 2, "d": 2, "花费36": 34.4, "花费37": 35.0, "广告单37": 0}, {"asin": "B0FS84SK8G", "s36": 4, "s37": 6, "d": 2, "花费36": 73.1, "花费37": 85.2, "广告单37": 2}, {"asin": "B0H825KT1H", "s36": 0, "s37": 2, "d": 2, "花费36": 6.9, "花费37": 34.5, "广告单37": 1}], "down": [{"asin": "B0H8Y1HPK7", "s36": 16, "s37": 10, "d": -6, "花费36": 429.5, "花费37": 432.4, "广告单37": 4}, {"asin": "B0H8XKW25B", "s36": 6, "s37": 2, "d": -4, "花费36": 221.8, "花费37": 110.3, "广告单37": 0}, {"asin": "B0FS819JDK", "s36": 4, "s37": 1, "d": -3, "花费36": 52.6, "花费37": 45.5, "广告单37": 0}, {"asin": "B0H872782G", "s36": 2, "s37": 0, "d": -2, "花费36": 0.0, "花费37": 21.4, "广告单37": 0}, {"asin": "B0CKW7MKSP", "s36": 6, "s37": 4, "d": -2, "花费36": 8.4, "花费37": 12.9, "广告单37": 0}, {"asin": "B0FS2LZKLR", "s36": 2, "s37": 0, "d": -2, "花费36": 3.1, "花费37": 0.0, "广告单37": 0}, {"asin": "B0FP5F7K4M", "s36": 4, "s37": 2, "d": -2, "花费36": 0.5, "花费37": 0.0, "广告单37": 0}, {"asin": "B0FS88JZ1W", "s36": 3, "s37": 1, "d": -2, "花费36": 0.4, "花费37": 0.0, "广告单37": 0}, {"asin": "B0H82VHS7K", "s36": 1, "s37": 0, "d": -1, "花费36": 0.0, "花费37": 17.1, "广告单37": 0}, {"asin": "B0H82HYCWF", "s36": 1, "s37": 0, "d": -1, "花费36": 16.4, "花费37": 5.0, "广告单37": 0}], "adnat": {"ad36": 34, "ad37": 43, "nat36": 85, "nat37": 99}}, "Torchbeam": {"best37": [{"asin": "B0HGLVYFKM", "s36": 7, "s37": 10, "amt": 11287, "花费": 420.8, "广告单": 4, "转化": 3.2}, {"asin": "B0HGY7GSQY", "s36": 10, "s37": 11, "amt": 9723, "花费": 251.9, "广告单": 4, "转化": 5.2}, {"asin": "B0GJRVZNZM", "s36": 5, "s37": 7, "amt": 7901, "花费": 3.1, "广告单": 0, "转化": 5.2}, {"asin": "B0FJ28FKBH", "s36": 7, "s37": 10, "amt": 7003, "花费": 337.7, "广告单": 4, "转化": 10.3}, {"asin": "B0HC27J1ZY", "s36": 6, "s37": 5, "amt": 4148, "花费": 79.7, "广告单": 1, "转化": 4.5}, {"asin": "B0FMF1K7B4", "s36": 6, "s37": 8, "amt": 3535, "花费": 2.7, "广告单": 0, "转化": 5.7}, {"asin": "B0FW4R8M7R", "s36": 3, "s37": 5, "amt": 3400, "花费": 96.3, "广告单": 1, "转化": 3.8}, {"asin": "B0FSR7P4QQ", "s36": 2, "s37": 7, "amt": 3236, "花费": 3.0, "广告单": 0, "转化": 7.8}, {"asin": "B0FPWW7H2K", "s36": 2, "s37": 4, "amt": 3209, "花费": 8.6, "广告单": 0, "转化": 7.4}, {"asin": "B0FYP8YZSP", "s36": 4, "s37": 9, "amt": 2753, "花费": 83.5, "广告单": 3, "转化": 5.2}], "up": [{"asin": "B0G2RT5QYB", "s36": 0, "s37": 5, "d": 5, "花费36": 3.0, "花费37": 7.3, "广告单37": 0}, {"asin": "B0FYP8YZSP", "s36": 4, "s37": 9, "d": 5, "花费36": 4.8, "花费37": 83.5, "广告单37": 3}, {"asin": "B0FSR7P4QQ", "s36": 2, "s37": 7, "d": 5, "花费36": 0.0, "花费37": 3.0, "广告单37": 0}, {"asin": "B0HGXSKY8F", "s36": 0, "s37": 4, "d": 4, "花费36": 5.4, "花费37": 80.2, "广告单37": 2}, {"asin": "B0FQP2Z5PB", "s36": 2, "s37": 5, "d": 3, "花费36": 0.0, "花费37": 0.0, "广告单37": 0}, {"asin": "B0FJ28FKBH", "s36": 7, "s37": 10, "d": 3, "花费36": 619.8, "花费37": 337.7, "广告单37": 4}, {"asin": "B0HGLVYFKM", "s36": 7, "s37": 10, "d": 3, "花费36": 220.5, "花费37": 420.8, "广告单37": 4}, {"asin": "B0FLJFKCKT", "s36": 1, "s37": 4, "d": 3, "花费36": 1.7, "花费37": 24.2, "广告单37": 0}, {"asin": "B0CPSHYCZV", "s36": 0, "s37": 2, "d": 2, "花费36": 29.2, "花费37": 38.2, "广告单37": 1}, {"asin": "B0FW4R8M7R", "s36": 3, "s37": 5, "d": 2, "花费36": 16.3, "花费37": 96.3, "广告单37": 1}], "down": [{"asin": "B08NXC9549", "s36": 4, "s37": 1, "d": -3, "花费36": 0.0, "花费37": 0.0, "广告单37": 0}, {"asin": "B0FQJGQCP1", "s36": 5, "s37": 2, "d": -3, "花费36": 143.9, "花费37": 77.7, "广告单37": 2}, {"asin": "B0HF8TNS2X", "s36": 3, "s37": 0, "d": -3, "花费36": 0.1, "花费37": 6.1, "广告单37": 0}, {"asin": "B0FLJ8G5ZB", "s36": 2, "s37": 0, "d": -2, "花费36": 0.0, "花费37": 2.6, "广告单37": 0}, {"asin": "B0FQHQ7Y9R", "s36": 2, "s37": 0, "d": -2, "花费36": 4.9, "花费37": 20.7, "广告单37": 0}, {"asin": "B0G1B6QWXR", "s36": 3, "s37": 1, "d": -2, "花费36": 26.1, "花费37": 14.8, "广告单37": 1}, {"asin": "B0CPSMCBGL", "s36": 4, "s37": 2, "d": -2, "花费36": 46.0, "花费37": 79.6, "广告单37": 1}, {"asin": "B0CW31RFFY", "s36": 1, "s37": 0, "d": -1, "花费36": 0.0, "花费37": 0.0, "广告单37": 0}, {"asin": "B0FP25CMN6", "s36": 3, "s37": 2, "d": -1, "花费36": 23.0, "花费37": 40.4, "广告单37": 1}, {"asin": "B0FP24KN85", "s36": 1, "s37": 0, "d": -1, "花费36": 3.5, "花费37": 0.0, "广告单37": 0}], "adnat": {"ad36": 21, "ad37": 31, "nat36": 76, "nat37": 97}}}, "meta": {"title": "车灯总成 · 品牌维度周环比分析(W38 → W39)", "range": "2026年 W38 → W39", "source": "车灯总成销量数据36-37.xlsx", "note": "品牌维度(不区分新旧链接)"}, "ads": {"整体": {"名": "整体", "花费_36": 5130.9, "花费_37": 5930.4, "展示_36": 117645, "展示_37": 143161, "点击_36": 1069, "点击_37": 1406, "广告单_36": 60, "广告单_37": 76, "广告销售额_36": 43845.8, "广告销售额_37": 55110.7, "总销售额_36": 154200.2, "总销售额_37": 180565.7, "总销量_36": 229, "总销量_37": 276, "CTR_36": 0.91, "CTR_37": 0.98, "CPC_36": 4.8, "CPC_37": 4.22, "CPM_36": 43.61, "CPM_37": 41.42, "广告CVR_36": 5.6, "广告CVR_37": 5.5, "ACOS_36": 11.7, "ACOS_37": 10.8, "ROAS_36": 8.55, "ROAS_37": 9.29, "TACOS_36": 3.3, "TACOS_37": 3.3, "广告单占比_36": 26.2, "广告单占比_37": 27.9, "广告销售额占比_36": 28.4, "广告销售额占比_37": 30.5, "推广占比_36": 3.33, "推广占比_37": 3.28, "d花费": 799.5, "d广告单": 16, "dCTR": 0.07, "dCPC": -0.58, "dACOS": -0.9, "dROAS": 0.74, "d广告CVR": -0.1}, "PHILTOP": {"名": "PHILTOP", "花费_36": 2316.6, "花费_37": 3239.7, "展示_36": 62870, "展示_37": 83916, "点击_36": 545, "点击_37": 779, "广告单_36": 34, "广告单_37": 43, "广告销售额_36": 23578.5, "广告销售额_37": 28993.9, "总销售额_36": 72921.8, "总销售额_37": 88106.5, "总销量_36": 119, "总销量_37": 142, "CTR_36": 0.87, "CTR_37": 0.93, "CPC_36": 4.25, "CPC_37": 4.16, "CPM_36": 36.85, "CPM_37": 38.61, "广告CVR_36": 6.2, "广告CVR_37": 5.6, "ACOS_36": 9.8, "ACOS_37": 11.2, "ROAS_36": 10.18, "ROAS_37": 8.95, "TACOS_36": 3.2, "TACOS_37": 3.7, "广告单占比_36": 28.6, "广告单占比_37": 31.0, "广告销售额占比_36": 32.3, "广告销售额占比_37": 32.9, "推广占比_36": 3.18, "推广占比_37": 3.68, "d花费": 923.1, "d广告单": 9, "dCTR": 0.06, "dCPC": -0.09, "dACOS": 1.4, "dROAS": -1.23, "d广告CVR": -0.6}, "Torchbeam": {"名": "Torchbeam", "花费_36": 2615.1, "花费_37": 2431.5, "展示_36": 46031, "展示_37": 47715, "点击_36": 448, "点击_37": 522, "广告单_36": 21, "广告单_37": 31, "广告销售额_36": 16835.2, "广告销售额_37": 24926.7, "总销售额_36": 70427.2, "总销售额_37": 84914.8, "总销量_36": 97, "总销量_37": 128, "CTR_36": 0.97, "CTR_37": 1.09, "CPC_36": 5.84, "CPC_37": 4.66, "CPM_36": 56.81, "CPM_37": 50.96, "广告CVR_36": 4.7, "广告CVR_37": 6.1, "ACOS_36": 15.5, "ACOS_37": 9.8, "ROAS_36": 6.44, "ROAS_37": 10.25, "TACOS_36": 3.7, "TACOS_37": 2.9, "广告单占比_36": 21.6, "广告单占比_37": 25.0, "广告销售额占比_36": 23.9, "广告销售额占比_37": 29.4, "推广占比_36": 3.71, "推广占比_37": 2.86, "d花费": -183.6, "d广告单": 10, "dCTR": 0.12, "dCPC": -1.18, "dACOS": -5.7, "dROAS": 3.81, "d广告CVR": 1.4}}}, DL = {"brands": [{"品牌": "PHILTOP", "类型": "新链接", "list_n": 97, "销量_36": 50, "销量_37": 62, "销售额_36": 33670, "销售额_37": 40075, "流量_36": 1415, "流量_37": 1853, "花费_36": 1442.8, "花费_37": 1715.5, "广告单_36": 20, "广告单_37": 25, "SKU_36": 92, "SKU_37": 93, "d销量": 12, "d销售额": 6405, "转化36": 3.53, "转化37": 3.35, "客单36": 673.4, "客单37": 646.4, "ACOS36": 4.3, "ACOS37": 4.3}, {"品牌": "PHILTOP", "类型": "旧链接", "list_n": null, "销量_36": 46, "销量_37": 57, "销售额_36": 27916, "销售额_37": 32847, "流量_36": 1337, "流量_37": 1578, "花费_36": 494.6, "花费_37": 601.1, "广告单_36": 7, "广告单_37": 9, "SKU_36": 82, "SKU_37": 104, "d销量": 11, "d销售额": 4931, "转化36": 3.44, "转化37": 3.61, "客单36": 606.9, "客单37": 576.3, "ACOS36": 1.8, "ACOS37": 1.8}, {"品牌": "Torchbeam", "类型": "新链接", "list_n": 31, "销量_36": 19, "销量_37": 33, "销售额_36": 17509, "销售额_37": 30217, "流量_36": 798, "流量_37": 1250, "花费_36": 1502.7, "花费_37": 1467.2, "广告单_36": 8, "广告单_37": 9, "SKU_36": 24, "SKU_37": 25, "d销量": 14, "d销售额": 12708, "转化36": 2.38, "转化37": 2.64, "客单36": 921.5, "客单37": 915.7, "ACOS36": 8.6, "ACOS37": 4.9}, {"品牌": "Torchbeam", "类型": "旧链接", "list_n": null, "销量_36": 70, "销量_37": 64, "销售额_36": 42708, "销售额_37": 40210, "流量_36": 1611, "流量_37": 1954, "花费_36": 493.1, "花费_37": 1147.9, "广告单_36": 8, "广告单_37": 12, "SKU_36": 123, "SKU_37": 125, "d销量": -6, "d销售额": -2498, "转化36": 4.35, "转化37": 3.28, "客单36": 610.1, "客单37": 628.3, "ACOS36": 1.2, "ACOS37": 2.9}], "new_links": {"PHILTOP": {"list_n": 97, "appear": 93, "sold_n": 19, "sold_qty": 62, "sold_amt": 40075, "rate": 19.6, "sold_n_36": 16, "sold_qty_36": 50, "sold_amt_36": 33670, "rows": [{"asin": "B0H8Y1HPK7", "销量": 16, "销售额": 10335, "流量": 321, "转化": 5.0, "花费": 429.5, "广告单": 5, "s36": 7}, {"asin": "B0H8XPX86P", "销量": 8, "销售额": 8703, "流量": 283, "转化": 2.8, "花费": 108.2, "广告单": 1, "s36": 10}, {"asin": "B0H8XZJSJ5", "销量": 8, "销售额": 5820, "流量": 220, "转化": 3.6, "花费": 68.2, "广告单": 1, "s36": 4}, {"asin": "B0H8XR58JL", "销量": 8, "销售额": 4079, "流量": 201, "转化": 4.0, "花费": 265.5, "广告单": 8, "s36": 9}, {"asin": "B0H8XKW25B", "销量": 6, "销售额": 2937, "流量": 99, "转化": 6.1, "花费": 221.8, "广告单": 6, "s36": 6}, {"asin": "B0H8XPWFLL", "销量": 2, "销售额": 1441, "流量": 64, "转化": 3.1, "花费": 8.8, "广告单": 0, "s36": 1}, {"asin": "B0H877FLGL", "销量": 1, "销售额": 700, "流量": 9, "转化": 11.1, "花费": 4.0, "广告单": 0, "s36": 0}, {"asin": "B0H8XXTF62", "销量": 1, "销售额": 632, "流量": 80, "转化": 1.2, "花费": 0.0, "广告单": 0, "s36": 3}, {"asin": "B0H82VDW9S", "销量": 1, "销售额": 598, "流量": 6, "转化": 16.7, "花费": 6.0, "广告单": 0, "s36": 0}, {"asin": "B0H82MJY7P", "销量": 1, "销售额": 585, "流量": 11, "转化": 9.1, "花费": 3.4, "广告单": 1, "s36": 0}, {"asin": "B0H872782G", "销量": 2, "销售额": 585, "流量": 25, "转化": 8.0, "花费": 0.0, "广告单": 0, "s36": 1}, {"asin": "B0H82B5VQ4", "销量": 1, "销售额": 578, "流量": 5, "转化": 20.0, "花费": 0.0, "广告单": 0, "s36": 0}, {"asin": "B0H8774H6B", "销量": 1, "销售额": 530, "流量": 12, "转化": 8.3, "花费": 9.3, "广告单": 1, "s36": 0}, {"asin": "B0H82HYCWF", "销量": 1, "销售额": 503, "流量": 13, "转化": 7.7, "花费": 16.4, "广告单": 1, "s36": 0}, {"asin": "B0H82VHS7K", "销量": 1, "销售额": 462, "流量": 1, "转化": 100.0, "花费": 0.0, "广告单": 0, "s36": 1}, {"asin": "B0H82JMJG1", "销量": 1, "销售额": 456, "流量": 8, "转化": 12.5, "花费": 0.0, "广告单": 0, "s36": 0}, {"asin": "B0H82HXDLD", "销量": 1, "销售额": 442, "流量": 6, "转化": 16.7, "花费": 0.0, "广告单": 0, "s36": 0}, {"asin": "B0H825B2DH", "销量": 1, "销售额": 408, "流量": 29, "转化": 3.4, "花费": 4.8, "广告单": 0, "s36": 0}, {"asin": "B0H82H87S8", "销量": 1, "销售额": 279, "流量": 6, "转化": 16.7, "花费": 0.0, "广告单": 0, "s36": 0}], "zero": 4}, "Torchbeam": {"list_n": 31, "appear": 25, "sold_n": 8, "sold_qty": 33, "sold_amt": 30217, "rate": 25.8, "sold_n_36": 6, "sold_qty_36": 19, "sold_amt_36": 17509, "rows": [{"asin": "B0HGY7GSQY", "销量": 10, "销售额": 8839, "流量": 215, "转化": 4.7, "花费": 416.6, "广告单": 3, "s36": 4}, {"asin": "B0HGLVYFKM", "销量": 7, "销售额": 7901, "流量": 210, "转化": 3.3, "花费": 220.5, "广告单": 2, "s36": 1}, {"asin": "B0HC27J1ZY", "销量": 6, "销售额": 4977, "流量": 143, "转化": 4.2, "花费": 122.3, "广告单": 1, "s36": 10}, {"asin": "B0HF8TNS2X", "销量": 3, "销售额": 3672, "流量": 40, "转化": 7.5, "花费": 0.1, "广告单": 0, "s36": 2}, {"asin": "B0HHF3Y7VW", "销量": 2, "销售额": 1591, "流量": 34, "转化": 5.9, "花费": 43.5, "广告单": 2, "s36": 0}, {"asin": "B0HGY6CV75", "销量": 2, "销售额": 1333, "流量": 55, "转化": 3.6, "花费": 277.8, "广告单": 1, "s36": 0}, {"asin": "B0HC2JKLR3", "销量": 2, "销售额": 1169, "流量": 45, "转化": 4.4, "花费": 18.8, "广告单": 0, "s36": 1}, {"asin": "B0HC22PT2K", "销量": 1, "销售额": 734, "流量": 49, "转化": 2.0, "花费": 25.9, "广告单": 0, "s36": 0}], "zero": 6}}, "updown": {"PHILTOP": {"up": [{"asin": "B0H8Y1HPK7", "类型": "新", "s36": 7, "s37": 16, "d": 9, "花费36": 154.8, "花费37": 429.5, "广告单36": 2, "广告单37": 5}, {"asin": "B0FS85C2RQ", "类型": "旧", "s36": 5, "s37": 9, "d": 4, "花费36": 9.7, "花费37": 51.6, "广告单36": 0, "广告单37": 2}, {"asin": "B0H8XZJSJ5", "类型": "新", "s36": 4, "s37": 8, "d": 4, "花费36": 60.7, "花费37": 68.2, "广告单36": 1, "广告单37": 1}, {"asin": "B0FP5F7K4M", "类型": "旧", "s36": 1, "s37": 4, "d": 3, "花费36": 0.0, "花费37": 0.5, "广告单36": 0, "广告单37": 0}, {"asin": "B0FS88JZ1W", "类型": "旧", "s36": 1, "s37": 3, "d": 2, "花费36": 21.8, "花费37": 0.4, "广告单36": 0, "广告单37": 0}, {"asin": "B0FS84SK8G", "类型": "旧", "s36": 2, "s37": 4, "d": 2, "花费36": 76.7, "花费37": 73.1, "广告单36": 1, "广告单37": 2}, {"asin": "B0FSCTS3Q2", "类型": "旧", "s36": 1, "s37": 3, "d": 2, "花费36": 47.7, "花费37": 0.0, "广告单36": 1, "广告单37": 0}, {"asin": "B0FPCNQP9R", "类型": "旧", "s36": 0, "s37": 1, "d": 1, "花费36": 0.0, "花费37": 0.0, "广告单36": 0, "广告单37": 0}, {"asin": "B0FS84NXJD", "类型": "旧", "s36": 0, "s37": 1, "d": 1, "花费36": 0.0, "花费37": 0.0, "广告单36": 0, "广告单37": 0}, {"asin": "B0FSCXCXDD", "类型": "旧", "s36": -1, "s37": 0, "d": 1, "花费36": 0.0, "花费37": 14.8, "广告单36": 0, "广告单37": 0}], "down": [{"asin": "B0FS82LJM9", "类型": "旧", "s36": 3, "s37": 0, "d": -3, "花费36": 24.9, "花费37": 29.5, "广告单36": 2, "广告单37": 0}, {"asin": "B0H82BQFMW", "类型": "新", "s36": 3, "s37": 0, "d": -3, "花费36": 0.0, "花费37": 0.0, "广告单36": 0, "广告单37": 0}, {"asin": "B0FS839G43", "类型": "旧", "s36": 2, "s37": 0, "d": -2, "花费36": 12.2, "花费37": 14.5, "广告单36": 1, "广告单37": 0}, {"asin": "B0CKW7MKSP", "类型": "旧", "s36": 8, "s37": 6, "d": -2, "花费36": 1.2, "花费37": 8.4, "广告单36": 0, "广告单37": 0}, {"asin": "B0H8XTDC3R", "类型": "新", "s36": 2, "s37": 0, "d": -2, "花费36": 264.7, "花费37": 64.7, "广告单36": 1, "广告单37": 0}, {"asin": "B0H8XXTF62", "类型": "新", "s36": 3, "s37": 1, "d": -2, "花费36": 0.0, "花费37": 0.0, "广告单36": 0, "广告单37": 0}, {"asin": "B0H8XPX86P", "类型": "新", "s36": 10, "s37": 8, "d": -2, "花费36": 167.3, "花费37": 108.2, "广告单36": 4, "广告单37": 1}, {"asin": "B0FS6VCLHJ", "类型": "旧", "s36": 1, "s37": 0, "d": -1, "花费36": 3.5, "花费37": 2.9, "广告单36": 0, "广告单37": 0}, {"asin": "B0FSD6TMC7", "类型": "旧", "s36": 1, "s37": 0, "d": -1, "花费36": 0.0, "花费37": 18.1, "广告单36": 0, "广告单37": 0}, {"asin": "B0FWQHK5YV", "类型": "旧", "s36": 1, "s37": 0, "d": -1, "花费36": 0.0, "花费37": 9.2, "广告单36": 0, "广告单37": 1}]}, "Torchbeam": {"up": [{"asin": "B0HGLVYFKM", "类型": "新", "s36": 1, "s37": 7, "d": 6, "花费36": 4.4, "花费37": 220.5, "广告单36": 1, "广告单37": 2}, {"asin": "B0HGY7GSQY", "类型": "新", "s36": 4, "s37": 10, "d": 6, "花费36": 36.2, "花费37": 416.6, "广告单36": 0, "广告单37": 3}, {"asin": "B0FMF1K7B4", "类型": "旧", "s36": 1, "s37": 6, "d": 5, "花费36": 0.0, "花费37": 1.6, "广告单36": 0, "广告单37": 0}, {"asin": "B0FJ28FKBH", "类型": "旧", "s36": 4, "s37": 7, "d": 3, "花费36": 143.4, "花费37": 619.8, "广告单36": 1, "广告单37": 4}, {"asin": "B0FP25CMN6", "类型": "旧", "s36": 0, "s37": 3, "d": 3, "花费36": 0.0, "花费37": 23.0, "广告单36": 0, "广告单37": 0}, {"asin": "B0FQHQ7Y9R", "类型": "旧", "s36": 0, "s37": 2, "d": 2, "花费36": 0.0, "花费37": 4.9, "广告单36": 0, "广告单37": 0}, {"asin": "B0FSR7P4QQ", "类型": "旧", "s36": 0, "s37": 2, "d": 2, "花费36": 0.0, "花费37": 0.0, "广告单36": 0, "广告单37": 0}, {"asin": "B0FQP2Z5PB", "类型": "旧", "s36": 0, "s37": 2, "d": 2, "花费36": 0.0, "花费37": 0.0, "广告单36": 0, "广告单37": 0}, {"asin": "B0CPSMCBGL", "类型": "旧", "s36": 2, "s37": 4, "d": 2, "花费36": 1.9, "花费37": 46.0, "广告单36": 1, "广告单37": 1}, {"asin": "B0HHF3Y7VW", "类型": "新", "s36": 0, "s37": 2, "d": 2, "花费36": 6.9, "花费37": 43.5, "广告单36": 0, "广告单37": 2}], "down": [{"asin": "B0FQP68F2C", "类型": "旧", "s36": 7, "s37": 0, "d": -7, "花费36": 0.0, "花费37": 0.0, "广告单36": 0, "广告单37": 0}, {"asin": "B0FYP8YZSP", "类型": "旧", "s36": 11, "s37": 4, "d": -7, "花费36": 0.0, "花费37": 4.8, "广告单36": 0, "广告单37": 0}, {"asin": "B0HC27J1ZY", "类型": "新", "s36": 10, "s37": 6, "d": -4, "花费36": 427.8, "花费37": 122.3, "广告单36": 6, "广告单37": 1}, {"asin": "B0FSZMFFD5", "类型": "旧", "s36": 3, "s37": 0, "d": -3, "花费36": 0.0, "花费37": 0.0, "广告单36": 0, "广告单37": 0}, {"asin": "B0FWJCVTLC", "类型": "旧", "s36": 3, "s37": 1, "d": -2, "花费36": 36.0, "花费37": 47.9, "广告单36": 2, "广告单37": 0}, {"asin": "B0FWR9KD15", "类型": "旧", "s36": 2, "s37": 0, "d": -2, "花费36": 0.0, "花费37": 0.0, "广告单36": 0, "广告单37": 0}, {"asin": "B0GJRVZNZM", "类型": "旧", "s36": 7, "s37": 5, "d": -2, "花费36": 4.1, "花费37": 1.9, "广告单36": 0, "广告单37": 0}, {"asin": "B0FR99M3ZW", "类型": "旧", "s36": 2, "s37": 0, "d": -2, "花费36": 0.0, "花费37": 1.2, "广告单36": 0, "广告单37": 0}, {"asin": "B0FPWW7H2K", "类型": "旧", "s36": 3, "s37": 2, "d": -1, "花费36": 24.1, "花费37": 41.8, "广告单36": 2, "广告单37": 0}, {"asin": "B0FLJ8G5ZB", "类型": "旧", "s36": 3, "s37": 2, "d": -1, "花费36": 0.0, "花费37": 0.0, "广告单36": 0, "广告单37": 0}]}}, "other": {"销量_36": 12, "销售额_36": 9969, "流量_36": 507, "花费_36": 30.7, "广告单_36": 0, "SKU_36": 88, "销量_37": 13, "销售额_37": 10851, "流量_37": 604, "花费_37": 199.1, "广告单_37": 5, "SKU_37": 101}, "brand_total": [{"品牌": "PHILTOP", "销量_36": 96, "销售额_36": 61587, "流量_36": 2752, "花费_36": 1937.4, "广告单_36": 27, "SKU_36": 174, "销量_37": 119, "销售额_37": 72922, "流量_37": 3431, "花费_37": 2316.6, "广告单_37": 34, "SKU_37": 197, "d销量": 23, "d销售额": 11335, "转化36": 3.49, "转化37": 3.47, "ACOS36": 3.1, "ACOS37": 3.2}, {"品牌": "Torchbeam", "销量_36": 89, "销售额_36": 60217, "流量_36": 2409, "花费_36": 1995.8, "广告单_36": 16, "SKU_36": 147, "销量_37": 97, "销售额_37": 70427, "流量_37": 3204, "花费_37": 2615.1, "广告单_37": 21, "SKU_37": 150, "d销量": 8, "d销售额": 10210, "转化36": 3.69, "转化37": 3.03, "ACOS36": 3.3, "ACOS37": 3.7}], "meta": {"title": "车灯总成 · 周环比分析看板(W36 → W37)", "range": "2026年 W36 → W37", "source": "车灯总成销量数据36-37.xlsx + 新链接清单", "newlink": "PHILTOP 97个 / Torchbeam 31个"}};
+var B = DB.brands, PT = B.filter(function(x){return x['品牌']==='PHILTOP';})[0], TB = B.filter(function(x){return x['品牌']==='Torchbeam';})[0];
+var ADT = DB.ads['整体'], ADP = DB.ads['PHILTOP'], ADB = DB.ads['Torchbeam'];
+var PTL = DL.brands.filter(function(x){return x['品牌']==='PHILTOP'&&x['类型']==='新链接';})[0];
+var PTLO = DL.brands.filter(function(x){return x['品牌']==='PHILTOP'&&x['类型']==='旧链接';})[0];
+var TBL = DL.brands.filter(function(x){return x['品牌']==='Torchbeam'&&x['类型']==='新链接';})[0];
+var TBLO = DL.brands.filter(function(x){return x['品牌']==='Torchbeam'&&x['类型']==='旧链接';})[0];
+var baseOpt = { grid:{left:60,right:40,top:38,bottom:34}, tooltip:{trigger:'axis'}, legend:{top:6,textStyle:{fontSize:11}} };
+
+(function(){
+var el = echarts.init(document.getElementById('c1'));
+var top5 = B.slice(0,5);
+var o36 = B.slice(5).reduce(function(a,x){return a+x['销售额_36'];},0), o37 = B.slice(5).reduce(function(a,x){return a+x['销售额_37'];},0);
+el.setOption(Object.assign({}, baseOpt, {
+xAxis:{type:'category',data:top5.map(function(x){return x['品牌'];}).concat(['其他']),axisLabel:{fontSize:10,rotate:20}}, yAxis:{type:'value',name:'¥'},
+series:[{name:'W37',type:'bar',data:top5.map(function(x){return x['销售额_36'];}).concat([o36]),itemStyle:{color:'#9BBBCC'},barWidth:'32%'},
+{name:'W38',type:'bar',data:top5.map(function(x){return x['销售额_37'];}).concat([o37]),itemStyle:{color:'#2E86AB'},barWidth:'32%',label:{show:true,position:'top',fontSize:9,formatter:function(p){return (p.value/1000).toFixed(1)+'k';}}}]
+}));
+})();
+
+(function(){
+var el = echarts.init(document.getElementById('c2'));
+var pre = [PT, TB];
+var rest = +(100 - PT.share37 - TB.share37).toFixed(1);
+el.setOption(Object.assign({}, baseOpt, {
+tooltip:{trigger:'item',formatter:'{b}: {c}%'},
+series:[{type:'pie', radius:['38%','66%'], center:['50%','58%'],
+data:[{name:'PHILTOP',value:PT.share37},{name:'Torchbeam',value:TB.share37},{name:'其他品牌',value:rest}],
+label:{fontSize:11,formatter:'{b}\n{c}%'}, itemStyle:{borderColor:'#fff',borderWidth:2}}]
+}));
+})();
+
+(function(){
+var el = echarts.init(document.getElementById('c3'));
+var a = DB.top.PHILTOP.adnat, b = DB.top.Torchbeam.adnat;
+el.setOption(Object.assign({}, baseOpt, {
+xAxis:{type:'category',data:['PHILTOP','Torchbeam']}, yAxis:{type:'value',name:'件'},
+series:[{name:'W37 广告单',type:'bar',stack:'s36',data:[a.ad36,b.ad36],itemStyle:{color:'#F4A259'},barWidth:'30%'},
+{name:'W37 自然单',type:'bar',stack:'s36',data:[a.nat36,b.nat36],itemStyle:{color:'#9BBBCC'},barWidth:'30%'},
+{name:'W38 广告单',type:'bar',stack:'s37',data:[a.ad37,b.ad37],itemStyle:{color:'#C1121F'},barWidth:'30%'},
+{name:'W38 自然单',type:'bar',stack:'s37',data:[a.nat37,b.nat37],itemStyle:{color:'#2E86AB'},barWidth:'30%'}]
+}));
+})();
+
+(function(){
+var el = echarts.init(document.getElementById('c4'));
+var pre = B.filter(function(x){return x['销量_37']>=2;});
+el.setOption(Object.assign({}, baseOpt, {
+xAxis:{type:'category',data:pre.map(function(x){return x['品牌'];}),axisLabel:{fontSize:10}}, yAxis:{type:'value',name:'%'},
+series:[{name:'W37',type:'bar',data:pre.map(function(x){return x['转化36'];}),itemStyle:{color:'#9BBBCC'},barWidth:'30%',label:{show:true,position:'top',fontSize:9,formatter:'{c}%'}},
+{name:'W38',type:'bar',data:pre.map(function(x){return x['转化37'];}),itemStyle:{color:'#F4A259'},barWidth:'30%',label:{show:true,position:'top',fontSize:9,formatter:'{c}%'}}]
+}));
+})();
+
+(function(){
+var el = echarts.init(document.getElementById('c5'));
+el.setOption(Object.assign({}, baseOpt, {
+xAxis:{type:'category',data:['PHILTOP','Torchbeam']}, yAxis:[{type:'value',name:'¥'},{type:'value',name:'%'}],
+series:[{name:'花费W37',type:'bar',data:[PT['花费_36'],TB['花费_36']],itemStyle:{color:'#C7B8D9'},barWidth:'22%'},
+{name:'花费W38',type:'bar',data:[PT['花费_37'],TB['花费_37']],itemStyle:{color:'#2E86AB'},barWidth:'22%'},
+{name:'ACOS W37',type:'line',yAxisIndex:1,data:[PT.ACOS36,TB.ACOS36],itemStyle:{color:'#F4A259'},lineStyle:{type:'dashed'},label:{show:true,fontSize:9,formatter:'{c}%'}},
+{name:'ACOS W38',type:'line',yAxisIndex:1,data:[PT.ACOS37,TB.ACOS37],itemStyle:{color:'#C1121F'},lineStyle:{width:3},label:{show:true,fontSize:9,formatter:'{c}%'}}]
+}));
+})();
+
+(function(){
+var el = echarts.init(document.getElementById('c6'));
+var o36 = +(100 - PT.qshare36 - TB.qshare36).toFixed(1), o37 = +(100 - PT.qshare37 - TB.qshare37).toFixed(1);
+el.setOption(Object.assign({}, baseOpt, {
+xAxis:{type:'category',data:['PHILTOP','Torchbeam','其他品牌']}, yAxis:{type:'value',name:'%'},
+series:[{name:'W37',type:'bar',data:[PT.qshare36,TB.qshare36,o36],itemStyle:{color:'#9BBBCC'},barWidth:'32%',label:{show:true,position:'top',fontSize:10,formatter:'{c}%'}},
+{name:'W38',type:'bar',data:[PT.qshare37,TB.qshare37,o37],itemStyle:{color:'#2E86AB'},barWidth:'32%',label:{show:true,position:'top',fontSize:10,formatter:'{c}%'}}]
+}));
+})();
+
+var cats2 = ['PHILTOP-新','PHILTOP-旧','Torchbeam-新','Torchbeam-旧'];
+var links = [PTL, PTLO, TBL, TBLO];
+function col(k36, k37) { return [links.map(function(x){return x[k36];}), links.map(function(x){return x[k37];})]; }
+
+(function(){
+var el = echarts.init(document.getElementById('c7'));
+var d = col('销量_36','销量_37');
+el.setOption(Object.assign({}, baseOpt, {
+xAxis:{type:'category',data:cats2,axisLabel:{fontSize:10,rotate:15}}, yAxis:{type:'value',name:'件'},
+series:[{name:'W37',type:'bar',data:d[0],itemStyle:{color:'#9BBBCC'},barWidth:'32%'},
+{name:'W38',type:'bar',data:d[1],itemStyle:{color:'#2E86AB'},barWidth:'32%',label:{show:true,position:'top'}}]
+}));
+})();
+
+(function(){
+var el = echarts.init(document.getElementById('c8'));
+var d = col('销售额_36','销售额_37');
+el.setOption(Object.assign({}, baseOpt, {
+xAxis:{type:'category',data:cats2,axisLabel:{fontSize:10,rotate:15}}, yAxis:{type:'value',name:'¥'},
+series:[{name:'W37',type:'bar',data:d[0],itemStyle:{color:'#C7B8D9'},barWidth:'32%'},
+{name:'W38',type:'bar',data:d[1],itemStyle:{color:'#7B5EA7'},barWidth:'32%',label:{show:true,position:'top',fontSize:9,formatter:function(p){return '¥'+(p.value/1000).toFixed(1)+'k';}}}]
+}));
+})();
+
+(function(){
+var el = echarts.init(document.getElementById('c9'));
+var d = col('转化36','转化37');
+el.setOption(Object.assign({}, baseOpt, {
+xAxis:{type:'category',data:cats2,axisLabel:{fontSize:10,rotate:15}}, yAxis:{type:'value',name:'%'},
+series:[{name:'W37',type:'bar',data:d[0],itemStyle:{color:'#9BBBCC'},barWidth:'32%',label:{show:true,position:'top',fontSize:9,formatter:'{c}%'}},
+{name:'W38',type:'bar',data:d[1],itemStyle:{color:'#F4A259'},barWidth:'32%',label:{show:true,position:'top',fontSize:9,formatter:'{c}%'}}]
+}));
+})();
+
+(function(){
+var el = echarts.init(document.getElementById('c10'));
+var sp = col('花费_36','花费_37'), od = col('广告单_36','广告单_37');
+el.setOption(Object.assign({}, baseOpt, {
+xAxis:{type:'category',data:cats2,axisLabel:{fontSize:10,rotate:15}}, yAxis:[{type:'value',name:'¥'},{type:'value',name:'单'}],
+series:[{name:'花费W37',type:'bar',data:sp[0],itemStyle:{color:'#E0E0E0'},barWidth:'22%'},
+{name:'花费W38',type:'bar',data:sp[1],itemStyle:{color:'#2E86AB'},barWidth:'22%'},
+{name:'广告单W37',type:'line',yAxisIndex:1,data:od[0],itemStyle:{color:'#C7B8D9'},lineStyle:{type:'dashed'}},
+{name:'广告单W38',type:'line',yAxisIndex:1,data:od[1],itemStyle:{color:'#C1121F'},lineStyle:{width:3},label:{show:true}}]
+}));
+})();
+
+(function(){
+var el = echarts.init(document.getElementById('c11'));
+el.setOption(Object.assign({}, baseOpt, {
+xAxis:{type:'category',data:['整体','PHILTOP','Torchbeam']}, yAxis:{type:'value',name:'¥'},
+series:[{name:'花费W37',type:'bar',data:[ADT['花费_36'],ADP['花费_36'],ADB['花费_36']],itemStyle:{color:'#C7B8D9'},barWidth:'22%'},
+{name:'花费W38',type:'bar',data:[ADT['花费_37'],ADP['花费_37'],ADB['花费_37']],itemStyle:{color:'#7B5EA7'},barWidth:'22%'},
+{name:'广告销售额W37',type:'bar',data:[ADT['广告销售额_36'],ADP['广告销售额_36'],ADB['广告销售额_36']],itemStyle:{color:'#9BBBCC'},barWidth:'22%'},
+{name:'广告销售额W38',type:'bar',data:[ADT['广告销售额_37'],ADP['广告销售额_37'],ADB['广告销售额_37']],itemStyle:{color:'#2E86AB'},barWidth:'22%'}]
+}));
+})();
+
+(function(){
+var el = echarts.init(document.getElementById('c12'));
+el.setOption(Object.assign({}, baseOpt, {
+xAxis:{type:'category',data:['整体','PHILTOP','Torchbeam']}, yAxis:{type:'value',name:'%'},
+series:[{name:'CTR W37',type:'bar',data:[ADT['CTR_36'],ADP['CTR_36'],ADB['CTR_36']],itemStyle:{color:'#9BBBCC'},barWidth:'18%'},
+{name:'CTR W38',type:'bar',data:[ADT['CTR_37'],ADP['CTR_37'],ADB['CTR_37']],itemStyle:{color:'#2E86AB'},barWidth:'18%'},
+{name:'广告CVR W37',type:'bar',data:[ADT['广告CVR_36'],ADP['广告CVR_36'],ADB['广告CVR_36']],itemStyle:{color:'#F4A259'},barWidth:'18%'},
+{name:'广告CVR W38',type:'bar',data:[ADT['广告CVR_37'],ADP['广告CVR_37'],ADB['广告CVR_37']],itemStyle:{color:'#C1121F'},barWidth:'18%',label:{show:true,position:'top',fontSize:9,formatter:'{c}%'}}]
+}));
+})();
+
+(function(){
+var el = echarts.init(document.getElementById('c13'));
+el.setOption(Object.assign({}, baseOpt, {
+xAxis:{type:'category',data:['整体','PHILTOP','Torchbeam']}, yAxis:[{type:'value',name:'%',max:20},{type:'value',name:'ROAS'}],
+series:[{name:'ACOS W37',type:'bar',data:[ADT['ACOS_36'],ADP['ACOS_36'],ADB['ACOS_36']],itemStyle:{color:'#E0E0E0'},barWidth:'24%',label:{show:true,position:'top',fontSize:9,formatter:'{c}%'}},
+{name:'ACOS W38',type:'bar',data:[ADT['ACOS_37'],ADP['ACOS_37'],ADB['ACOS_37']],itemStyle:{color:'#D1495B'},barWidth:'24%',label:{show:true,position:'top',fontSize:9,formatter:'{c}%'}},
+{name:'ROAS W37',type:'line',yAxisIndex:1,data:[ADT['ROAS_36'],ADP['ROAS_36'],ADB['ROAS_36']],itemStyle:{color:'#9BBBCC'},lineStyle:{type:'dashed'}},
+{name:'ROAS W38',type:'line',yAxisIndex:1,data:[ADT['ROAS_37'],ADP['ROAS_37'],ADB['ROAS_37']],itemStyle:{color:'#2A9D48'},lineStyle:{width:3},label:{show:true,fontSize:10}}]
+}));
+})();
+
+(function(){
+var el = echarts.init(document.getElementById('c14'));
+el.setOption(Object.assign({}, baseOpt, {
+xAxis:{type:'category',data:['整体','PHILTOP','Torchbeam']}, yAxis:{type:'value',name:'%'},
+series:[{name:'广告单占比 W37',type:'bar',data:[ADT['广告单占比_36'],ADP['广告单占比_36'],ADB['广告单占比_36']],itemStyle:{color:'#9BBBCC'},barWidth:'18%'},
+{name:'广告单占比 W38',type:'bar',data:[ADT['广告单占比_37'],ADP['广告单占比_37'],ADB['广告单占比_37']],itemStyle:{color:'#2E86AB'},barWidth:'18%',label:{show:true,position:'top',fontSize:9,formatter:'{c}%'}},
+{name:'广告销售额占比 W37',type:'bar',data:[ADT['广告销售额占比_36'],ADP['广告销售额占比_36'],ADB['广告销售额占比_36']],itemStyle:{color:'#F4A259'},barWidth:'18%'},
+{name:'广告销售额占比 W38',type:'bar',data:[ADT['广告销售额占比_37'],ADP['广告销售额占比_37'],ADB['广告销售额占比_37']],itemStyle:{color:'#C1121F'},barWidth:'18%',label:{show:true,position:'top',fontSize:9,formatter:'{c}%'}}]
+}));
+})();
+
+(function(){
+var m = {'新链接':['#FFF2CC','#7f6000'],'旧链接':['#DDEBF7','#1F4E78'],'PHILTOP':['#2E86AB','#fff'],'Torchbeam':['#D1495B','#fff'],
+'新':['#FFF2CC','#7f6000'],'旧':['#DDEBF7','#1F4E78'],'ZonCar':['#EDEDED','#555'],'KAC':['#EDEDED','#555'],
+'Torchtree':['#EDEDED','#555'],'MARSFLUX':['#EDEDED','#555'],'AUTOSITY':['#EDEDED','#555'],'KAX':['#EDEDED','#555'],'Cardelo':['#EDEDED','#555']};
+document.querySelectorAll('td.tag').forEach(function(td){
+  var k = td.getAttribute('data-tag');
+  if (m[k]) { td.style.background=m[k][0]; td.style.color=m[k][1]; td.style.fontWeight='600'; td.style.borderRadius='10px'; }
+});
+window.addEventListener('resize', function(){
+  ['c1','c2','c3','c4','c5','c6','c7','c8','c9','c10','c11','c12','c13','c14'].forEach(function(id){
+    var el = echarts.getInstanceByDom(document.getElementById(id));
+    if (el) el.resize();
+  });
+});
+})();
+</script>
+
+<script>
+/* ==== 增强器注入脚本 (enhance_panel.py) ==== */
+(function(){
+  // 1) 图表工具箱: 保存图片 / 数据视图 / 还原
+  function injectToolbox(){
+    var n = 0;
+    document.querySelectorAll('.chart').forEach(function(el){
+      if (typeof echarts === 'undefined') return;
+      var inst = echarts.getInstanceByDom(el);
+      if (!inst) return;
+      var op = inst.getOption();
+      var tb = op.toolbox;
+      if (tb && (Array.isArray(tb) ? tb.length : true) && op.__enh) return;
+      try {
+        inst.setOption({
+          toolbox: {
+            show: true, right: 6, top: 0, itemSize: 13, itemGap: 8,
+            iconStyle: { borderColor: '#2E86AB', borderWidth: 1.4 },
+            emphasis: { iconStyle: { borderColor: '#1F4E78' } },
+            feature: {
+              saveAsImage: { title: '保存图片', name: (el.id || 'chart'), backgroundColor: '#fff', pixelRatio: 2,
+                             lang: ['保存为图片'] },
+              dataView: { title: '数据表', readOnly: true, lang: ['数据视图', '关闭', '刷新'] },
+              restore: { title: '还原', lang: ['还原'] }
+            }
+          },
+          __enh: true
+        });
+        n++;
+      } catch(e) {}
+    });
+    return n;
+  }
+
+  // 2) 表格: 搜索 + 行数 + 折叠(Top12)
+  function enhanceTables(){
+    document.querySelectorAll('table').forEach(function(t){
+      if (t.closest('.tbl-wrap')) return;
+      var tbody = t.querySelector('tbody');
+      if (!tbody) return;
+      var rows = tbody.querySelectorAll('tr');
+      if (rows.length < 8) return;
+
+      var parent = t.parentNode;
+      var wrap = document.createElement('div');
+      wrap.className = 'tbl-wrap';
+      parent.insertBefore(wrap, t);
+      wrap.appendChild(t);
+
+      var tools = document.createElement('div');
+      tools.className = 'tbl-tools';
+      tools.innerHTML = '<input type="text" placeholder="搜索 ' + rows.length + ' 行(输入 ASIN / SKU / 关键词)">'
+        + '<span class="cnt"></span>'
+        + ((rows.length > 12 && !t.hasAttribute('data-nofold')) ? '<button class="btn-mini" type="button">展开全部</button>' : '');
+      wrap.insertBefore(tools, t);
+
+      var input = tools.querySelector('input');
+      var cnt = tools.querySelector('.cnt');
+      var btn = tools.querySelector('.btn-mini');
+
+      function setCnt(shown){
+        cnt.textContent = '显示 ' + shown + ' / ' + rows.length + ' 行';
+      }
+      setCnt(rows.length);
+      if (rows.length > 12 && btn && !t.hasAttribute('data-nofold')) {
+        wrap.classList.add('collapsed');
+        btn.textContent = '展开全部(' + rows.length + ' 行)';
+        setCnt(Math.min(12, rows.length));
+        btn.onclick = function(){
+          wrap.classList.toggle('collapsed');
+          var c = wrap.classList.contains('collapsed');
+          btn.textContent = c ? ('展开全部(' + rows.length + ' 行)') : '收起';
+          setCnt(c ? Math.min(12, rows.length) : rows.length);
+        };
+      }
+
+      input.addEventListener('input', function(){
+        var q = this.value.trim().toLowerCase();
+        var shown = 0;
+        rows.forEach(function(tr){
+          var hit = !q || tr.textContent.toLowerCase().indexOf(q) >= 0;
+          tr.style.display = hit ? '' : 'none';
+          if (hit) shown++;
+        });
+        setCnt(shown);
+        if (q) wrap.classList.remove('collapsed');
+      });
+    });
+  }
+
+  // 3) 锚点导航(基于 sec-title / chapter 自动生成)
+  function buildNav(){
+    var heads = document.querySelectorAll('.sec-title, .chapter');
+    if (heads.length < 3) return;
+    var nav = document.createElement('nav');
+    nav.className = 'topnav';
+    heads.forEach(function(h, i){
+      var txt = (h.textContent || '').replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu, '').trim();
+      if (!txt) return;
+      if (!h.id) h.id = 'sec-' + (i + 1);
+      var a = document.createElement('a');
+      a.href = '#' + h.id;
+      a.textContent = txt.length > 22 ? txt.slice(0, 22) + '…' : txt;
+      nav.appendChild(a);
+    });
+    var anchor = document.querySelector('.header') || document.body.firstChild;
+    anchor.parentNode.insertBefore(nav, anchor.nextSibling);
+
+    // 平滑滚动 + 高亮
+    nav.addEventListener('click', function(e){
+      var a = e.target.closest('a');
+      if (!a) return;
+      e.preventDefault();
+      var t = document.getElementById(a.getAttribute('href').slice(1));
+      if (t) { window.scrollTo({ top: t.getBoundingClientRect().top + window.pageYOffset - 70, behavior: 'smooth' }); }
+      nav.querySelectorAll('a').forEach(function(x){ x.classList.remove('active'); });
+      a.classList.add('active');
+    });
+    // 滚动高亮
+    var obs = new IntersectionObserver(function(es){
+      es.forEach(function(en){
+        if (en.isIntersecting) {
+          nav.querySelectorAll('a').forEach(function(x){
+            x.classList.toggle('active', x.getAttribute('href') === '#' + en.target.id);
+          });
+        }
+      });
+    }, { rootMargin: '-80px 0px -70% 0px' });
+    heads.forEach(function(h){ if (h.id) obs.observe(h); });
+  }
+
+  // 4) 回到顶部
+  function addToTop(){
+    var b = document.createElement('button');
+    b.id = 'toTop'; b.innerHTML = '&#8593;'; b.title = '回到顶部';
+    b.onclick = function(){ window.scrollTo({ top: 0, behavior: 'smooth' }); };
+    document.body.appendChild(b);
+    window.addEventListener('scroll', function(){
+      b.classList.toggle('show', window.pageYOffset > 500);
+    });
+  }
+
+  function run(){
+    var n = injectToolbox();
+    enhanceTables();
+    buildNav();
+    addToTop();
+    console.log('[enhance] toolbox charts=' + n);
+  }
+  if (document.readyState === 'complete') setTimeout(run, 900);
+  else window.addEventListener('load', function(){ setTimeout(run, 900); });
+})();
+</script>
+<!--__enhanced_v1__-->
+
+<script>
+/* ==== 下拉筛选 (enhance v4: 仅分类列) ==== */
+(function(){
+  var KW = ['状态','类型','等级','预警','分类','店铺','品牌','标签','阶段','是否','渠道','系列','品线','动销'];
+  function build(){
+    var total = 0, tables = 0;
+    document.querySelectorAll('.tbl-wrap table').forEach(function(t){
+      var wrap = t.closest('.tbl-wrap');
+      var tools = wrap && wrap.querySelector('.tbl-tools');
+      if (!tools || tools.querySelector('select.flt')) return;
+      var ths = Array.prototype.slice.call(t.querySelectorAll('thead th'));
+      var rows = Array.prototype.slice.call(t.querySelectorAll('tbody tr'));
+      if (rows.length < 6 || ths.length < 2) return;
+
+      var cands = [], kwCands = [];
+      ths.forEach(function(th, ci){
+        var name = (th.textContent || '').trim();
+        var vals = {}, editable = 0;
+        rows.forEach(function(r){
+          var c = r.children[ci];
+          if (!c) return;
+          if (c.querySelector('input, select, textarea')) editable++;
+          var v = (c.textContent || '').trim();
+          if (v && v.length <= 24) vals[v] = (vals[v] || 0) + 1;
+        });
+        if (editable > rows.length * 0.4) return;                 // 可编辑列 → 跳过
+        var keys = Object.keys(vals);
+        if (keys.length < 2 || keys.length > 12) return;
+        if (rows.length / keys.length < 1.5) return;              // 近似唯一值 → ID 列
+        if (keys.every(function(v){ return /^[\d,.\-+¥$%\s()]+$/.test(v); })) return;  // 纯数值列 → 跳过
+        var item = { ci: ci, name: name.slice(0, 10), vals: keys.sort() };
+        if (KW.some(function(k){ return name.indexOf(k) >= 0; })) kwCands.push(item);
+        else cands.push(item);
+      });
+
+      var picks = kwCands.length ? kwCands : cands;               // 有关键词列就只用它们
+      if (!picks.length) return;
+      picks = picks.slice(0, 2);                                  // 每表最多 2 个
+
+      var input = tools.querySelector('input');
+      var cnt = tools.querySelector('.cnt');
+      picks.forEach(function(p){
+        var sel = document.createElement('select');
+        sel.className = 'flt';
+        sel.setAttribute('data-ci', p.ci);
+        var html = '<option value="">' + p.name + ': 全部(' + p.vals.length + ')</option>';
+        p.vals.forEach(function(v){ html += '<option value="' + v.replace(/"/g, '&quot;') + '">' + v + '</option>'; });
+        sel.innerHTML = html;
+        tools.appendChild(sel);
+        total++;
+      });
+      tables++;
+
+      var sels = Array.prototype.slice.call(tools.querySelectorAll('select.flt'));
+      function apply(){
+        var active = false;
+        rows.forEach(function(r){
+          var show = true;
+          sels.forEach(function(s){
+            if (s.value) {
+              active = true;
+              var c = r.children[+s.getAttribute('data-ci')];
+              if (!c || (c.textContent || '').trim() !== s.value) show = false;
+            }
+          });
+          r.style.display = show ? '' : 'none';
+        });
+        sels.forEach(function(s){ s.classList.toggle('on', !!s.value); });
+        if (cnt) {
+          var shown = rows.filter(function(r){ return r.style.display !== 'none'; }).length;
+          cnt.textContent = '显示 ' + shown + ' / ' + rows.length + ' 行' + (active ? ' (已筛选)' : '');
+        }
+        if (active) wrap.classList.remove('collapsed');
+      }
+      sels.forEach(function(s){
+        s.addEventListener('change', function(){
+          if (input && input.value) { input.value = ''; input.dispatchEvent(new Event('input')); }
+          apply();
+        });
+      });
+      if (input) input.addEventListener('input', function(){
+        if (this.value) sels.forEach(function(s){ s.value = ''; s.classList.remove('on'); });
+      });
+      apply();
+    });
+    console.log('[enhance v4] 筛选器 ' + total + ' 个 / 覆盖 ' + tables + ' 张表');
+    return total;
+  }
+  var tries = 0;
+  function waitAndBuild(){
+    tries++;
+    if (document.querySelectorAll('.tbl-wrap').length === 0 && tries < 25) { setTimeout(waitAndBuild, 400); return; }
+    var n = build();
+    if (n === 0 && tries < 25) setTimeout(waitAndBuild, 400);
+  }
+  if (document.readyState === 'complete') setTimeout(waitAndBuild, 300);
+  else window.addEventListener('load', function(){ setTimeout(waitAndBuild, 300); });
+})();
+</script>
+<!--__enhanced_v4__-->
+</body>
+</html>
