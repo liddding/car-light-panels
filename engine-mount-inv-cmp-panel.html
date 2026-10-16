@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>发动机支架 · 老品库存对比看板</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Microsoft YaHei',-apple-system,sans-serif;background:#f0f2f5;color:#1a2332;padding:20px;max-width:1560px;margin:0 auto}
+.header{background:linear-gradient(135deg,#1F4E78,#2E86AB);color:#fff;border-radius:12px;padding:22px 28px;margin-bottom:16px}
+.header h1{font-size:25px;font-weight:700}
+.header .meta{font-size:13px;opacity:.95;margin-top:6px;line-height:1.75}
+.kpi-row{display:flex;flex-wrap:nowrap;gap:10px;margin-bottom:16px;overflow-x:auto}
+.kpi{background:#fff;border-radius:10px;padding:12px 14px;box-shadow:0 1px 3px rgba(0,0,0,.08);flex:1 1 0;min-width:158px}
+.k-label{font-size:12px;color:#5f6b7a}
+.k-val{font-size:19px;font-weight:700;margin:2px 0;color:#1F4E78}
+.k-val.good{color:#2A9D48}.k-val.warn{color:#E67E22}.k-val.bad{color:#C0392B}
+.k-note{font-size:11px;color:#8494a5;line-height:1.5}
+.card{background:#fff;border-radius:12px;padding:18px 20px;box-shadow:0 1px 3px rgba(0,0,0,.08);margin-bottom:16px}
+.chapter{background:linear-gradient(90deg,#1F4E78,#2E86AB);color:#fff;border-radius:10px;padding:10px 20px;margin:22px auto 14px;font-size:17px;font-weight:700;max-width:1240px}
+.c-title{font-size:15px;font-weight:700;color:#1F4E78;margin-bottom:4px}
+.c-sub{font-size:12px;color:#8494a5;margin-bottom:10px}
+.chart{width:100%;height:340px}
+table{width:100%;border-collapse:collapse;font-size:12.5px;margin:8px 0}
+th{background:#1F4E78;color:#fff;font-weight:600;padding:8px 6px;text-align:center;font-size:12px}
+td{padding:7px 6px;text-align:center;border-bottom:1px solid #eef2f6}
+tbody tr:nth-child(even){background:#f9fbfd}
+tbody tr:hover{background:#eef6fc}
+.up{color:#2A9D48;font-weight:600}.down{color:#C0392B;font-weight:600}
+.tag{font-size:11px;padding:2px 7px;border-radius:9px}
+.tag.good{background:#e6f6ea;color:#1e7a37}.tag.bad{background:#fdeaea;color:#b52d1b}
+.tag.warn{background:#fdf1e6;color:#a95c14}
+.insight{background:#f7fafd;border-left:3px solid #2E86AB;border-radius:6px;padding:11px 14px;margin:10px 0 4px;font-size:12.5px;line-height:1.75}
+.insight.warm{background:#fffaf5;border-left-color:#E67E22}
+.insight.bad{background:#fef6f6;border-left-color:#C0392B}
+.insight.good{background:#f6fbf7;border-left-color:#2A9D48}
+.insight .ins-line{margin:3px 0}
+.insight b{color:#1F4E78}
+.footer{text-align:center;color:#8494a5;font-size:11.5px;padding:18px 0}
+
+/* ==== 增强器注入样式 (enhance_panel.py) ==== */
+.topnav { position:sticky; top:0; z-index:99; display:flex; gap:6px; flex-wrap:wrap;
+  background:rgba(255,255,255,.96); backdrop-filter:blur(8px); border-radius:10px;
+  padding:9px 12px; margin:0 auto 14px; max-width:1560px; box-shadow:0 2px 10px rgba(31,78,120,.13); }
+.topnav a { font-size:12.5px; color:#1F4E78; text-decoration:none; padding:5px 11px; border-radius:16px;
+  background:#f1f6fa; border:1px solid #e2ecf4; white-space:nowrap; transition:.14s; font-weight:600; }
+.topnav a:hover { background:#2E86AB; color:#fff; border-color:#2E86AB; }
+.topnav a.active { background:#1F4E78; color:#fff; border-color:#1F4E78; }
+.tbl-tools { display:flex; align-items:center; gap:10px; margin:8px 0 6px; wrap:nowrap; }
+.tbl-tools input { flex:0 0 220px; border:1px solid #d6e2ec; border-radius:16px; padding:5px 12px;
+  font-size:12px; font-family:inherit; outline:none; }
+.tbl-tools input:focus { border-color:#2E86AB; box-shadow:0 0 0 2px rgba(46,134,171,.14); }
+.tbl-tools .cnt { font-size:11.5px; color:#8a94a3; }
+.tbl-tools .btn-mini { font-size:11.5px; color:#2E86AB; background:#f1f6fa; border:1px solid #e2ecf4;
+  border-radius:14px; padding:4px 10px; cursor:pointer; font-family:inherit; }
+.tbl-tools .btn-mini:hover { background:#2E86AB; color:#fff; }
+.tbl-wrap.collapsed table tbody tr:nth-child(n+13) { display:none; }
+#toTop { position:fixed; right:22px; bottom:26px; width:44px; height:44px; border-radius:50%;
+  background:#1F4E78; color:#fff; border:none; cursor:pointer; font-size:19px; box-shadow:0 4px 14px rgba(31,78,120,.35);
+  opacity:0; pointer-events:none; transition:.25s; z-index:120; }
+#toTop.show { opacity:1; pointer-events:auto; }
+#toTop:hover { background:#2E86AB; }
+
+
+/* ==== 下拉筛选 (v4) ==== */
+select.flt { border:1px solid #d6e2ec; border-radius:14px; padding:5px 10px; font-size:11.5px;
+  font-family:inherit; color:#1F4E78; background:#f8fbfd; cursor:pointer; max-width:200px; }
+select.flt:hover { border-color:#2E86AB; }
+select.flt:focus { outline:none; border-color:#2E86AB; box-shadow:0 0 0 2px rgba(46,134,171,.14); }
+select.flt.on { background:#1F4E78; color:#fff; border-color:#1F4E78; font-weight:600; }
+
+</style>
+</head>
+<body>
+<div class="header">
+<h1>&#128230; 发动机支架 · 老品库存对比看板</h1>
+<div class="meta">对比周期: 2026-10-03 → 2026-10-16 ｜ 老品口径: 非"推新"状态(92 个 ASIN)<br>
+可用 = 到仓 + 转运中 ｜ 可售 = 到仓可卖 ｜ 诊断联动 W39→W41 销量<br>
+数据源: 库存明细报表(31) + 库存明细报表(27) + 运营综合分析明细(39/41)</div>
+</div>
+<div class="kpi-row"><div class="kpi"><div class="k-label">老品 ASIN 数</div><div class="k-val brand">92 个</div><div class="k-note">非推新状态(推新 70 个除外)</div></div><div class="kpi"><div class="k-label">可用库存</div><div class="k-val brand">1070 件</div><div class="k-note">10-03: 1086 件 · <span class="down">-16</span></div></div><div class="kpi"><div class="k-label">可售库存</div><div class="k-val warn">844 件</div><div class="k-note">10-03: 795 件 · <span class="up">+49</span></div></div><div class="kpi"><div class="k-label">可用下降款</div><div class="k-val bad">36 个</div><div class="k-note">净 -93 件</div></div><div class="kpi"><div class="k-label">库存上升款</div><div class="k-val good">28 个</div><div class="k-note">净 +77 件</div></div><div class="kpi"><div class="k-label">断货告急</div><div class="k-val bad">0 个</div><div class="k-note">可售=0 且在途=0</div></div></div>
+<div class="chapter"><span class="bar"></span>&#128202; 一、老品库存总览(10-03 → 10-16)</div><div class="card"><div class="c-title">库存四指标对比</div><div class="c-sub">口径: 老品 = 最新快照中非"推新"状态的 ASIN(92 个) ｜ 可用 = 到仓 + 转运中</div><div id="c1" class="chart"></div><table><thead><tr><th>指标</th><th>10-03</th><th>10-16</th><th>变化</th><th>幅度</th></tr></thead><tbody><tr><td>可用</td><td>1086</td><td>1070</td><td><span class="down">-16</span></td><td>-1.5%</td></tr><tr><td>可售</td><td>795</td><td>844</td><td><span class="up">+49</span></td><td>+6.2%</td></tr><tr><td>在途</td><td>723</td><td>543</td><td><span class="down">-180</span></td><td>-24.9%</td></tr><tr><td>合计</td><td>1809</td><td>1613</td><td><span class="down">-196</span></td><td>-10.8%</td></tr></tbody></table><div class="insight "><div class="ins-line"><b>📊 数据解读:</b>老品 92 个 ASIN,可用库存 1086 → **1070 件(-16)**,可售 795 → 844。其中 **36 个可用下降**(净 -93 件),**28 个上升**(净 +77 件)。</div><div class="ins-line"><b>🔍 原因分析:</b>整体库存小幅净减(-16 件),但**内部结构分化明显**:36 个款在减少、28 个款在增加。这说明 10-03~10-16 期间**销售消耗与补货到仓同时发生**,净额掩盖了结构变化。</div><div class="ins-line"><b>✅ 建议动作:</b>①重点看**下降款**里哪些是"卖爆"、哪些是"断货";②对"卖爆缺货"款(<b>12 个</b>)立即补货;③对"断货告急"款(<b>0 个</b>)紧急催货或调整推广节奏。</div></div><div class="chapter"><span class="bar"></span>&#128293; 二、卖爆缺货(销量↑ 但库存↓)—— 最该补货</div><div class="card"><div class="c-title">库存被卖光,却还在涨的款(12 个)</div><div class="c-sub">诊断逻辑: 可用库存下降 且 W39→W41 销量上升</div><table><thead><tr><th>ASIN</th><th>SKU</th><th>可售 10-03→10-16</th><th>可用 10-03→10-16</th><th>在途</th><th>销量 W39→W41</th><th>W41 销售额</th><th>状态</th></tr></thead><tbody><tr><td>B0GLG77Q7H</td><td>COMMON1EMO20800</td><td>13→10</td><td>22→13</td><td>3</td><td><span class="up">2→3</span></td><td>¥954</td><td>维稳</td></tr><tr><td>B0GQZGMRR7</td><td>COMMON1EMO30300</td><td>13→0</td><td>17→10</td><td>3</td><td><span class="up">1→7</span></td><td>¥2,251</td><td>维稳</td></tr><tr><td>B0H2YZJKXQ</td><td>COMMON1EMO24300</td><td>4→0</td><td>9→2</td><td>0</td><td><span class="up">3→4</span></td><td>¥938</td><td>维稳</td></tr><tr><td>B0G4RFXN8J</td><td>COMMON1EMO39100</td><td>7→5</td><td>13→7</td><td>3</td><td><span class="up">1→3</span></td><td>¥371</td><td>维稳</td></tr><tr><td>B0GQZPB92V</td><td>COMMON1EMO24400</td><td>14→14</td><td>16→14</td><td>0</td><td><span class="up">1→3</span></td><td>¥1,105</td><td>维稳</td></tr><tr><td>B0GLGJT4TH</td><td>COMMON1EMO33400</td><td>46→56</td><td>58→56</td><td>0</td><td><span class="up">1→2</span></td><td>¥934</td><td>维稳</td></tr><tr><td>B0G4RJLRDG</td><td>ZC1EMO01900</td><td>12→11</td><td>12→11</td><td>0</td><td><span class="up">0→1</span></td><td>¥559</td><td>维稳</td></tr><tr><td>B0G4RDQPHN</td><td>COMMON1EMO20400</td><td>33→33</td><td>34→33</td><td>0</td><td><span class="up">0→1</span></td><td>¥154</td><td>维稳</td></tr><tr><td>B0GK753ZKQ</td><td>OO1EMO12400</td><td>6→7</td><td>8→7</td><td>0</td><td><span class="up">0→1</span></td><td>¥522</td><td>风险</td></tr><tr><td>B0FY35HJBT</td><td>COMMON1EMO37300</td><td>8→9</td><td>11→10</td><td>11</td><td><span class="up">0→1</span></td><td>¥110</td><td>维稳</td></tr><tr><td>B0GVM63D19</td><td>COMMON1EMO25100</td><td>15→14</td><td>15→14</td><td>0</td><td><span class="up">0→1</span></td><td>¥422</td><td>维稳</td></tr><tr><td>B0H2Z1XVXM</td><td>COMMON1EMO29000</td><td>12→12</td><td>18→17</td><td>5</td><td><span class="up">1→3</span></td><td>¥964</td><td>维稳</td></tr></tbody></table><div class="insight warm"><div class="ins-line"><b>📊 数据解读:</b>**12 个款"边卖边缺"**。最典型的是 <b>B0GLG77Q7H</b>(可售 13→10,销量 2→3 件)和 <b>B0GQZGMRR7</b>。</div><div class="ins-line"><b>🔍 原因分析:</b>这些款**市场需求在上升**(销量涨),但**可售库存被消耗到接近零**。若继续断货,排名会掉、广告权重会降,<b>本周的增长势头会白费</b>。</div><div class="ins-line"><b>✅ 建议动作:</b>①<b>立即下补货单</b>,优先保证这 12 个款的可用量;②有在途的催到仓;③断货期间可**降低广告预算**(避免为无货商品买流量导致跳出)。</div></div><div class="chapter"><span class="bar"></span>&#128680; 三、断货告急(可售=0 且无在途)</div><div class="card"><div class="c-title">已断货且无补货在途(0 个)</div><table><thead><tr><th>ASIN</th><th>SKU</th><th>可用 10-03→10-16</th><th>可售 10-16</th><th>在途</th><th>W41 销量</th><th>状态</th></tr></thead><tbody><tr><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>无</td></tr></tbody></table><div class="insight bad"><div class="ins-line"><b>📊 数据解读:</b>**0 个款已断货,且没有任何在途补给** —— 这是最紧急的一批。</div><div class="ins-line"><b>🔍 原因分析:</b>可售=0 说明已无货可卖;在途=0 说明**没有新货在路上**,短期内无法恢复销售。若这些款还有广告预算在跑,就是纯浪费。</div><div class="ins-line"><b>✅ 建议动作:</b>①**紧急下采购单**并确认交期;②<b>暂停这些款的广告</b>(无货买流量等于白花);③评估是否失效(考虑淘汰或换链接)。</div></div><div class="chapter"><span class="bar"></span>&#128202; 四、库存 × 销量 双维对比(增量款 vs 减量款)</div><div class="card"><div class="c-title">库存变化 vs 销量变化(四象限)</div><div class="c-sub">左下=双降(滞销) ｜ 右下=库存降+销量升(卖爆) ｜ 左上=库存升+销量降(压货) ｜ 右上=双升(健康)</div><div id="c4" class="chart chart-tall"></div><div class="c-title" style="margin-top:14px">销量上升 TOP20(哪些款在涨)</div><table><thead><tr><th>ASIN</th><th>SKU</th><th>状态</th><th>销量 W39→W41</th><th>增量</th><th>W41 销售额</th><th>W41 流量</th><th>可用 10-03→10-16</th><th>在途</th><th>诊断</th></tr></thead><tbody><tr><td>B0GQZGMRR7</td><td>COMMON1EMO30300</td><td>维稳</td><td><span class="up">1→7</span></td><td><span class="up">+6</span></td><td>¥2,251</td><td>39</td><td>17→10</td><td>3</td><td>卖爆缺货</td></tr><tr><td>B0GQZPB92V</td><td>COMMON1EMO24400</td><td>维稳</td><td><span class="up">1→3</span></td><td><span class="up">+2</span></td><td>¥1,105</td><td>14</td><td>16→14</td><td>0</td><td>卖爆缺货</td></tr><tr><td>B0G4RFXN8J</td><td>COMMON1EMO39100</td><td>维稳</td><td><span class="up">1→3</span></td><td><span class="up">+2</span></td><td>¥371</td><td>17</td><td>13→7</td><td>3</td><td>卖爆缺货</td></tr><tr><td>B0H2Z1XVXM</td><td>COMMON1EMO29000</td><td>维稳</td><td><span class="up">1→3</span></td><td><span class="up">+2</span></td><td>¥964</td><td>9</td><td>18→17</td><td>5</td><td>卖爆缺货</td></tr><tr><td>B0G4RJLRDG</td><td>ZC1EMO01900</td><td>维稳</td><td><span class="up">0→1</span></td><td><span class="up">+1</span></td><td>¥559</td><td>9</td><td>12→11</td><td>0</td><td>卖爆缺货</td></tr><tr><td>B0FY35HJBT</td><td>COMMON1EMO37300</td><td>维稳</td><td><span class="up">0→1</span></td><td><span class="up">+1</span></td><td>¥110</td><td>8</td><td>11→10</td><td>11</td><td>卖爆缺货</td></tr><tr><td>B0G4RDQPHN</td><td>COMMON1EMO20400</td><td>维稳</td><td><span class="up">0→1</span></td><td><span class="up">+1</span></td><td>¥154</td><td>6</td><td>34→33</td><td>0</td><td>卖爆缺货</td></tr><tr><td>B0GLG79DHQ</td><td>ZC1EMO05100</td><td>风险</td><td><span class="up">0→1</span></td><td><span class="up">+1</span></td><td>¥576</td><td>7</td><td>16→16</td><td>0</td><td>持平</td></tr><tr><td>B0GLG77Q7H</td><td>COMMON1EMO20800</td><td>维稳</td><td><span class="up">2→3</span></td><td><span class="up">+1</span></td><td>¥954</td><td>16</td><td>22→13</td><td>3</td><td>卖爆缺货</td></tr><tr><td>B0GK753ZKQ</td><td>OO1EMO12400</td><td>风险</td><td><span class="up">0→1</span></td><td><span class="up">+1</span></td><td>¥522</td><td>11</td><td>8→7</td><td>0</td><td>卖爆缺货</td></tr><tr><td>B0GLGZMBG7</td><td>COMMON1EMO26200</td><td>风险</td><td><span class="up">1→2</span></td><td><span class="up">+1</span></td><td>¥1,021</td><td>10</td><td>16→18</td><td>8</td><td>双升(健康)</td></tr><tr><td>B0GLGJT4TH</td><td>COMMON1EMO33400</td><td>维稳</td><td><span class="up">1→2</span></td><td><span class="up">+1</span></td><td>¥934</td><td>6</td><td>58→56</td><td>0</td><td>卖爆缺货</td></tr><tr><td>B0GVM63D19</td><td>COMMON1EMO25100</td><td>维稳</td><td><span class="up">0→1</span></td><td><span class="up">+1</span></td><td>¥422</td><td>7</td><td>15→14</td><td>0</td><td>卖爆缺货</td></tr><tr><td>B0H2YZJKXQ</td><td>COMMON1EMO24300</td><td>维稳</td><td><span class="up">3→4</span></td><td><span class="up">+1</span></td><td>¥938</td><td>35</td><td>9→2</td><td>0</td><td>卖爆缺货</td></tr><tr><td>B0HBB8GDRC</td><td>OO1EMO43000</td><td>淘汰</td><td><span class="up">0→1</span></td><td><span class="up">+1</span></td><td>¥569</td><td>7</td><td>15→16</td><td>0</td><td>双升(健康)</td></tr></tbody></table><div class="c-title" style="margin-top:14px">销量下降 TOP20(哪些款在跌)</div><table><thead><tr><th>ASIN</th><th>SKU</th><th>状态</th><th>销量 W39→W41</th><th>降幅</th><th>W41 销售额</th><th>W41 流量</th><th>可用 10-03→10-16</th><th>可售 10-16</th><th>诊断</th></tr></thead><tbody><tr><td>B0GQZKD41H</td><td>COMMON1EMO26100</td><td>维稳</td><td><span class="down">9→1</span></td><td><span class="down">-8</span></td><td>¥301</td><td>7</td><td>4→3</td><td>2</td><td>双降(滞销)</td></tr><tr><td>B0GYDVRK7X</td><td>COMMON1EMO38300</td><td>维稳</td><td><span class="down">8→2</span></td><td><span class="down">-6</span></td><td>¥1,286</td><td>14</td><td>10→4</td><td>4</td><td>双降(滞销)</td></tr><tr><td>B0GVM24FN4</td><td>COMMON1EMO30800</td><td>风险</td><td><span class="down">4→0</span></td><td><span class="down">-4</span></td><td>¥0</td><td>9</td><td>14→14</td><td>11</td><td>压货(库存升销量降)</td></tr><tr><td>B0FVFV8ZC7</td><td>COMMON1EMO37700</td><td>维稳</td><td><span class="down">3→0</span></td><td><span class="down">-3</span></td><td>¥0</td><td>2</td><td>4→2</td><td>0</td><td>双降(滞销)</td></tr><tr><td>B0GLGQH354</td><td>COMMON1EMO29800</td><td>维稳</td><td><span class="down">3→0</span></td><td><span class="down">-3</span></td><td>¥0</td><td>10</td><td>13→12</td><td>12</td><td>双降(滞销)</td></tr><tr><td>B0GQZBDHZ3</td><td>ZC1EMO02900</td><td>维稳</td><td><span class="down">4→1</span></td><td><span class="down">-3</span></td><td>¥392</td><td>18</td><td>4→8</td><td>4</td><td>压货(库存升销量降)</td></tr><tr><td>B0GLGP2C66</td><td>COMMON1EMO37100</td><td>维稳</td><td><span class="down">7→4</span></td><td><span class="down">-3</span></td><td>¥803</td><td>22</td><td>11→13</td><td>4</td><td>压货(库存升销量降)</td></tr><tr><td>B0GK62K2BF</td><td>OO1EMO08100</td><td>维稳</td><td><span class="down">3→0</span></td><td><span class="down">-3</span></td><td>¥0</td><td>13</td><td>16→15</td><td>14</td><td>双降(滞销)</td></tr><tr><td>B0GYDZ1K1H</td><td>COMMON1EMO29300</td><td>维稳</td><td><span class="down">4→1</span></td><td><span class="down">-3</span></td><td>¥402</td><td>8</td><td>10→14</td><td>1</td><td>压货(库存升销量降)</td></tr><tr><td>B0GYF366RS</td><td>COMMON1EMO32100</td><td>淘汰</td><td><span class="down">3→0</span></td><td><span class="down">-3</span></td><td>¥0</td><td>10</td><td>9→8</td><td>8</td><td>双降(滞销)</td></tr><tr><td>B0GVMHRXL8</td><td>COMMON1EMO38500</td><td>维稳</td><td><span class="down">2→0</span></td><td><span class="down">-2</span></td><td>¥0</td><td>6</td><td>2→1</td><td>0</td><td>双降(滞销)</td></tr><tr><td>B0GQZLTRB7</td><td>COMMON1EMO24600</td><td>维稳</td><td><span class="down">4→2</span></td><td><span class="down">-2</span></td><td>¥760</td><td>18</td><td>14→12</td><td>11</td><td>双降(滞销)</td></tr><tr><td>B0GQZFTB9Z</td><td>COMMON1EMO20100</td><td>维稳</td><td><span class="down">2→0</span></td><td><span class="down">-2</span></td><td>¥0</td><td>4</td><td>17→16</td><td>14</td><td>双降(滞销)</td></tr><tr><td>B0GS5P27YF</td><td>COMMON1EMO38800</td><td>维稳</td><td><span class="down">5→3</span></td><td><span class="down">-2</span></td><td>¥1,969</td><td>43</td><td>14→8</td><td>7</td><td>双降(滞销)</td></tr><tr><td>B0GQZPRFM9</td><td>OO1EMO06800</td><td>维稳</td><td><span class="down">2→0</span></td><td><span class="down">-2</span></td><td>¥0</td><td>11</td><td>37→42</td><td>15</td><td>压货(库存升销量降)</td></tr><tr><td>B0GLGLYWWY</td><td>COMMON1EMO37600</td><td>维稳</td><td><span class="down">2→0</span></td><td><span class="down">-2</span></td><td>¥0</td><td>3</td><td>29→28</td><td>27</td><td>双降(滞销)</td></tr><tr><td>B0GYDMFZZ8</td><td>COMMON1EMO25900</td><td>维稳</td><td><span class="down">2→0</span></td><td><span class="down">-2</span></td><td>¥0</td><td>7</td><td>2→2</td><td>1</td><td>压货(库存升销量降)</td></tr><tr><td>B0GVMK9FL7</td><td>COMMON1EMO20600</td><td>维稳</td><td><span class="down">2→0</span></td><td><span class="down">-2</span></td><td>¥0</td><td>12</td><td>14→12</td><td>11</td><td>双降(滞销)</td></tr><tr><td>B0GVMPZN8P</td><td>COMMON1EMO29600</td><td>维稳</td><td><span class="down">2→0</span></td><td><span class="down">-2</span></td><td>¥0</td><td>5</td><td>9→9</td><td>9</td><td>压货(库存升销量降)</td></tr><tr><td>B0GK5DSGVV</td><td>ZC1EMO02300</td><td>维稳</td><td><span class="down">2→0</span></td><td><span class="down">-2</span></td><td>¥0</td><td>7</td><td>4→3</td><td>2</td><td>双降(滞销)</td></tr></tbody></table><div class="c-title" style="margin-top:14px">⚠️ 压货预警(库存升 / 销量降 或 零单)</div><table><thead><tr><th>ASIN</th><th>SKU</th><th>状态</th><th>可用 10-03→10-16</th><th>增幅</th><th>W41 销量</th><th>可售 10-16</th><th>在途</th><th>风险</th></tr></thead><tbody><tr><td>B0GQZ9WSRK</td><td>ZC1EMO02600</td><td>维稳</td><td>7→12</td><td><span class="up">+5</span></td><td>0</td><td>9</td><td>9</td><td><span class="tag warn">到货未动销</span></td></tr><tr><td>B0GK6ZR1B4</td><td>COMMON1EMO38700</td><td>淘汰</td><td>6→11</td><td><span class="up">+5</span></td><td>0</td><td>5</td><td>5</td><td><span class="tag warn">到货未动销</span></td></tr><tr><td>B0H2Z4YZRQ</td><td>COMMON1EMO34200</td><td>风险</td><td>34→39</td><td><span class="up">+5</span></td><td>0</td><td>33</td><td>0</td><td><span class="tag warn">到货未动销</span></td></tr><tr><td>B0GQZPRFM9</td><td>OO1EMO06800</td><td>维稳</td><td>37→42</td><td><span class="up">+5</span></td><td>0</td><td>15</td><td>6</td><td><span class="tag warn">到货未动销</span></td></tr><tr><td>B0G3PVBY7D</td><td>COMMON1EMO30300</td><td>维稳</td><td>2→6</td><td><span class="up">+4</span></td><td>0</td><td>2</td><td>3</td><td><span class="tag warn">到货未动销</span></td></tr><tr><td>B0GVMHCWRS</td><td>COMMON1EMO38900</td><td>风险</td><td>16→19</td><td><span class="up">+3</span></td><td>0</td><td>14</td><td>0</td><td><span class="tag warn">到货未动销</span></td></tr><tr><td>B0D8S4X1XX</td><td>OO1EMO14000</td><td>风险</td><td>0→2</td><td><span class="up">+2</span></td><td>0</td><td>0</td><td>8</td><td><span class="tag warn">到货未动销</span></td></tr><tr><td>B0GVMK8JXH</td><td>COMMON1EMO38100</td><td>维稳</td><td>14→16</td><td><span class="up">+2</span></td><td>0</td><td>15</td><td>1</td><td><span class="tag warn">到货未动销</span></td></tr><tr><td>B0GQZLYPD3</td><td>ZC1EMO03700</td><td>维稳</td><td>0→1</td><td><span class="up">+1</span></td><td>0</td><td>0</td><td>29</td><td><span class="tag warn">到货未动销</span></td></tr><tr><td>B0GYDV69FV</td><td>ZC1EMO03500</td><td>维稳</td><td>7→8</td><td><span class="up">+1</span></td><td>0</td><td>3</td><td>0</td><td><span class="tag warn">到货未动销</span></td></tr><tr><td>B0H2Z87F7F</td><td>COMMON1EMO34700</td><td>风险</td><td>12→13</td><td><span class="up">+1</span></td><td>0</td><td>12</td><td>17</td><td><span class="tag warn">到货未动销</span></td></tr><tr><td>B0HBB6QBX7</td><td>OO1EMO51200</td><td>淘汰</td><td>15→16</td><td><span class="up">+1</span></td><td>0</td><td>11</td><td>0</td><td><span class="tag warn">到货未动销</span></td></tr></tbody></table><div class="insight warm"><div class="ins-line"><b>📊 数据解读:</b>四象限分布: <b>卖爆缺货 12</b> / 双降(滞销) 24 / 压货 24 / 双升(健康) 2 / 持平 30。<b>销量上升 15 个款</b>(合计 +23 件),<b>销量下降 40 个款</b>(合计 -82 件)。</div><div class="ins-line"><b>🔍 原因分析:</b><b>库存与销量必须一起看</b>:①库存降+销量升 = 卖爆(好事但需补货);②库存升+销量降/零单 = <b>压货</b>(资金占用,需促销);③双降 = 自然衰退(考虑淘汰)。当前<b>压货款 24 个</b>(其中到货未动销 12 个)是最需处理的。</div><div class="ins-line"><b>✅ 建议动作:</b>①<b>卖爆款立即补货</b>;②<b>压货款开广告/做促销</b>,别再压着;③双降款评估淘汰;④销量上升款确保库存跟得上。</div></div><div class="chapter"><span class="bar"></span>&#128201; 四、可用库存下降明细(TOP30)</div><div class="card"><div class="c-title">可用库存降幅排序</div><div class="c-sub">可用 = 到仓 + 转运中 ｜ 降幅 = 10-16 减 10-03</div><div id="c2" class="chart"></div><table><thead><tr><th>ASIN</th><th>SKU</th><th>状态</th><th>可用 10-03→10-16</th><th>降幅</th><th>可售 10-03→10-16</th><th>在途</th><th>W41销量</th><th>诊断</th></tr></thead><tbody><tr><td>B0GLG77Q7H</td><td>COMMON1EMO20800</td><td>维稳</td><td>22→13</td><td><span class="down">-9</span></td><td>13→10</td><td>3</td><td>3</td><td><span class="tag warn">卖爆缺货</span></td></tr><tr><td>B0GQZGMRR7</td><td>COMMON1EMO30300</td><td>维稳</td><td>17→10</td><td><span class="down">-7</span></td><td>13→0</td><td>3</td><td>7</td><td><span class="tag warn">卖爆缺货</span></td></tr><tr><td>B0H2YZJKXQ</td><td>COMMON1EMO24300</td><td>维稳</td><td>9→2</td><td><span class="down">-7</span></td><td>4→0</td><td>0</td><td>4</td><td><span class="tag warn">卖爆缺货</span></td></tr><tr><td>B0GLGQ1R1R</td><td>ZC1EMO01500</td><td>维稳</td><td>10→4</td><td><span class="down">-6</span></td><td>9→1</td><td>0</td><td>4</td><td><span class="tag ">库存下降</span></td></tr><tr><td>B0GR4G3ZVJ</td><td>COMMON1EMO35900</td><td>维稳</td><td>15→9</td><td><span class="down">-6</span></td><td>14→6</td><td>0</td><td>3</td><td><span class="tag ">库存下降</span></td></tr><tr><td>B0GS5P27YF</td><td>COMMON1EMO38800</td><td>维稳</td><td>14→8</td><td><span class="down">-6</span></td><td>7→7</td><td>5</td><td>3</td><td><span class="tag ">库存下降</span></td></tr><tr><td>B0GYDVRK7X</td><td>COMMON1EMO38300</td><td>维稳</td><td>10→4</td><td><span class="down">-6</span></td><td>8→4</td><td>11</td><td>2</td><td><span class="tag ">库存下降</span></td></tr><tr><td>B0G4RFXN8J</td><td>COMMON1EMO39100</td><td>维稳</td><td>13→7</td><td><span class="down">-6</span></td><td>7→5</td><td>3</td><td>3</td><td><span class="tag warn">卖爆缺货</span></td></tr><tr><td>B0GVMHMJ7F</td><td>COMMON1EMO38600</td><td>风险</td><td>6→3</td><td><span class="down">-3</span></td><td>1→3</td><td>5</td><td>0</td><td><span class="tag ">库存下降</span></td></tr><tr><td>B0G4RJJXBP</td><td>OO1EMO10300</td><td>维稳</td><td>6→3</td><td><span class="down">-3</span></td><td>2→3</td><td>10</td><td>0</td><td><span class="tag ">库存下降</span></td></tr><tr><td>B0GQZ8MZKY</td><td>COMMON1EMO32700</td><td>维稳</td><td>51→49</td><td><span class="down">-2</span></td><td>41→43</td><td>12</td><td>0</td><td><span class="tag ">库存下降</span></td></tr><tr><td>B0GQZLTRB7</td><td>COMMON1EMO24600</td><td>维稳</td><td>14→12</td><td><span class="down">-2</span></td><td>12→11</td><td>0</td><td>2</td><td><span class="tag ">库存下降</span></td></tr><tr><td>B0GLGLC7VJ</td><td>COMMON1EMO38400</td><td>维稳</td><td>9→7</td><td><span class="down">-2</span></td><td>6→5</td><td>0</td><td>2</td><td><span class="tag ">库存下降</span></td></tr><tr><td>B0GLGJT4TH</td><td>COMMON1EMO33400</td><td>维稳</td><td>58→56</td><td><span class="down">-2</span></td><td>46→56</td><td>0</td><td>2</td><td><span class="tag warn">卖爆缺货</span></td></tr><tr><td>B0FVFV8ZC7</td><td>COMMON1EMO37700</td><td>维稳</td><td>4→2</td><td><span class="down">-2</span></td><td>0→0</td><td>4</td><td>0</td><td><span class="tag ">库存下降</span></td></tr><tr><td>B0GQZPB92V</td><td>COMMON1EMO24400</td><td>维稳</td><td>16→14</td><td><span class="down">-2</span></td><td>14→14</td><td>0</td><td>3</td><td><span class="tag warn">卖爆缺货</span></td></tr><tr><td>B0GQZPWDTQ</td><td>COMMON1EMO37300</td><td>维稳</td><td>17→15</td><td><span class="down">-2</span></td><td>17→15</td><td>0</td><td>1</td><td><span class="tag ">库存下降</span></td></tr><tr><td>B0GVMK9FL7</td><td>COMMON1EMO20600</td><td>维稳</td><td>14→12</td><td><span class="down">-2</span></td><td>12→11</td><td>0</td><td>0</td><td><span class="tag ">库存下降</span></td></tr><tr><td>B0GK752JBN</td><td>COMMON1EMO38000</td><td>风险</td><td>6→5</td><td><span class="down">-1</span></td><td>5→5</td><td>0</td><td>0</td><td><span class="tag ">库存下降</span></td></tr><tr><td>B0GLGLYWWY</td><td>COMMON1EMO37600</td><td>维稳</td><td>29→28</td><td><span class="down">-1</span></td><td>26→27</td><td>0</td><td>0</td><td><span class="tag ">库存下降</span></td></tr><tr><td>B0G4RDQPHN</td><td>COMMON1EMO20400</td><td>维稳</td><td>34→33</td><td><span class="down">-1</span></td><td>33→33</td><td>0</td><td>1</td><td><span class="tag warn">卖爆缺货</span></td></tr><tr><td>B0FY35HJBT</td><td>COMMON1EMO37300</td><td>维稳</td><td>11→10</td><td><span class="down">-1</span></td><td>8→9</td><td>11</td><td>1</td><td><span class="tag warn">卖爆缺货</span></td></tr><tr><td>B0G4RJLRDG</td><td>ZC1EMO01900</td><td>维稳</td><td>12→11</td><td><span class="down">-1</span></td><td>12→11</td><td>0</td><td>1</td><td><span class="tag warn">卖爆缺货</span></td></tr><tr><td>B0GK753ZKQ</td><td>OO1EMO12400</td><td>风险</td><td>8→7</td><td><span class="down">-1</span></td><td>6→7</td><td>0</td><td>1</td><td><span class="tag warn">卖爆缺货</span></td></tr><tr><td>B0FVFD11BK</td><td>COMMON1EMO30700</td><td>维稳</td><td>9→8</td><td><span class="down">-1</span></td><td>5→8</td><td>3</td><td>0</td><td><span class="tag ">库存下降</span></td></tr><tr><td>B0GK62K2BF</td><td>OO1EMO08100</td><td>维稳</td><td>16→15</td><td><span class="down">-1</span></td><td>16→14</td><td>0</td><td>0</td><td><span class="tag ">库存下降</span></td></tr><tr><td>B0GLGQH354</td><td>COMMON1EMO29800</td><td>维稳</td><td>13→12</td><td><span class="down">-1</span></td><td>12→12</td><td>11</td><td>0</td><td><span class="tag ">库存下降</span></td></tr><tr><td>B0GQZFTB9Z</td><td>COMMON1EMO20100</td><td>维稳</td><td>17→16</td><td><span class="down">-1</span></td><td>14→14</td><td>10</td><td>0</td><td><span class="tag ">库存下降</span></td></tr><tr><td>B0GQZKD41H</td><td>COMMON1EMO26100</td><td>维稳</td><td>4→3</td><td><span class="down">-1</span></td><td>1→2</td><td>2</td><td>1</td><td><span class="tag ">库存下降</span></td></tr><tr><td>B0GVM63D19</td><td>COMMON1EMO25100</td><td>维稳</td><td>15→14</td><td><span class="down">-1</span></td><td>15→14</td><td>0</td><td>1</td><td><span class="tag warn">卖爆缺货</span></td></tr></tbody></table><div class="insight "><div class="ins-line"><b>📊 数据解读:</b>下降 **36 个款、合计 -93 件**。降幅 TOP3: B0GLG77Q7H(-9)、B0GQZGMRR7(-7)、B0H2YZJKXQ(-7)。</div><div class="ins-line"><b>🔍 原因分析:</b>库存下降有两种性质:①**良性**(卖得好,如"卖爆缺货"款);②**需关注**(滞销但仍消耗、或调拨/报废)。表格里的「诊断」列已自动区分。</div><div class="ins-line"><b>✅ 建议动作:</b>按诊断列分类处理:「卖爆缺货」→ 补货;「断货告急」→ 催货+停广告;「库存下降」→ 确认是正常销售消耗还是异常流失。</div></div><div class="chapter"><span class="bar"></span>&#128230; 五、补货到位(库存上升)</div><div class="card"><div class="c-title">可用库存上升 TOP20(28 个款在增加)</div><div id="c3" class="chart"></div><table><thead><tr><th>ASIN</th><th>SKU</th><th>状态</th><th>可用 10-03→10-16</th><th>增幅</th><th>可售 10-16</th><th>在途 10-16</th><th>W41销量</th></tr></thead><tbody><tr><td>B0GR3FSNW2</td><td>ZC1EMO01200</td><td>维稳</td><td>2→8</td><td><span class="up">+6</span></td><td>6</td><td>9</td><td>1</td></tr><tr><td>B0GQZ9WSRK</td><td>ZC1EMO02600</td><td>维稳</td><td>7→12</td><td><span class="up">+5</span></td><td>9</td><td>9</td><td>0</td></tr><tr><td>B0GQZPRFM9</td><td>OO1EMO06800</td><td>维稳</td><td>37→42</td><td><span class="up">+5</span></td><td>15</td><td>6</td><td>0</td></tr><tr><td>B0GK6ZR1B4</td><td>COMMON1EMO38700</td><td>淘汰</td><td>6→11</td><td><span class="up">+5</span></td><td>5</td><td>5</td><td>0</td></tr><tr><td>B0H2Z4YZRQ</td><td>COMMON1EMO34200</td><td>风险</td><td>34→39</td><td><span class="up">+5</span></td><td>33</td><td>0</td><td>0</td></tr><tr><td>B0G3PVBY7D</td><td>COMMON1EMO30300</td><td>维稳</td><td>2→6</td><td><span class="up">+4</span></td><td>2</td><td>3</td><td>0</td></tr><tr><td>B0FVLMXY88</td><td>COMMON1EMO36900</td><td>维稳</td><td>9→13</td><td><span class="up">+4</span></td><td>7</td><td>1</td><td>1</td></tr><tr><td>B0GYDZ1K1H</td><td>COMMON1EMO29300</td><td>维稳</td><td>10→14</td><td><span class="up">+4</span></td><td>1</td><td>9</td><td>1</td></tr><tr><td>B0GQZBDHZ3</td><td>ZC1EMO02900</td><td>维稳</td><td>4→8</td><td><span class="up">+4</span></td><td>4</td><td>26</td><td>1</td></tr><tr><td>B0GKG89817</td><td>COMMON1EMO21500</td><td>维稳</td><td>11→15</td><td><span class="up">+4</span></td><td>7</td><td>20</td><td>1</td></tr><tr><td>B0GQZM9SYQ</td><td>COMMON1EMO34900</td><td>维稳</td><td>5→8</td><td><span class="up">+3</span></td><td>5</td><td>12</td><td>1</td></tr><tr><td>B0GLGT7WHG</td><td>COMMON1EMO29500</td><td>维稳</td><td>33→36</td><td><span class="up">+3</span></td><td>33</td><td>35</td><td>1</td></tr><tr><td>B0GVMHCWRS</td><td>COMMON1EMO38900</td><td>风险</td><td>16→19</td><td><span class="up">+3</span></td><td>14</td><td>0</td><td>0</td></tr><tr><td>B0GLGZMBG7</td><td>COMMON1EMO26200</td><td>风险</td><td>16→18</td><td><span class="up">+2</span></td><td>9</td><td>8</td><td>2</td></tr><tr><td>B0GVMK8JXH</td><td>COMMON1EMO38100</td><td>维稳</td><td>14→16</td><td><span class="up">+2</span></td><td>15</td><td>1</td><td>0</td></tr><tr><td>B0GLGP2C66</td><td>COMMON1EMO37100</td><td>维稳</td><td>11→13</td><td><span class="up">+2</span></td><td>4</td><td>43</td><td>4</td></tr><tr><td>B0D8S4X1XX</td><td>OO1EMO14000</td><td>风险</td><td>0→2</td><td><span class="up">+2</span></td><td>0</td><td>8</td><td>0</td></tr><tr><td>B0CG99S8QK</td><td>ZC1EMO03700</td><td>维稳</td><td>18→20</td><td><span class="up">+2</span></td><td>17</td><td>5</td><td>1</td></tr><tr><td>B0GK5DJW82</td><td>COMMON1EMO36800</td><td>维稳</td><td>20→22</td><td><span class="up">+2</span></td><td>9</td><td>0</td><td>1</td></tr><tr><td>B0GR3QZ7YX</td><td>COMMON1EMO20400</td><td>维稳</td><td>21→23</td><td><span class="up">+2</span></td><td>15</td><td>9</td><td>2</td></tr></tbody></table><div class="insight good"><div class="ins-line"><b>📊 数据解读:</b>**28 个款库存上升,净 +77 件**。说明这批货已到仓或转运中。</div><div class="ins-line"><b>🔍 原因分析:</b>库存上升主要来自**在途转可用**(头程到仓)。对上升款,关键是**能否在到手后快速动销** —— 若可售涨但销量不涨,会变成新库存压力。</div><div class="ins-line"><b>✅ 建议动作:</b>①对比"可用上升 + W41 销量为 0"的款,列为**到货未动销**,需立即开广告;②库存充足的款可加大推广;③关注在途是否继续补充。</div></div>
+<div class="footer">库存快照: 10-03 与 10-16 ｜ 单位: 件 / 人民币 ¥ ｜ 生成: Hermes Agent</div>
+<script>
+var D = {"tot": {"可用": [1086, 1070], "可售": [795, 844], "在途": [723, 543], "合计": [1809, 1613]}, "drop": [{"a": "B0GLG77Q7H", "v": 9, "diag": "卖爆缺货"}, {"a": "B0GQZGMRR7", "v": 7, "diag": "卖爆缺货"}, {"a": "B0H2YZJKXQ", "v": 7, "diag": "卖爆缺货"}, {"a": "B0GLGQ1R1R", "v": 6, "diag": "库存下降"}, {"a": "B0GR4G3ZVJ", "v": 6, "diag": "库存下降"}, {"a": "B0GS5P27YF", "v": 6, "diag": "库存下降"}, {"a": "B0GYDVRK7X", "v": 6, "diag": "库存下降"}, {"a": "B0G4RFXN8J", "v": 6, "diag": "卖爆缺货"}, {"a": "B0GVMHMJ7F", "v": 3, "diag": "库存下降"}, {"a": "B0G4RJJXBP", "v": 3, "diag": "库存下降"}, {"a": "B0GQZ8MZKY", "v": 2, "diag": "库存下降"}, {"a": "B0GQZLTRB7", "v": 2, "diag": "库存下降"}, {"a": "B0GLGLC7VJ", "v": 2, "diag": "库存下降"}, {"a": "B0GLGJT4TH", "v": 2, "diag": "卖爆缺货"}, {"a": "B0FVFV8ZC7", "v": 2, "diag": "库存下降"}], "up": [{"a": "B0GR3FSNW2", "v": 6}, {"a": "B0GQZ9WSRK", "v": 5}, {"a": "B0GQZPRFM9", "v": 5}, {"a": "B0GK6ZR1B4", "v": 5}, {"a": "B0H2Z4YZRQ", "v": 5}, {"a": "B0G3PVBY7D", "v": 4}, {"a": "B0FVLMXY88", "v": 4}, {"a": "B0GYDZ1K1H", "v": 4}, {"a": "B0GQZBDHZ3", "v": 4}, {"a": "B0GKG89817", "v": 4}, {"a": "B0GQZM9SYQ", "v": 3}, {"a": "B0GLGT7WHG", "v": 3}, {"a": "B0GVMHCWRS", "v": 3}, {"a": "B0GLGZMBG7", "v": 2}, {"a": "B0GVMK8JXH", "v": 2}], "quad": [{"a": "B0CG99S8QK", "h": 2, "s": 0, "q": "持平"}, {"a": "B0D8S4X1XX", "h": 2, "s": 0, "q": "持平"}, {"a": "B0FVFC6JLC", "h": 0, "s": 0, "q": "持平"}, {"a": "B0FVFD11BK", "h": -1, "s": 0, "q": "双降(滞销)"}, {"a": "B0FVFDVBR3", "h": 0, "s": 0, "q": "持平"}, {"a": "B0FVFFQXYS", "h": 0, "s": 0, "q": "持平"}, {"a": "B0FVFN7GBC", "h": 1, "s": 0, "q": "持平"}, {"a": "B0FVFV8ZC7", "h": -2, "s": -3, "q": "双降(滞销)"}, {"a": "B0FVLMXY88", "h": 4, "s": -1, "q": "压货(库存升销量降)"}, {"a": "B0FY35HJBT", "h": -1, "s": 1, "q": "卖爆缺货"}, {"a": "B0FY5QG4GW", "h": 0, "s": 0, "q": "持平"}, {"a": "B0G3PVBY7D", "h": 4, "s": -1, "q": "压货(库存升销量降)"}, {"a": "B0G4RDQPHN", "h": -1, "s": 1, "q": "卖爆缺货"}, {"a": "B0G4RFXN8J", "h": -6, "s": 2, "q": "卖爆缺货"}, {"a": "B0G4RG24J4", "h": 0, "s": -1, "q": "压货(库存升销量降)"}, {"a": "B0G4RJJXBP", "h": -3, "s": -1, "q": "双降(滞销)"}, {"a": "B0G4RJLRDG", "h": -1, "s": 1, "q": "卖爆缺货"}, {"a": "B0GK5DJW82", "h": 2, "s": -2, "q": "压货(库存升销量降)"}, {"a": "B0GK5DSGVV", "h": -1, "s": -2, "q": "双降(滞销)"}, {"a": "B0GK62K2BF", "h": -1, "s": -3, "q": "双降(滞销)"}, {"a": "B0GK69YWJV", "h": 0, "s": 0, "q": "持平"}, {"a": "B0GK6ZR1B4", "h": 5, "s": 0, "q": "持平"}, {"a": "B0GK752JBN", "h": -1, "s": 0, "q": "双降(滞销)"}, {"a": "B0GK753ZKQ", "h": -1, "s": 1, "q": "卖爆缺货"}, {"a": "B0GKG89817", "h": 4, "s": -1, "q": "压货(库存升销量降)"}, {"a": "B0GLG77Q7H", "h": -9, "s": 1, "q": "卖爆缺货"}, {"a": "B0GLG79DHQ", "h": 0, "s": 1, "q": "持平"}, {"a": "B0GLGJT4TH", "h": -2, "s": 1, "q": "卖爆缺货"}, {"a": "B0GLGLC7VJ", "h": -2, "s": 0, "q": "双降(滞销)"}, {"a": "B0GLGLYWWY", "h": -1, "s": -2, "q": "双降(滞销)"}, {"a": "B0GLGP2C66", "h": 2, "s": -3, "q": "压货(库存升销量降)"}, {"a": "B0GLGQ1R1R", "h": -6, "s": -2, "q": "双降(滞销)"}, {"a": "B0GLGQ7DPX", "h": 0, "s": -1, "q": "压货(库存升销量降)"}, {"a": "B0GLGQH354", "h": -1, "s": -3, "q": "双降(滞销)"}, {"a": "B0GLGT7WHG", "h": 3, "s": -1, "q": "压货(库存升销量降)"}, {"a": "B0GLGZMBG7", "h": 2, "s": 1, "q": "双升(健康)"}, {"a": "B0GQZ8MZKY", "h": -2, "s": 0, "q": "双降(滞销)"}, {"a": "B0GQZ8R2TS", "h": 0, "s": -1, "q": "压货(库存升销量降)"}, {"a": "B0GQZ9WSRK", "h": 5, "s": 0, "q": "持平"}, {"a": "B0GQZBDHZ3", "h": 4, "s": -3, "q": "压货(库存升销量降)"}, {"a": "B0GQZFTB9Z", "h": -1, "s": -2, "q": "双降(滞销)"}, {"a": "B0GQZGMRR7", "h": -7, "s": 6, "q": "卖爆缺货"}, {"a": "B0GQZKD41H", "h": -1, "s": -8, "q": "双降(滞销)"}, {"a": "B0GQZLTRB7", "h": -2, "s": -2, "q": "双降(滞销)"}, {"a": "B0GQZLYPD3", "h": 1, "s": 0, "q": "持平"}, {"a": "B0GQZM9SYQ", "h": 3, "s": -1, "q": "压货(库存升销量降)"}, {"a": "B0GQZPB92V", "h": -2, "s": 2, "q": "卖爆缺货"}, {"a": "B0GQZPRFM9", "h": 5, "s": -2, "q": "压货(库存升销量降)"}, {"a": "B0GQZPWDTQ", "h": -2, "s": 0, "q": "双降(滞销)"}, {"a": "B0GR3FSNW2", "h": 6, "s": 0, "q": "持平"}, {"a": "B0GR3QZ7YX", "h": 2, "s": 0, "q": "持平"}, {"a": "B0GR4G3ZVJ", "h": -6, "s": 0, "q": "双降(滞销)"}, {"a": "B0GR4M7X15", "h": 0, "s": 0, "q": "持平"}, {"a": "B0GS5P27YF", "h": -6, "s": -2, "q": "双降(滞销)"}, {"a": "B0GVM24FN4", "h": 0, "s": -4, "q": "压货(库存升销量降)"}, {"a": "B0GVM63D19", "h": -1, "s": 1, "q": "卖爆缺货"}, {"a": "B0GVM8FS7G", "h": 0, "s": 0, "q": "持平"}, {"a": "B0GVMBFB7H", "h": 0, "s": -1, "q": "压货(库存升销量降)"}, {"a": "B0GVMBTRL7", "h": 0, "s": 0, "q": "持平"}, {"a": "B0GVMHCWRS", "h": 3, "s": 0, "q": "持平"}, {"a": "B0GVMHK3JW", "h": 0, "s": 0, "q": "持平"}, {"a": "B0GVMHMJ7F", "h": -3, "s": 0, "q": "双降(滞销)"}, {"a": "B0GVMHRXL8", "h": -1, "s": -2, "q": "双降(滞销)"}, {"a": "B0GVMK8JXH", "h": 2, "s": -1, "q": "压货(库存升销量降)"}, {"a": "B0GVMK9FL7", "h": -2, "s": -2, "q": "双降(滞销)"}, {"a": "B0GVMKXHNQ", "h": -1, "s": 0, "q": "双降(滞销)"}, {"a": "B0GVMMVYX4", "h": 0, "s": -1, "q": "压货(库存升销量降)"}, {"a": "B0GVMPZN8P", "h": 0, "s": -2, "q": "压货(库存升销量降)"}, {"a": "B0GYDMFZZ8", "h": 0, "s": -2, "q": "压货(库存升销量降)"}, {"a": "B0GYDQPJ4H", "h": 1, "s": -1, "q": "压货(库存升销量降)"}, {"a": "B0GYDTYJDJ", "h": 0, "s": -1, "q": "压货(库存升销量降)"}, {"a": "B0GYDV69FV", "h": 1, "s": 0, "q": "持平"}, {"a": "B0GYDVRK7X", "h": -6, "s": -6, "q": "双降(滞销)"}, {"a": "B0GYDVTTLZ", "h": -1, "s": -2, "q": "双降(滞销)"}, {"a": "B0GYDX76HT", "h": 0, "s": -1, "q": "压货(库存升销量降)"}, {"a": "B0GYDZ1K1H", "h": 4, "s": -3, "q": "压货(库存升销量降)"}, {"a": "B0GYDZ1VLS", "h": 0, "s": -1, "q": "压货(库存升销量降)"}, {"a": "B0GYF27MRC", "h": 0, "s": 0, "q": "持平"}, {"a": "B0GYF366RS", "h": -1, "s": -3, "q": "双降(滞销)"}, {"a": "B0GYF4V7TF", "h": 0, "s": 0, "q": "持平"}, {"a": "B0H2YZJKXQ", "h": -7, "s": 1, "q": "卖爆缺货"}, {"a": "B0H2Z1XVXM", "h": -1, "s": 2, "q": "卖爆缺货"}, {"a": "B0H2Z2Y7TP", "h": 1, "s": -1, "q": "压货(库存升销量降)"}, {"a": "B0H2Z3NSWD", "h": 0, "s": 0, "q": "持平"}, {"a": "B0H2Z4YZRQ", "h": 5, "s": 0, "q": "持平"}, {"a": "B0H2Z87F7F", "h": 1, "s": 0, "q": "持平"}, {"a": "B0H33DWB5T", "h": 0, "s": 0, "q": "持平"}, {"a": "B0HBB46K46", "h": 0, "s": 0, "q": "持平"}, {"a": "B0HBB64MM5", "h": 0, "s": 0, "q": "持平"}, {"a": "B0HBB6QBX7", "h": 1, "s": 0, "q": "持平"}, {"a": "B0HBB8GDRC", "h": 1, "s": 1, "q": "双升(健康)"}, {"a": "B0HBB9NBJ3", "h": 0, "s": 0, "q": "持平"}], "scatter": [{"a": "B0CG99S8QK", "av": 20, "tr": 5, "sr": 17, "diag": "补货到位"}, {"a": "B0D8S4X1XX", "av": 2, "tr": 8, "sr": 0, "diag": "补货到位"}, {"a": "B0FVFC6JLC", "av": 0, "tr": 21, "sr": 0, "diag": "持平"}, {"a": "B0FVFD11BK", "av": 8, "tr": 3, "sr": 8, "diag": "库存下降"}, {"a": "B0FVFDVBR3", "av": 1, "tr": 0, "sr": 1, "diag": "持平"}, {"a": "B0FVFFQXYS", "av": 9, "tr": 0, "sr": 9, "diag": "持平"}, {"a": "B0FVFN7GBC", "av": 4, "tr": 13, "sr": 1, "diag": "补货到位"}, {"a": "B0FVFV8ZC7", "av": 2, "tr": 4, "sr": 0, "diag": "库存下降"}, {"a": "B0FVLMXY88", "av": 13, "tr": 1, "sr": 7, "diag": "补货到位"}, {"a": "B0FY35HJBT", "av": 10, "tr": 11, "sr": 9, "diag": "卖爆缺货"}, {"a": "B0FY5QG4GW", "av": 3, "tr": 6, "sr": 0, "diag": "持平"}, {"a": "B0G3PVBY7D", "av": 6, "tr": 3, "sr": 2, "diag": "补货到位"}, {"a": "B0G4RDQPHN", "av": 33, "tr": 0, "sr": 33, "diag": "卖爆缺货"}, {"a": "B0G4RFXN8J", "av": 7, "tr": 3, "sr": 5, "diag": "卖爆缺货"}, {"a": "B0G4RG24J4", "av": 4, "tr": 3, "sr": 3, "diag": "持平"}, {"a": "B0G4RJJXBP", "av": 3, "tr": 10, "sr": 3, "diag": "库存下降"}, {"a": "B0G4RJLRDG", "av": 11, "tr": 0, "sr": 11, "diag": "卖爆缺货"}, {"a": "B0GK5DJW82", "av": 22, "tr": 0, "sr": 9, "diag": "补货到位"}, {"a": "B0GK5DSGVV", "av": 3, "tr": 44, "sr": 2, "diag": "库存下降"}, {"a": "B0GK62K2BF", "av": 15, "tr": 0, "sr": 14, "diag": "库存下降"}, {"a": "B0GK69YWJV", "av": 0, "tr": 5, "sr": 0, "diag": "持平"}, {"a": "B0GK6ZR1B4", "av": 11, "tr": 5, "sr": 5, "diag": "补货到位"}, {"a": "B0GK752JBN", "av": 5, "tr": 0, "sr": 5, "diag": "库存下降"}, {"a": "B0GK753ZKQ", "av": 7, "tr": 0, "sr": 7, "diag": "卖爆缺货"}, {"a": "B0GKG89817", "av": 15, "tr": 20, "sr": 7, "diag": "补货到位"}, {"a": "B0GLG77Q7H", "av": 13, "tr": 3, "sr": 10, "diag": "卖爆缺货"}, {"a": "B0GLG79DHQ", "av": 16, "tr": 0, "sr": 15, "diag": "持平"}, {"a": "B0GLGJT4TH", "av": 56, "tr": 0, "sr": 56, "diag": "卖爆缺货"}, {"a": "B0GLGLC7VJ", "av": 7, "tr": 0, "sr": 5, "diag": "库存下降"}, {"a": "B0GLGLYWWY", "av": 28, "tr": 0, "sr": 27, "diag": "库存下降"}, {"a": "B0GLGP2C66", "av": 13, "tr": 43, "sr": 4, "diag": "补货到位"}, {"a": "B0GLGQ1R1R", "av": 4, "tr": 0, "sr": 1, "diag": "库存下降"}, {"a": "B0GLGQ7DPX", "av": 42, "tr": 3, "sr": 42, "diag": "持平"}, {"a": "B0GLGQH354", "av": 12, "tr": 11, "sr": 12, "diag": "库存下降"}, {"a": "B0GLGT7WHG", "av": 36, "tr": 35, "sr": 33, "diag": "补货到位"}, {"a": "B0GLGZMBG7", "av": 18, "tr": 8, "sr": 9, "diag": "补货到位"}, {"a": "B0GQZ8MZKY", "av": 49, "tr": 12, "sr": 43, "diag": "库存下降"}, {"a": "B0GQZ8R2TS", "av": 8, "tr": 5, "sr": 7, "diag": "持平"}, {"a": "B0GQZ9WSRK", "av": 12, "tr": 9, "sr": 9, "diag": "补货到位"}, {"a": "B0GQZBDHZ3", "av": 8, "tr": 26, "sr": 4, "diag": "补货到位"}, {"a": "B0GQZFTB9Z", "av": 16, "tr": 10, "sr": 14, "diag": "库存下降"}, {"a": "B0GQZGMRR7", "av": 10, "tr": 3, "sr": 0, "diag": "卖爆缺货"}, {"a": "B0GQZKD41H", "av": 3, "tr": 2, "sr": 2, "diag": "库存下降"}, {"a": "B0GQZLTRB7", "av": 12, "tr": 0, "sr": 11, "diag": "库存下降"}, {"a": "B0GQZLYPD3", "av": 1, "tr": 29, "sr": 0, "diag": "补货到位"}, {"a": "B0GQZM9SYQ", "av": 8, "tr": 12, "sr": 5, "diag": "补货到位"}, {"a": "B0GQZPB92V", "av": 14, "tr": 0, "sr": 14, "diag": "卖爆缺货"}, {"a": "B0GQZPRFM9", "av": 42, "tr": 6, "sr": 15, "diag": "补货到位"}, {"a": "B0GQZPWDTQ", "av": 15, "tr": 0, "sr": 15, "diag": "库存下降"}, {"a": "B0GR3FSNW2", "av": 8, "tr": 9, "sr": 6, "diag": "补货到位"}, {"a": "B0GR3QZ7YX", "av": 23, "tr": 9, "sr": 15, "diag": "补货到位"}, {"a": "B0GR4G3ZVJ", "av": 9, "tr": 0, "sr": 6, "diag": "库存下降"}, {"a": "B0GR4M7X15", "av": 11, "tr": 0, "sr": 10, "diag": "持平"}, {"a": "B0GS5P27YF", "av": 8, "tr": 5, "sr": 7, "diag": "库存下降"}, {"a": "B0GVM24FN4", "av": 14, "tr": 0, "sr": 11, "diag": "持平"}, {"a": "B0GVM63D19", "av": 14, "tr": 0, "sr": 14, "diag": "卖爆缺货"}, {"a": "B0GVM8FS7G", "av": 4, "tr": 0, "sr": 4, "diag": "持平"}, {"a": "B0GVMBFB7H", "av": 8, "tr": 8, "sr": 7, "diag": "持平"}, {"a": "B0GVMBTRL7", "av": 5, "tr": 1, "sr": 5, "diag": "持平"}, {"a": "B0GVMHCWRS", "av": 19, "tr": 0, "sr": 14, "diag": "补货到位"}, {"a": "B0GVMHK3JW", "av": 1, "tr": 0, "sr": 1, "diag": "持平"}, {"a": "B0GVMHMJ7F", "av": 3, "tr": 5, "sr": 3, "diag": "库存下降"}, {"a": "B0GVMHRXL8", "av": 1, "tr": 2, "sr": 0, "diag": "库存下降"}, {"a": "B0GVMK8JXH", "av": 16, "tr": 1, "sr": 15, "diag": "补货到位"}, {"a": "B0GVMK9FL7", "av": 12, "tr": 0, "sr": 11, "diag": "库存下降"}, {"a": "B0GVMKXHNQ", "av": 3, "tr": 9, "sr": 1, "diag": "库存下降"}, {"a": "B0GVMMVYX4", "av": 6, "tr": 14, "sr": 5, "diag": "持平"}, {"a": "B0GVMPZN8P", "av": 9, "tr": 16, "sr": 9, "diag": "持平"}, {"a": "B0GYDMFZZ8", "av": 2, "tr": 0, "sr": 1, "diag": "持平"}, {"a": "B0GYDQPJ4H", "av": 20, "tr": 5, "sr": 18, "diag": "补货到位"}, {"a": "B0GYDTYJDJ", "av": 10, "tr": 0, "sr": 9, "diag": "持平"}, {"a": "B0GYDV69FV", "av": 8, "tr": 0, "sr": 3, "diag": "补货到位"}, {"a": "B0GYDVRK7X", "av": 4, "tr": 11, "sr": 4, "diag": "库存下降"}, {"a": "B0GYDVTTLZ", "av": 3, "tr": 0, "sr": 2, "diag": "库存下降"}, {"a": "B0GYDX76HT", "av": 18, "tr": 0, "sr": 18, "diag": "持平"}, {"a": "B0GYDZ1K1H", "av": 14, "tr": 9, "sr": 1, "diag": "补货到位"}, {"a": "B0GYDZ1VLS", "av": 1, "tr": 0, "sr": 1, "diag": "持平"}, {"a": "B0GYF27MRC", "av": 20, "tr": 0, "sr": 20, "diag": "持平"}, {"a": "B0GYF366RS", "av": 8, "tr": 0, "sr": 8, "diag": "库存下降"}, {"a": "B0GYF4V7TF", "av": 12, "tr": 11, "sr": 10, "diag": "持平"}, {"a": "B0H2YZJKXQ", "av": 2, "tr": 0, "sr": 0, "diag": "卖爆缺货"}, {"a": "B0H2Z1XVXM", "av": 17, "tr": 5, "sr": 12, "diag": "卖爆缺货"}, {"a": "B0H2Z2Y7TP", "av": 13, "tr": 8, "sr": 10, "diag": "补货到位"}, {"a": "B0H2Z3NSWD", "av": 3, "tr": 0, "sr": 3, "diag": "持平"}, {"a": "B0H2Z4YZRQ", "av": 39, "tr": 0, "sr": 33, "diag": "补货到位"}, {"a": "B0H2Z87F7F", "av": 13, "tr": 17, "sr": 12, "diag": "补货到位"}, {"a": "B0H33DWB5T", "av": 0, "tr": 11, "sr": 0, "diag": "持平"}, {"a": "B0HBB46K46", "av": 0, "tr": 1, "sr": 0, "diag": "持平"}, {"a": "B0HBB64MM5", "av": 0, "tr": 2, "sr": 0, "diag": "持平"}, {"a": "B0HBB6QBX7", "av": 16, "tr": 0, "sr": 11, "diag": "补货到位"}, {"a": "B0HBB8GDRC", "av": 16, "tr": 0, "sr": 13, "diag": "补货到位"}, {"a": "B0HBB9NBJ3", "av": 0, "tr": 2, "sr": 0, "diag": "持平"}]};
+function base(){return {tooltip:{trigger:'axis'},legend:{top:4,textStyle:{fontSize:11}},grid:{left:80,right:60,top:40,bottom:44}};}
+(function(){var el=echarts.init(document.getElementById('c1'));
+var ks=['可用','可售','在途','合计'];
+el.setOption(Object.assign(base(),{xAxis:{type:'category',data:ks,axisLabel:{fontSize:11}},
+yAxis:{type:'value',name:'件数'},
+series:[{name:'10-03',type:'bar',data:ks.map(function(k){return D.tot[k][0];}),itemStyle:{color:'#9DB8CE'},barWidth:'32%',
+ label:{show:true,position:'top',fontSize:10}},
+{name:'10-16',type:'bar',data:ks.map(function(k){return D.tot[k][1];}),itemStyle:{color:'#2E86AB'},barWidth:'32%',
+ label:{show:true,position:'top',fontSize:10}}]}));})();
+(function(){var el=echarts.init(document.getElementById('c2'));
+var t=D.drop.slice().reverse();
+el.setOption(Object.assign(base(),{grid:{left:120,right:90,top:26,bottom:30},
+xAxis:{type:'value',name:'降幅(件)'},
+yAxis:{type:'category',data:t.map(function(r){return r.a;}),axisLabel:{fontSize:10}},
+series:[{type:'bar',data:t.map(function(r){return {value:r.v,itemStyle:{color: r.diag==='卖爆缺货'?'#E67E22':(r.diag==='断货告急'?'#C0392B':'#5f6b7a')}};}),
+barWidth:'58%',label:{show:true,position:'right',fontSize:10}}]}));})();
+(function(){var el=echarts.init(document.getElementById('c3'));
+var g=D.scatter;
+el.setOption(Object.assign(base(),{grid:{left:70,right:70,top:40,bottom:50},
+legend:{top:4,textStyle:{fontSize:11}},tooltip:{trigger:'item',formatter:function(p){return p.data[3]+'<br>可用 '+p.data[0]+' 在途 '+p.data[1];}},
+xAxis:{type:'value',name:'可用库存(件)'},
+yAxis:{type:'value',name:'在途(件)'},
+series:[{name:'卖爆缺货',type:'scatter',data:g.filter(function(r){return r.diag==='卖爆缺货';}).map(function(r){return [r.av,r.tr,r.a,r.a];}),itemStyle:{color:'#E67E22'},symbolSize:11},
+{name:'断货告急',type:'scatter',data:g.filter(function(r){return r.diag==='断货告急';}).map(function(r){return [r.av,r.tr,r.a,r.a];}),itemStyle:{color:'#C0392B'},symbolSize:11},
+{name:'其他',type:'scatter',data:g.filter(function(r){return r.diag!=='卖爆缺货'&&r.diag!=='断货告急';}).map(function(r){return [r.av,r.tr,r.a,r.a];}),itemStyle:{color:'#9DB8CE'},symbolSize:7}]}));})();
+(function(){var el=echarts.init(document.getElementById('c4'));
+var g=D.quad;
+el.setOption(Object.assign(base(),{grid:{left:80,right:70,top:40,bottom:50},
+legend:{top:4,textStyle:{fontSize:11}},
+tooltip:{trigger:'item',formatter:function(p){return p.data[2]+'<br>库存变化 '+p.data[0]+'<br>销量变化 '+p.data[1];}},
+xAxis:{type:'value',name:'库存变化(件)',nameLocation:'middle',nameGap:28,nameTextStyle:{fontSize:11}},
+yAxis:{type:'value',name:'销量变化(件)',nameTextStyle:{fontSize:11}},
+series:[{name:'卖爆缺货',type:'scatter',data:g.filter(function(r){return r.q==='卖爆缺货';}).map(function(r){return [r.h,r.s,r.a];}),itemStyle:{color:'#E67E22'},symbolSize:13},
+{name:'双降(滞销)',type:'scatter',data:g.filter(function(r){return r.q==='双降(滞销)';}).map(function(r){return [r.h,r.s,r.a];}),itemStyle:{color:'#C0392B'},symbolSize:11},
+{name:'压货',type:'scatter',data:g.filter(function(r){return r.q==='压货(库存升销量降)';}).map(function(r){return [r.h,r.s,r.a];}),itemStyle:{color:'#8E44AD'},symbolSize:11},
+{name:'双升(健康)',type:'scatter',data:g.filter(function(r){return r.q==='双升(健康)';}).map(function(r){return [r.h,r.s,r.a];}),itemStyle:{color:'#2A9D48'},symbolSize:11},
+{name:'持平',type:'scatter',data:g.filter(function(r){return ['卖爆缺货','双降(滞销)','压货(库存升销量降)','双升(健康)'].indexOf(r.q)<0;}).map(function(r){return [r.h,r.s,r.a];}),itemStyle:{color:'#9DB8CE'},symbolSize:7},
+{name:'零轴',type:'line',data:[],markLine:{silent:true,symbol:'none',lineStyle:{color:'#aaa',type:'dashed'},data:[{xAxis:0},{yAxis:0}]}}]}));})();
+window.addEventListener('resize',function(){['c1','c2','c3','c4'].forEach(function(i){var e=echarts.getInstanceByDom(document.getElementById(i));if(e)e.resize();});});
+</script>
+
+<script>
+/* ==== 增强器注入脚本 (enhance_panel.py) ==== */
+(function(){
+  // 1) 图表工具箱: 保存图片 / 数据视图 / 还原
+  function injectToolbox(){
+    var n = 0;
+    document.querySelectorAll('.chart').forEach(function(el){
+      if (typeof echarts === 'undefined') return;
+      var inst = echarts.getInstanceByDom(el);
+      if (!inst) return;
+      var op = inst.getOption();
+      var tb = op.toolbox;
+      if (tb && (Array.isArray(tb) ? tb.length : true) && op.__enh) return;
+      try {
+        inst.setOption({
+          toolbox: {
+            show: true, right: 6, top: 0, itemSize: 13, itemGap: 8,
+            iconStyle: { borderColor: '#2E86AB', borderWidth: 1.4 },
+            emphasis: { iconStyle: { borderColor: '#1F4E78' } },
+            feature: {
+              saveAsImage: { title: '保存图片', name: (el.id || 'chart'), backgroundColor: '#fff', pixelRatio: 2,
+                             lang: ['保存为图片'] },
+              dataView: { title: '数据表', readOnly: true, lang: ['数据视图', '关闭', '刷新'] },
+              restore: { title: '还原', lang: ['还原'] }
+            }
+          },
+          __enh: true
+        });
+        n++;
+      } catch(e) {}
+    });
+    return n;
+  }
+
+  // 2) 表格: 搜索 + 行数 + 折叠(Top12)
+  function enhanceTables(){
+    document.querySelectorAll('table').forEach(function(t){
+      if (t.closest('.tbl-wrap')) return;
+      var tbody = t.querySelector('tbody');
+      if (!tbody) return;
+      var rows = tbody.querySelectorAll('tr');
+      if (rows.length < 8) return;
+
+      var parent = t.parentNode;
+      var wrap = document.createElement('div');
+      wrap.className = 'tbl-wrap';
+      parent.insertBefore(wrap, t);
+      wrap.appendChild(t);
+
+      var tools = document.createElement('div');
+      tools.className = 'tbl-tools';
+      tools.innerHTML = '<input type="text" placeholder="搜索 ' + rows.length + ' 行(输入 ASIN / SKU / 关键词)">'
+        + '<span class="cnt"></span>'
+        + ((rows.length > 12 && !t.hasAttribute('data-nofold')) ? '<button class="btn-mini" type="button">展开全部</button>' : '');
+      wrap.insertBefore(tools, t);
+
+      var input = tools.querySelector('input');
+      var cnt = tools.querySelector('.cnt');
+      var btn = tools.querySelector('.btn-mini');
+
+      function setCnt(shown){
+        cnt.textContent = '显示 ' + shown + ' / ' + rows.length + ' 行';
+      }
+      setCnt(rows.length);
+      if (rows.length > 12 && btn && !t.hasAttribute('data-nofold')) {
+        wrap.classList.add('collapsed');
+        btn.textContent = '展开全部(' + rows.length + ' 行)';
+        setCnt(Math.min(12, rows.length));
+        btn.onclick = function(){
+          wrap.classList.toggle('collapsed');
+          var c = wrap.classList.contains('collapsed');
+          btn.textContent = c ? ('展开全部(' + rows.length + ' 行)') : '收起';
+          setCnt(c ? Math.min(12, rows.length) : rows.length);
+        };
+      }
+
+      input.addEventListener('input', function(){
+        var q = this.value.trim().toLowerCase();
+        var shown = 0;
+        rows.forEach(function(tr){
+          var hit = !q || tr.textContent.toLowerCase().indexOf(q) >= 0;
+          tr.style.display = hit ? '' : 'none';
+          if (hit) shown++;
+        });
+        setCnt(shown);
+        if (q) wrap.classList.remove('collapsed');
+      });
+    });
+  }
+
+  // 3) 锚点导航(基于 sec-title / chapter 自动生成)
+  function buildNav(){
+    var heads = document.querySelectorAll('.sec-title, .chapter');
+    if (heads.length < 3) return;
+    var nav = document.createElement('nav');
+    nav.className = 'topnav';
+    heads.forEach(function(h, i){
+      var txt = (h.textContent || '').replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu, '').trim();
+      if (!txt) return;
+      if (!h.id) h.id = 'sec-' + (i + 1);
+      var a = document.createElement('a');
+      a.href = '#' + h.id;
+      a.textContent = txt.length > 22 ? txt.slice(0, 22) + '…' : txt;
+      nav.appendChild(a);
+    });
+    var anchor = document.querySelector('.header') || document.body.firstChild;
+    anchor.parentNode.insertBefore(nav, anchor.nextSibling);
+
+    // 平滑滚动 + 高亮
+    nav.addEventListener('click', function(e){
+      var a = e.target.closest('a');
+      if (!a) return;
+      e.preventDefault();
+      var t = document.getElementById(a.getAttribute('href').slice(1));
+      if (t) { window.scrollTo({ top: t.getBoundingClientRect().top + window.pageYOffset - 70, behavior: 'smooth' }); }
+      nav.querySelectorAll('a').forEach(function(x){ x.classList.remove('active'); });
+      a.classList.add('active');
+    });
+    // 滚动高亮
+    var obs = new IntersectionObserver(function(es){
+      es.forEach(function(en){
+        if (en.isIntersecting) {
+          nav.querySelectorAll('a').forEach(function(x){
+            x.classList.toggle('active', x.getAttribute('href') === '#' + en.target.id);
+          });
+        }
+      });
+    }, { rootMargin: '-80px 0px -70% 0px' });
+    heads.forEach(function(h){ if (h.id) obs.observe(h); });
+  }
+
+  // 4) 回到顶部
+  function addToTop(){
+    var b = document.createElement('button');
+    b.id = 'toTop'; b.innerHTML = '&#8593;'; b.title = '回到顶部';
+    b.onclick = function(){ window.scrollTo({ top: 0, behavior: 'smooth' }); };
+    document.body.appendChild(b);
+    window.addEventListener('scroll', function(){
+      b.classList.toggle('show', window.pageYOffset > 500);
+    });
+  }
+
+  function run(){
+    var n = injectToolbox();
+    enhanceTables();
+    buildNav();
+    addToTop();
+    console.log('[enhance] toolbox charts=' + n);
+  }
+  if (document.readyState === 'complete') setTimeout(run, 900);
+  else window.addEventListener('load', function(){ setTimeout(run, 900); });
+})();
+</script>
+<!--__enhanced_v1__-->
+
+<script>
+/* ==== 下拉筛选 (enhance v4: 仅分类列) ==== */
+(function(){
+  var KW = ['状态','类型','等级','预警','分类','店铺','品牌','标签','阶段','是否','渠道','系列','品线','动销'];
+  function build(){
+    var total = 0, tables = 0;
+    document.querySelectorAll('.tbl-wrap table').forEach(function(t){
+      var wrap = t.closest('.tbl-wrap');
+      var tools = wrap && wrap.querySelector('.tbl-tools');
+      if (!tools || tools.querySelector('select.flt')) return;
+      var ths = Array.prototype.slice.call(t.querySelectorAll('thead th'));
+      var rows = Array.prototype.slice.call(t.querySelectorAll('tbody tr'));
+      if (rows.length < 6 || ths.length < 2) return;
+
+      var cands = [], kwCands = [];
+      ths.forEach(function(th, ci){
+        var name = (th.textContent || '').trim();
+        var vals = {}, editable = 0;
+        rows.forEach(function(r){
+          var c = r.children[ci];
+          if (!c) return;
+          if (c.querySelector('input, select, textarea')) editable++;
+          var v = (c.textContent || '').trim();
+          if (v && v.length <= 24) vals[v] = (vals[v] || 0) + 1;
+        });
+        if (editable > rows.length * 0.4) return;                 // 可编辑列 → 跳过
+        var keys = Object.keys(vals);
+        if (keys.length < 2 || keys.length > 12) return;
+        if (rows.length / keys.length < 1.5) return;              // 近似唯一值 → ID 列
+        if (keys.every(function(v){ return /^[\d,.\-+¥$%\s()]+$/.test(v); })) return;  // 纯数值列 → 跳过
+        var item = { ci: ci, name: name.slice(0, 10), vals: keys.sort() };
+        if (KW.some(function(k){ return name.indexOf(k) >= 0; })) kwCands.push(item);
+        else cands.push(item);
+      });
+
+      var picks = kwCands.length ? kwCands : cands;               // 有关键词列就只用它们
+      if (!picks.length) return;
+      picks = picks.slice(0, 2);                                  // 每表最多 2 个
+
+      var input = tools.querySelector('input');
+      var cnt = tools.querySelector('.cnt');
+      picks.forEach(function(p){
+        var sel = document.createElement('select');
+        sel.className = 'flt';
+        sel.setAttribute('data-ci', p.ci);
+        var html = '<option value="">' + p.name + ': 全部(' + p.vals.length + ')</option>';
+        p.vals.forEach(function(v){ html += '<option value="' + v.replace(/"/g, '&quot;') + '">' + v + '</option>'; });
+        sel.innerHTML = html;
+        tools.appendChild(sel);
+        total++;
+      });
+      tables++;
+
+      var sels = Array.prototype.slice.call(tools.querySelectorAll('select.flt'));
+      function apply(){
+        var active = false;
+        rows.forEach(function(r){
+          var show = true;
+          sels.forEach(function(s){
+            if (s.value) {
+              active = true;
+              var c = r.children[+s.getAttribute('data-ci')];
+              if (!c || (c.textContent || '').trim() !== s.value) show = false;
+            }
+          });
+          r.style.display = show ? '' : 'none';
+        });
+        sels.forEach(function(s){ s.classList.toggle('on', !!s.value); });
+        if (cnt) {
+          var shown = rows.filter(function(r){ return r.style.display !== 'none'; }).length;
+          cnt.textContent = '显示 ' + shown + ' / ' + rows.length + ' 行' + (active ? ' (已筛选)' : '');
+        }
+        if (active) wrap.classList.remove('collapsed');
+      }
+      sels.forEach(function(s){
+        s.addEventListener('change', function(){
+          if (input && input.value) { input.value = ''; input.dispatchEvent(new Event('input')); }
+          apply();
+        });
+      });
+      if (input) input.addEventListener('input', function(){
+        if (this.value) sels.forEach(function(s){ s.value = ''; s.classList.remove('on'); });
+      });
+      apply();
+    });
+    console.log('[enhance v4] 筛选器 ' + total + ' 个 / 覆盖 ' + tables + ' 张表');
+    return total;
+  }
+  var tries = 0;
+  function waitAndBuild(){
+    tries++;
+    if (document.querySelectorAll('.tbl-wrap').length === 0 && tries < 25) { setTimeout(waitAndBuild, 400); return; }
+    var n = build();
+    if (n === 0 && tries < 25) setTimeout(waitAndBuild, 400);
+  }
+  if (document.readyState === 'complete') setTimeout(waitAndBuild, 300);
+  else window.addEventListener('load', function(){ setTimeout(waitAndBuild, 300); });
+})();
+</script>
+<!--__enhanced_v4__-->
+</body>
+</html>
