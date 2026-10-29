@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>车灯总成 · 广告投放作战图</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Microsoft YaHei',-apple-system,sans-serif;background:#eef2f6;color:#0f1c2e;padding:20px;max-width:1640px;margin:0 auto}
+.header{background:linear-gradient(135deg,#0B3C5D,#328CC1);color:#fff;border-radius:14px;padding:24px 30px;margin-bottom:16px;box-shadow:0 6px 18px rgba(11,60,93,.25)}
+.header h1{font-size:27px;font-weight:700;letter-spacing:.5px}
+.header .meta{font-size:13px;opacity:.94;margin-top:8px;line-height:1.85}
+.decks{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.deck{border-radius:10px;padding:12px 14px;box-shadow:0 2px 6px rgba(0,0,0,.08);border-left:4px solid}
+.deck.good{background:#eaf9ef;border-color:#2A9D48}
+.deck.warn{background:#fff7ea;border-color:#E67E22}
+.deck.bad{background:#fdeceb;border-color:#C0392B}
+.d-act{font-size:13px;font-weight:700;margin-bottom:3px}
+.deck.good .d-act{color:#1e7a37}.deck.warn .d-act{color:#a95c14}.deck.bad .d-act{color:#a52a1e}
+.d-obj{font-size:14px;font-weight:700;color:#0f1c2e;margin-bottom:3px}
+.d-note{font-size:11px;color:#5f6b7a;line-height:1.5}
+.kpi-row{display:flex;flex-wrap:nowrap;gap:10px;margin-bottom:16px;overflow-x:auto}
+.kpi{background:#fff;border-radius:10px;padding:12px 14px;box-shadow:0 2px 6px rgba(0,0,0,.07);flex:1 1 0;min-width:152px}
+.k-label{font-size:12px;color:#5f6b7a}
+.k-val{font-size:17px;font-weight:700;margin:3px 0;color:#0B3C5D}
+.k-val.good{color:#2A9D48}.k-val.warn{color:#E67E22}.k-val.bad{color:#C0392B}
+.k-note{font-size:11px;color:#8494a5;line-height:1.5}
+.card{background:#fff;border-radius:12px;padding:18px 20px;box-shadow:0 2px 6px rgba(0,0,0,.07);margin-bottom:16px}
+.chapter{background:linear-gradient(90deg,#0B3C5D,#328CC1);color:#fff;border-radius:10px;padding:11px 22px;margin:24px auto 14px;font-size:17px;font-weight:700;max-width:1320px;box-shadow:0 3px 10px rgba(11,60,93,.2)}
+.c-title{font-size:15px;font-weight:700;color:#0B3C5D;margin-bottom:4px}
+.c-sub{font-size:12px;color:#8494a5;margin-bottom:10px}
+.chart{width:100%;height:340px}.chart-tall{width:100%;height:470px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+table{width:100%;border-collapse:collapse;font-size:11.5px;margin:8px 0}
+th{background:#0B3C5D;color:#fff;font-weight:600;padding:8px 4px;text-align:center;font-size:11px;cursor:pointer;white-space:nowrap}
+th:hover{background:#328CC1}
+td{padding:5px 4px;text-align:center;border-bottom:1px solid #e8eef4;white-space:nowrap}
+tbody tr:nth-child(even){background:#f6fafd}
+tbody tr:hover{background:#e8f4fc}
+.up{color:#2A9D48;font-weight:600}.down{color:#C0392B;font-weight:600}
+.insight{background:#f6fafd;border-left:3px solid #328CC1;border-radius:6px;padding:12px 15px;margin:10px 0 4px;font-size:12.5px;line-height:1.85}
+.insight.warm{background:#fffaf5;border-left-color:#E67E22}
+.insight.good{background:#f5fbf7;border-left-color:#2A9D48}
+.insight .ins-line{margin:4px 0}
+.insight b{color:#0B3C5D}
+.footer{text-align:center;color:#8494a5;font-size:11.5px;padding:20px 0;line-height:1.85}
+
+/* ==== 增强器注入样式 (enhance_panel.py) ==== */
+.topnav { position:sticky; top:0; z-index:99; display:flex; gap:6px; flex-wrap:wrap;
+  background:rgba(255,255,255,.96); backdrop-filter:blur(8px); border-radius:10px;
+  padding:9px 12px; margin:0 auto 14px; max-width:1560px; box-shadow:0 2px 10px rgba(31,78,120,.13); }
+.topnav a { font-size:12.5px; color:#1F4E78; text-decoration:none; padding:5px 11px; border-radius:16px;
+  background:#f1f6fa; border:1px solid #e2ecf4; white-space:nowrap; transition:.14s; font-weight:600; }
+.topnav a:hover { background:#2E86AB; color:#fff; border-color:#2E86AB; }
+.topnav a.active { background:#1F4E78; color:#fff; border-color:#1F4E78; }
+.tbl-tools { display:flex; align-items:center; gap:10px; margin:8px 0 6px; wrap:nowrap; }
+.tbl-tools input { flex:0 0 220px; border:1px solid #d6e2ec; border-radius:16px; padding:5px 12px;
+  font-size:12px; font-family:inherit; outline:none; }
+.tbl-tools input:focus { border-color:#2E86AB; box-shadow:0 0 0 2px rgba(46,134,171,.14); }
+.tbl-tools .cnt { font-size:11.5px; color:#8a94a3; }
+.tbl-tools .btn-mini { font-size:11.5px; color:#2E86AB; background:#f1f6fa; border:1px solid #e2ecf4;
+  border-radius:14px; padding:4px 10px; cursor:pointer; font-family:inherit; }
+.tbl-tools .btn-mini:hover { background:#2E86AB; color:#fff; }
+.tbl-wrap.collapsed table tbody tr:nth-child(n+13) { display:none; }
+#toTop { position:fixed; right:22px; bottom:26px; width:44px; height:44px; border-radius:50%;
+  background:#1F4E78; color:#fff; border:none; cursor:pointer; font-size:19px; box-shadow:0 4px 14px rgba(31,78,120,.35);
+  opacity:0; pointer-events:none; transition:.25s; z-index:120; }
+#toTop.show { opacity:1; pointer-events:auto; }
+#toTop:hover { background:#2E86AB; }
+
+
+/* ==== 下拉筛选 (v4) ==== */
+select.flt { border:1px solid #d6e2ec; border-radius:14px; padding:5px 10px; font-size:11.5px;
+  font-family:inherit; color:#1F4E78; background:#f8fbfd; cursor:pointer; max-width:200px; }
+select.flt:hover { border-color:#2E86AB; }
+select.flt:focus { outline:none; border-color:#2E86AB; box-shadow:0 0 0 2px rgba(46,134,171,.14); }
+select.flt.on { background:#1F4E78; color:#fff; border-color:#1F4E78; font-weight:600; }
+
+</style>
+</head>
+<body>
+<div class="header">
+<h1>&#127919; 车灯总成 · 广告投放作战图</h1>
+<div class="meta">数据: 2026-01-01 ~ 10-28 ｜ 花费 $8,482.18 ｜ 广告销售额 $93,555.33 ｜ <b>整体 ACOS 9.07%</b> ｜ ROAS 11.03<br>
+搜词口径: 7,098 行 / 273 活动 / 5,495 搜索词 ｜ 广告位口径: 4,547 行 / 2,060 活动<br>
+<b>六个决策维度:</b> 词类型 · 自动vs手动 · 组合矩阵 · CPC甜点区 · 广告位侧重 · 词长效率
+</div>
+</div>
+<div class="decks"><div class="deck good"><div class="d-act">✅ 加投</div><div class="d-obj">年份+车型+主词</div><div class="d-note">ACOS 8.53% · 占 75.2% 预算 · CVR 6.96%</div></div><div class="deck good"><div class="d-act">✅ 加投</div><div class="d-obj">自动广告</div><div class="d-note">ACOS 8.43% · CTR 7.30% · CPC $0.64</div></div><div class="deck good"><div class="d-act">✅ 加投</div><div class="d-obj">搜索顶部位置</div><div class="d-note">ACOS 8.85% · CVR 8.22% · CTR 7.12%</div></div><div class="deck warn"><div class="d-act">⚙️ 甜点区</div><div class="d-obj">CPC $0.55-0.70</div><div class="d-note">ACOS 8.54% · CPA $8.89(最优性价比)</div></div><div class="deck warn"><div class="d-act">⚠️ 缩减</div><div class="d-obj">纯主词</div><div class="d-note">ACOS 11.41% · CVR 仅 4.59%</div></div><div class="deck bad"><div class="d-act">❌ 必砍</div><div class="d-obj">车型词(无品类)</div><div class="d-note">ACOS 15.37% · CVR 3.98%</div></div><div class="deck bad"><div class="d-act">❌ 必砍</div><div class="d-obj">商品页面加价</div><div class="d-note">加 15% → ACOS 20.80%</div></div><div class="deck bad"><div class="d-act">❌ 停投</div><div class="d-obj">CPC > $1.5</div><div class="d-note">ACOS 40.45% · CPA $80.90</div></div></div>
+<div class="kpi-row"><div class="kpi"><div class="k-label">整体 ACOS</div><div class="k-val good">9.07%</div><div class="k-note">ROAS 11.03 · 800 单</div></div><div class="kpi"><div class="k-label">最优词型</div><div class="k-val good">年份+车型+主词</div><div class="k-note">ACOS 8.53% · 占 75.2%</div></div><div class="kpi"><div class="k-label">自动 vs 手动</div><div class="k-val good">8.4% vs 11.3%</div><div class="k-note">自动优 2.84pp</div></div><div class="kpi"><div class="k-label">最优 CPC</div><div class="k-val warn">$0.55-0.70</div><div class="k-note">ACOS 8.54% · CPA $8.89</div></div><div class="kpi"><div class="k-label">最优位置</div><div class="k-val good">搜索顶部</div><div class="k-note">ACOS 8.85% · CVR 8.22%</div></div><div class="kpi"><div class="k-label">最差位置</div><div class="k-val bad">商品页面</div><div class="k-note">ACOS 13.15% · CTR 0.47%</div></div></div>
+<div class="chapter"><span class="bar"></span>&#128221; 一、词类型效率排序(该投哪种词)</div><div class="card"><div class="c-title">六类词 · ACOS / CVR / 预算占比</div><div class="c-sub">词类型自动识别:年份(2014) / 车型(honda civic) / 品类(headlights) 组合</div><div id="c1" class="chart chart-tall"></div><table id="tbl-w" class=""><thead><tr><th>词类型</th><th>词数</th><th>花费</th><th>占比</th><th>广告销售额</th><th>ACOS</th><th>ROAS</th><th>CTR</th><th>CVR</th><th>CPC</th><th>CPA</th><th>决策</th></tr></thead><tbody><tr><td>年份+车型+主词</td><td>3,975</td><td>$6,375.19</td><td>75.2%</td><td>$74,749.49</td><td><b class="up">8.53%</b></td><td>11.73</td><td>5.79%</td><td><b>6.96%</b></td><td>$0.71</td><td>$10.20</td><td>✅ 加投</td></tr><tr><td>纯主词</td><td>202</td><td>$835.83</td><td>9.9%</td><td>$7,322.76</td><td><b class="">11.41%</b></td><td>8.76</td><td>2.38%</td><td><b>4.59%</b></td><td>$0.58</td><td>$12.66</td><td>⚠️ 缩减</td></tr><tr><td>车型+主词</td><td>586</td><td>$672.52</td><td>7.9%</td><td>$6,345.63</td><td><b class="">10.60%</b></td><td>9.44</td><td>4.47%</td><td><b>6.08%</b></td><td>$0.65</td><td>$10.67</td><td>➡️ 维持</td></tr><tr><td>车型词(无品类词)</td><td>595</td><td>$462.81</td><td>5.5%</td><td>$3,011.21</td><td><b class="down">15.37%</b></td><td>6.51</td><td>9.76%</td><td><b>3.98%</b></td><td>$0.57</td><td>$14.46</td><td>❌ 砍</td></tr><tr><td>年份+主词</td><td>90</td><td>$87.49</td><td>1.0%</td><td>$1,190.92</td><td><b class="up">7.35%</b></td><td>13.61</td><td>42.20%</td><td><b>5.88%</b></td><td>$0.74</td><td>$12.50</td><td>✅ 加测</td></tr><tr><td>非品类词</td><td>47</td><td>$48.34</td><td>0.6%</td><td>$935.32</td><td><b class="up">5.17%</b></td><td>19.35</td><td>8.26%</td><td><b>7.00%</b></td><td>$0.48</td><td>$6.91</td><td>✅ 维持</td></tr></tbody></table><div class="insight good"><div class="ins-line"><b>📊 数据解读:</b><b>年份+车型+主词是绝对主力:占 75.2% 预算,ACOS 8.53%, CVR 6.96%, CPA 最低($10.20)。</b><br>纯主词拿了 9.9% 预算但 ACOS 11.41%、CVR 只 4.59%;车型词(无品类)ACOS 高达 15.37%。</div><div class="ins-line"><b>🔍 原因分析:</b><b>买家搜得越具体,成交概率越高。</b><br>• 搜「2014 honda civic headlights」的人 —— 明确知道车型年份,只想比价和选款;<br>• 搜「headlights」的人 —— 还在逛,可能连自己什么车都没想好;<br>• 搜「honda civic」的人 —— 可能在找别的配件,不是车灯。<br>⚠️ 注意 <b>年份+主词(无车型)ACOS 只 7.35%</b> —— 说明"年份"这个限定词比"车型"更能筛出购买意图。</div><div class="ins-line"><b>✅ 建议动作:</b><b>①年份+车型+主词:75%→85% 预算</b>(已是主力,继续加);<br><b>②年份+主词:1%→5%</b>(ACOS 7.35% 最优,但投得太少);<br><b>③纯主词:9.9%→5%</b>(ACOS 11.41% 拖后腿);<br><b>④车型词无品类:5.5%→2% 或直接否掉</b>(ACOS 15.37%,CVR 3.98%)。</div></div><div class="chapter"><span class="bar"></span>&#128260; 二、自动 vs 手动(全指标对比)</div><div class="card"><div class="c-title">八项核心指标对照</div><div class="c-sub">自动赢在 CTR 和 CPC,手动赢在 CVR —— 但综合 ACOS 自动更优</div><div class="row2"><div id="c2" class="chart"></div><div id="c3" class="chart"></div></div><table id="tbl-t" class=""><thead><tr><th>指标</th><th>自动</th><th>手动</th><th>谁更优</th><th>差距</th></tr></thead><tbody><tr><td>ACOS</td><td>8.43%</td><td>11.27%</td><td><b class="up">自动 胜</b></td><td>2.84%</td></tr><tr><td>ROAS</td><td>11.87</td><td>8.87</td><td><b class="up">自动 胜</b></td><td>3.00x</td></tr><tr><td>CTR</td><td>7.30%</td><td>2.70%</td><td><b class="up">自动 胜</b></td><td>4.60%</td></tr><tr><td>CVR</td><td>6.28%</td><td>6.53%</td><td><b class="up">手动 胜</b></td><td>0.25%</td></tr><tr><td>CPC</td><td>$0.64</td><td>$0.83</td><td><b class="up">自动 胜</b></td><td>0.19$</td></tr><tr><td>CPA</td><td>$10.14</td><td>$12.66</td><td><b class="up">自动 胜</b></td><td>2.52$</td></tr><tr><td>客单价</td><td>$120.40</td><td>$112.27</td><td><b class="up">自动 胜</b></td><td>8.13$</td></tr><tr><td>花费占比</td><td>60.9%</td><td>34.6%</td><td>自动占 60.9%</td><td>26.3pp</td></tr></tbody></table><div class="insight good"><div class="ins-line"><b>📊 数据解读:</b><b>自动:ACOS 8.43%、CTR 7.30%、CPC $0.64、CPA $10.14</b><br><b>手动:ACOS 11.27%、CTR 2.70%、CPC $0.83、CPA $12.66</b><br>手动的 <b>CVR(6.53%)其实略高于自动(6.28%)</b>,但 ACOS 反而差 2.84pp。</div><div class="ins-line"><b>🔍 原因分析:</b><b>这是一个关键洞察:手动广告的问题不是"不准",是"太贵"。</b><br>• 手动 CVR 6.53% > 自动 6.28% —— 说明手动词匹配到的意图确实更准;<br>• 但手动 CPC $0.83 比自动 $0.64 贵 30% —— 把 CVR 的优势全部吃掉了;<br>• 自动 CTR 7.30% 是手动 2.70% 的 2.7 倍 —— 自动广告展示位置更好或素材更吸引。</div><div class="ins-line"><b>✅ 建议动作:</b><b>①自动:60.9% → 70% 预算</b>(效率最高,继续加);<br><b>②手动:34.6% → 25% 预算 + CPC 从 $0.83 降到 $0.65</b>(直接对标自动);<br><b>③手动只保留"年份+车型+主词"</b>,砍掉纯主词(ACOS 16.90%)。</div></div><div class="chapter"><span class="bar"></span>&#127919; 三、最优组合矩阵(类型 × 词型)</div><div class="card"><div class="c-title">9 种组合的 ACOS(绿=优 红=差)</div><div class="c-sub">花费 > $30 的组合 ｜ 颜色越绿越该加,越红越该砍</div><div id="c4" class="chart chart-tall"></div><table id="tbl-c" class=""><thead><tr><th>广告类型</th><th>词类型</th><th>词数</th><th>花费</th><th>广告销售额</th><th>ACOS</th><th>ROAS</th><th>CVR</th><th>CPC</th><th>CPA</th></tr></thead><tbody><tr><td>自动</td><td>年份+车型+主词</td><td>2,875</td><td>$3,787.81</td><td>$48,409.05</td><td><b class="up">7.82%</b></td><td>12.78</td><td>6.66%</td><td>$0.66</td><td>$9.84</td></tr><tr><td>手动</td><td>年份+车型+主词</td><td>1,057</td><td>$2,376.68</td><td>$22,516.27</td><td><b class="">10.56%</b></td><td>9.47</td><td>7.34%</td><td>$0.86</td><td>$11.71</td></tr><tr><td>自动</td><td>纯主词</td><td>116</td><td>$539.27</td><td>$4,776.30</td><td><b class="">11.29%</b></td><td>8.86</td><td>5.15%</td><td>$0.59</td><td>$11.47</td></tr><tr><td>自动</td><td>车型词(无品类词)</td><td>479</td><td>$376.05</td><td>$2,415.00</td><td><b class="down">15.57%</b></td><td>6.42</td><td>4.04%</td><td>$0.58</td><td>$14.46</td></tr><tr><td>自动</td><td>车型+主词</td><td>371</td><td>$359.75</td><td>$3,739.63</td><td><b class="">9.62%</b></td><td>10.40</td><td>6.21%</td><td>$0.59</td><td>$9.47</td></tr><tr><td>手动</td><td>车型+主词</td><td>197</td><td>$272.91</td><td>$2,047.39</td><td><b class="down">13.33%</b></td><td>7.50</td><td>5.74%</td><td>$0.82</td><td>$14.36</td></tr><tr><td>手动</td><td>纯主词</td><td>91</td><td>$235.68</td><td>$1,394.90</td><td><b class="down">16.90%</b></td><td>5.92</td><td>2.37%</td><td>$0.62</td><td>$26.19</td></tr><tr><td>自动</td><td>年份+主词</td><td>57</td><td>$64.45</td><td>$1,190.92</td><td><b class="up">5.41%</b></td><td>18.48</td><td>8.54%</td><td>$0.79</td><td>$9.21</td></tr><tr><td>自动</td><td>非品类词</td><td>40</td><td>$36.09</td><td>$750.33</td><td><b class="up">4.81%</b></td><td>20.79</td><td>8.11%</td><td>$0.49</td><td>$6.02</td></tr></tbody></table><div class="insight "><div class="ins-line"><b>📊 数据解读:</b><b>最优:自动 + 年份+车型+主词(ACOS 7.82%,花费 $3,787.81)</b><br><b>最差:手动 + 纯主词(ACOS 16.90%,CVR 只 2.37%,CPA $26.19)</b></div><div class="ins-line"><b>🔍 原因分析:</b><b>同一个词类型,放在自动广告里 ACOS 总是更低。</b><br>自动 + 年份+车型+主词:ACOS 7.82%;手动 + 年份+车型+主词:ACOS 10.56% —— <b>差 2.74pp</b>。<br>差别只在 CPC:自动 $0.66 vs 手动 $0.86。</div><div class="ins-line"><b>✅ 建议动作:</b><b>①主投"自动 + 年份+车型+主词"</b>(现在 $3,788,可加到 $5,000);<br><b>②手动 + 年份+车型+主词 保留但降价</b>(CVR 7.34% 其实最高,只是贵);<br><b>③手动 + 纯主词立即停</b>(CPA $26.19,是最优组合的 2.7 倍)。</div></div><div class="chapter"><span class="bar"></span>&#128181; 四、CPC 出价甜点区</div><div class="card"><div class="c-title">CPC 区间 × ACOS / CPA 曲线</div><div class="c-sub">CPC 每涨一档,ACOS 恶化 2-3pp ｜ 甜点区 $0.55-0.70</div><div id="c5" class="chart chart-tall"></div><table id="tbl-cpc" class=""><thead><tr><th>CPC 区间</th><th>词数</th><th>花费</th><th>广告销售额</th><th>ACOS</th><th>CVR</th><th>CPA</th><th>决策</th></tr></thead><tbody><tr><td><$0.3</td><td>600</td><td>$146.17</td><td>$4,400.52</td><td><b class="up">3.32%</b></td><td>5.34%</td><td>$3.40</td><td>✅ 可加</td></tr><tr><td>$0.3-0.5</td><td>1,383</td><td>$1,056.68</td><td>$15,619.76</td><td><b class="up">6.77%</b></td><td>6.16%</td><td>$7.09</td><td>✅ 可加</td></tr><tr><td>$0.5-0.7</td><td>2,061</td><td>$2,410.49</td><td>$28,234.83</td><td><b class="up">8.54%</b></td><td>6.68%</td><td>$8.89</td><td>⭐ 甜点区</td></tr><tr><td>$0.7-1.0</td><td>1,414</td><td>$3,062.17</td><td>$31,424.79</td><td><b class="">9.74%</b></td><td>6.59%</td><td>$12.60</td><td>✅ 可加</td></tr><tr><td>$1.0-1.5</td><td>655</td><td>$1,586.33</td><td>$12,480.53</td><td><b class="down">12.71%</b></td><td>6.09%</td><td>$18.88</td><td>⚠️ 降</td></tr><tr><td>$1.5-2.0</td><td>82</td><td>$161.81</td><td>$399.98</td><td><b class="down">40.45%</b></td><td>2.04%</td><td>$80.90</td><td>❌ 停投</td></tr><tr><td>>$2.0</td><td>26</td><td>$58.53</td><td>$199.99</td><td><b class="down">29.27%</b></td><td>3.85%</td><td>$58.53</td><td>❌ 停投</td></tr></tbody></table><div class="insight warm"><div class="ins-line"><b>📊 数据解读:</b><b>$0.5-0.7 是甜点区:花费最大($2,410.49)、ACOS 8.54%、CPA $8.89。</b><br><b>CPC > $1.5 是灾难:ACOS 29.27%、CVR 只 3.85%、CPA $58.53。</b></div><div class="ins-line"><b>🔍 原因分析:</b><b>规律非常干净:CPC 每涨一档,ACOS 恶化 2-3pp。</b><br>这说明<b>你的 listing 转化力支撑不了高价流量</b> —— CPC 涨到 $1.5 时 CVR 从 6.7% 掉到 2.0%,说明贵的流量反而不精准(可能是竞价高抢到了泛流量)。</div><div class="ins-line"><b>✅ 建议动作:</b><b>自动广告出价:$0.55-0.75</b>(可测到 $0.65)<br><b>手动广告出价:$0.60-0.80</b>(现在 $0.83,降 15%)<br><b>硬性上限:$1.0</b>(超过必亏)｜ <b>立即停:$1.5+</b></div></div><div class="chapter"><span class="bar"></span>&#128205; 五、广告位侧重(该抢哪个位置)</div><div class="card"><div class="c-title">四位置效率 + 竞价调整矩阵</div><div class="c-sub">搜索顶部 CTR 是商品页面的 15 倍 ｜ 竞价调整数据证明"加价买好位置"是划算的</div><div id="c6" class="chart chart-tall"></div><table id="tbl-pos" class=""><thead><tr><th>广告位</th><th>花费</th><th>花费占比</th><th>销售占比</th><th>ACOS</th><th>CTR</th><th>CVR</th><th>CPC</th><th>ROAS</th><th>决策</th></tr></thead><tbody><tr><td>搜索结果的其余位置</td><td>$9,527.58</td><td>43.8%</td><td>45.8%</td><td><b class="up">9.85%</b></td><td>1.17%</td><td><b>5.02%</b></td><td>$0.54</td><td>10.15</td><td>➡️ 次主力</td></tr><tr><td>商品页面</td><td>$6,450.20</td><td>29.6%</td><td>23.2%</td><td><b class="down">13.15%</b></td><td>0.47%</td><td><b>3.52%</b></td><td>$0.50</td><td>7.61</td><td>❌ 收缩</td></tr><tr><td>搜索结果顶部(首页)</td><td>$5,783.55</td><td>26.6%</td><td>30.9%</td><td><b class="up">8.85%</b></td><td>7.12%</td><td><b>8.22%</b></td><td>$0.88</td><td>11.30</td><td>⭐ 主力</td></tr><tr><td>OFF AMAZON</td><td>$1.40</td><td>0.0%</td><td>0.0%</td><td><b class="up">0.00%</b></td><td>0.79%</td><td><b>0.00%</b></td><td>$0.20</td><td>0.00</td><td>➡️ 次主力</td></tr></tbody></table><div class="c-title" style="margin-top:14px">竞价调整 → 效果(证明加价买位置是划算的)</div><table id="tbl-adj" class=""><thead><tr><th>广告位</th><th>加价</th><th>花费</th><th>广告销售额</th><th>ACOS</th><th>订单</th><th>CTR</th><th>CVR</th></tr></thead><tbody><tr><td>搜索结果顶部(首页)</td><td>75%</td><td>$1,830.32</td><td>$23,761.39</td><td><b class="up">7.70%</b></td><td>213</td><td>6.94%</td><td>11.14%</td></tr><tr><td>搜索结果顶部(首页)</td><td>35%</td><td>$1,691.32</td><td>$17,646.96</td><td><b class="up">9.58%</b></td><td>105</td><td>9.69%</td><td>5.99%</td></tr><tr><td>商品页面</td><td>0%</td><td>$1,685.26</td><td>$11,967.21</td><td><b class="">14.08%</b></td><td>99</td><td>0.56%</td><td>2.97%</td></tr><tr><td>搜索结果的其余位置</td><td>40%</td><td>$1,535.61</td><td>$13,170.03</td><td><b class="">11.66%</b></td><td>120</td><td>1.34%</td><td>4.05%</td></tr><tr><td>商品页面</td><td>15%</td><td>$1,417.35</td><td>$6,814.99</td><td><b class="down">20.80%</b></td><td>65</td><td>0.54%</td><td>2.50%</td></tr><tr><td>搜索结果的其余位置</td><td>0%</td><td>$1,284.53</td><td>$13,350.77</td><td><b class="up">9.62%</b></td><td>143</td><td>1.00%</td><td>5.54%</td></tr><tr><td>搜索结果的其余位置</td><td>85%</td><td>$979.63</td><td>$10,519.08</td><td><b class="up">9.31%</b></td><td>94</td><td>0.94%</td><td>8.70%</td></tr><tr><td>商品页面</td><td>10%</td><td>$830.68</td><td>$7,378.46</td><td><b class="">11.26%</b></td><td>64</td><td>0.54%</td><td>4.66%</td></tr><tr><td>搜索结果的其余位置</td><td>55%</td><td>$784.49</td><td>$8,301.79</td><td><b class="up">9.45%</b></td><td>52</td><td>1.28%</td><td>4.30%</td></tr><tr><td>搜索结果顶部(首页)</td><td>40%</td><td>$503.73</td><td>$5,911.89</td><td><b class="up">8.52%</b></td><td>53</td><td>8.61%</td><td>11.00%</td></tr><tr><td>搜索结果的其余位置</td><td>95%</td><td>$438.56</td><td>$6,032.75</td><td><b class="up">7.27%</b></td><td>63</td><td>1.16%</td><td>8.16%</td></tr><tr><td>商品页面</td><td>77%</td><td>$405.68</td><td>$4,462.89</td><td><b class="up">9.09%</b></td><td>51</td><td>0.50%</td><td>7.07%</td></tr></tbody></table><div class="insight warm"><div class="ins-line"><b>📊 数据解读:</b><b>搜索顶部:ACOS 8.85%、CTR 7.12%、CVR 8.22% —— 三项全优,但只占 26.6% 预算。</b><br><b>商品页面:ACOS 13.15%、CTR 0.47%、CVR 3.52% —— 三项全差,却占 29.6% 预算。</b><br>竞价调整验证:<b>搜索顶部加价 75% 时 ACOS 只 7.70%;不加价(0%)时 22.16%</b>。</div><div class="ins-line"><b>🔍 原因分析:</b><b>搜索顶部的 CTR 是商品页面的 15.1 倍(7.12% vs 0.47%),CVR 是 2.3 倍。</b><br>买家意图差异:搜顶部的人<b>正在主动搜车灯</b>,商品页面的人<b>在看别的商品时被推荐</b>。<br>⚠️ <b>竞价调整矩阵证明:搜索顶部加价越多,ACOS 反而越低</b> —— 因为抢到了首位,CTR 暴涨摊薄了成本。</div><div class="ins-line"><b>✅ 建议动作:</b><b>竞价调整配置:</b><br>• <b>搜索顶部:+50% ~ +75%</b>(主力,ACOS 7.70%)<br>• <b>其余位置:+40% ~ +85%</b>(ACOS 9.31%、CVR 8.70%)<br>• <b>商品页面:0% 或 -20%</b>(任何正加价都恶化)</div></div><div class="chapter"><span class="bar"></span>&#128207; 六、词长效率(越长越好)</div><div class="card"><div class="c-title">搜索词包含单词数 × ACOS / CVR</div><div class="c-sub">7-10 词的 ACOS 普遍 <6%,CVR >8% ｜ 说明买家搜得越具体越容易成交</div><div id="c7" class="chart chart-tall"></div><table id="tbl-len" class=""><thead><tr><th>词长</th><th>词数</th><th>花费</th><th>广告销售额</th><th>ACOS</th><th>CVR</th><th>CPC</th><th>CPA</th></tr></thead><tbody><tr><td>1 词</td><td>26</td><td>$107.49</td><td>$1,257.38</td><td><b class="up">8.55%</b></td><td>7.03%</td><td>$0.58</td><td>$8.27</td></tr><tr><td>2 词</td><td>128</td><td>$645.89</td><td>$6,221.74</td><td><b class="">10.38%</b></td><td>4.88%</td><td>$0.56</td><td>$11.53</td></tr><tr><td>3 词</td><td>647</td><td>$1,291.72</td><td>$12,513.56</td><td><b class="">10.32%</b></td><td>5.91%</td><td>$0.66</td><td>$11.23</td></tr><tr><td>4 词</td><td>1,310</td><td>$2,980.69</td><td>$31,327.48</td><td><b class="">9.51%</b></td><td>6.87%</td><td>$0.72</td><td>$10.53</td></tr><tr><td>5 词</td><td>1,456</td><td>$1,840.33</td><td>$18,956.37</td><td><b class="">9.71%</b></td><td>6.07%</td><td>$0.67</td><td>$11.09</td></tr><tr><td>6 词</td><td>996</td><td>$929.04</td><td>$11,803.70</td><td><b class="up">7.87%</b></td><td>6.21%</td><td>$0.70</td><td>$11.33</td></tr><tr><td>7 词</td><td>496</td><td>$375.63</td><td>$6,773.13</td><td><b class="up">5.55%</b></td><td>8.55%</td><td>$0.68</td><td>$7.99</td></tr><tr><td>8 词</td><td>218</td><td>$164.10</td><td>$2,320.05</td><td><b class="up">7.07%</b></td><td>8.23%</td><td>$0.68</td><td>$8.20</td></tr><tr><td>9 词</td><td>89</td><td>$63.62</td><td>$1,011.65</td><td><b class="up">6.29%</b></td><td>7.29%</td><td>$0.66</td><td>$9.09</td></tr><tr><td>10 词</td><td>53</td><td>$29.11</td><td>$645.85</td><td><b class="up">4.51%</b></td><td>9.26%</td><td>$0.54</td><td>$5.82</td></tr></tbody></table><div class="insight "><div class="ins-line"><b>📊 数据解读:</b><b>词长与效率成正比:7 词 ACOS 5.55%、CVR 8.55%;10 词 ACOS 4.51%、CVR 9.26%。</b><br>对比 2-3 词:ACOS 10.3-10.4%、CVR 4.9-5.9%。</div><div class="ins-line"><b>🔍 原因分析:</b><b>词越长 = 买家越明确自己要什么。</b>"2014 honda civic headlights black" 这种词,买家已经完成选型,只差找卖家;而 "headlights" 还要面对整个类目。</div><div class="ins-line"><b>✅ 建议动作:</b><b>建词公式:年份 + 车型 + headlights + 修饰词(led/black/smoke/driver/passenger)</b><br>每个主推车型按这个结构铺 5-10 个长尾词,比铺大词划算得多。</div></div>
+<div class="footer">数据源: 车灯SP搜索词(0101-1028) + 车灯SP广告位(0101-1028) ｜ 均已剔除全表总计行<br>
+词类型自动识别: 年份(19xx/20xx) + 车型词库(100+ 车型品牌) + 品类词(headlight/assembly/lamp)<br>
+生成: Hermes Agent ｜ 表头可点击排序
+</div>
+<script>
+var D = {"T": {"花费": 8482.18, "销售额": 93555.33, "订单": 800.0, "点击": 12477.0, "曝光": 248553.0}, "T2": {"ACOS": 9.07, "ROAS": 11.03, "CTR": 5.02, "CPC": 0.68, "CVR": 6.41, "CPA": 10.6}, "words": [{"词类型": "年份+车型+主词", "词数": 3975, "花费": 6375.19, "销售额": 74749.49, "订单": 625, "点击": 8978, "曝光": 155178, "销量": 626, "ACOS": 8.53, "CTR": 5.79, "CVR": 6.96, "CPC": 0.71, "CPA": 10.2, "ROAS": 11.73, "AOV": 119.6, "花费占比": 75.2, "销售占比": 79.9}, {"词类型": "纯主词", "词数": 202, "花费": 835.83, "销售额": 7322.76, "订单": 66, "点击": 1439, "曝光": 60462, "销量": 69, "ACOS": 11.41, "CTR": 2.38, "CVR": 4.59, "CPC": 0.58, "CPA": 12.66, "ROAS": 8.76, "AOV": 110.95, "花费占比": 9.9, "销售占比": 7.8}, {"词类型": "车型+主词", "词数": 586, "花费": 672.52, "销售额": 6345.63, "订单": 63, "点击": 1036, "曝光": 23172, "销量": 63, "ACOS": 10.6, "CTR": 4.47, "CVR": 6.08, "CPC": 0.65, "CPA": 10.67, "ROAS": 9.44, "AOV": 100.72, "花费占比": 7.9, "销售占比": 6.8}, {"词类型": "车型词(无品类词)", "词数": 595, "花费": 462.81, "销售额": 3011.21, "订单": 32, "点击": 805, "曝光": 8249, "销量": 32, "ACOS": 15.37, "CTR": 9.76, "CVR": 3.98, "CPC": 0.57, "CPA": 14.46, "ROAS": 6.51, "AOV": 94.1, "花费占比": 5.5, "销售占比": 3.2}, {"词类型": "年份+主词", "词数": 90, "花费": 87.49, "销售额": 1190.92, "订单": 7, "点击": 119, "曝光": 282, "销量": 8, "ACOS": 7.35, "CTR": 42.2, "CVR": 5.88, "CPC": 0.74, "CPA": 12.5, "ROAS": 13.61, "AOV": 170.13, "花费占比": 1.0, "销售占比": 1.3}, {"词类型": "非品类词", "词数": 47, "花费": 48.34, "销售额": 935.32, "订单": 7, "点击": 100, "曝光": 1210, "销量": 7, "ACOS": 5.17, "CTR": 8.26, "CVR": 7.0, "CPC": 0.48, "CPA": 6.91, "ROAS": 19.35, "AOV": 133.62, "花费占比": 0.6, "销售占比": 1.0}], "types": [{"广告类型": "自动", "词数": 3938, "花费": 5163.42, "销售额": 61281.23, "订单": 509, "点击": 8107, "曝光": 110996, "销量": 514, "ACOS": 8.43, "CTR": 7.3, "CVR": 6.28, "CPC": 0.64, "CPA": 10.14, "ROAS": 11.87, "AOV": 120.4, "花费占比": 60.9, "销售占比": 65.5}, {"广告类型": "手动", "词数": 1392, "花费": 2936.64, "销售额": 26046.55, "订单": 232, "点击": 3553, "曝光": 131722, "销量": 232, "ACOS": 11.27, "CTR": 2.7, "CVR": 6.53, "CPC": 0.83, "CPA": 12.66, "ROAS": 8.87, "AOV": 112.27, "花费占比": 34.6, "销售占比": 27.8}, {"广告类型": "其他", "词数": 544, "花费": 382.12, "销售额": 6227.55, "订单": 59, "点击": 817, "曝光": 5835, "销量": 59, "ACOS": 6.14, "CTR": 14.0, "CVR": 7.22, "CPC": 0.47, "CPA": 6.48, "ROAS": 16.3, "AOV": 105.55, "花费占比": 4.5, "销售占比": 6.7}], "combo": [{"广告类型": "自动", "词类型": "年份+车型+主词", "词数": 2875, "花费": 3787.81, "销售额": 48409.05, "订单": 385, "点击": 5782, "曝光": 61488, "销量": 386, "ACOS": 7.82, "CTR": 9.4, "CVR": 6.66, "CPC": 0.66, "CPA": 9.84, "ROAS": 12.78, "AOV": 125.74, "花费占比": 46.8, "销售占比": 55.4}, {"广告类型": "手动", "词类型": "年份+车型+主词", "词数": 1057, "花费": 2376.68, "销售额": 22516.27, "订单": 203, "点击": 2767, "曝光": 91358, "销量": 203, "ACOS": 10.56, "CTR": 3.03, "CVR": 7.34, "CPC": 0.86, "CPA": 11.71, "ROAS": 9.47, "AOV": 110.92, "花费占比": 29.3, "销售占比": 25.8}, {"广告类型": "自动", "词类型": "纯主词", "词数": 116, "花费": 539.27, "销售额": 4776.3, "订单": 47, "点击": 913, "曝光": 26494, "销量": 50, "ACOS": 11.29, "CTR": 3.45, "CVR": 5.15, "CPC": 0.59, "CPA": 11.47, "ROAS": 8.86, "AOV": 101.62, "花费占比": 6.7, "销售占比": 5.5}, {"广告类型": "自动", "词类型": "车型词(无品类词)", "词数": 479, "花费": 376.05, "销售额": 2415.0, "订单": 26, "点击": 644, "曝光": 6109, "销量": 26, "ACOS": 15.57, "CTR": 10.54, "CVR": 4.04, "CPC": 0.58, "CPA": 14.46, "ROAS": 6.42, "AOV": 92.88, "花费占比": 4.6, "销售占比": 2.8}, {"广告类型": "自动", "词类型": "车型+主词", "词数": 371, "花费": 359.75, "销售额": 3739.63, "订单": 38, "点击": 612, "曝光": 16459, "销量": 38, "ACOS": 9.62, "CTR": 3.72, "CVR": 6.21, "CPC": 0.59, "CPA": 9.47, "ROAS": 10.4, "AOV": 98.41, "花费占比": 4.4, "销售占比": 4.3}, {"广告类型": "手动", "词类型": "车型+主词", "词数": 197, "花费": 272.91, "销售额": 2047.3899999999999, "订单": 19, "点击": 331, "曝光": 5598, "销量": 19, "ACOS": 13.33, "CTR": 5.91, "CVR": 5.74, "CPC": 0.82, "CPA": 14.36, "ROAS": 7.5, "AOV": 107.76, "花费占比": 3.4, "销售占比": 2.3}, {"广告类型": "手动", "词类型": "纯主词", "词数": 91, "花费": 235.68, "销售额": 1394.9, "订单": 9, "点击": 379, "曝光": 31969, "销量": 9, "ACOS": 16.9, "CTR": 1.19, "CVR": 2.37, "CPC": 0.62, "CPA": 26.19, "ROAS": 5.92, "AOV": 154.99, "花费占比": 2.9, "销售占比": 1.6}, {"广告类型": "自动", "词类型": "年份+主词", "词数": 57, "花费": 64.45, "销售额": 1190.92, "订单": 7, "点击": 82, "曝光": 176, "销量": 8, "ACOS": 5.41, "CTR": 46.59, "CVR": 8.54, "CPC": 0.79, "CPA": 9.21, "ROAS": 18.48, "AOV": 170.13, "花费占比": 0.8, "销售占比": 1.4}, {"广告类型": "自动", "词类型": "非品类词", "词数": 40, "花费": 36.09, "销售额": 750.33, "订单": 6, "点击": 74, "曝光": 270, "销量": 6, "ACOS": 4.81, "CTR": 27.41, "CVR": 8.11, "CPC": 0.49, "CPA": 6.02, "ROAS": 20.79, "AOV": 125.06, "花费占比": 0.4, "销售占比": 0.9}], "cpc": [{"CPC_bin": "<$0.3", "词数": 600, "花费": 146.17000000000002, "销售额": 4400.5199999999995, "订单": 43, "点击": 805, "ACOS": 3.32, "CVR": 5.34, "CPA": 3.4, "CPC实际": 0.18}, {"CPC_bin": "$0.3-0.5", "词数": 1383, "花费": 1056.68, "销售额": 15619.76, "订单": 149, "点击": 2419, "ACOS": 6.77, "CVR": 6.16, "CPA": 7.09, "CPC实际": 0.44}, {"CPC_bin": "$0.5-0.7", "词数": 2061, "花费": 2410.49, "销售额": 28234.829999999998, "订单": 271, "点击": 4058, "ACOS": 8.54, "CVR": 6.68, "CPA": 8.89, "CPC实际": 0.59}, {"CPC_bin": "$0.7-1.0", "词数": 1414, "花费": 3062.17, "销售额": 31424.79, "订单": 243, "点击": 3688, "ACOS": 9.74, "CVR": 6.59, "CPA": 12.6, "CPC实际": 0.83}, {"CPC_bin": "$1.0-1.5", "词数": 655, "花费": 1586.33, "销售额": 12480.53, "订单": 84, "点击": 1380, "ACOS": 12.71, "CVR": 6.09, "CPA": 18.88, "CPC实际": 1.15}, {"CPC_bin": "$1.5-2.0", "词数": 82, "花费": 161.81, "销售额": 399.98, "订单": 2, "点击": 98, "ACOS": 40.45, "CVR": 2.04, "CPA": 80.9, "CPC实际": 1.65}, {"CPC_bin": ">$2.0", "词数": 26, "花费": 58.53, "销售额": 199.99, "订单": 1, "点击": 26, "ACOS": 29.27, "CVR": 3.85, "CPA": 58.53, "CPC实际": 2.25}], "len": [{"词长": 1, "词数": 26, "花费": 107.49, "销售额": 1257.38, "订单": 13, "点击": 185, "曝光": 3027, "ACOS": 8.55, "CVR": 7.03, "CPC": 0.58, "CPA": 8.27}, {"词长": 2, "词数": 128, "花费": 645.89, "销售额": 6221.74, "订单": 56, "点击": 1147, "曝光": 57360, "ACOS": 10.38, "CVR": 4.88, "CPC": 0.56, "CPA": 11.53}, {"词长": 3, "词数": 647, "花费": 1291.72, "销售额": 12513.56, "订单": 115, "点击": 1945, "曝光": 28625, "ACOS": 10.32, "CVR": 5.91, "CPC": 0.66, "CPA": 11.23}, {"词长": 4, "词数": 1310, "花费": 2980.69, "销售额": 31327.48, "订单": 283, "点击": 4117, "曝光": 107382, "ACOS": 9.51, "CVR": 6.87, "CPC": 0.72, "CPA": 10.53}, {"词长": 5, "词数": 1456, "花费": 1840.33, "销售额": 18956.37, "订单": 166, "点击": 2736, "曝光": 44705, "ACOS": 9.71, "CVR": 6.07, "CPC": 0.67, "CPA": 11.09}, {"词长": 6, "词数": 996, "花费": 929.04, "销售额": 11803.7, "订单": 82, "点击": 1321, "曝光": 5304, "ACOS": 7.87, "CVR": 6.21, "CPC": 0.7, "CPA": 11.33}, {"词长": 7, "词数": 496, "花费": 375.63, "销售额": 6773.13, "订单": 47, "点击": 550, "曝光": 1251, "ACOS": 5.55, "CVR": 8.55, "CPC": 0.68, "CPA": 7.99}, {"词长": 8, "词数": 218, "花费": 164.1, "销售额": 2320.05, "订单": 20, "点击": 243, "曝光": 533, "ACOS": 7.07, "CVR": 8.23, "CPC": 0.68, "CPA": 8.2}, {"词长": 9, "词数": 89, "花费": 63.62, "销售额": 1011.6500000000001, "订单": 7, "点击": 96, "曝光": 163, "ACOS": 6.29, "CVR": 7.29, "CPC": 0.66, "CPA": 9.09}, {"词长": 10, "词数": 53, "花费": 29.11, "销售额": 645.85, "订单": 5, "点击": 54, "曝光": 65, "ACOS": 4.51, "CVR": 9.26, "CPC": 0.54, "CPA": 5.82}, {"词长": 11, "词数": 22, "花费": 15.65, "销售额": 384.37, "订单": 2, "点击": 22, "曝光": 33, "ACOS": 4.07, "CVR": 9.09, "CPC": 0.71, "CPA": 7.82}, {"词长": 12, "词数": 13, "花费": 10.41, "销售额": 0.0, "订单": 0, "点击": 14, "曝光": 19, "ACOS": NaN, "CVR": 0.0, "CPC": 0.74, "CPA": NaN}, {"词长": 13, "词数": 13, "花费": 11.66, "销售额": 189.98, "订单": 2, "点击": 17, "曝光": 33, "ACOS": 6.14, "CVR": 11.76, "CPC": 0.69, "CPA": 5.83}, {"词长": 14, "词数": 4, "花费": 2.84, "销售额": 0.0, "订单": 0, "点击": 4, "曝光": 5, "ACOS": NaN, "CVR": 0.0, "CPC": 0.71, "CPA": NaN}, {"词长": 15, "词数": 7, "花费": 4.32, "销售额": 0.0, "订单": 0, "点击": 9, "曝光": 23, "ACOS": NaN, "CVR": 0.0, "CPC": 0.48, "CPA": NaN}, {"词长": 16, "词数": 3, "花费": 1.6600000000000001, "销售额": 0.0, "订单": 0, "点击": 3, "曝光": 8, "ACOS": NaN, "CVR": 0.0, "CPC": 0.55, "CPA": NaN}, {"词长": 17, "词数": 2, "花费": 1.33, "销售额": 0.0, "订单": 0, "点击": 2, "曝光": 3, "ACOS": NaN, "CVR": 0.0, "CPC": 0.66, "CPA": NaN}, {"词长": 21, "词数": 1, "花费": 0.78, "销售额": 70.65, "订单": 1, "点击": 1, "曝光": 1, "ACOS": 1.1, "CVR": 100.0, "CPC": 0.78, "CPA": 0.78}, {"词长": 22, "词数": 1, "花费": 0.77, "销售额": 79.42, "订单": 1, "点击": 1, "曝光": 1, "ACOS": 0.97, "CVR": 100.0, "CPC": 0.77, "CPA": 0.77}, {"词长": 23, "词数": 1, "花费": 0.15, "销售额": 0.0, "订单": 0, "点击": 1, "曝光": 1, "ACOS": NaN, "CVR": 0.0, "CPC": 0.15, "CPA": NaN}, {"词长": 24, "词数": 3, "花费": 1.86, "销售额": 0.0, "订单": 0, "点击": 3, "曝光": 3, "ACOS": NaN, "CVR": 0.0, "CPC": 0.62, "CPA": NaN}, {"词长": 26, "词数": 1, "花费": 0.84, "销售额": 0.0, "订单": 0, "点击": 1, "曝光": 1, "ACOS": NaN, "CVR": 0.0, "CPC": 0.84, "CPA": NaN}, {"词长": 27, "词数": 1, "花费": 0.69, "销售额": 0.0, "订单": 0, "点击": 1, "曝光": 1, "ACOS": NaN, "CVR": 0.0, "CPC": 0.69, "CPA": NaN}, {"词长": 28, "词数": 2, "花费": 0.71, "销售额": 0.0, "订单": 0, "点击": 2, "曝光": 4, "ACOS": NaN, "CVR": 0.0, "CPC": 0.36, "CPA": NaN}, {"词长": 30, "词数": 2, "花费": 0.8899999999999999, "销售额": 0.0, "订单": 0, "点击": 2, "曝光": 2, "ACOS": NaN, "CVR": 0.0, "CPC": 0.44, "CPA": NaN}], "pos": [{"pos": "搜索结果的其余位置", "acts": 1805, "imp": 1507866.0, "clk": 17671.0, "cost": 9527.58, "sales": 96741.17, "orders": 887, "ctr": 1.17, "cvr": 5.02, "cpc": 0.54, "roas": 10.15, "acos": 9.85, "cost_pct": 43.8, "sales_pct": 45.8}, {"pos": "商品页面", "acts": 1656, "imp": 2757832.0, "clk": 12936.0, "cost": 6450.2, "sales": 49058.25, "orders": 455, "ctr": 0.47, "cvr": 3.52, "cpc": 0.5, "roas": 7.61, "acos": 13.15, "cost_pct": 29.6, "sales_pct": 23.2}, {"pos": "搜索结果顶部(首页)", "acts": 950, "imp": 92181.0, "clk": 6561.0, "cost": 5783.55, "sales": 65347.49, "orders": 539, "ctr": 7.12, "cvr": 8.22, "cpc": 0.88, "roas": 11.3, "acos": 8.85, "cost_pct": 26.6, "sales_pct": 30.9}, {"pos": "OFF AMAZON", "acts": 37, "imp": 885.0, "clk": 7.0, "cost": 1.4, "sales": 0.0, "orders": 0, "ctr": 0.79, "cvr": 0.0, "cpc": 0.2, "roas": 0.0, "acos": 0, "cost_pct": 0.0, "sales_pct": 0.0}], "adj": [{"pos": "搜索结果顶部(首页)", "adj": "75%", "cost": 1830.32, "sales": 23761.39, "orders": 213, "acos": 7.7, "ctr": 6.94, "cvr": 11.14}, {"pos": "搜索结果顶部(首页)", "adj": "35%", "cost": 1691.32, "sales": 17646.96, "orders": 105, "acos": 9.58, "ctr": 9.69, "cvr": 5.99}, {"pos": "商品页面", "adj": "0%", "cost": 1685.26, "sales": 11967.21, "orders": 99, "acos": 14.08, "ctr": 0.56, "cvr": 2.97}, {"pos": "搜索结果的其余位置", "adj": "40%", "cost": 1535.61, "sales": 13170.03, "orders": 120, "acos": 11.66, "ctr": 1.34, "cvr": 4.05}, {"pos": "商品页面", "adj": "15%", "cost": 1417.35, "sales": 6814.99, "orders": 65, "acos": 20.8, "ctr": 0.54, "cvr": 2.5}, {"pos": "搜索结果的其余位置", "adj": "0%", "cost": 1284.53, "sales": 13350.77, "orders": 143, "acos": 9.62, "ctr": 1.0, "cvr": 5.54}, {"pos": "搜索结果的其余位置", "adj": "85%", "cost": 979.63, "sales": 10519.08, "orders": 94, "acos": 9.31, "ctr": 0.94, "cvr": 8.7}, {"pos": "商品页面", "adj": "10%", "cost": 830.68, "sales": 7378.46, "orders": 64, "acos": 11.26, "ctr": 0.54, "cvr": 4.66}, {"pos": "搜索结果的其余位置", "adj": "55%", "cost": 784.49, "sales": 8301.79, "orders": 52, "acos": 9.45, "ctr": 1.28, "cvr": 4.3}, {"pos": "搜索结果顶部(首页)", "adj": "40%", "cost": 503.73, "sales": 5911.89, "orders": 53, "acos": 8.52, "ctr": 8.61, "cvr": 11.0}, {"pos": "搜索结果的其余位置", "adj": "95%", "cost": 438.56, "sales": 6032.75, "orders": 63, "acos": 7.27, "ctr": 1.16, "cvr": 8.16}, {"pos": "商品页面", "adj": "77%", "cost": 405.68, "sales": 4462.89, "orders": 51, "acos": 9.09, "ctr": 0.5, "cvr": 7.07}, {"pos": "商品页面", "adj": "5%", "cost": 362.63, "sales": 2958.91, "orders": 30, "acos": 12.26, "ctr": 0.46, "cvr": 5.18}, {"pos": "搜索结果的其余位置", "adj": "20%", "cost": 353.77, "sales": 4839.86, "orders": 45, "acos": 7.31, "ctr": 1.04, "cvr": 7.79}, {"pos": "搜索结果的其余位置", "adj": "45%", "cost": 349.68, "sales": 3622.27, "orders": 37, "acos": 9.65, "ctr": 1.02, "cvr": 4.37}, {"pos": "搜索结果顶部(首页)", "adj": "0%", "cost": 349.28, "sales": 1576.32, "orders": 18, "acos": 22.16, "ctr": 8.53, "cvr": 5.26}, {"pos": "搜索结果的其余位置", "adj": "10%", "cost": 314.39, "sales": 2725.56, "orders": 28, "acos": 11.53, "ctr": 1.45, "cvr": 5.83}, {"pos": "搜索结果的其余位置", "adj": "35%", "cost": 251.52, "sales": 3368.92, "orders": 25, "acos": 7.47, "ctr": 1.36, "cvr": 5.71}, {"pos": "搜索结果顶部(首页)", "adj": "120%", "cost": 174.09, "sales": 2236.84, "orders": 19, "acos": 7.78, "ctr": 5.19, "cvr": 8.05}, {"pos": "搜索结果的其余位置", "adj": "15%", "cost": 173.59, "sales": 1396.65, "orders": 13, "acos": 12.43, "ctr": 1.44, "cvr": 6.02}]};
+function base(){return {tooltip:{trigger:'axis'},legend:{top:4,textStyle:{fontSize:11}},grid:{left:84,right:70,top:46,bottom:66}};}
+(function(){var el=echarts.init(document.getElementById('c1'));
+var w=D.words;
+el.setOption(Object.assign(base(),{grid:{left:150,right:90,top:46,bottom:60},
+legend:{top:2,textStyle:{fontSize:11}},
+xAxis:[{type:'value',name:'占比(%)'},{type:'value',name:'ACOS(%)'}],
+yAxis:{type:'category',data:w.map(function(x){return x['词类型'];}).reverse(),axisLabel:{fontSize:10.5}},
+series:[
+{name:'花费占比',type:'bar',data:w.slice().reverse().map(function(x){return x['花费占比'];}),itemStyle:{color:'#9DB8CE'},barWidth:'34%',
+ label:{show:true,position:'right',fontSize:9,formatter:'{c}%'}},
+{name:'ACOS',type:'bar',xAxisIndex:1,data:w.slice().reverse().map(function(x){
+ return {value:x['ACOS'],itemStyle:{color:x['ACOS']<9?'#2A9D48':(x['ACOS']>12?'#C0392B':'#E67E22')}};}),barWidth:'34%',
+ label:{show:true,position:'right',fontSize:9,formatter:'{c}%'}}]}));})();
+(function(){var el=echarts.init(document.getElementById('c2'));
+var ks=['自动','手动'];
+el.setOption(Object.assign(base(),{grid:{left:80,right:70,top:46,bottom:60},
+xAxis:{type:'category',data:ks.map(function(k){return k+'广告';})},
+yAxis:[{type:'value',name:'ACOS / CVR(%)'},{type:'value',name:'CTR(%)'}],
+series:[
+{name:'ACOS',type:'bar',data:ks.map(function(k){return D.types.find(function(x){return x['广告类型']===k;}).ACOS;}),
+ itemStyle:{color:'#C0392B'},barWidth:'22%',label:{show:true,position:'top',fontSize:10,formatter:'{c}%'}},
+{name:'CVR',type:'bar',data:ks.map(function(k){return D.types.find(function(x){return x['广告类型']===k;}).CVR;}),
+ itemStyle:{color:'#2A9D48'},barWidth:'22%',label:{show:true,position:'top',fontSize:10,formatter:'{c}%'}},
+{name:'CTR',type:'line',yAxisIndex:1,data:ks.map(function(k){return D.types.find(function(x){return x['广告类型']===k;}).CTR;}),
+ itemStyle:{color:'#328CC1'},lineStyle:{width:3},symbolSize:10,label:{show:true,fontSize:10,formatter:'{c}%'}}]}));})();
+(function(){var el=echarts.init(document.getElementById('c3'));
+var ks=['自动','手动'];
+el.setOption(Object.assign(base(),{grid:{left:80,right:70,top:46,bottom:60},
+xAxis:{type:'category',data:ks.map(function(k){return k+'广告';})},
+yAxis:[{type:'value',name:'CPC($)'},{type:'value',name:'CPA($)'}],
+series:[
+{name:'CPC',type:'bar',data:ks.map(function(k){return D.types.find(function(x){return x['广告类型']===k;}).CPC;}),
+ itemStyle:{color:'#E67E22'},barWidth:'26%',label:{show:true,position:'top',fontSize:10,formatter:'${c}'}},
+{name:'CPA',type:'line',yAxisIndex:1,data:ks.map(function(k){return D.types.find(function(x){return x['广告类型']===k;}).CPA;}),
+ itemStyle:{color:'#0B3C5D'},lineStyle:{width:3},symbolSize:10,label:{show:true,fontSize:10,formatter:'${c}'}}]}));})();
+(function(){var el=echarts.init(document.getElementById('c4'));
+var c=D.combo.filter(function(x){return x['花费']>30;});
+var tps=[];c.forEach(function(x){if(tps.indexOf(x['词类型'])<0)tps.push(x['词类型']);});
+var ads=[];c.forEach(function(x){if(ads.indexOf(x['广告类型'])<0)ads.push(x['广告类型']);});
+var series=ads.map(function(a){
+ return {name:a,type:'bar',data:tps.map(function(t){
+  var f=c.filter(function(x){return x['广告类型']===a&&x['词类型']===t;});
+  return f.length?f[0].ACOS:null;}),
+  label:{show:true,position:'top',fontSize:9,formatter:function(p){return p.value?p.value+'%':'';}},barWidth:'26%'};});
+el.setOption(Object.assign(base(),{grid:{left:84,right:60,top:46,bottom:76},
+xAxis:{type:'category',data:tps,axisLabel:{fontSize:9.5,rotate:18,interval:0}},
+yAxis:{type:'value',name:'ACOS(%)'},
+series:series.concat([{name:'平衡线',type:'line',data:tps.map(function(){return 17.7;}),
+ lineStyle:{type:'dashed',color:'#C0392B',width:2},symbol:'none'}])}));})();
+(function(){var el=echarts.init(document.getElementById('c5'));
+var c=D.cpc;
+el.setOption(Object.assign(base(),{grid:{left:84,right:80,top:46,bottom:66},
+xAxis:{type:'category',data:c.map(function(x){return String(x['CPC_bin']);}),axisLabel:{fontSize:10}},
+yAxis:[{type:'value',name:'ACOS(%)'},{type:'value',name:'CPA($)'}],
+series:[
+{name:'ACOS',type:'line',data:c.map(function(x){return x['ACOS'];}),itemStyle:{color:'#C0392B'},
+ lineStyle:{width:3},symbolSize:10,label:{show:true,fontSize:10,formatter:'{c}%'},
+ markArea:{silent:true,itemStyle:{color:'rgba(42,157,72,.12)'},
+  data:[[{xAxis:2},{xAxis:3}]]}},
+{name:'CPA',type:'line',yAxisIndex:1,data:c.map(function(x){return x['CPA'];}),itemStyle:{color:'#0B3C5D'},
+ lineStyle:{width:2.5,type:'dashed'},symbolSize:8}]}));})();
+(function(){var el=echarts.init(document.getElementById('c6'));
+var p=D.pos.filter(function(x){return x.cost>1;});
+el.setOption(Object.assign(base(),{grid:{left:84,right:80,top:46,bottom:76},
+legend:{top:2,textStyle:{fontSize:10}},
+xAxis:{type:'category',data:p.map(function(x){return x.pos.replace('搜索结果','搜索');}),axisLabel:{fontSize:10,rotate:14,interval:0}},
+yAxis:[{type:'value',name:'ACOS(%)'},{type:'value',name:'CTR / CVR(%)'}],
+series:[
+{name:'ACOS',type:'bar',data:p.map(function(x){return {value:x.acos,itemStyle:{color:x.acos<9.5?'#2A9D48':(x.acos>12?'#C0392B':'#E67E22')}};}),
+ barWidth:'22%',label:{show:true,position:'top',fontSize:10,formatter:'{c}%'}},
+{name:'CTR',type:'line',yAxisIndex:1,data:p.map(function(x){return x.ctr;}),itemStyle:{color:'#328CC1'},
+ lineStyle:{width:3},symbolSize:9,label:{show:true,fontSize:10,formatter:'{c}%'}},
+{name:'CVR',type:'line',yAxisIndex:1,data:p.map(function(x){return x.cvr;}),itemStyle:{color:'#2A9D48'},
+ lineStyle:{width:3,type:'dashed'},symbolSize:9,label:{show:true,fontSize:10,formatter:'{c}%'}}]}));})();
+(function(){var el=echarts.init(document.getElementById('c7'));
+var l=D.len.filter(function(x){return x['花费']>20;});
+el.setOption(Object.assign(base(),{grid:{left:84,right:80,top:46,bottom:66},
+xAxis:{type:'category',data:l.map(function(x){return x['词长']+' 词';}),axisLabel:{fontSize:10}},
+yAxis:[{type:'value',name:'ACOS(%)'},{type:'value',name:'CVR(%)'}],
+series:[
+{name:'ACOS',type:'line',data:l.map(function(x){return x['ACOS'];}),itemStyle:{color:'#C0392B'},
+ lineStyle:{width:3},symbolSize:9,label:{show:true,fontSize:9,formatter:'{c}%'}},
+{name:'CVR',type:'line',yAxisIndex:1,data:l.map(function(x){return x['CVR'];}),itemStyle:{color:'#2A9D48'},
+ lineStyle:{width:3},symbolSize:9,label:{show:true,fontSize:9,formatter:'{c}%'}}]}));})();
+document.querySelectorAll('table').forEach(function(tb){
+  tb.querySelectorAll('th').forEach(function(th,ci){
+    th.addEventListener('click',function(){
+      var tbody=tb.querySelector('tbody'); var rows=Array.from(tbody.querySelectorAll('tr'));
+      var asc = th.dataset.asc !== '1';
+      rows.sort(function(a,b){
+        var x=a.children[ci]?a.children[ci].innerText.replace(/[^0-9.\-]/g,''):'';
+        var y=b.children[ci]?b.children[ci].innerText.replace(/[^0-9.\-]/g,''):'';
+        if(x!==''&&y!==''&&!isNaN(x)&&!isNaN(y)) return asc?x-y:y-x;
+        var sa=a.children[ci]?a.children[ci].innerText:'', sb=b.children[ci]?b.children[ci].innerText:'';
+        return asc?sa.localeCompare(sb):sb.localeCompare(sa);
+      });
+      rows.forEach(function(r){tbody.appendChild(r);});
+      th.dataset.asc = asc?'1':'0';
+    });
+  });
+});
+window.addEventListener('resize',function(){['c1','c2','c3','c4','c5','c6','c7'].forEach(function(i){var e=echarts.getInstanceByDom(document.getElementById(i));if(e)e.resize();});});
+</script>
+
+<script>
+/* ==== 增强器注入脚本 (enhance_panel.py) ==== */
+(function(){
+  // 1) 图表工具箱: 保存图片 / 数据视图 / 还原
+  function injectToolbox(){
+    var n = 0;
+    document.querySelectorAll('.chart').forEach(function(el){
+      if (typeof echarts === 'undefined') return;
+      var inst = echarts.getInstanceByDom(el);
+      if (!inst) return;
+      var op = inst.getOption();
+      var tb = op.toolbox;
+      if (tb && (Array.isArray(tb) ? tb.length : true) && op.__enh) return;
+      try {
+        inst.setOption({
+          toolbox: {
+            show: true, right: 6, top: 0, itemSize: 13, itemGap: 8,
+            iconStyle: { borderColor: '#2E86AB', borderWidth: 1.4 },
+            emphasis: { iconStyle: { borderColor: '#1F4E78' } },
+            feature: {
+              saveAsImage: { title: '保存图片', name: (el.id || 'chart'), backgroundColor: '#fff', pixelRatio: 2,
+                             lang: ['保存为图片'] },
+              dataView: { title: '数据表', readOnly: true, lang: ['数据视图', '关闭', '刷新'] },
+              restore: { title: '还原', lang: ['还原'] }
+            }
+          },
+          __enh: true
+        });
+        n++;
+      } catch(e) {}
+    });
+    return n;
+  }
+
+  // 2) 表格: 搜索 + 行数 + 折叠(Top12)
+  function enhanceTables(){
+    document.querySelectorAll('table').forEach(function(t){
+      if (t.closest('.tbl-wrap')) return;
+      var tbody = t.querySelector('tbody');
+      if (!tbody) return;
+      var rows = tbody.querySelectorAll('tr');
+      if (rows.length < 8) return;
+
+      var parent = t.parentNode;
+      var wrap = document.createElement('div');
+      wrap.className = 'tbl-wrap';
+      parent.insertBefore(wrap, t);
+      wrap.appendChild(t);
+
+      var tools = document.createElement('div');
+      tools.className = 'tbl-tools';
+      tools.innerHTML = '<input type="text" placeholder="搜索 ' + rows.length + ' 行(输入 ASIN / SKU / 关键词)">'
+        + '<span class="cnt"></span>'
+        + ((rows.length > 12 && !t.hasAttribute('data-nofold')) ? '<button class="btn-mini" type="button">展开全部</button>' : '');
+      wrap.insertBefore(tools, t);
+
+      var input = tools.querySelector('input');
+      var cnt = tools.querySelector('.cnt');
+      var btn = tools.querySelector('.btn-mini');
+
+      function setCnt(shown){
+        cnt.textContent = '显示 ' + shown + ' / ' + rows.length + ' 行';
+      }
+      setCnt(rows.length);
+      if (rows.length > 12 && btn && !t.hasAttribute('data-nofold')) {
+        wrap.classList.add('collapsed');
+        btn.textContent = '展开全部(' + rows.length + ' 行)';
+        setCnt(Math.min(12, rows.length));
+        btn.onclick = function(){
+          wrap.classList.toggle('collapsed');
+          var c = wrap.classList.contains('collapsed');
+          btn.textContent = c ? ('展开全部(' + rows.length + ' 行)') : '收起';
+          setCnt(c ? Math.min(12, rows.length) : rows.length);
+        };
+      }
+
+      input.addEventListener('input', function(){
+        var q = this.value.trim().toLowerCase();
+        var shown = 0;
+        rows.forEach(function(tr){
+          var hit = !q || tr.textContent.toLowerCase().indexOf(q) >= 0;
+          tr.style.display = hit ? '' : 'none';
+          if (hit) shown++;
+        });
+        setCnt(shown);
+        if (q) wrap.classList.remove('collapsed');
+      });
+    });
+  }
+
+  // 3) 锚点导航(基于 sec-title / chapter 自动生成)
+  function buildNav(){
+    var heads = document.querySelectorAll('.sec-title, .chapter');
+    if (heads.length < 3) return;
+    var nav = document.createElement('nav');
+    nav.className = 'topnav';
+    heads.forEach(function(h, i){
+      var txt = (h.textContent || '').replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu, '').trim();
+      if (!txt) return;
+      if (!h.id) h.id = 'sec-' + (i + 1);
+      var a = document.createElement('a');
+      a.href = '#' + h.id;
+      a.textContent = txt.length > 22 ? txt.slice(0, 22) + '…' : txt;
+      nav.appendChild(a);
+    });
+    var anchor = document.querySelector('.header') || document.body.firstChild;
+    anchor.parentNode.insertBefore(nav, anchor.nextSibling);
+
+    // 平滑滚动 + 高亮
+    nav.addEventListener('click', function(e){
+      var a = e.target.closest('a');
+      if (!a) return;
+      e.preventDefault();
+      var t = document.getElementById(a.getAttribute('href').slice(1));
+      if (t) { window.scrollTo({ top: t.getBoundingClientRect().top + window.pageYOffset - 70, behavior: 'smooth' }); }
+      nav.querySelectorAll('a').forEach(function(x){ x.classList.remove('active'); });
+      a.classList.add('active');
+    });
+    // 滚动高亮
+    var obs = new IntersectionObserver(function(es){
+      es.forEach(function(en){
+        if (en.isIntersecting) {
+          nav.querySelectorAll('a').forEach(function(x){
+            x.classList.toggle('active', x.getAttribute('href') === '#' + en.target.id);
+          });
+        }
+      });
+    }, { rootMargin: '-80px 0px -70% 0px' });
+    heads.forEach(function(h){ if (h.id) obs.observe(h); });
+  }
+
+  // 4) 回到顶部
+  function addToTop(){
+    var b = document.createElement('button');
+    b.id = 'toTop'; b.innerHTML = '&#8593;'; b.title = '回到顶部';
+    b.onclick = function(){ window.scrollTo({ top: 0, behavior: 'smooth' }); };
+    document.body.appendChild(b);
+    window.addEventListener('scroll', function(){
+      b.classList.toggle('show', window.pageYOffset > 500);
+    });
+  }
+
+  function run(){
+    var n = injectToolbox();
+    enhanceTables();
+    buildNav();
+    addToTop();
+    console.log('[enhance] toolbox charts=' + n);
+  }
+  if (document.readyState === 'complete') setTimeout(run, 900);
+  else window.addEventListener('load', function(){ setTimeout(run, 900); });
+})();
+</script>
+<!--__enhanced_v1__-->
+
+<script>
+/* ==== 下拉筛选 (enhance v4: 仅分类列) ==== */
+(function(){
+  var KW = ['状态','类型','等级','预警','分类','店铺','品牌','标签','阶段','是否','渠道','系列','品线','动销'];
+  function build(){
+    var total = 0, tables = 0;
+    document.querySelectorAll('.tbl-wrap table').forEach(function(t){
+      var wrap = t.closest('.tbl-wrap');
+      var tools = wrap && wrap.querySelector('.tbl-tools');
+      if (!tools || tools.querySelector('select.flt')) return;
+      var ths = Array.prototype.slice.call(t.querySelectorAll('thead th'));
+      var rows = Array.prototype.slice.call(t.querySelectorAll('tbody tr'));
+      if (rows.length < 6 || ths.length < 2) return;
+
+      var cands = [], kwCands = [];
+      ths.forEach(function(th, ci){
+        var name = (th.textContent || '').trim();
+        var vals = {}, editable = 0;
+        rows.forEach(function(r){
+          var c = r.children[ci];
+          if (!c) return;
+          if (c.querySelector('input, select, textarea')) editable++;
+          var v = (c.textContent || '').trim();
+          if (v && v.length <= 24) vals[v] = (vals[v] || 0) + 1;
+        });
+        if (editable > rows.length * 0.4) return;                 // 可编辑列 → 跳过
+        var keys = Object.keys(vals);
+        if (keys.length < 2 || keys.length > 12) return;
+        if (rows.length / keys.length < 1.5) return;              // 近似唯一值 → ID 列
+        if (keys.every(function(v){ return /^[\d,.\-+¥$%\s()]+$/.test(v); })) return;  // 纯数值列 → 跳过
+        var item = { ci: ci, name: name.slice(0, 10), vals: keys.sort() };
+        if (KW.some(function(k){ return name.indexOf(k) >= 0; })) kwCands.push(item);
+        else cands.push(item);
+      });
+
+      var picks = kwCands.length ? kwCands : cands;               // 有关键词列就只用它们
+      if (!picks.length) return;
+      picks = picks.slice(0, 2);                                  // 每表最多 2 个
+
+      var input = tools.querySelector('input');
+      var cnt = tools.querySelector('.cnt');
+      picks.forEach(function(p){
+        var sel = document.createElement('select');
+        sel.className = 'flt';
+        sel.setAttribute('data-ci', p.ci);
+        var html = '<option value="">' + p.name + ': 全部(' + p.vals.length + ')</option>';
+        p.vals.forEach(function(v){ html += '<option value="' + v.replace(/"/g, '&quot;') + '">' + v + '</option>'; });
+        sel.innerHTML = html;
+        tools.appendChild(sel);
+        total++;
+      });
+      tables++;
+
+      var sels = Array.prototype.slice.call(tools.querySelectorAll('select.flt'));
+      function apply(){
+        var active = false;
+        rows.forEach(function(r){
+          var show = true;
+          sels.forEach(function(s){
+            if (s.value) {
+              active = true;
+              var c = r.children[+s.getAttribute('data-ci')];
+              if (!c || (c.textContent || '').trim() !== s.value) show = false;
+            }
+          });
+          r.style.display = show ? '' : 'none';
+        });
+        sels.forEach(function(s){ s.classList.toggle('on', !!s.value); });
+        if (cnt) {
+          var shown = rows.filter(function(r){ return r.style.display !== 'none'; }).length;
+          cnt.textContent = '显示 ' + shown + ' / ' + rows.length + ' 行' + (active ? ' (已筛选)' : '');
+        }
+        if (active) wrap.classList.remove('collapsed');
+      }
+      sels.forEach(function(s){
+        s.addEventListener('change', function(){
+          if (input && input.value) { input.value = ''; input.dispatchEvent(new Event('input')); }
+          apply();
+        });
+      });
+      if (input) input.addEventListener('input', function(){
+        if (this.value) sels.forEach(function(s){ s.value = ''; s.classList.remove('on'); });
+      });
+      apply();
+    });
+    console.log('[enhance v4] 筛选器 ' + total + ' 个 / 覆盖 ' + tables + ' 张表');
+    return total;
+  }
+  var tries = 0;
+  function waitAndBuild(){
+    tries++;
+    if (document.querySelectorAll('.tbl-wrap').length === 0 && tries < 25) { setTimeout(waitAndBuild, 400); return; }
+    var n = build();
+    if (n === 0 && tries < 25) setTimeout(waitAndBuild, 400);
+  }
+  if (document.readyState === 'complete') setTimeout(waitAndBuild, 300);
+  else window.addEventListener('load', function(){ setTimeout(waitAndBuild, 300); });
+})();
+</script>
+<!--__enhanced_v4__-->
+</body>
+</html>
