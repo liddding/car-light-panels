@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>发动机支架 · FBA备发货周报</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Microsoft YaHei',-apple-system,sans-serif;background:#f0f4f8;color:#152238;padding:20px;max-width:1700px;margin:0 auto}
+.header{background:linear-gradient(135deg,#0F4C75,#1B9AAA);color:#fff;border-radius:14px;padding:24px 30px;margin-bottom:16px;box-shadow:0 6px 20px rgba(15,76,117,.25)}
+.header h1{font-size:26px;font-weight:700}
+.header .meta{font-size:13px;opacity:.95;margin-top:8px;line-height:1.9}
+.header .auto{display:inline-block;background:rgba(255,255,255,.2);padding:3px 10px;border-radius:12px;font-size:11.5px;margin-top:6px}
+.kpi-row{display:flex;flex-wrap:nowrap;gap:10px;margin-bottom:16px;overflow-x:auto}
+.kpi{background:#fff;border-radius:10px;padding:13px 15px;box-shadow:0 2px 6px rgba(0,0,0,.07);flex:1 1 0;min-width:158px}
+.k-label{font-size:12px;color:#5f6b7a}
+.k-val{font-size:19px;font-weight:700;margin:3px 0;color:#0F4C75}
+.k-val.good{color:#2A9D48}.k-val.warn{color:#E67E22}.k-val.bad{color:#C0392B}.k-val.mute{color:#7F8C8D}
+.k-note{font-size:11px;color:#8494a5;line-height:1.55}
+.card{background:#fff;border-radius:12px;padding:18px 20px;box-shadow:0 2px 6px rgba(0,0,0,.07);margin-bottom:16px}
+.chapter{background:linear-gradient(90deg,#0F4C75,#1B9AAA);color:#fff;border-radius:10px;padding:11px 22px;margin:24px auto 14px;font-size:17px;font-weight:700;max-width:1400px;box-shadow:0 3px 10px rgba(15,76,117,.2)}
+.c-title{font-size:15px;font-weight:700;color:#0F4C75;margin-bottom:4px}
+.c-sub{font-size:12px;color:#8494a5;margin-bottom:10px}
+.chart{width:100%;height:350px}.chart-tall{width:100%;height:460px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+table{width:100%;border-collapse:collapse;font-size:11.5px;margin:8px 0}
+th{background:#0F4C75;color:#fff;font-weight:600;padding:8px 4px;text-align:center;font-size:11px;cursor:pointer;white-space:nowrap;position:sticky;top:0}
+th:hover{background:#1B9AAA}
+td{padding:5px 4px;text-align:center;border-bottom:1px solid #e8eef4;white-space:nowrap}
+tbody tr:nth-child(even){background:#f7fbfd}
+tbody tr:hover{background:#e3f3f8}
+.up{color:#2A9D48;font-weight:600}.down{color:#C0392B;font-weight:600}
+.tag{display:inline-block;padding:2px 7px;border-radius:9px;font-size:10.5px;font-weight:600}
+.tag.good{background:#e8f8ec;color:#1e7a37}.tag.bad{background:#fdeceb;color:#a52a1e}
+.tag.warn{background:#fff5e6;color:#a95c14}.tag.mute{background:#f0f2f5;color:#5f6b7a}
+.insight{background:#f7fbfd;border-left:3px solid #1B9AAA;border-radius:6px;padding:12px 15px;margin:10px 0 4px;font-size:12.5px;line-height:1.85}
+.insight.warm{background:#fffaf5;border-left-color:#E67E22}
+.insight.good{background:#f5fbf7;border-left-color:#2A9D48}
+.insight .ins-line{margin:4px 0}
+.insight b{color:#0F4C75}
+.footer{text-align:center;color:#8494a5;font-size:11.5px;padding:20px 0;line-height:1.9}
+
+/* ==== 增强器注入样式 (enhance_panel.py) ==== */
+.topnav { position:sticky; top:0; z-index:99; display:flex; gap:6px; flex-wrap:wrap;
+  background:rgba(255,255,255,.96); backdrop-filter:blur(8px); border-radius:10px;
+  padding:9px 12px; margin:0 auto 14px; max-width:1560px; box-shadow:0 2px 10px rgba(31,78,120,.13); }
+.topnav a { font-size:12.5px; color:#1F4E78; text-decoration:none; padding:5px 11px; border-radius:16px;
+  background:#f1f6fa; border:1px solid #e2ecf4; white-space:nowrap; transition:.14s; font-weight:600; }
+.topnav a:hover { background:#2E86AB; color:#fff; border-color:#2E86AB; }
+.topnav a.active { background:#1F4E78; color:#fff; border-color:#1F4E78; }
+.tbl-tools { display:flex; align-items:center; gap:10px; margin:8px 0 6px; wrap:nowrap; }
+.tbl-tools input { flex:0 0 220px; border:1px solid #d6e2ec; border-radius:16px; padding:5px 12px;
+  font-size:12px; font-family:inherit; outline:none; }
+.tbl-tools input:focus { border-color:#2E86AB; box-shadow:0 0 0 2px rgba(46,134,171,.14); }
+.tbl-tools .cnt { font-size:11.5px; color:#8a94a3; }
+.tbl-tools .btn-mini { font-size:11.5px; color:#2E86AB; background:#f1f6fa; border:1px solid #e2ecf4;
+  border-radius:14px; padding:4px 10px; cursor:pointer; font-family:inherit; }
+.tbl-tools .btn-mini:hover { background:#2E86AB; color:#fff; }
+.tbl-wrap.collapsed table tbody tr:nth-child(n+13) { display:none; }
+#toTop { position:fixed; right:22px; bottom:26px; width:44px; height:44px; border-radius:50%;
+  background:#1F4E78; color:#fff; border:none; cursor:pointer; font-size:19px; box-shadow:0 4px 14px rgba(31,78,120,.35);
+  opacity:0; pointer-events:none; transition:.25s; z-index:120; }
+#toTop.show { opacity:1; pointer-events:auto; }
+#toTop:hover { background:#2E86AB; }
+
+
+/* ==== 下拉筛选 (v4) ==== */
+select.flt { border:1px solid #d6e2ec; border-radius:14px; padding:5px 10px; font-size:11.5px;
+  font-family:inherit; color:#1F4E78; background:#f8fbfd; cursor:pointer; max-width:200px; }
+select.flt:hover { border-color:#2E86AB; }
+select.flt:focus { outline:none; border-color:#2E86AB; box-shadow:0 0 0 2px rgba(46,134,171,.14); }
+select.flt.on { background:#1F4E78; color:#fff; border-color:#1F4E78; font-weight:600; }
+
+</style>
+</head>
+<body>
+<div class="header">
+<h1>&#128230; 发动机支架 · FBA 备发货周报</h1>
+<div class="meta">最新周 <b>202644</b> ｜ 168 个 ASIN(新品 75 / 老品 93) ｜ FBA 可售 1,648 件 ｜ 本地可用 2,716 件<br>
+本周销量 <b>40 件</b> ｜ 紧急断货 <b>7 个</b> ｜ 需备货 <b>¥232,786</b>
+</div>
+<div class="auto">&#129302; 数据自动拉取: 领星 MCP ｜ 库存快照 2026-11-02 10:15:57</div>
+</div>
+<div class="kpi-row"><div class="kpi"><div class="k-label">FBA 可售</div><div class="k-val brand">1,648</div><div class="k-note">领星实时 ｜ 在途 848</div></div><div class="kpi"><div class="k-label">本地可用</div><div class="k-val brand">2,716</div><div class="k-note">到仓 1,982 + 头程 734</div></div><div class="kpi"><div class="k-label">本周销量(2644)</div><div class="k-val good">40 件</div><div class="k-note">上周 164 件</div></div><div class="kpi"><div class="k-label">紧急断货</div><div class="k-val bad">7 个</div><div class="k-note">可售 <21 天</div></div><div class="kpi"><div class="k-label">需补货金额</div><div class="k-val warn">¥232,786</div><div class="k-note">净备货 1,570 件</div></div><div class="kpi"><div class="k-label">库存过高</div><div class="k-val warn">39 个</div><div class="k-note">压 920 件 / ¥153,659</div></div></div>
+<div class="chapter"><span class="bar"></span>&#128200; 一、周销量趋势(W36–W44)</div><div class="card"><div class="c-title">全品周销量 + 新品/老品拆分</div><div class="c-sub">数据源: 领星销量 + 本地运营明细 ｜ 最新周 202644(仅 2 天,不完整)</div><div id="c1" class="chart chart-tall"></div><table id="tbl-w"><thead><tr><th>周次</th><th>全品销量</th><th>老品</th><th>新品</th><th>新品占比</th></tr></thead><tbody><tr><td>202636</td><td>62</td><td>62</td><td>0</td><td>0.0%</td></tr><tr><td>202637</td><td>91</td><td>91</td><td>0</td><td>0.0%</td></tr><tr><td>202638</td><td>101</td><td>100</td><td>1</td><td>1.0%</td></tr><tr><td>202639</td><td>130</td><td>115</td><td>15</td><td>11.5%</td></tr><tr><td>202640</td><td>130</td><td>91</td><td>39</td><td>30.0%</td></tr><tr><td>202641</td><td>116</td><td>69</td><td>47</td><td>40.5%</td></tr><tr><td>202642</td><td>153</td><td>80</td><td>73</td><td>47.7%</td></tr><tr><td>202643</td><td>164</td><td>77</td><td>87</td><td>53.0%</td></tr><tr><td>202644</td><td>40</td><td>22</td><td>18</td><td>45.0%</td></tr></tbody></table><div class="insight "><div class="ins-line"><b>📊 数据解读:</b><b>W36–W43 周销量: 62.0 → 91.0 → 101.0 → 130.0 → 130.0 → 116.0 → 153.0 → 164.0</b>,整体呈上升趋势。<br>最新完整周 202643 = <b>164 件</b>(前一周 153 件,环比 +7.2%)。</div><div class="ins-line"><b>🔍 原因分析:</b>W43 是当前最高周(164 件),新品从 W36 的 0 件涨到 W43 的 87 件,贡献了主要增量。</div><div class="ins-line"><b>✅ 建议动作:</b>按 W43 的 164 件/周 = 日均 23 件推算,180 天(6 个月)需求约 <b>4217 件</b>。</div></div><div class="chapter"><span class="bar"></span>&#128680; 二、库存风险分布</div><div class="card"><div class="c-title">168 个 ASIN 的可售天数分层</div><div class="c-sub">可售天数 = 可用合计 ÷ 近 4 周日均 ｜ <21 天紧急 / 21-45 预警 / 45-90 偏紧 / >180 过高</div><div class="row2"><div id="c2" class="chart"></div><div id="c3" class="chart"></div></div><table id="tbl-r"><thead><tr><th>风险等级</th><th>ASIN 数</th><th>可用合计</th><th>FBA 可售</th><th>近4周周均</th><th>净备货</th><th>备货金额</th></tr></thead><tbody><tr><td>🚨 紧急断货</td><td>7</td><td>28</td><td>7</td><td>18.0</td><td>434</td><td>¥53,441</td></tr><tr><td>🔴 断货预警</td><td>10</td><td>68</td><td>26</td><td>17.0</td><td>369</td><td>¥47,177</td></tr><tr><td>🟠 偏紧</td><td>26</td><td>285</td><td>134</td><td>32.8</td><td>558</td><td>¥100,425</td></tr><tr><td>✅ 健康</td><td>34</td><td>651</td><td>361</td><td>33.5</td><td>209</td><td>¥31,743</td></tr><tr><td>💤 库存过高</td><td>39</td><td>920</td><td>646</td><td>17.0</td><td>0</td><td>¥0</td></tr><tr><td>⚫ 零销量</td><td>52</td><td>764</td><td>474</td><td>0.0</td><td>0</td><td>¥0</td></tr></tbody></table><div class="insight warm"><div class="ins-line"><b>📊 数据解读:</b><b>🚨 紧急断货 7 个(可售 <21 天)、🔴 断货预警 10 个(21-45 天),合计 17 个需要立刻下单。</b><br>同时 <b>💤 库存过高 39 个</b>、<b>⚫ 零销量 52 个</b> —— 合计 91 个款压着 1,684 件可用库存,占全部的 62%。</div><div class="ins-line"><b>🔍 原因分析:</b><b>这是典型的"结构性失衡":总量够(可用 2,716 件 vs 6 个月需求 3,041 件),但分布极不均。</b><br>17 个热销款断货,91 个滞销款压货 —— 钱压在不动的款上,爆款却没货卖。</div><div class="ins-line"><b>✅ 建议动作:</b><b>① 17 个断货款立刻下单(含 7 个空运);<br>② 91 个滞销款停止补货,启动降价/捆绑清库存;<br>③ 把清库释放的资金(约 ¥288,615)转投到断货款。</div></div><div class="chapter"><span class="bar"></span>&#128308; 三、紧急断货清单(可售 <21 天)</div><div class="card"><div class="c-title">必须本周下单的款</div><div class="c-sub">按可售天数升序 ｜ 建议部分走空运</div><div id="c4" class="chart chart-tall"></div><table id="tbl-urg"><thead><tr><th>ASIN</th><th>SKU</th><th>类型</th><th>可售天数</th><th>可用合计</th><th>FBA可售</th><th>周均</th><th>净备货</th><th>金额</th></tr></thead><tbody><tr><td>B0HBBTLJYY</td><td>OO1EMO42100</td><td>新品</td><td><b class="down">2</b></td><td>1</td><td>0</td><td>3.00</td><td>76</td><td>¥2,722</td></tr><tr><td>B0HBBCH8ZS</td><td>OO1EMO44900</td><td>新品</td><td><b class="down">7</b></td><td>4</td><td>0</td><td>3.75</td><td>92</td><td>¥7,734</td></tr><tr><td>B0HBBF4YL7</td><td>OO1EMO43100</td><td>新品</td><td><b class="down">7</b></td><td>3</td><td>0</td><td>3.00</td><td>74</td><td>¥24,558</td></tr><tr><td>B0HBBHJGXG</td><td>OO1EMO42200</td><td>新品</td><td><b class="down">13</b></td><td>5</td><td>0</td><td>2.75</td><td>66</td><td>¥2,748</td></tr><tr><td>B0HBB9X8RT</td><td>OO1EMO45300</td><td>新品</td><td><b class="down">17</b></td><td>3</td><td>0</td><td>1.25</td><td>29</td><td>¥1,895</td></tr><tr><td>B0GR4G3ZVJ</td><td>COMMON1EMO35900</td><td>老品</td><td><b class="down">20</b></td><td>7</td><td>4</td><td>2.50</td><td>57</td><td>¥11,685</td></tr><tr><td>B0HBBCP2NN</td><td>OO1EMO43400</td><td>新品</td><td><b class="down">20</b></td><td>5</td><td>3</td><td>1.75</td><td>40</td><td>¥2,099</td></tr></tbody></table><div class="insight warm"><div class="ins-line"><b>📊 数据解读:</b><b>7 个款的可售天数都在 21 天以内,合计净备货 434 件 / ¥53,441。</b></div><div class="ins-line"><b>🔍 原因分析:</b><b>按 120 天链路(工厂 60 + 本地仓 60),现在下单也要 4 个月后才到 FBA。</b><br>这 7 个款会断货 100 天以上,期间损失销量约 252 件。</div><div class="ins-line"><b>✅ 建议动作:</b><b>这 7 个必须走空运</b>(工厂→FBA 15-25 天),虽然空运成本高 3-4 倍,但比断货 4 个月损失排名划算。</div></div><div class="chapter"><span class="bar"></span>&#128202; 四、新品 vs 老品</div><div class="card"><div class="c-title">两类品的库存健康度对比</div><div id="c5" class="chart chart-tall"></div><table id="tbl-t"><thead><tr><th>类型</th><th>ASIN</th><th>FBA可售</th><th>可用合计</th><th>周均</th><th>折月</th><th>净备货</th><th>金额</th><th>断货款</th></tr></thead><tbody><tr><td>新品</td><td>75</td><td>757</td><td>1,076</td><td>56.2</td><td>242</td><td>908</td><td>¥124,585</td><td>10 个</td></tr><tr><td>老品</td><td>93</td><td>891</td><td>1,640</td><td>62.0</td><td>267</td><td>662</td><td>¥108,201</td><td>7 个</td></tr></tbody></table><div class="insight "><div class="ins-line"><b>📊 数据解读:</b><b>新品 75 个:周均 56.2 件、净备货 908 件(¥124,585)。</b><br><b>老品 93 个:周均 62.0 件、净备货 662 件(¥108,201)。</b></div><div class="ins-line"><b>🔍 原因分析:</b><b>新品库存周转明显更快,但断货风险也更高</b>(可售天数普遍 <60 天);老品库存更充足,但有大量滞销压货。</div><div class="ins-line"><b>✅ 建议动作:</b><b>新品按 6 个月备货、优先走空运保链接;</b><br><b>老品只补热销款,滞销款清库存不补。</b></div></div><div class="chapter"><span class="bar"></span>&#128203; 五、全量 ASIN 明细(168 个)</div><div class="card"><div class="c-title">按风险等级 + 可售天数排序</div><div class="c-sub">表头可点击排序 ｜ 支持浏览器 Ctrl+F 搜索</div><table id="tbl-all"><thead><tr><th>ASIN</th><th>SKU</th><th>类型</th><th>风险</th><th>FBA可售</th><th>FBA在途</th><th>本地</th><th>头程</th><th>可用合计</th><th>周均</th><th>可售天(自算)</th><th>可售天(亚马逊)</th><th>净备货</th><th>金额</th></tr></thead><tbody><tr><td>B0HBBTLJYY</td><td>OO1EMO42100</td><td>新品</td><td><span class="tag bad">🚨 紧急断货</span></td><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td><td>3.00</td><td>2</td><td>26</td><td>76</td><td>¥2,722</td></tr><tr><td>B0HBBCH8ZS</td><td>OO1EMO44900</td><td>新品</td><td><span class="tag bad">🚨 紧急断货</span></td><td>0</td><td>0</td><td>4</td><td>0</td><td>4</td><td>3.75</td><td>7</td><td>21</td><td>92</td><td>¥7,734</td></tr><tr><td>B0HBBF4YL7</td><td>OO1EMO43100</td><td>新品</td><td><span class="tag bad">🚨 紧急断货</span></td><td>0</td><td>0</td><td>3</td><td>0</td><td>3</td><td>3.00</td><td>7</td><td>34</td><td>74</td><td>¥24,558</td></tr><tr><td>B0HBBHJGXG</td><td>OO1EMO42200</td><td>新品</td><td><span class="tag bad">🚨 紧急断货</span></td><td>0</td><td>0</td><td>5</td><td>0</td><td>5</td><td>2.75</td><td>13</td><td>43</td><td>66</td><td>¥2,748</td></tr><tr><td>B0HBB9X8RT</td><td>OO1EMO45300</td><td>新品</td><td><span class="tag bad">🚨 紧急断货</span></td><td>0</td><td>0</td><td>3</td><td>0</td><td>3</td><td>1.25</td><td>17</td><td>37</td><td>29</td><td>¥1,895</td></tr><tr><td>B0GR4G3ZVJ</td><td>COMMON1EMO35900</td><td>老品</td><td><span class="tag bad">🚨 紧急断货</span></td><td>4</td><td>3</td><td>4</td><td>3</td><td>7</td><td>2.50</td><td>20</td><td>29</td><td>57</td><td>¥11,685</td></tr><tr><td>B0HBBCP2NN</td><td>OO1EMO43400</td><td>新品</td><td><span class="tag bad">🚨 紧急断货</span></td><td>3</td><td>0</td><td>5</td><td>0</td><td>5</td><td>1.75</td><td>20</td><td>49</td><td>40</td><td>¥2,099</td></tr><tr><td>B0GYF366RS</td><td>COMMON1EMO32100</td><td>老品</td><td><span class="tag bad">🔴 断货预警</span></td><td>4</td><td>0</td><td>4</td><td>0</td><td>4</td><td>1.25</td><td>22</td><td>32</td><td>28</td><td>¥2,940</td></tr><tr><td>B0HBB7SWFB</td><td>OO1EMO39500</td><td>新品</td><td><span class="tag bad">🔴 断货预警</span></td><td>3</td><td>0</td><td>7</td><td>0</td><td>7</td><td>2.25</td><td>22</td><td>338</td><td>51</td><td>¥3,228</td></tr><tr><td>B0HBBLGNYT</td><td>OO1EMO44800</td><td>新品</td><td><span class="tag bad">🔴 断货预警</span></td><td>6</td><td>0</td><td>7</td><td>0</td><td>7</td><td>2.00</td><td>24</td><td>31</td><td>44</td><td>¥1,558</td></tr><tr><td>B0GQZGMRR7</td><td>COMMON1EMO30300</td><td>老品</td><td><span class="tag bad">🔴 断货预警</span></td><td>1</td><td>6</td><td>6</td><td>6</td><td>12</td><td>3.25</td><td>26</td><td>21</td><td>72</td><td>¥8,885</td></tr><tr><td>B0G4RG24J4</td><td>COMMON1EMO27800</td><td>老品</td><td><span class="tag bad">🔴 断货预警</span></td><td>0</td><td>8</td><td>2</td><td>2</td><td>4</td><td>1.00</td><td>28</td><td>44</td><td>22</td><td>¥3,909</td></tr><tr><td>B0GQZKD41H</td><td>COMMON1EMO26100</td><td>老品</td><td><span class="tag bad">🔴 断货预警</span></td><td>1</td><td>0</td><td>1</td><td>2</td><td>3</td><td>0.75</td><td>28</td><td>15</td><td>16</td><td>¥1,615</td></tr><tr><td>B0HBB1X23V</td><td>OO1EMO43200</td><td>新品</td><td><span class="tag bad">🔴 断货预警</span></td><td>0</td><td>10</td><td>1</td><td>5</td><td>6</td><td>1.50</td><td>28</td><td>31</td><td>33</td><td>¥4,556</td></tr><tr><td>B0HBB74GT5</td><td>OO1EMO42300</td><td>新品</td><td><span class="tag bad">🔴 断货预警</span></td><td>0</td><td>1</td><td>4</td><td>4</td><td>8</td><td>2.00</td><td>28</td><td>17</td><td>43</td><td>¥6,241</td></tr><tr><td>B0GYDV69FV</td><td>ZC1EMO03500</td><td>老品</td><td><span class="tag bad">🔴 断货预警</span></td><td>5</td><td>1</td><td>5</td><td>0</td><td>5</td><td>1.00</td><td>35</td><td>58</td><td>21</td><td>¥3,903</td></tr><tr><td>B0GS5P27YF</td><td>COMMON1EMO38800</td><td>老品</td><td><span class="tag bad">🔴 断货预警</span></td><td>6</td><td>14</td><td>8</td><td>4</td><td>12</td><td>2.00</td><td>42</td><td>22</td><td>39</td><td>¥10,342</td></tr><tr><td>B0HBB4L2SL</td><td>OO1EMO45100</td><td>新品</td><td><span class="tag warn">🟠 偏紧</span></td><td>1</td><td>3</td><td>5</td><td>3</td><td>8</td><td>1.25</td><td>45</td><td>55</td><td>24</td><td>¥4,138</td></tr><tr><td>B0GLGLC7VJ</td><td>COMMON1EMO38400</td><td>老品</td><td><span class="tag warn">🟠 偏紧</span></td><td>4</td><td>0</td><td>5</td><td>0</td><td>5</td><td>0.75</td><td>47</td><td>29</td><td>14</td><td>¥2,532</td></tr><tr><td>B0HBBFLMPX</td><td>OO1EMO48400</td><td>新品</td><td><span class="tag warn">🟠 偏紧</span></td><td>7</td><td>0</td><td>8</td><td>4</td><td>12</td><td>1.75</td><td>48</td><td>40</td><td>33</td><td>¥13,901</td></tr><tr><td>B0HBB485VJ</td><td>OO1EMO45500</td><td>新品</td><td><span class="tag warn">🟠 偏紧</span></td><td>2</td><td>6</td><td>5</td><td>2</td><td>7</td><td>1.00</td><td>49</td><td>93</td><td>19</td><td>¥5,532</td></tr><tr><td>B0HBBB8MJG</td><td>OO1EMO39700</td><td>新品</td><td><span class="tag warn">🟠 偏紧</span></td><td>3</td><td>0</td><td>7</td><td>0</td><td>7</td><td>1.00</td><td>49</td><td>63</td><td>19</td><td>¥633</td></tr><tr><td>B0HBB97HM6</td><td>OO1EMO50900</td><td>新品</td><td><span class="tag warn">🟠 偏紧</span></td><td>5</td><td>0</td><td>6</td><td>3</td><td>9</td><td>1.25</td><td>50</td><td>41</td><td>23</td><td>¥1,877</td></tr><tr><td>B0HBBF8TZF</td><td>OO1EMO42800</td><td>新品</td><td><span class="tag warn">🟠 偏紧</span></td><td>2</td><td>0</td><td>4</td><td>5</td><td>9</td><td>1.25</td><td>50</td><td>14</td><td>23</td><td>¥5,048</td></tr><tr><td>B0HBB4PFLM</td><td>OO1EMO46800</td><td>新品</td><td><span class="tag warn">🟠 偏紧</span></td><td>10</td><td>0</td><td>9</td><td>4</td><td>13</td><td>1.75</td><td>52</td><td>35</td><td>32</td><td>¥2,690</td></tr><tr><td>B0GLGZMBG7</td><td>COMMON1EMO26200</td><td>老品</td><td><span class="tag warn">🟠 偏紧</span></td><td>10</td><td>17</td><td>13</td><td>4</td><td>17</td><td>2.25</td><td>53</td><td>40</td><td>41</td><td>¥9,436</td></tr><tr><td>B0FY5QG4GW</td><td>COMMON1EMO27100</td><td>老品</td><td><span class="tag warn">🟠 偏紧</span></td><td>3</td><td>3</td><td>6</td><td>0</td><td>6</td><td>0.75</td><td>56</td><td>101</td><td>13</td><td>¥1,746</td></tr><tr><td>B0GR3FSNW2</td><td>ZC1EMO01200</td><td>老品</td><td><span class="tag warn">🟠 偏紧</span></td><td>3</td><td>14</td><td>12</td><td>0</td><td>12</td><td>1.50</td><td>56</td><td>38</td><td>27</td><td>¥7,721</td></tr><tr><td>B0GVMHRXL8</td><td>COMMON1EMO38500</td><td>老品</td><td><span class="tag warn">🟠 偏紧</span></td><td>0</td><td>1</td><td>3</td><td>1</td><td>4</td><td>0.50</td><td>56</td><td>0</td><td>9</td><td>¥1,951</td></tr><tr><td>B0GYDVTTLZ</td><td>COMMON1EMO37800</td><td>老品</td><td><span class="tag warn">🟠 偏紧</span></td><td>2</td><td>0</td><td>2</td><td>0</td><td>2</td><td>0.25</td><td>56</td><td>30</td><td>4</td><td>¥730</td></tr><tr><td>B0HBB919W9</td><td>OO1EMO51100</td><td>新品</td><td><span class="tag warn">🟠 偏紧</span></td><td>10</td><td>3</td><td>9</td><td>3</td><td>12</td><td>1.50</td><td>56</td><td>134</td><td>27</td><td>¥5,496</td></tr><tr><td>B0HBBB9K9D</td><td>OO1EMO52400</td><td>新品</td><td><span class="tag warn">🟠 偏紧</span></td><td>6</td><td>0</td><td>7</td><td>3</td><td>10</td><td>1.25</td><td>56</td><td>74</td><td>22</td><td>¥5,424</td></tr><tr><td>B0HBBL94NL</td><td>OO1EMO41000</td><td>新品</td><td><span class="tag warn">🟠 偏紧</span></td><td>5</td><td>3</td><td>6</td><td>3</td><td>9</td><td>1.00</td><td>63</td><td>31</td><td>17</td><td>¥3,058</td></tr><tr><td>B0GLG77Q7H</td><td>COMMON1EMO20800</td><td>老品</td><td><span class="tag warn">🟠 偏紧</span></td><td>5</td><td>40</td><td>8</td><td>24</td><td>32</td><td>3.50</td><td>64</td><td>32</td><td>58</td><td>¥5,315</td></tr><tr><td>B0HBB1WK3K</td><td>OO1EMO50200</td><td>新品</td><td><span class="tag warn">🟠 偏紧</span></td><td>6</td><td>0</td><td>8</td><td>4</td><td>12</td><td>1.25</td><td>67</td><td>43</td><td>20</td><td>¥3,115</td></tr><tr><td>B0HBB9C2XG</td><td>OO1EMO40300</td><td>新品</td><td><span class="tag warn">🟠 偏紧</span></td><td>5</td><td>4</td><td>9</td><td>3</td><td>12</td><td>1.25</td><td>67</td><td>57</td><td>20</td><td>¥6,088</td></tr><tr><td>B0G4RFXN8J</td><td>COMMON1EMO39100</td><td>老品</td><td><span class="tag warn">🟠 偏紧</span></td><td>3</td><td>15</td><td>8</td><td>10</td><td>18</td><td>1.75</td><td>72</td><td>38</td><td>27</td><td>¥923</td></tr><tr><td>B0GLGQ1R1R</td><td>ZC1EMO01500</td><td>老品</td><td><span class="tag warn">🟠 偏紧</span></td><td>0</td><td>29</td><td>1</td><td>15</td><td>16</td><td>1.50</td><td>75</td><td>12</td><td>23</td><td>¥4,373</td></tr><tr><td>B0FVLMXY88</td><td>COMMON1EMO36900</td><td>老品</td><td><span class="tag warn">🟠 偏紧</span></td><td>9</td><td>11</td><td>10</td><td>1</td><td>11</td><td>1.00</td><td>77</td><td>78</td><td>15</td><td>¥1,878</td></tr><tr><td>B0GVM63D19</td><td>COMMON1EMO25100</td><td>老品</td><td><span class="tag warn">🟠 偏紧</span></td><td>12</td><td>11</td><td>12</td><td>3</td><td>15</td><td>1.25</td><td>84</td><td>142</td><td>17</td><td>¥3,390</td></tr><tr><td>B0HBB9NPTV</td><td>OO1EMO44600</td><td>新品</td><td><span class="tag warn">🟠 偏紧</span></td><td>14</td><td>0</td><td>15</td><td>0</td><td>15</td><td>1.25</td><td>84</td><td>108</td><td>17</td><td>¥587</td></tr><tr><td>B0FVFV8ZC7</td><td>COMMON1EMO37700</td><td>老品</td><td><span class="tag warn">🟠 偏紧</span></td><td>1</td><td>1</td><td>3</td><td>3</td><td>6</td><td>0.50</td><td>85</td><td>16</td><td>7</td><td>¥1,139</td></tr><tr><td>B0GK753ZKQ</td><td>OO1EMO12400</td><td>老品</td><td><span class="tag warn">🟠 偏紧</span></td><td>6</td><td>0</td><td>6</td><td>0</td><td>6</td><td>0.50</td><td>85</td><td>110</td><td>7</td><td>¥1,704</td></tr><tr><td>B0GQZPB92V</td><td>COMMON1EMO24400</td><td>老品</td><td><span class="tag good">✅ 健康</span></td><td>12</td><td>0</td><td>13</td><td>0</td><td>13</td><td>1.00</td><td>91</td><td>77</td><td>13</td><td>¥1,918</td></tr><tr><td>B0HB9WFVZG</td><td>OO1EMO42700</td><td>新品</td><td><span class="tag good">✅ 健康</span></td><td>6</td><td>3</td><td>7</td><td>3</td><td>10</td><td>0.75</td><td>93</td><td>46</td><td>9</td><td>¥1,297</td></tr><tr><td>B0GYDZ1K1H</td><td>COMMON1EMO29300</td><td>老品</td><td><span class="tag good">✅ 健康</span></td><td>9</td><td>5</td><td>13</td><td>5</td><td>18</td><td>1.25</td><td>101</td><td>28</td><td>14</td><td>¥2,098</td></tr><tr><td>B0GK6ZR1B4</td><td>COMMON1EMO38700</td><td>老品</td><td><span class="tag good">✅ 健康</span></td><td>4</td><td>5</td><td>8</td><td>4</td><td>12</td><td>0.75</td><td>112</td><td>118</td><td>7</td><td>¥2,137</td></tr><tr><td>B0HBBFGZ1L</td><td>OO1EMO51800</td><td>新品</td><td><span class="tag good">✅ 健康</span></td><td>7</td><td>7</td><td>9</td><td>3</td><td>12</td><td>0.75</td><td>112</td><td>107</td><td>7</td><td>¥737</td></tr><tr><td>B0G3PVBY7D</td><td>COMMON1EMO30300</td><td>老品</td><td><span class="tag good">✅ 健康</span></td><td>2</td><td>11</td><td>6</td><td>11</td><td>17</td><td>1.00</td><td>119</td><td>20</td><td>9</td><td>¥1,111</td></tr><tr><td>B0GLGP2C66</td><td>COMMON1EMO37100</td><td>老品</td><td><span class="tag good">✅ 健康</span></td><td>5</td><td>38</td><td>13</td><td>34</td><td>47</td><td>2.75</td><td>120</td><td>17</td><td>24</td><td>¥1,640</td></tr><tr><td>B0HBBCC35X</td><td>OO1EMO40900</td><td>新品</td><td><span class="tag good">✅ 健康</span></td><td>12</td><td>0</td><td>13</td><td>0</td><td>13</td><td>0.75</td><td>121</td><td>172</td><td>6</td><td>¥190</td></tr><tr><td>B0HBBHNB9Z</td><td>OO1EMO52100</td><td>新品</td><td><span class="tag good">✅ 健康</span></td><td>12</td><td>0</td><td>13</td><td>0</td><td>13</td><td>0.75</td><td>121</td><td>0</td><td>6</td><td>¥645</td></tr><tr><td>B0GYF4V7TF</td><td>ZC1EMO04200</td><td>老品</td><td><span class="tag good">✅ 健康</span></td><td>7</td><td>10</td><td>11</td><td>11</td><td>22</td><td>1.25</td><td>123</td><td>54</td><td>10</td><td>¥2,824</td></tr><tr><td>B0HBBJ93RQ</td><td>OO1EMO41900</td><td>新品</td><td><span class="tag good">✅ 健康</span></td><td>6</td><td>0</td><td>9</td><td>9</td><td>18</td><td>1.00</td><td>126</td><td>14</td><td>8</td><td>¥1,536</td></tr><tr><td>B0GLGLYWWY</td><td>COMMON1EMO37600</td><td>老品</td><td><span class="tag good">✅ 健康</span></td><td>20</td><td>2</td><td>23</td><td>0</td><td>23</td><td>1.25</td><td>128</td><td>104</td><td>9</td><td>¥1,760</td></tr><tr><td>B0HBBF5R79</td><td>OO1EMO41500</td><td>新品</td><td><span class="tag good">✅ 健康</span></td><td>15</td><td>0</td><td>15</td><td>8</td><td>23</td><td>1.25</td><td>128</td><td>61</td><td>9</td><td>¥2,079</td></tr><tr><td>B0G4RDQPHN</td><td>COMMON1EMO20400</td><td>老品</td><td><span class="tag good">✅ 健康</span></td><td>27</td><td>0</td><td>28</td><td>0</td><td>28</td><td>1.50</td><td>131</td><td>195</td><td>11</td><td>¥518</td></tr><tr><td>B0GQZPWDTQ</td><td>COMMON1EMO37300</td><td>老品</td><td><span class="tag good">✅ 健康</span></td><td>13</td><td>0</td><td>14</td><td>0</td><td>14</td><td>0.75</td><td>131</td><td>244</td><td>5</td><td>¥111</td></tr><tr><td>B0HBB6QBX7</td><td>OO1EMO51200</td><td>老品</td><td><span class="tag good">✅ 健康</span></td><td>13</td><td>0</td><td>14</td><td>0</td><td>14</td><td>0.75</td><td>131</td><td>233</td><td>5</td><td>¥1,717</td></tr><tr><td>B0HBB8GDRC</td><td>OO1EMO43000</td><td>老品</td><td><span class="tag good">✅ 健康</span></td><td>14</td><td>0</td><td>14</td><td>0</td><td>14</td><td>0.75</td><td>131</td><td>118</td><td>5</td><td>¥1,097</td></tr><tr><td>B0HBBHG53J</td><td>OO1EMO50400</td><td>新品</td><td><span class="tag good">✅ 健康</span></td><td>10</td><td>0</td><td>11</td><td>3</td><td>14</td><td>0.75</td><td>131</td><td>120</td><td>5</td><td>¥1,416</td></tr><tr><td>B0GQZBDHZ3</td><td>ZC1EMO02900</td><td>老品</td><td><span class="tag good">✅ 健康</span></td><td>7</td><td>23</td><td>14</td><td>25</td><td>39</td><td>2.00</td><td>136</td><td>23</td><td>12</td><td>¥1,925</td></tr><tr><td>B0G4RJLRDG</td><td>ZC1EMO01900</td><td>老品</td><td><span class="tag good">✅ 健康</span></td><td>10</td><td>0</td><td>10</td><td>0</td><td>10</td><td>0.50</td><td>141</td><td>344</td><td>3</td><td>¥689</td></tr><tr><td>B0HBBL8N35</td><td>OO1EMO40800</td><td>新品</td><td><span class="tag good">✅ 健康</span></td><td>11</td><td>0</td><td>14</td><td>7</td><td>21</td><td>1.00</td><td>147</td><td>52</td><td>5</td><td>¥1,234</td></tr><tr><td>B0GVMPZN8P</td><td>COMMON1EMO29600</td><td>老品</td><td><span class="tag good">✅ 健康</span></td><td>8</td><td>18</td><td>15</td><td>12</td><td>27</td><td>1.25</td><td>151</td><td>50</td><td>5</td><td>¥555</td></tr><tr><td>B0HB9WBVK5</td><td>OO1EMO50300</td><td>新品</td><td><span class="tag good">✅ 健康</span></td><td>25</td><td>0</td><td>27</td><td>0</td><td>27</td><td>1.25</td><td>151</td><td>169</td><td>5</td><td>¥195</td></tr><tr><td>B0CG99S8QK</td><td>ZC1EMO03700</td><td>老品</td><td><span class="tag good">✅ 健康</span></td><td>17</td><td>0</td><td>22</td><td>0</td><td>22</td><td>1.00</td><td>154</td><td>200</td><td>4</td><td>¥843</td></tr><tr><td>B0GVMK9FL7</td><td>COMMON1EMO20600</td><td>老品</td><td><span class="tag good">✅ 健康</span></td><td>10</td><td>0</td><td>11</td><td>0</td><td>11</td><td>0.50</td><td>155</td><td>64</td><td>2</td><td>¥248</td></tr><tr><td>B0GYDMFZZ8</td><td>COMMON1EMO25900</td><td>老品</td><td><span class="tag good">✅ 健康</span></td><td>0</td><td>16</td><td>0</td><td>11</td><td>11</td><td>0.50</td><td>155</td><td>18</td><td>2</td><td>¥219</td></tr><tr><td>B0HBB8N3CV</td><td>OO1EMO50100</td><td>新品</td><td><span class="tag good">✅ 健康</span></td><td>9</td><td>3</td><td>8</td><td>3</td><td>11</td><td>0.50</td><td>155</td><td>0</td><td>2</td><td>¥250</td></tr><tr><td>B0HBBB78KT</td><td>OO1EMO46000</td><td>新品</td><td><span class="tag good">✅ 健康</span></td><td>10</td><td>0</td><td>11</td><td>0</td><td>11</td><td>0.50</td><td>155</td><td>258</td><td>2</td><td>¥80</td></tr><tr><td>B0FVFN7GBC</td><td>ZC1EMO03600</td><td>老品</td><td><span class="tag good">✅ 健康</span></td><td>2</td><td>5</td><td>12</td><td>6</td><td>18</td><td>0.75</td><td>168</td><td>27</td><td>1</td><td>¥252</td></tr><tr><td>B0GQZM9SYQ</td><td>COMMON1EMO34900</td><td>老品</td><td><span class="tag good">✅ 健康</span></td><td>11</td><td>4</td><td>12</td><td>6</td><td>18</td><td>0.75</td><td>168</td><td>38</td><td>1</td><td>¥116</td></tr><tr><td>B0GQZLTRB7</td><td>COMMON1EMO24600</td><td>老品</td><td><span class="tag good">✅ 健康</span></td><td>11</td><td>0</td><td>12</td><td>0</td><td>12</td><td>0.50</td><td>169</td><td>64</td><td>1</td><td>¥150</td></tr><tr><td>B0GK5DJW82</td><td>COMMON1EMO36800</td><td>老品</td><td><span class="tag good">✅ 健康</span></td><td>15</td><td>22</td><td>15</td><td>10</td><td>25</td><td>1.00</td><td>175</td><td>68</td><td>1</td><td>¥115</td></tr><tr><td>B0GKG89817</td><td>COMMON1EMO21500</td><td>老品</td><td><span class="tag good">✅ 健康</span></td><td>6</td><td>34</td><td>14</td><td>30</td><td>44</td><td>1.75</td><td>176</td><td>44</td><td>1</td><td>¥41</td></tr><tr><td>B0HBBDG7TV</td><td>OO1EMO42400</td><td>新品</td><td><span class="tag good">✅ 健康</span></td><td>15</td><td>0</td><td>15</td><td>4</td><td>19</td><td>0.75</td><td>178</td><td>210</td><td>0</td><td>¥0</td></tr><tr><td>B0H2Z2Y7TP</td><td>COMMON1EMO29200</td><td>老品</td><td><span class="tag warn">💤 库存过高</span></td><td>10</td><td>20</td><td>15</td><td>11</td><td>26</td><td>1.00</td><td>182</td><td>91</td><td>0</td><td>¥0</td></tr><tr><td>B0HBBLJ6JD</td><td>OO1EMO46400</td><td>新品</td><td><span class="tag warn">💤 库存过高</span></td><td>12</td><td>0</td><td>13</td><td>0</td><td>13</td><td>0.50</td><td>183</td><td>322</td><td>0</td><td>¥0</td></tr><tr><td>B0GYDQPJ4H</td><td>COMMON1EMO37400</td><td>老品</td><td><span class="tag warn">💤 库存过高</span></td><td>18</td><td>2</td><td>19</td><td>2</td><td>21</td><td>0.75</td><td>196</td><td>288</td><td>0</td><td>¥0</td></tr><tr><td>B0GLG79DHQ</td><td>ZC1EMO05100</td><td>老品</td><td><span class="tag warn">💤 库存过高</span></td><td>14</td><td>0</td><td>14</td><td>0</td><td>14</td><td>0.50</td><td>197</td><td>232</td><td>0</td><td>¥0</td></tr><tr><td>B0HBBDNQYR</td><td>OO1EMO52600</td><td>新品</td><td><span class="tag warn">💤 库存过高</span></td><td>13</td><td>0</td><td>14</td><td>0</td><td>14</td><td>0.50</td><td>197</td><td>172</td><td>0</td><td>¥0</td></tr><tr><td>B0HBB4SWVX</td><td>OO1EMO39300</td><td>新品</td><td><span class="tag warn">💤 库存过高</span></td><td>12</td><td>3</td><td>11</td><td>4</td><td>15</td><td>0.50</td><td>211</td><td>60</td><td>0</td><td>¥0</td></tr><tr><td>B0GYDTYJDJ</td><td>ZC1EMO03200</td><td>老品</td><td><span class="tag warn">💤 库存过高</span></td><td>7</td><td>0</td><td>8</td><td>0</td><td>8</td><td>0.25</td><td>222</td><td>131</td><td>0</td><td>¥0</td></tr><tr><td>B0GYDVRK7X</td><td>COMMON1EMO38300</td><td>老品</td><td><span class="tag warn">💤 库存过高</span></td><td>3</td><td>17</td><td>14</td><td>2</td><td>16</td><td>0.50</td><td>225</td><td>15</td><td>0</td><td>¥0</td></tr><tr><td>B0GQZFTB9Z</td><td>COMMON1EMO20100</td><td>老品</td><td><span class="tag warn">💤 库存过高</span></td><td>11</td><td>18</td><td>16</td><td>9</td><td>25</td><td>0.75</td><td>234</td><td>78</td><td>0</td><td>¥0</td></tr><tr><td>B0GK62K2BF</td><td>OO1EMO08100</td><td>老品</td><td><span class="tag warn">💤 库存过高</span></td><td>14</td><td>7</td><td>14</td><td>3</td><td>17</td><td>0.50</td><td>239</td><td>118</td><td>0</td><td>¥0</td></tr><tr><td>B0HB9ZK2ZK</td><td>OO1EMO51600</td><td>新品</td><td><span class="tag warn">💤 库存过高</span></td><td>7</td><td>9</td><td>10</td><td>7</td><td>17</td><td>0.50</td><td>239</td><td>115</td><td>0</td><td>¥0</td></tr><tr><td>B0HBB4WFRS</td><td>OO1EMO43900</td><td>新品</td><td><span class="tag warn">💤 库存过高</span></td><td>12</td><td>0</td><td>15</td><td>4</td><td>19</td><td>0.50</td><td>268</td><td>123</td><td>0</td><td>¥0</td></tr><tr><td>B0GK69YWJV</td><td>COMMON1EMO25800</td><td>老品</td><td><span class="tag warn">💤 库存过高</span></td><td>0</td><td>10</td><td>3</td><td>7</td><td>10</td><td>0.25</td><td>278</td><td>0</td><td>0</td><td>¥0</td></tr><tr><td>B0H2Z1XVXM</td><td>COMMON1EMO29000</td><td>老品</td><td><span class="tag warn">💤 库存过高</span></td><td>16</td><td>2</td><td>18</td><td>2</td><td>20</td><td>0.50</td><td>282</td><td>98</td><td>0</td><td>¥0</td></tr><tr><td>B0FY35HJBT</td><td>COMMON1EMO37300</td><td>老品</td><td><span class="tag warn">💤 库存过高</span></td><td>9</td><td>16</td><td>10</td><td>12</td><td>22</td><td>0.50</td><td>310</td><td>105</td><td>0</td><td>¥0</td></tr><tr><td>B0HB9Z5MHY</td><td>OO1EMO53100</td><td>新品</td><td><span class="tag warn">💤 库存过高</span></td><td>18</td><td>0</td><td>18</td><td>4</td><td>22</td><td>0.50</td><td>310</td><td>223</td><td>0</td><td>¥0</td></tr><tr><td>B0HBB1HWWT</td><td>OO1EMO45800</td><td>新品</td><td><span class="tag warn">💤 库存过高</span></td><td>18</td><td>0</td><td>18</td><td>4</td><td>22</td><td>0.50</td><td>310</td><td>0</td><td>0</td><td>¥0</td></tr><tr><td>B0GLGT7WHG</td><td>COMMON1EMO29500</td><td>老品</td><td><span class="tag warn">💤 库存过高</span></td><td>34</td><td>13</td><td>43</td><td>25</td><td>68</td><td>1.50</td><td>318</td><td>180</td><td>0</td><td>¥0</td></tr><tr><td>B0GVM24FN4</td><td>COMMON1EMO30800</td><td>老品</td><td><span class="tag warn">💤 库存过高</span></td><td>9</td><td>6</td><td>13</td><td>0</td><td>13</td><td>0.25</td><td>361</td><td>141</td><td>0</td><td>¥0</td></tr><tr><td>B0HBBHLP5N</td><td>OO1EMO44400</td><td>新品</td><td><span class="tag warn">💤 库存过高</span></td><td>11</td><td>3</td><td>10</td><td>3</td><td>13</td><td>0.25</td><td>361</td><td>237</td><td>0</td><td>¥0</td></tr><tr><td>B0HBB9PSRF</td><td>OO1EMO41800</td><td>新品</td><td><span class="tag warn">💤 库存过高</span></td><td>17</td><td>0</td><td>18</td><td>8</td><td>26</td><td>0.50</td><td>366</td><td>326</td><td>0</td><td>¥0</td></tr><tr><td>B0HBB5ZSZ4</td><td>OO1EMO44000</td><td>新品</td><td><span class="tag warn">💤 库存过高</span></td><td>9</td><td>3</td><td>11</td><td>3</td><td>14</td><td>0.25</td><td>389</td><td>251</td><td>0</td><td>¥0</td></tr><tr><td>B0HBBB3ZBW</td><td>OO1EMO49101</td><td>新品</td><td><span class="tag warn">💤 库存过高</span></td><td>13</td><td>0</td><td>14</td><td>0</td><td>14</td><td>0.25</td><td>389</td><td>302</td><td>0</td><td>¥0</td></tr><tr><td>B0GR4M7X15</td><td>COMMON1EMO39100</td><td>老品</td><td><span class="tag warn">💤 库存过高</span></td><td>9</td><td>8</td><td>11</td><td>4</td><td>15</td><td>0.25</td><td>417</td><td>324</td><td>0</td><td>¥0</td></tr><tr><td>B0GVMHMJ7F</td><td>COMMON1EMO38600</td><td>老品</td><td><span class="tag warn">💤 库存过高</span></td><td>6</td><td>7</td><td>7</td><td>8</td><td>15</td><td>0.25</td><td>417</td><td>152</td><td>0</td><td>¥0</td></tr><tr><td>B0HBBM68WS</td><td>OO1EMO41100</td><td>新品</td><td><span class="tag warn">💤 库存过高</span></td><td>15</td><td>0</td><td>15</td><td>0</td><td>15</td><td>0.25</td><td>417</td><td>349</td><td>0</td><td>¥0</td></tr><tr><td>B0GR3QZ7YX</td><td>COMMON1EMO20400</td><td>老品</td><td><span class="tag warn">💤 库存过高</span></td><td>22</td><td>6</td><td>22</td><td>9</td><td>31</td><td>0.50</td><td>437</td><td>185</td><td>0</td><td>¥0</td></tr><tr><td>B0G4RJJXBP</td><td>OO1EMO10300</td><td>老品</td><td><span class="tag warn">💤 库存过高</span></td><td>8</td><td>4</td><td>12</td><td>5</td><td>17</td><td>0.25</td><td>472</td><td>0</td><td>0</td><td>¥0</td></tr><tr><td>B0GYF27MRC</td><td>COMMON1EMO26900</td><td>老品</td><td><span class="tag warn">💤 库存过高</span></td><td>19</td><td>0</td><td>19</td><td>0</td><td>19</td><td>0.25</td><td>528</td><td>503</td><td>0</td><td>¥0</td></tr><tr><td>B0HBB7TL9G</td><td>OO1EMO44200</td><td>新品</td><td><span class="tag warn">💤 库存过高</span></td><td>14</td><td>0</td><td>15</td><td>4</td><td>19</td><td>0.25</td><td>528</td><td>398</td><td>0</td><td>¥0</td></tr><tr><td>B0HBB9LDM7</td><td>OO1EMO40100</td><td>新品</td><td><span class="tag warn">💤 库存过高</span></td><td>15</td><td>0</td><td>15</td><td>4</td><td>19</td><td>0.25</td><td>528</td><td>396</td><td>0</td><td>¥0</td></tr><tr><td>B0H2Z4YZRQ</td><td>COMMON1EMO34200</td><td>老品</td><td><span class="tag warn">💤 库存过高</span></td><td>34</td><td>0</td><td>38</td><td>0</td><td>38</td><td>0.50</td><td>535</td><td>533</td><td>0</td><td>¥0</td></tr><tr><td>B0GLGQH354</td><td>COMMON1EMO29800</td><td>老品</td><td><span class="tag warn">💤 库存过高</span></td><td>11</td><td>11</td><td>12</td><td>10</td><td>22</td><td>0.25</td><td>611</td><td>122</td><td>0</td><td>¥0</td></tr><tr><td>B0HBBCSSZD</td><td>OO1EMO46200</td><td>新品</td><td><span class="tag warn">💤 库存过高</span></td><td>18</td><td>0</td><td>18</td><td>4</td><td>22</td><td>0.25</td><td>611</td><td>407</td><td>0</td><td>¥0</td></tr><tr><td>B0HBB7N4L9</td><td>OO1EMO45600</td><td>新品</td><td><span class="tag warn">💤 库存过高</span></td><td>22</td><td>0</td><td>23</td><td>0</td><td>23</td><td>0.25</td><td>639</td><td>527</td><td>0</td><td>¥0</td></tr><tr><td>B0GQZPRFM9</td><td>OO1EMO06800</td><td>老品</td><td><span class="tag warn">💤 库存过高</span></td><td>39</td><td>0</td><td>43</td><td>4</td><td>47</td><td>0.50</td><td>662</td><td>151</td><td>0</td><td>¥0</td></tr><tr><td>B0GLGJT4TH</td><td>COMMON1EMO33400</td><td>老品</td><td><span class="tag warn">💤 库存过高</span></td><td>54</td><td>9</td><td>55</td><td>0</td><td>55</td><td>0.50</td><td>775</td><td>429</td><td>0</td><td>¥0</td></tr><tr><td>B0HBBBNJ18</td><td>OO1EMO43600</td><td>新品</td><td><span class="tag warn">💤 库存过高</span></td><td>27</td><td>20</td><td>29</td><td>18</td><td>47</td><td>0.25</td><td>1,306</td><td>0</td><td>0</td><td>¥0</td></tr><tr><td>B0GQZ8MZKY</td><td>COMMON1EMO32700</td><td>老品</td><td><span class="tag warn">💤 库存过高</span></td><td>46</td><td>3</td><td>58</td><td>9</td><td>67</td><td>0.25</td><td>1,861</td><td>372</td><td>0</td><td>¥0</td></tr><tr><td>B0CLY2TLDR</td><td>OO1EMO11700</td><td>老品</td><td><span class="tag mute">⚫ 零销量</span></td><td>0</td><td>1</td><td>0</td><td>1</td><td>1</td><td>0.00</td><td>9,999</td><td>0</td><td>0</td><td>¥0</td></tr><tr><td>B0CNXFJP5F</td><td>OO1EMO12600</td><td>老品</td><td><span class="tag mute">⚫ 零销量</span></td><td>0</td><td>10</td><td>0</td><td>10</td><td>10</td><td>0.00</td><td>9,999</td><td>0</td><td>0</td><td>¥0</td></tr><tr><td>B0CTGVSFTJ</td><td>OO1EMO14800</td><td>老品</td><td><span class="tag mute">⚫ 零销量</span></td><td>0</td><td>2</td><td>0</td><td>2</td><td>2</td><td>0.00</td><td>9,999</td><td>0</td><td>0</td><td>¥0</td></tr><tr><td>B0D8RSWHCJ</td><td>OO1EMO11900</td><td>老品</td><td><span class="tag mute">⚫ 零销量</span></td><td>0</td><td>1</td><td>0</td><td>1</td><td>1</td><td>0.00</td><td>9,999</td><td>0</td><td>0</td><td>¥0</td></tr><tr><td>B0D8S4X1XX</td><td>OO1EMO14000</td><td>老品</td><td><span class="tag mute">⚫ 零销量</span></td><td>3</td><td>8</td><td>5</td><td>10</td><td>15</td><td>0.00</td><td>9,999</td><td>0</td><td>0</td><td>¥0</td></tr><tr><td>B0FVFC6JLC</td><td>COMMON1EMO32800</td><td>老品</td><td><span class="tag mute">⚫ 零销量</span></td><td>0</td><td>6</td><td>0</td><td>21</td><td>21</td><td>0.00</td><td>9,999</td><td>0</td><td>0</td><td>¥0</td></tr><tr><td>B0FVFD11BK</td><td>COMMON1EMO30700</td><td>老品</td><td><span class="tag mute">⚫ 零销量</span></td><td>8</td><td>3</td><td>8</td><td>3</td><td>11</td><td>0.00</td><td>9,999</td><td>248</td><td>0</td><td>¥0</td></tr><tr><td>B0FVFDVBR3</td><td>COMMON1EMO29000</td><td>老品</td><td><span class="tag mute">⚫ 零销量</span></td><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0.00</td><td>9,999</td><td>0</td><td>0</td><td>¥0</td></tr><tr><td>B0FVFFQXYS</td><td>COMMON1EMO34300</td><td>老品</td><td><span class="tag mute">⚫ 零销量</span></td><td>9</td><td>0</td><td>9</td><td>0</td><td>9</td><td>0.00</td><td>9,999</td><td>0</td><td>0</td><td>¥0</td></tr><tr><td>B0GK5DSGVV</td><td>ZC1EMO02300</td><td>老品</td><td><span class="tag mute">⚫ 零销量</span></td><td>7</td><td>40</td><td>13</td><td>35</td><td>48</td><td>0.00</td><td>9,999</td><td>35</td><td>0</td><td>¥0</td></tr><tr><td>B0GK752JBN</td><td>COMMON1EMO38000</td><td>老品</td><td><span class="tag mute">⚫ 零销量</span></td><td>5</td><td>0</td><td>5</td><td>0</td><td>5</td><td>0.00</td><td>9,999</td><td>0</td><td>0</td><td>¥0</td></tr><tr><td>B0GLGQ7DPX</td><td>COMMON1EMO34500</td><td>老品</td><td><span class="tag mute">⚫ 零销量</span></td><td>42</td><td>6</td><td>42</td><td>0</td><td>42</td><td>0.00</td><td>9,999</td><td>1,262</td><td>0</td><td>¥0</td></tr><tr><td>B0GQZ8R2TS</td><td>ZC1EMO03900</td><td>老品</td><td><span class="tag mute">⚫ 零销量</span></td><td>6</td><td>2</td><td>9</td><td>4</td><td>13</td><td>0.00</td><td>9,999</td><td>244</td><td>0</td><td>¥0</td></tr><tr><td>B0GQZ9WSRK</td><td>ZC1EMO02600</td><td>老品</td><td><span class="tag mute">⚫ 零销量</span></td><td>14</td><td>6</td><td>13</td><td>8</td><td>21</td><td>0.00</td><td>9,999</td><td>0</td><td>0</td><td>¥0</td></tr><tr><td>B0GQZLYPD3</td><td>ZC1EMO03700</td><td>老品</td><td><span class="tag mute">⚫ 零销量</span></td><td>3</td><td>3</td><td>29</td><td>3</td><td>32</td><td>0.00</td><td>9,999</td><td>0</td><td>0</td><td>¥0</td></tr><tr><td>B0GVM8FS7G</td><td>COMMON1EMO22300</td><td>老品</td><td><span class="tag mute">⚫ 零销量</span></td><td>4</td><td>0</td><td>4</td><td>0</td><td>4</td><td>0.00</td><td>9,999</td><td>0</td><td>0</td><td>¥0</td></tr><tr><td>B0GVMBFB7H</td><td>COMMON1EMO19800</td><td>老品</td><td><span class="tag mute">⚫ 零销量</span></td><td>9</td><td>0</td><td>13</td><td>3</td><td>16</td><td>0.00</td><td>9,999</td><td>245</td><td>0</td><td>¥0</td></tr><tr><td>B0GVMBTRL7</td><td>COMMON1EMO39200</td><td>老品</td><td><span class="tag mute">⚫ 零销量</span></td><td>5</td><td>5</td><td>5</td><td>1</td><td>6</td><td>0.00</td><td>9,999</td><td>0</td><td>0</td><td>¥0</td></tr><tr><td>B0GVMHCWRS</td><td>COMMON1EMO38900</td><td>老品</td><td><span class="tag mute">⚫ 零销量</span></td><td>18</td><td>0</td><td>18</td><td>0</td><td>18</td><td>0.00</td><td>9,999</td><td>0</td><td>0</td><td>¥0</td></tr><tr><td>B0GVMHK3JW</td><td>ZC1EMO05400</td><td>老品</td><td><span class="tag mute">⚫ 零销量</span></td><td>1</td><td>0</td><td>1</td><td>0</td><td>1</td><td>0.00</td><td>9,999</td><td>0</td><td>0</td><td>¥0</td></tr><tr><td>B0GVMHMX86</td><td>ZC1EMO00600</td><td>老品</td><td><span class="tag mute">⚫ 零销量</span></td><td>0</td><td>5</td><td>0</td><td>5</td><td>5</td><td>0.00</td><td>9,999</td><td>0</td><td>0</td><td>¥0</td></tr><tr><td>B0GVMK8JXH</td><td>COMMON1EMO38100</td><td>老品</td><td><span class="tag mute">⚫ 零销量</span></td><td>16</td><td>0</td><td>16</td><td>0</td><td>16</td><td>0.00</td><td>9,999</td><td>457</td><td>0</td><td>¥0</td></tr><tr><td>B0GVMKXHNQ</td><td>ZC1EMO00900</td><td>老品</td><td><span class="tag mute">⚫ 零销量</span></td><td>3</td><td>6</td><td>6</td><td>5</td><td>11</td><td>0.00</td><td>9,999</td><td>37</td><td>0</td><td>¥0</td></tr><tr><td>B0GVMMVYX4</td><td>COMMON1EMO39000</td><td>老品</td><td><span class="tag mute">⚫ 零销量</span></td><td>5</td><td>1</td><td>16</td><td>4</td><td>20</td><td>0.00</td><td>9,999</td><td>0</td><td>0</td><td>¥0</td></tr><tr><td>B0GYDKRV4T</td><td>COMMON1EMO35700</td><td>老品</td><td><span class="tag mute">⚫ 零销量</span></td><td>0</td><td>36</td><td>0</td><td>6</td><td>6</td><td>0.00</td><td>9,999</td><td>9</td><td>0</td><td>¥0</td></tr><tr><td>B0GYDX76HT</td><td>OO1EMO12200</td><td>老品</td><td><span class="tag mute">⚫ 零销量</span></td><td>17</td><td>0</td><td>18</td><td>0</td><td>18</td><td>0.00</td><td>9,999</td><td>546</td><td>0</td><td>¥0</td></tr><tr><td>B0H2Z3NSWD</td><td>COMMON1EMO36000</td><td>老品</td><td><span class="tag mute">⚫ 零销量</span></td><td>3</td><td>0</td><td>3</td><td>0</td><td>3</td><td>0.00</td><td>9,999</td><td>0</td><td>0</td><td>¥0</td></tr><tr><td>B0H2Z87F7F</td><td>COMMON1EMO34700</td><td>老品</td><td><span class="tag mute">⚫ 零销量</span></td><td>17</td><td>7</td><td>20</td><td>11</td><td>31</td><td>0.00</td><td>9,999</td><td>0</td><td>0</td><td>¥0</td></tr><tr><td>B0H33DWB5T</td><td>ZC1EMO06300</td><td>老品</td><td><span class="tag mute">⚫ 零销量</span></td><td>0</td><td>6</td><td>5</td><td>6</td><td>11</td><td>0.00</td><td>9,999</td><td>0</td><td>0</td><td>¥0</td></tr><tr><td>B0HBB1FHKP</td><td>OO1EMO49600</td><td>新品</td><td><span class="tag mute">⚫ 零销量</span></td><td>6</td><td>12</td><td>6</td><td>8</td><td>14</td><td>0.00</td><td>9,999</td><td>120</td><td>0</td><td>¥0</td></tr><tr><td>B0HBB46K46</td><td>OO1EMO42600</td><td>新品</td><td><span class="tag mute">⚫ 零销量</span></td><td>0</td><td>2</td><td>0</td><td>1</td><td>1</td><td>0.00</td><td>9,999</td><td>0</td><td>0</td><td>¥0</td></tr><tr><td>B0HBB4VYDK</td><td>OO1EMO41300</td><td>新品</td><td><span class="tag mute">⚫ 零销量</span></td><td>16</td><td>0</td><td>16</td><td>0</td><td>16</td><td>0.00</td><td>9,999</td><td>0</td><td>0</td><td>¥0</td></tr><tr><td>B0HBB4X2DR</td><td>OO1EMO42500</td><td>新品</td><td><span class="tag mute">⚫ 零销量</span></td><td>16</td><td>0</td><td>16</td><td>0</td><td>16</td><td>0.00</td><td>9,999</td><td>0</td><td>0</td><td>¥0</td></tr><tr><td>B0HBB52QCT</td><td>OO1EMO40400</td><td>新品</td><td><span class="tag mute">⚫ 零销量</span></td><td>13</td><td>0</td><td>16</td><td>0</td><td>16</td><td>0.00</td><td>9,999</td><td>0</td><td>0</td><td>¥0</td></tr><tr><td>B0HBB64MM5</td><td>OO1EMO47500</td><td>新品</td><td><span class="tag mute">⚫ 零销量</span></td><td>0</td><td>14</td><td>0</td><td>2</td><td>2</td><td>0.00</td><td>9,999</td><td>0</td><td>0</td><td>¥0</td></tr><tr><td>B0HBB7R99T</td><td>OO1EMO46500</td><td>新品</td><td><span class="tag mute">⚫ 零销量</span></td><td>11</td><td>3</td><td>11</td><td>3</td><td>14</td><td>0.00</td><td>9,999</td><td>0</td><td>0</td><td>¥0</td></tr><tr><td>B0HBB8PNLZ</td><td>OO1EMO48600</td><td>新品</td><td><span class="tag mute">⚫ 零销量</span></td><td>14</td><td>0</td><td>15</td><td>0</td><td>15</td><td>0.00</td><td>9,999</td><td>0</td><td>0</td><td>¥0</td></tr><tr><td>B0HBB942V3</td><td>OO1EMO47700</td><td>新品</td><td><span class="tag mute">⚫ 零销量</span></td><td>9</td><td>3</td><td>13</td><td>3</td><td>16</td><td>0.00</td><td>9,999</td><td>0</td><td>0</td><td>¥0</td></tr><tr><td>B0HBB98X8B</td><td>OO1EMO51500</td><td>新品</td><td><span class="tag mute">⚫ 零销量</span></td><td>22</td><td>0</td><td>23</td><td>0</td><td>23</td><td>0.00</td><td>9,999</td><td>609</td><td>0</td><td>¥0</td></tr><tr><td>B0HBB9NBJ3</td><td>OO1EMO52800</td><td>新品</td><td><span class="tag mute">⚫ 零销量</span></td><td>0</td><td>10</td><td>0</td><td>2</td><td>2</td><td>0.00</td><td>9,999</td><td>0</td><td>0</td><td>¥0</td></tr><tr><td>B0HBB9QC4N</td><td>OO1EMO50700</td><td>新品</td><td><span class="tag mute">⚫ 零销量</span></td><td>16</td><td>0</td><td>16</td><td>0</td><td>16</td><td>0.00</td><td>9,999</td><td>0</td><td>0</td><td>¥0</td></tr><tr><td>B0HBB9ZYGF</td><td>OO1EMO51900</td><td>新品</td><td><span class="tag mute">⚫ 零销量</span></td><td>0</td><td>16</td><td>0</td><td>16</td><td>16</td><td>0.00</td><td>9,999</td><td>0</td><td>0</td><td>¥0</td></tr><tr><td>B0HBBB31MQ</td><td>OO1EMO40000</td><td>新品</td><td><span class="tag mute">⚫ 零销量</span></td><td>0</td><td>20</td><td>0</td><td>15</td><td>15</td><td>0.00</td><td>9,999</td><td>0</td><td>0</td><td>¥0</td></tr><tr><td>B0HBBBCPVD</td><td>OO1EMO43800</td><td>新品</td><td><span class="tag mute">⚫ 零销量</span></td><td>18</td><td>0</td><td>18</td><td>8</td><td>26</td><td>0.00</td><td>9,999</td><td>0</td><td>0</td><td>¥0</td></tr><tr><td>B0HBBBQYRW</td><td>OO1EMO49500</td><td>新品</td><td><span class="tag mute">⚫ 零销量</span></td><td>16</td><td>0</td><td>16</td><td>0</td><td>16</td><td>0.00</td><td>9,999</td><td>0</td><td>0</td><td>¥0</td></tr><tr><td>B0HBBBW29N</td><td>OO1EMO45000</td><td>新品</td><td><span class="tag mute">⚫ 零销量</span></td><td>36</td><td>0</td><td>36</td><td>0</td><td>36</td><td>0.00</td><td>9,999</td><td>0</td><td>0</td><td>¥0</td></tr><tr><td>B0HBBCCYX4</td><td>OO1EMO46300</td><td>新品</td><td><span class="tag mute">⚫ 零销量</span></td><td>17</td><td>0</td><td>20</td><td>4</td><td>24</td><td>0.00</td><td>9,999</td><td>0</td><td>0</td><td>¥0</td></tr><tr><td>B0HBBDHYTJ</td><td>OO1EMO39400</td><td>新品</td><td><span class="tag mute">⚫ 零销量</span></td><td>10</td><td>3</td><td>10</td><td>3</td><td>13</td><td>0.00</td><td>9,999</td><td>0</td><td>0</td><td>¥0</td></tr><tr><td>B0HBBHPCMR</td><td>OO1EMO49300</td><td>新品</td><td><span class="tag mute">⚫ 零销量</span></td><td>16</td><td>4</td><td>13</td><td>4</td><td>17</td><td>0.00</td><td>9,999</td><td>0</td><td>0</td><td>¥0</td></tr><tr><td>B0HBBJ4LKX</td><td>OO1EMO42000</td><td>新品</td><td><span class="tag mute">⚫ 零销量</span></td><td>9</td><td>0</td><td>11</td><td>0</td><td>11</td><td>0.00</td><td>9,999</td><td>0</td><td>0</td><td>¥0</td></tr><tr><td>B0HBBJ6YQC</td><td>OO1EMO51701</td><td>新品</td><td><span class="tag mute">⚫ 零销量</span></td><td>17</td><td>0</td><td>17</td><td>8</td><td>25</td><td>0.00</td><td>9,999</td><td>284</td><td>0</td><td>¥0</td></tr><tr><td>B0HBBTYT7R</td><td>OO1EMO44300</td><td>新品</td><td><span class="tag mute">⚫ 零销量</span></td><td>16</td><td>0</td><td>16</td><td>0</td><td>16</td><td>0.00</td><td>9,999</td><td>0</td><td>0</td><td>¥0</td></tr></tbody></table>
+<div class="footer">
+数据源: 领星 ERP MCP(FBA 库存 get_fba_stock_list) + 运营综合分析明细(销量) ｜ 库存 2026-11-02 10:15:57 拉取<br>
+可售天数 = 可用合计(本地到仓+头程) ÷ 近 4 周日均 ｜ 需求 = 日均 × 180 天(120 前置 + 30 安全 + 30 覆盖)<br>
+生成: Hermes Agent ｜ 表头可点击排序 ｜ 全量 168 行支持 Ctrl+F
+</div>
+<script>
+var D = {"weeks": ["202636", "202637", "202638", "202639", "202640", "202641", "202642", "202643", "202644"], "week_sales": {"202636": 62.0, "202637": 91.0, "202638": 101.0, "202639": 130.0, "202640": 130.0, "202641": 116.0, "202642": 153.0, "202643": 164.0, "202644": 40.0}, "week_new": {"202636": 0.0, "202637": 0.0, "202638": 1.0, "202639": 15.0, "202640": 39.0, "202641": 47.0, "202642": 73.0, "202643": 87.0, "202644": 18.0}, "week_old": {"202636": 62.0, "202637": 91.0, "202638": 100.0, "202639": 115.0, "202640": 91.0, "202641": 69.0, "202642": 80.0, "202643": 77.0, "202644": 22.0}, "risk": [{"k": "🚨 紧急断货", "n": 7, "av": 28.0, "net": 434.0}, {"k": "🔴 断货预警", "n": 10, "av": 68.0, "net": 369.0}, {"k": "🟠 偏紧", "n": 26, "av": 285.0, "net": 558.0}, {"k": "✅ 健康", "n": 34, "av": 651.0, "net": 209.0}, {"k": "💤 库存过高", "n": 39, "av": 920.0, "net": 0.0}, {"k": "⚫ 零销量", "n": 52, "av": 764.0, "net": 0.0}], "urg": [{"asin": "B0HBBTLJYY", "d": 2.0, "net": 76.0}, {"asin": "B0HBBCH8ZS", "d": 7.0, "net": 92.0}, {"asin": "B0HBBF4YL7", "d": 7.0, "net": 74.0}, {"asin": "B0HBBHJGXG", "d": 13.0, "net": 66.0}, {"asin": "B0HBB9X8RT", "d": 17.0, "net": 29.0}, {"asin": "B0GR4G3ZVJ", "d": 20.0, "net": 57.0}, {"asin": "B0HBBCP2NN", "d": 20.0, "net": 40.0}], "types": [{"t": "新品", "av": 1076.0, "wk": 56.25, "net": 908.0}, {"t": "老品", "av": 1640.0, "wk": 62.0, "net": 662.0}], "pulled": "2026-11-02 10:15:57", "last_w": "202644"};
+function base(){return {tooltip:{trigger:'axis'},legend:{top:4,textStyle:{fontSize:11}},grid:{left:84,right:70,top:46,bottom:64}};}
+(function(){var el=echarts.init(document.getElementById('c1'));
+var w=D.weeks, ls=w.map(function(x){return D.week_old[x];}), ns=w.map(function(x){return D.week_new[x];});
+el.setOption(Object.assign(base(),{grid:{left:84,right:70,top:46,bottom:64},
+xAxis:{type:'category',data:w.map(function(x){return 'W'+x.slice(4);})},
+yAxis:[{type:'value',name:'销量(件)'},{type:'value',name:'总销量'}],
+series:[
+{name:'老品',type:'bar',stack:'s',data:ls,itemStyle:{color:'#9DB8CE'},barWidth:'52%'},
+{name:'新品',type:'bar',stack:'s',data:ns,itemStyle:{color:'#1B9AAA'},barWidth:'52%'},
+{name:'总销量',type:'line',data:w.map(function(x){return D.week_sales[x];}),itemStyle:{color:'#E67E22'},
+ lineStyle:{width:3},symbolSize:8,label:{show:true,fontSize:10}}]}));})();
+(function(){var el=echarts.init(document.getElementById('c2'));
+var r=D.risk.filter(function(x){return x.n>0;});
+var cmap={'🚨 紧急断货':'#C0392B','🔴 断货预警':'#E74C3C','🟠 偏紧':'#E67E22','✅ 健康':'#2A9D48','💤 库存过高':'#8E44AD','⚫ 零销量':'#7F8C8D'};
+el.setOption(Object.assign(base(),{grid:{left:20,right:20,top:40,bottom:30},legend:{bottom:0,textStyle:{fontSize:10}},
+series:[{type:'pie',radius:['38%','66%'],center:['50%','44%'],
+ data:r.map(function(x){return {name:x.k,value:x.n,itemStyle:{color:cmap[x.k]}};}),
+ label:{fontSize:10,formatter:'{b}\n{c}个'}}]}));})();
+(function(){var el=echarts.init(document.getElementById('c3'));
+var r=D.risk.filter(function(x){return x.n>0;});
+el.setOption(Object.assign(base(),{grid:{left:90,right:60,top:40,bottom:60},
+xAxis:{type:'category',data:r.map(function(x){return x.k;}),axisLabel:{fontSize:9.5,rotate:16,interval:0}},
+yAxis:{type:'value',name:'可用库存(件)'},
+series:[{type:'bar',data:r.map(function(x){return x.av;}),barWidth:'46%',
+ itemStyle:{color:function(p){var m={'🚨 紧急断货':'#C0392B','🔴 断货预警':'#E74C3C','🟠 偏紧':'#E67E22','✅ 健康':'#2A9D48','💤 库存过高':'#8E44AD','⚫ 零销量':'#7F8C8D'};return m[r[p.dataIndex].k];}},
+ label:{show:true,position:'top',fontSize:10}}]}));})();
+(function(){var el=echarts.init(document.getElementById('c4'));
+var u=D.urg;
+el.setOption(Object.assign(base(),{grid:{left:150,right:80,top:40,bottom:50},
+xAxis:{type:'value',name:'可售天数'},
+yAxis:{type:'category',data:u.map(function(x){return x.asin;}).reverse(),axisLabel:{fontSize:9.5}},
+series:[{type:'bar',data:u.map(function(x){return x.d;}).reverse(),barWidth:'52%',
+ itemStyle:{color:function(p){return p.value<10?'#C0392B':'#E74C3C';}},
+ label:{show:true,position:'right',fontSize:10,formatter:'{c} 天'}}]}));})();
+(function(){var el=echarts.init(document.getElementById('c5'));
+var t=D.types;
+el.setOption(Object.assign(base(),{grid:{left:84,right:80,top:46,bottom:60},
+xAxis:{type:'category',data:t.map(function(x){return x.t;})},
+yAxis:[{type:'value',name:'可用/净备货(件)'},{type:'value',name:'周均(件)'}],
+series:[
+{name:'可用合计',type:'bar',data:t.map(function(x){return x.av;}),itemStyle:{color:'#9DB8CE'},barWidth:'22%',
+ label:{show:true,position:'top',fontSize:10}},
+{name:'净备货',type:'bar',data:t.map(function(x){return x.net;}),itemStyle:{color:'#1B9AAA'},barWidth:'22%',
+ label:{show:true,position:'top',fontSize:10}},
+{name:'周均销量',type:'line',yAxisIndex:1,data:t.map(function(x){return x.wk;}),itemStyle:{color:'#E67E22'},
+ lineStyle:{width:3},symbolSize:10,label:{show:true,fontSize:10}}]}));})();
+document.querySelectorAll('table').forEach(function(tb){
+  tb.querySelectorAll('th').forEach(function(th,ci){
+    th.addEventListener('click',function(){
+      var tbody=tb.querySelector('tbody'); var rows=Array.from(tbody.querySelectorAll('tr'));
+      var asc = th.dataset.asc !== '1';
+      rows.sort(function(a,b){
+        var x=a.children[ci]?a.children[ci].innerText.replace(/[^0-9.\-]/g,''):'';
+        var y=b.children[ci]?b.children[ci].innerText.replace(/[^0-9.\-]/g,''):'';
+        if(x!==''&&y!==''&&!isNaN(x)&&!isNaN(y)) return asc?x-y:y-x;
+        var sa=a.children[ci]?a.children[ci].innerText:'', sb=b.children[ci]?b.children[ci].innerText:'';
+        return asc?sa.localeCompare(sb):sb.localeCompare(sa);
+      });
+      rows.forEach(function(r){tbody.appendChild(r);});
+      th.dataset.asc = asc?'1':'0';
+    });
+  });
+});
+window.addEventListener('resize',function(){['c1','c2','c3','c4','c5'].forEach(function(i){var e=echarts.getInstanceByDom(document.getElementById(i));if(e)e.resize();});});
+</script>
+
+<script>
+/* ==== 增强器注入脚本 (enhance_panel.py) ==== */
+(function(){
+  // 1) 图表工具箱: 保存图片 / 数据视图 / 还原
+  function injectToolbox(){
+    var n = 0;
+    document.querySelectorAll('.chart').forEach(function(el){
+      if (typeof echarts === 'undefined') return;
+      var inst = echarts.getInstanceByDom(el);
+      if (!inst) return;
+      var op = inst.getOption();
+      var tb = op.toolbox;
+      if (tb && (Array.isArray(tb) ? tb.length : true) && op.__enh) return;
+      try {
+        inst.setOption({
+          toolbox: {
+            show: true, right: 6, top: 0, itemSize: 13, itemGap: 8,
+            iconStyle: { borderColor: '#2E86AB', borderWidth: 1.4 },
+            emphasis: { iconStyle: { borderColor: '#1F4E78' } },
+            feature: {
+              saveAsImage: { title: '保存图片', name: (el.id || 'chart'), backgroundColor: '#fff', pixelRatio: 2,
+                             lang: ['保存为图片'] },
+              dataView: { title: '数据表', readOnly: true, lang: ['数据视图', '关闭', '刷新'] },
+              restore: { title: '还原', lang: ['还原'] }
+            }
+          },
+          __enh: true
+        });
+        n++;
+      } catch(e) {}
+    });
+    return n;
+  }
+
+  // 2) 表格: 搜索 + 行数 + 折叠(Top12)
+  function enhanceTables(){
+    document.querySelectorAll('table').forEach(function(t){
+      if (t.closest('.tbl-wrap')) return;
+      var tbody = t.querySelector('tbody');
+      if (!tbody) return;
+      var rows = tbody.querySelectorAll('tr');
+      if (rows.length < 8) return;
+
+      var parent = t.parentNode;
+      var wrap = document.createElement('div');
+      wrap.className = 'tbl-wrap';
+      parent.insertBefore(wrap, t);
+      wrap.appendChild(t);
+
+      var tools = document.createElement('div');
+      tools.className = 'tbl-tools';
+      tools.innerHTML = '<input type="text" placeholder="搜索 ' + rows.length + ' 行(输入 ASIN / SKU / 关键词)">'
+        + '<span class="cnt"></span>'
+        + ((rows.length > 12 && !t.hasAttribute('data-nofold')) ? '<button class="btn-mini" type="button">展开全部</button>' : '');
+      wrap.insertBefore(tools, t);
+
+      var input = tools.querySelector('input');
+      var cnt = tools.querySelector('.cnt');
+      var btn = tools.querySelector('.btn-mini');
+
+      function setCnt(shown){
+        cnt.textContent = '显示 ' + shown + ' / ' + rows.length + ' 行';
+      }
+      setCnt(rows.length);
+      if (rows.length > 12 && btn && !t.hasAttribute('data-nofold')) {
+        wrap.classList.add('collapsed');
+        btn.textContent = '展开全部(' + rows.length + ' 行)';
+        setCnt(Math.min(12, rows.length));
+        btn.onclick = function(){
+          wrap.classList.toggle('collapsed');
+          var c = wrap.classList.contains('collapsed');
+          btn.textContent = c ? ('展开全部(' + rows.length + ' 行)') : '收起';
+          setCnt(c ? Math.min(12, rows.length) : rows.length);
+        };
+      }
+
+      input.addEventListener('input', function(){
+        var q = this.value.trim().toLowerCase();
+        var shown = 0;
+        rows.forEach(function(tr){
+          var hit = !q || tr.textContent.toLowerCase().indexOf(q) >= 0;
+          tr.style.display = hit ? '' : 'none';
+          if (hit) shown++;
+        });
+        setCnt(shown);
+        if (q) wrap.classList.remove('collapsed');
+      });
+    });
+  }
+
+  // 3) 锚点导航(基于 sec-title / chapter 自动生成)
+  function buildNav(){
+    var heads = document.querySelectorAll('.sec-title, .chapter');
+    if (heads.length < 3) return;
+    var nav = document.createElement('nav');
+    nav.className = 'topnav';
+    heads.forEach(function(h, i){
+      var txt = (h.textContent || '').replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu, '').trim();
+      if (!txt) return;
+      if (!h.id) h.id = 'sec-' + (i + 1);
+      var a = document.createElement('a');
+      a.href = '#' + h.id;
+      a.textContent = txt.length > 22 ? txt.slice(0, 22) + '…' : txt;
+      nav.appendChild(a);
+    });
+    var anchor = document.querySelector('.header') || document.body.firstChild;
+    anchor.parentNode.insertBefore(nav, anchor.nextSibling);
+
+    // 平滑滚动 + 高亮
+    nav.addEventListener('click', function(e){
+      var a = e.target.closest('a');
+      if (!a) return;
+      e.preventDefault();
+      var t = document.getElementById(a.getAttribute('href').slice(1));
+      if (t) { window.scrollTo({ top: t.getBoundingClientRect().top + window.pageYOffset - 70, behavior: 'smooth' }); }
+      nav.querySelectorAll('a').forEach(function(x){ x.classList.remove('active'); });
+      a.classList.add('active');
+    });
+    // 滚动高亮
+    var obs = new IntersectionObserver(function(es){
+      es.forEach(function(en){
+        if (en.isIntersecting) {
+          nav.querySelectorAll('a').forEach(function(x){
+            x.classList.toggle('active', x.getAttribute('href') === '#' + en.target.id);
+          });
+        }
+      });
+    }, { rootMargin: '-80px 0px -70% 0px' });
+    heads.forEach(function(h){ if (h.id) obs.observe(h); });
+  }
+
+  // 4) 回到顶部
+  function addToTop(){
+    var b = document.createElement('button');
+    b.id = 'toTop'; b.innerHTML = '&#8593;'; b.title = '回到顶部';
+    b.onclick = function(){ window.scrollTo({ top: 0, behavior: 'smooth' }); };
+    document.body.appendChild(b);
+    window.addEventListener('scroll', function(){
+      b.classList.toggle('show', window.pageYOffset > 500);
+    });
+  }
+
+  function run(){
+    var n = injectToolbox();
+    enhanceTables();
+    buildNav();
+    addToTop();
+    console.log('[enhance] toolbox charts=' + n);
+  }
+  if (document.readyState === 'complete') setTimeout(run, 900);
+  else window.addEventListener('load', function(){ setTimeout(run, 900); });
+})();
+</script>
+<!--__enhanced_v1__-->
+
+<script>
+/* ==== 下拉筛选 (enhance v4: 仅分类列) ==== */
+(function(){
+  var KW = ['状态','类型','等级','预警','分类','店铺','品牌','标签','阶段','是否','渠道','系列','品线','动销'];
+  function build(){
+    var total = 0, tables = 0;
+    document.querySelectorAll('.tbl-wrap table').forEach(function(t){
+      var wrap = t.closest('.tbl-wrap');
+      var tools = wrap && wrap.querySelector('.tbl-tools');
+      if (!tools || tools.querySelector('select.flt')) return;
+      var ths = Array.prototype.slice.call(t.querySelectorAll('thead th'));
+      var rows = Array.prototype.slice.call(t.querySelectorAll('tbody tr'));
+      if (rows.length < 6 || ths.length < 2) return;
+
+      var cands = [], kwCands = [];
+      ths.forEach(function(th, ci){
+        var name = (th.textContent || '').trim();
+        var vals = {}, editable = 0;
+        rows.forEach(function(r){
+          var c = r.children[ci];
+          if (!c) return;
+          if (c.querySelector('input, select, textarea')) editable++;
+          var v = (c.textContent || '').trim();
+          if (v && v.length <= 24) vals[v] = (vals[v] || 0) + 1;
+        });
+        if (editable > rows.length * 0.4) return;                 // 可编辑列 → 跳过
+        var keys = Object.keys(vals);
+        if (keys.length < 2 || keys.length > 12) return;
+        if (rows.length / keys.length < 1.5) return;              // 近似唯一值 → ID 列
+        if (keys.every(function(v){ return /^[\d,.\-+¥$%\s()]+$/.test(v); })) return;  // 纯数值列 → 跳过
+        var item = { ci: ci, name: name.slice(0, 10), vals: keys.sort() };
+        if (KW.some(function(k){ return name.indexOf(k) >= 0; })) kwCands.push(item);
+        else cands.push(item);
+      });
+
+      var picks = kwCands.length ? kwCands : cands;               // 有关键词列就只用它们
+      if (!picks.length) return;
+      picks = picks.slice(0, 2);                                  // 每表最多 2 个
+
+      var input = tools.querySelector('input');
+      var cnt = tools.querySelector('.cnt');
+      picks.forEach(function(p){
+        var sel = document.createElement('select');
+        sel.className = 'flt';
+        sel.setAttribute('data-ci', p.ci);
+        var html = '<option value="">' + p.name + ': 全部(' + p.vals.length + ')</option>';
+        p.vals.forEach(function(v){ html += '<option value="' + v.replace(/"/g, '&quot;') + '">' + v + '</option>'; });
+        sel.innerHTML = html;
+        tools.appendChild(sel);
+        total++;
+      });
+      tables++;
+
+      var sels = Array.prototype.slice.call(tools.querySelectorAll('select.flt'));
+      function apply(){
+        var active = false;
+        rows.forEach(function(r){
+          var show = true;
+          sels.forEach(function(s){
+            if (s.value) {
+              active = true;
+              var c = r.children[+s.getAttribute('data-ci')];
+              if (!c || (c.textContent || '').trim() !== s.value) show = false;
+            }
+          });
+          r.style.display = show ? '' : 'none';
+        });
+        sels.forEach(function(s){ s.classList.toggle('on', !!s.value); });
+        if (cnt) {
+          var shown = rows.filter(function(r){ return r.style.display !== 'none'; }).length;
+          cnt.textContent = '显示 ' + shown + ' / ' + rows.length + ' 行' + (active ? ' (已筛选)' : '');
+        }
+        if (active) wrap.classList.remove('collapsed');
+      }
+      sels.forEach(function(s){
+        s.addEventListener('change', function(){
+          if (input && input.value) { input.value = ''; input.dispatchEvent(new Event('input')); }
+          apply();
+        });
+      });
+      if (input) input.addEventListener('input', function(){
+        if (this.value) sels.forEach(function(s){ s.value = ''; s.classList.remove('on'); });
+      });
+      apply();
+    });
+    console.log('[enhance v4] 筛选器 ' + total + ' 个 / 覆盖 ' + tables + ' 张表');
+    return total;
+  }
+  var tries = 0;
+  function waitAndBuild(){
+    tries++;
+    if (document.querySelectorAll('.tbl-wrap').length === 0 && tries < 25) { setTimeout(waitAndBuild, 400); return; }
+    var n = build();
+    if (n === 0 && tries < 25) setTimeout(waitAndBuild, 400);
+  }
+  if (document.readyState === 'complete') setTimeout(waitAndBuild, 300);
+  else window.addEventListener('load', function(){ setTimeout(waitAndBuild, 300); });
+})();
+</script>
+<!--__enhanced_v4__-->
+</body>
+</html>
