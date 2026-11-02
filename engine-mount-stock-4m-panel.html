@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>发动机支架 · 4个月备货面板</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Microsoft YaHei',-apple-system,sans-serif;background:#f0f4f8;color:#152238;padding:16px;max-width:1800px;margin:0 auto}
+.header{background:linear-gradient(135deg,#0F4C75,#1B9AAA);color:#fff;border-radius:14px;padding:22px 28px;margin-bottom:14px;box-shadow:0 6px 20px rgba(15,76,117,.22)}
+.header h1{font-size:25px;font-weight:700}
+.header .meta{font-size:12.5px;opacity:.95;margin-top:7px;line-height:1.85}
+.kpi-row{display:flex;flex-wrap:nowrap;gap:9px;margin-bottom:14px;overflow-x:auto}
+.kpi{background:#fff;border-radius:10px;padding:12px 14px;box-shadow:0 2px 6px rgba(0,0,0,.07);flex:1 1 0;min-width:150px}
+.k-label{font-size:11.5px;color:#5f6b7a}
+.k-val{font-size:18px;font-weight:700;margin:3px 0;color:#0F4C75}
+.k-val.good{color:#2A9D48}.k-val.warn{color:#E67E22}.k-val.bad{color:#C0392B}
+.k-note{font-size:10.5px;color:#8494a5;line-height:1.5}
+.card{background:#fff;border-radius:12px;padding:16px 18px;box-shadow:0 2px 6px rgba(0,0,0,.07);margin-bottom:14px}
+.chapter{background:linear-gradient(90deg,#0F4C75,#1B9AAA);color:#fff;border-radius:10px;padding:10px 20px;margin:20px auto 12px;font-size:16px;font-weight:700;max-width:1500px}
+.c-title{font-size:14.5px;font-weight:700;color:#0F4C75;margin-bottom:10px}
+.chart{width:100%;height:320px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+/* 筛选栏 */
+.filters{background:#fff;border-radius:12px;padding:14px 18px;box-shadow:0 2px 6px rgba(0,0,0,.07);margin-bottom:12px;position:sticky;top:0;z-index:50}
+.f-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:8px}
+.f-row:last-child{margin-bottom:0}
+.f-lab{font-size:12px;color:#5f6b7a;font-weight:600;min-width:56px}
+.f-inp{padding:6px 10px;border:1px solid #d0dae4;border-radius:7px;font-size:12.5px;font-family:inherit;min-width:150px}
+.f-inp:focus{outline:none;border-color:#1B9AAA;box-shadow:0 0 0 2px rgba(27,154,170,.12)}
+.f-sel{padding:6px 10px;border:1px solid #d0dae4;border-radius:7px;font-size:12.5px;font-family:inherit;background:#fff;cursor:pointer}
+.f-btn{padding:6px 14px;border:none;border-radius:7px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit;transition:.15s}
+.f-btn.pri{background:#0F4C75;color:#fff}.f-btn.pri:hover{background:#1B9AAA}
+.f-btn.gray{background:#eef2f6;color:#5f6b7a}.f-btn.gray:hover{background:#dde5ec}
+.f-btn.warn{background:#E67E22;color:#fff}.f-btn.warn:hover{background:#d35400}
+.f-btn.green{background:#2A9D48;color:#fff}.f-btn.green:hover{background:#218838}
+.f-chip{display:inline-block;padding:4px 10px;border-radius:14px;font-size:11.5px;background:#eef2f6;color:#5f6b7a;cursor:pointer;border:1px solid transparent;transition:.15s;user-select:none}
+.f-chip:hover{background:#dde5ec}
+.f-chip.on{background:#0F4C75;color:#fff;border-color:#0F4C75}
+.f-stat{font-size:12.5px;color:#5f6b7a;padding:6px 0}
+.f-stat b{color:#C0392B;font-size:14px}
+
+/* 表格 */
+.twrap{background:#fff;border-radius:12px;box-shadow:0 2px 6px rgba(0,0,0,.07);overflow:hidden}
+.tscroll{overflow:auto;max-height:74vh}
+table{width:100%;border-collapse:collapse;font-size:11.5px}
+th{background:#0F4C75;color:#fff;font-weight:600;padding:9px 5px;text-align:center;font-size:11px;cursor:pointer;white-space:nowrap;position:sticky;top:0;z-index:10}
+th:hover{background:#1B9AAA}
+td{padding:5px;text-align:center;border-bottom:1px solid #eef2f6;white-space:nowrap}
+tbody tr:nth-child(even){background:#f8fbfd}
+tbody tr:hover{background:#e8f4fc}
+tbody tr.marked{background:#eafaf0 !important}
+tbody tr.marked td{color:#7f8c8d}
+.up{color:#2A9D48;font-weight:600}.down{color:#C0392B;font-weight:600}
+.tag{display:inline-block;padding:2px 7px;border-radius:9px;font-size:10.5px;font-weight:600;white-space:nowrap}
+.r0{background:#fdeceb;color:#a52a1e}.r1{background:#fdeee8;color:#b8442a}
+.r2{background:#fff5e6;color:#a95c14}.r3{background:#e8f8ec;color:#1e7a37}
+.r4{background:#f3e8fd;color:#6c3483}.r5{background:#f0f2f5;color:#5f6b7a}
+.tn{background:#e3f2fd;color:#1565c0}.to{background:#fff3e0;color:#e65100}
+
+/* 备注输入 */
+.note-inp{width:100%;min-width:160px;padding:4px 7px;border:1px solid #dde5ec;border-radius:5px;font-size:11px;font-family:inherit;background:#fff}
+.note-inp:focus{outline:none;border-color:#1B9AAA;background:#f0fafc}
+.note-inp.has{background:#fffbe6;border-color:#f0c040}
+.chk{width:16px;height:16px;cursor:pointer;accent-color:#2A9D48}
+.foot{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;background:#f8fbfd;border-top:1px solid #eef2f6;font-size:12px;color:#5f6b7a}
+.insight{background:#f8fbfd;border-left:3px solid #1B9AAA;border-radius:6px;padding:11px 14px;margin:9px 0 3px;font-size:12.5px;line-height:1.8}
+.insight.warm{background:#fffaf5;border-left-color:#E67E22}
+.insight .ins-line{margin:3px 0}
+.insight b{color:#0F4C75}
+.footer{text-align:center;color:#8494a5;font-size:11px;padding:18px 0;line-height:1.85}
+</style>
+</head>
+<body>
+<div class="header">
+<h1>&#128230; 发动机支架 · 4 个月备货面板</h1>
+<div class="meta">库存快照 2026-10-30 ｜ 168 个 ASIN(新品 75 / 老品 93) ｜ 覆盖 4 个月(120 天)<br>
+4月需求 <b>2,808 件</b> ｜ 可用 <b>2,716 件</b> ｜ 净备货 <b>1,315 件</b> ｜ 金额 <b>¥192,027</b><br>
+<b>支持筛选 + 备注 + 标记已下单</b>（备注自动保存到浏览器，可导出 CSV）
+</div>
+</div>
+<div class="kpi-row"><div class="kpi"><div class="k-label">4月需求</div><div class="k-val brand">2,808 件</div><div class="k-note">新品 1,333 + 老品 1,475</div></div><div class="kpi"><div class="k-label">可用库存</div><div class="k-val brand">2,716 件</div><div class="k-note">满足率 96.7%</div></div><div class="kpi"><div class="k-label">净备货</div><div class="k-val warn">1,315 件</div><div class="k-note">需下单 66 个</div></div><div class="kpi"><div class="k-label">备货金额</div><div class="k-val warn">¥192,027</div><div class="k-note">新品 ¥112,143 / 老品 ¥79,884</div></div><div class="kpi"><div class="k-label">紧急断货</div><div class="k-val bad">19 个</div><div class="k-note">可撑 <30 天 · ¥100,375</div></div><div class="kpi"><div class="k-label">滞销压货</div><div class="k-val bad">72 个</div><div class="k-note">压 1,316 件 · ¥0</div></div></div>
+
+<div class="filters">
+  <div class="f-row">
+    <span class="f-lab">搜索</span>
+    <input id="fkw" class="f-inp" placeholder="输入 ASIN 或 SKU 关键字...">
+    <span class="f-lab">类型</span>
+    <select id="ftp" class="f-sel"><option>全部</option><option>新品</option><option>老品</option></select>
+    <span class="f-lab">状态</span>
+    <select id="fst" class="f-sel"><option value="全部">全部</option><option>交付中</option><option>推新</option><option>淘汰</option><option>清库</option><option>维稳</option><option>风险</option></select>
+    <span class="f-lab">可撑</span>
+    <input id="fdmin" class="f-inp" style="min-width:80px" placeholder="最少天数" type="number">
+    <span style="color:#8494a5">~</span>
+    <input id="fdmax" class="f-inp" style="min-width:80px" placeholder="最多天数" type="number">
+    <label style="display:flex;align-items:center;gap:5px;font-size:12.5px;color:#5f6b7a;cursor:pointer">
+      <input type="checkbox" id="fneed" class="chk"> 只看需下单
+    </label>
+    <button id="freset" class="f-btn gray">重置</button>
+  </div>
+  <div class="f-row">
+    <span class="f-lab">风险</span>
+    <span class="f-chip" data-rk="🚨 紧急(<30天)">🚨 紧急(<30天)</span><span class="f-chip" data-rk="🔴 预警(30-60天)">🔴 预警(30-60天)</span><span class="f-chip" data-rk="🟠 偏紧(60-120天)">🟠 偏紧(60-120天)</span><span class="f-chip" data-rk="✅ 健康(120-240天)">✅ 健康(120-240天)</span><span class="f-chip" data-rk="💤 过高(>240天)">💤 过高(>240天)</span><span class="f-chip" data-rk="⚫ 零销量">⚫ 零销量</span>
+  </div>
+  <div class="f-row">
+    <span class="f-lab">优先级</span>
+    <span class="f-chip" data-pri="P0 立即">P0 立即</span><span class="f-chip" data-pri="P1 尽快">P1 尽快</span><span class="f-chip" data-pri="P2 计划">P2 计划</span><span class="f-chip" data-pri="P3 观察">P3 观察</span><span class="f-chip" data-pri="— 清库存">— 清库存</span><span class="f-chip" data-pri="— 不备">— 不备</span>
+    <span style="flex:1"></span>
+    <button id="q-urg" class="f-btn warn">🚨 只看紧急</button>
+    <button id="q-new" class="f-btn pri">新品需下单</button>
+    <button id="q-old" class="f-btn pri">老品需下单</button>
+    <button id="exp-note" class="f-btn green">📥 导出备注</button>
+    <label class="f-btn gray" style="cursor:pointer">📤 导入备注<input type="file" id="imp-note" accept=".csv" style="display:none"></label>
+    <button id="exp-all" class="f-btn gray">导出全量CSV</button>
+  </div>
+  <div class="f-stat" id="stat"></div>
+</div>
+
+<div class="twrap">
+  <div class="tscroll">
+    <table>
+      <thead><tr><th>#</th><th>类型</th><th>ASIN</th><th>SKU</th><th>状态</th><th>风险</th><th>优先级</th><th>日均</th><th>4月需求</th><th>可用</th><th>可售</th><th>头程</th><th>待上架</th><th>已采在途</th><th>净备货</th><th>可撑天</th><th>单价</th><th>金额</th><th>备注</th><th>标记</th></tr></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+  <div class="foot">
+    <span>💾 备注和标记自动保存在本浏览器 ｜ 换电脑请先「导出备注」再「导入备注」</span>
+    <span>共 168 个 ASIN</span>
+  </div>
+</div>
+
+<div class="chapter">&#128202; 分布概览</div>
+<div class="card">
+  <div class="row2">
+    <div id="c1" class="chart"></div>
+    <div id="c2" class="chart"></div>
+  </div>
+</div>
+
+<div class="card">
+<div class="insight warm"><div class="ins-line"><b>📊 数据解读:</b><b>全部 168 个:4 月需求 2,808 件,可用 2,716 件,净备货 1,315 件 / ¥192,027。</b><br>新品 75 个:需求 1,333、缺口 828 件(¥112,143);老品 93 个:需求 1,475、缺口 487 件(¥79,884)。</div><div class="ins-line"><b>🔍 原因分析:</b><b>新品满足率 80.7%(真缺货),老品满足率 111.2%(结构错配)。</b><br>同时 <b>72 个滞销款压着 1,316 件可用库存</b> —— 清掉刚好够补 1,315 件的缺口。</div><div class="ins-line"><b>✅ 建议动作:</b><b>① 筛选「🚨 只看紧急」共 19 个,本周下单(其中可撑<10天的走空运);<br>② 老品 25 个过高款降价清库存,释放资金;<br>③ 在「备注」列写下每款的处理决定(如"已下单/等凑单/清库"),自动保存,可导出给采购。</b></div></div>
+</div>
+
+<div class="footer">
+数据源: 库存明细报表(41) 2026-10-30 + 运营综合分析明细(56) ｜ 无 MOQ 约束<br>
+口径: 新品(首销≥14天用首销口径,否则在架口径) / 老品(9-10月月化均值) ｜ 需求 × 120 天<br>
+生成: Hermes Agent
+</div>
+<script>
+var D = {"rows": [{"id": "r0", "tp": "新品", "asin": "B0HBBF4YL7", "sku": "OO1EMO43100", "st": "推新", "rk": "🚨 紧急(<30天)", "pri": "P0 立即", "d": 0.5, "need": 60, "av": 3, "sale": 1, "tr": 0, "pend": 0, "po": 0, "net": 57, "days": 6, "price": 331.86, "amt": 18916, "kj": "首销"}, {"id": "r1", "tp": "老品", "asin": "B0GS5P27YF", "sku": "COMMON1EMO38800", "st": "维稳", "rk": "🚨 紧急(<30天)", "pri": "P0 立即", "d": 0.504, "need": 60, "av": 12, "sale": 7, "tr": 4, "pend": 1, "po": 0, "net": 48, "days": 24, "price": 265.18, "amt": 12729, "kj": "月度月化"}, {"id": "r2", "tp": "老品", "asin": "B0GR4G3ZVJ", "sku": "COMMON1EMO35900", "st": "维稳", "rk": "🚨 紧急(<30天)", "pri": "P0 立即", "d": 0.387, "need": 46, "av": 7, "sale": 4, "tr": 3, "pend": 0, "po": 0, "net": 39, "days": 18, "price": 205.0, "amt": 7995, "kj": "月度月化"}, {"id": "r3", "tp": "新品", "asin": "B0HBBF8TZF", "sku": "OO1EMO42800", "st": "推新", "rk": "🚨 紧急(<30天)", "pri": "P0 立即", "d": 0.359, "need": 43, "av": 9, "sale": 1, "tr": 5, "pend": 2, "po": 0, "net": 34, "days": 25, "price": 219.47, "amt": 7462, "kj": "首销"}, {"id": "r4", "tp": "新品", "asin": "B0HBB74GT5", "sku": "OO1EMO42300", "st": "推新", "rk": "🚨 紧急(<30天)", "pri": "P0 立即", "d": 0.441, "need": 53, "av": 8, "sale": 0, "tr": 4, "pend": 0, "po": 0, "net": 45, "days": 18, "price": 145.13, "amt": 6531, "kj": "首销"}, {"id": "r5", "tp": "老品", "asin": "B0GQZKD41H", "sku": "COMMON1EMO26100", "st": "维稳", "rk": "🚨 紧急(<30天)", "pri": "P0 立即", "d": 0.457, "need": 55, "av": 3, "sale": 1, "tr": 2, "pend": 2, "po": 0, "net": 52, "days": 7, "price": 100.96, "amt": 5250, "kj": "月度月化"}, {"id": "r6", "tp": "新品", "asin": "B0HBB4L2SL", "sku": "OO1EMO45100", "st": "推新", "rk": "🚨 紧急(<30天)", "pri": "P0 立即", "d": 0.312, "need": 38, "av": 8, "sale": 3, "tr": 3, "pend": 0, "po": 0, "net": 30, "days": 26, "price": 172.41, "amt": 5172, "kj": "首销"}, {"id": "r7", "tp": "新品", "asin": "B0HBBCH8ZS", "sku": "OO1EMO44900", "st": "推新", "rk": "🚨 紧急(<30天)", "pri": "P0 立即", "d": 0.543, "need": 65, "av": 4, "sale": 3, "tr": 0, "pend": 0, "po": 0, "net": 61, "days": 7, "price": 84.07, "amt": 5128, "kj": "首销"}, {"id": "r8", "tp": "老品", "asin": "B0GLGLC7VJ", "sku": "COMMON1EMO38400", "st": "维稳", "rk": "🚨 紧急(<30天)", "pri": "P0 立即", "d": 0.257, "need": 31, "av": 5, "sale": 4, "tr": 0, "pend": 0, "po": 0, "net": 26, "days": 19, "price": 180.84, "amt": 4702, "kj": "月度月化"}, {"id": "r9", "tp": "老品", "asin": "B0GVMHRXL8", "sku": "COMMON1EMO38500", "st": "维稳", "rk": "🚨 紧急(<30天)", "pri": "P0 立即", "d": 0.187, "need": 22, "av": 4, "sale": 0, "tr": 1, "pend": 0, "po": 0, "net": 18, "days": 21, "price": 216.81, "amt": 3903, "kj": "月度月化"}, {"id": "r10", "tp": "新品", "asin": "B0HBB1X23V", "sku": "OO1EMO43200", "st": "推新", "rk": "🚨 紧急(<30天)", "pri": "P0 立即", "d": 0.281, "need": 34, "av": 6, "sale": 0, "tr": 5, "pend": 0, "po": 0, "net": 28, "days": 21, "price": 138.05, "amt": 3865, "kj": "首销"}, {"id": "r11", "tp": "新品", "asin": "B0HBBHJGXG", "sku": "OO1EMO42200", "st": "推新", "rk": "🚨 紧急(<30天)", "pri": "P0 立即", "d": 0.733, "need": 88, "av": 5, "sale": 5, "tr": 0, "pend": 0, "po": 0, "net": 83, "days": 7, "price": 41.64, "amt": 3456, "kj": "首销"}, {"id": "r12", "tp": "新品", "asin": "B0HBBTLJYY", "sku": "OO1EMO42100", "st": "推新", "rk": "🚨 紧急(<30天)", "pri": "P0 立即", "d": 0.75, "need": 90, "av": 1, "sale": 1, "tr": 0, "pend": 0, "po": 0, "net": 89, "days": 1, "price": 35.81, "amt": 3187, "kj": "首销"}, {"id": "r13", "tp": "新品", "asin": "B0HBB7SWFB", "sku": "OO1EMO39500", "st": "推新", "rk": "🚨 紧急(<30天)", "pri": "P0 立即", "d": 0.474, "need": 57, "av": 7, "sale": 5, "tr": 0, "pend": 0, "po": 0, "net": 50, "days": 15, "price": 63.3, "amt": 3165, "kj": "首销"}, {"id": "r14", "tp": "新品", "asin": "B0HBB97HM6", "sku": "OO1EMO50900", "st": "推新", "rk": "🚨 紧急(<30天)", "pri": "P0 立即", "d": 0.357, "need": 43, "av": 9, "sale": 5, "tr": 3, "pend": 0, "po": 0, "net": 34, "days": 25, "price": 81.62, "amt": 2775, "kj": "首销"}, {"id": "r15", "tp": "老品", "asin": "B0GYF366RS", "sku": "COMMON1EMO32100", "st": "淘汰", "rk": "🚨 紧急(<30天)", "pri": "P0 立即", "d": 0.176, "need": 21, "av": 4, "sale": 4, "tr": 0, "pend": 0, "po": 0, "net": 17, "days": 23, "price": 105.0, "amt": 1785, "kj": "月度月化"}, {"id": "r16", "tp": "新品", "asin": "B0HBB9X8RT", "sku": "OO1EMO45300", "st": "推新", "rk": "🚨 紧急(<30天)", "pri": "P0 立即", "d": 0.217, "need": 26, "av": 3, "sale": 3, "tr": 0, "pend": 0, "po": 0, "net": 23, "days": 14, "price": 65.35, "amt": 1503, "kj": "首销"}, {"id": "r17", "tp": "新品", "asin": "B0HBBLGNYT", "sku": "OO1EMO44800", "st": "推新", "rk": "🚨 紧急(<30天)", "pri": "P0 立即", "d": 0.406, "need": 49, "av": 7, "sale": 7, "tr": 0, "pend": 0, "po": 0, "net": 42, "days": 17, "price": 35.4, "amt": 1487, "kj": "首销"}, {"id": "r18", "tp": "新品", "asin": "B0HBBCP2NN", "sku": "OO1EMO43400", "st": "推新", "rk": "🚨 紧急(<30天)", "pri": "P0 立即", "d": 0.259, "need": 31, "av": 5, "sale": 5, "tr": 0, "pend": 0, "po": 0, "net": 26, "days": 19, "price": 52.47, "amt": 1364, "kj": "在架(样本不足)"}, {"id": "r19", "tp": "新品", "asin": "B0HBBFLMPX", "sku": "OO1EMO48400", "st": "推新", "rk": "🔴 预警(30-60天)", "pri": "P1 尽快", "d": 0.321, "need": 39, "av": 12, "sale": 5, "tr": 4, "pend": 0, "po": 0, "net": 27, "days": 37, "price": 421.24, "amt": 11373, "kj": "首销"}, {"id": "r20", "tp": "老品", "asin": "B0GYDVRK7X", "sku": "COMMON1EMO38300", "st": "维稳", "rk": "🔴 预警(30-60天)", "pri": "P1 尽快", "d": 0.359, "need": 43, "av": 16, "sale": 3, "tr": 2, "pend": 0, "po": 0, "net": 27, "days": 45, "price": 245.93, "amt": 6640, "kj": "月度月化"}, {"id": "r21", "tp": "新品", "asin": "B0HBB485VJ", "sku": "OO1EMO45500", "st": "推新", "rk": "🔴 预警(30-60天)", "pri": "P1 尽快", "d": 0.222, "need": 27, "av": 7, "sale": 3, "tr": 2, "pend": 0, "po": 0, "net": 20, "days": 32, "price": 291.15, "amt": 5823, "kj": "首销"}, {"id": "r22", "tp": "新品", "asin": "B0HBB9C2XG", "sku": "OO1EMO40300", "st": "推新", "rk": "🔴 预警(30-60天)", "pri": "P1 尽快", "d": 0.25, "need": 30, "av": 12, "sale": 5, "tr": 3, "pend": 0, "po": 0, "net": 18, "days": 48, "price": 304.42, "amt": 5480, "kj": "首销"}, {"id": "r23", "tp": "老品", "asin": "B0GLGQ1R1R", "sku": "ZC1EMO01500", "st": "维稳", "rk": "🔴 预警(30-60天)", "pri": "P1 尽快", "d": 0.348, "need": 42, "av": 16, "sale": 0, "tr": 15, "pend": 0, "po": 0, "net": 26, "days": 46, "price": 190.15, "amt": 4944, "kj": "月度月化"}, {"id": "r24", "tp": "新品", "asin": "B0HBB919W9", "sku": "OO1EMO51100", "st": "推新", "rk": "🔴 预警(30-60天)", "pri": "P1 尽快", "d": 0.3, "need": 36, "av": 12, "sale": 9, "tr": 3, "pend": 0, "po": 0, "net": 24, "days": 40, "price": 203.54, "amt": 4885, "kj": "首销"}, {"id": "r25", "tp": "老品", "asin": "B0GQZGMRR7", "sku": "COMMON1EMO30300", "st": "维稳", "rk": "🔴 预警(30-60天)", "pri": "P1 尽快", "d": 0.396, "need": 48, "av": 12, "sale": 0, "tr": 6, "pend": 2, "po": 0, "net": 36, "days": 30, "price": 123.4, "amt": 4442, "kj": "月度月化"}, {"id": "r26", "tp": "新品", "asin": "B0HBBL94NL", "sku": "OO1EMO41000", "st": "推新", "rk": "🔴 预警(30-60天)", "pri": "P1 尽快", "d": 0.24, "need": 29, "av": 9, "sale": 6, "tr": 3, "pend": 0, "po": 0, "net": 20, "days": 38, "price": 179.91, "amt": 3598, "kj": "首销"}, {"id": "r27", "tp": "新品", "asin": "B0HBB1WK3K", "sku": "OO1EMO50200", "st": "推新", "rk": "🔴 预警(30-60天)", "pri": "P1 尽快", "d": 0.267, "need": 32, "av": 12, "sale": 4, "tr": 4, "pend": 0, "po": 0, "net": 20, "days": 45, "price": 155.75, "amt": 3115, "kj": "首销"}, {"id": "r28", "tp": "老品", "asin": "B0GQZLTRB7", "sku": "COMMON1EMO24600", "st": "维稳", "rk": "🔴 预警(30-60天)", "pri": "P1 尽快", "d": 0.237, "need": 28, "av": 12, "sale": 11, "tr": 0, "pend": 0, "po": 0, "net": 16, "days": 51, "price": 150.19, "amt": 2403, "kj": "月度月化"}, {"id": "r29", "tp": "新品", "asin": "B0HBB4PFLM", "sku": "OO1EMO46800", "st": "推新", "rk": "🔴 预警(30-60天)", "pri": "P1 尽快", "d": 0.281, "need": 34, "av": 13, "sale": 6, "tr": 4, "pend": 0, "po": 0, "net": 21, "days": 46, "price": 84.07, "amt": 1765, "kj": "首销"}, {"id": "r30", "tp": "老品", "asin": "B0FVLMXY88", "sku": "COMMON1EMO36900", "st": "维稳", "rk": "🔴 预警(30-60天)", "pri": "P1 尽快", "d": 0.191, "need": 23, "av": 11, "sale": 8, "tr": 1, "pend": 0, "po": 0, "net": 12, "days": 58, "price": 125.23, "amt": 1503, "kj": "月度月化"}, {"id": "r31", "tp": "老品", "asin": "B0G4RG24J4", "sku": "COMMON1EMO27800", "st": "风险", "rk": "🔴 预警(30-60天)", "pri": "P1 尽快", "d": 0.091, "need": 11, "av": 4, "sale": 0, "tr": 2, "pend": 1, "po": 0, "net": 7, "days": 44, "price": 177.68, "amt": 1244, "kj": "月度月化"}, {"id": "r32", "tp": "老品", "asin": "B0GYDV69FV", "sku": "ZC1EMO03500", "st": "维稳", "rk": "🔴 预警(30-60天)", "pri": "P1 尽快", "d": 0.091, "need": 11, "av": 5, "sale": 5, "tr": 0, "pend": 0, "po": 0, "net": 6, "days": 55, "price": 185.84, "amt": 1115, "kj": "月度月化"}, {"id": "r33", "tp": "老品", "asin": "B0FY5QG4GW", "sku": "COMMON1EMO27100", "st": "风险", "rk": "🔴 预警(30-60天)", "pri": "P1 尽快", "d": 0.105, "need": 13, "av": 6, "sale": 0, "tr": 0, "pend": 0, "po": 0, "net": 7, "days": 57, "price": 134.34, "amt": 940, "kj": "月度月化"}, {"id": "r34", "tp": "老品", "asin": "B0GYDVTTLZ", "sku": "COMMON1EMO37800", "st": "维稳", "rk": "🔴 预警(30-60天)", "pri": "P1 尽快", "d": 0.052, "need": 6, "av": 2, "sale": 2, "tr": 0, "pend": 0, "po": 0, "net": 4, "days": 38, "price": 182.41, "amt": 730, "kj": "月度月化"}, {"id": "r35", "tp": "新品", "asin": "B0HBBB8MJG", "sku": "OO1EMO39700", "st": "推新", "rk": "🔴 预警(30-60天)", "pri": "P1 尽快", "d": 0.148, "need": 18, "av": 7, "sale": 6, "tr": 0, "pend": 0, "po": 0, "net": 11, "days": 47, "price": 33.32, "amt": 367, "kj": "在架(样本不足)"}, {"id": "r36", "tp": "新品", "asin": "B0HBBHG53J", "sku": "OO1EMO50400", "st": "推新", "rk": "🟠 偏紧(60-120天)", "pri": "P2 计划", "d": 0.2, "need": 24, "av": 14, "sale": 11, "tr": 3, "pend": 0, "po": 0, "net": 10, "days": 70, "price": 283.19, "amt": 2832, "kj": "首销"}, {"id": "r37", "tp": "老品", "asin": "B0GYDZ1K1H", "sku": "COMMON1EMO29300", "st": "维稳", "rk": "🟠 偏紧(60-120天)", "pri": "P2 计划", "d": 0.293, "need": 35, "av": 18, "sale": 8, "tr": 5, "pend": 0, "po": 0, "net": 17, "days": 61, "price": 149.83, "amt": 2547, "kj": "月度月化"}, {"id": "r38", "tp": "新品", "asin": "B0HBBB9K9D", "sku": "OO1EMO52400", "st": "推新", "rk": "🟠 偏紧(60-120天)", "pri": "P2 计划", "d": 0.167, "need": 20, "av": 10, "sale": 5, "tr": 3, "pend": 0, "po": 0, "net": 10, "days": 60, "price": 246.54, "amt": 2465, "kj": "在架(样本不足)"}, {"id": "r39", "tp": "新品", "asin": "B0HBBJ93RQ", "sku": "OO1EMO41900", "st": "推新", "rk": "🟠 偏紧(60-120天)", "pri": "P2 计划", "d": 0.25, "need": 30, "av": 18, "sale": 1, "tr": 9, "pend": 0, "po": 0, "net": 12, "days": 72, "price": 192.04, "amt": 2304, "kj": "首销"}, {"id": "r40", "tp": "老品", "asin": "B0GLG77Q7H", "sku": "COMMON1EMO20800", "st": "维稳", "rk": "🟠 偏紧(60-120天)", "pri": "P2 计划", "d": 0.446, "need": 54, "av": 32, "sale": 5, "tr": 24, "pend": 0, "po": 0, "net": 22, "days": 72, "price": 91.63, "amt": 2016, "kj": "月度月化"}, {"id": "r41", "tp": "老品", "asin": "B0GQZPB92V", "sku": "COMMON1EMO24400", "st": "维稳", "rk": "🟠 偏紧(60-120天)", "pri": "P2 计划", "d": 0.207, "need": 25, "av": 13, "sale": 13, "tr": 0, "pend": 0, "po": 0, "net": 12, "days": 63, "price": 147.52, "amt": 1770, "kj": "月度月化"}, {"id": "r42", "tp": "老品", "asin": "B0GQZBDHZ3", "sku": "ZC1EMO02900", "st": "维稳", "rk": "🟠 偏紧(60-120天)", "pri": "P2 计划", "d": 0.402, "need": 48, "av": 39, "sale": 4, "tr": 25, "pend": 1, "po": 0, "net": 9, "days": 97, "price": 160.43, "amt": 1444, "kj": "月度月化"}, {"id": "r43", "tp": "新品", "asin": "B0HBBF5R79", "sku": "OO1EMO41500", "st": "推新", "rk": "🟠 偏紧(60-120天)", "pri": "P2 计划", "d": 0.238, "need": 29, "av": 23, "sale": 8, "tr": 8, "pend": 0, "po": 0, "net": 6, "days": 97, "price": 230.97, "amt": 1386, "kj": "首销"}, {"id": "r44", "tp": "老品", "asin": "B0GK62K2BF", "sku": "OO1EMO08100", "st": "维稳", "rk": "🟠 偏紧(60-120天)", "pri": "P2 计划", "d": 0.172, "need": 21, "av": 17, "sale": 14, "tr": 3, "pend": 0, "po": 0, "net": 4, "days": 99, "price": 330.14, "amt": 1321, "kj": "月度月化"}, {"id": "r45", "tp": "老品", "asin": "B0GQZM9SYQ", "sku": "COMMON1EMO34900", "st": "维稳", "rk": "🟠 偏紧(60-120天)", "pri": "P2 计划", "d": 0.241, "need": 29, "av": 18, "sale": 10, "tr": 6, "pend": 0, "po": 0, "net": 11, "days": 75, "price": 115.81, "amt": 1274, "kj": "月度月化"}, {"id": "r46", "tp": "老品", "asin": "B0GVMK9FL7", "sku": "COMMON1EMO20600", "st": "维稳", "rk": "🟠 偏紧(60-120天)", "pri": "P2 计划", "d": 0.172, "need": 21, "av": 11, "sale": 10, "tr": 0, "pend": 0, "po": 0, "net": 10, "days": 64, "price": 124.01, "amt": 1240, "kj": "月度月化"}, {"id": "r47", "tp": "老品", "asin": "B0GLGLYWWY", "sku": "COMMON1EMO37600", "st": "维稳", "rk": "🟠 偏紧(60-120天)", "pri": "P2 计划", "d": 0.243, "need": 29, "av": 23, "sale": 21, "tr": 0, "pend": 0, "po": 0, "net": 6, "days": 95, "price": 195.56, "amt": 1173, "kj": "月度月化"}, {"id": "r48", "tp": "老品", "asin": "B0GLGZMBG7", "sku": "COMMON1EMO26200", "st": "风险", "rk": "🟠 偏紧(60-120天)", "pri": "P2 计划", "d": 0.183, "need": 22, "av": 17, "sale": 8, "tr": 4, "pend": 3, "po": 0, "net": 5, "days": 93, "price": 230.15, "amt": 1151, "kj": "月度月化"}, {"id": "r49", "tp": "老品", "asin": "B0GYF4V7TF", "sku": "ZC1EMO04200", "st": "维稳", "rk": "🟠 偏紧(60-120天)", "pri": "P2 计划", "d": 0.213, "need": 26, "av": 22, "sale": 5, "tr": 11, "pend": 1, "po": 0, "net": 4, "days": 103, "price": 282.37, "amt": 1129, "kj": "月度月化"}, {"id": "r50", "tp": "新品", "asin": "B0HB9WFVZG", "sku": "OO1EMO42700", "st": "推新", "rk": "🟠 偏紧(60-120天)", "pri": "P2 计划", "d": 0.143, "need": 17, "av": 10, "sale": 5, "tr": 3, "pend": 0, "po": 0, "net": 7, "days": 70, "price": 144.09, "amt": 1009, "kj": "首销"}, {"id": "r51", "tp": "老品", "asin": "B0GR3FSNW2", "sku": "ZC1EMO01200", "st": "维稳", "rk": "🟠 偏紧(60-120天)", "pri": "P2 计划", "d": 0.128, "need": 15, "av": 12, "sale": 3, "tr": 0, "pend": 0, "po": 0, "net": 3, "days": 94, "price": 285.96, "amt": 858, "kj": "月度月化"}, {"id": "r52", "tp": "新品", "asin": "B0HBBL8N35", "sku": "OO1EMO40800", "st": "推新", "rk": "🟠 偏紧(60-120天)", "pri": "P2 计划", "d": 0.2, "need": 24, "av": 21, "sale": 8, "tr": 7, "pend": 0, "po": 0, "net": 3, "days": 105, "price": 246.9, "amt": 741, "kj": "首销"}, {"id": "r53", "tp": "老品", "asin": "B0GK5DJW82", "sku": "COMMON1EMO36800", "st": "维稳", "rk": "🟠 偏紧(60-120天)", "pri": "P2 计划", "d": 0.259, "need": 31, "av": 25, "sale": 15, "tr": 10, "pend": 1, "po": 0, "net": 6, "days": 96, "price": 115.04, "amt": 690, "kj": "月度月化"}, {"id": "r54", "tp": "老品", "asin": "B0FVFV8ZC7", "sku": "COMMON1EMO37700", "st": "维稳", "rk": "🟠 偏紧(60-120天)", "pri": "P2 计划", "d": 0.087, "need": 10, "av": 6, "sale": 0, "tr": 3, "pend": 1, "po": 0, "net": 4, "days": 69, "price": 162.73, "amt": 651, "kj": "月度月化"}, {"id": "r55", "tp": "新品", "asin": "B0HBBDG7TV", "sku": "OO1EMO42400", "st": "推新", "rk": "🟠 偏紧(60-120天)", "pri": "P2 计划", "d": 0.2, "need": 24, "av": 19, "sale": 12, "tr": 4, "pend": 0, "po": 0, "net": 5, "days": 95, "price": 115.04, "amt": 575, "kj": "首销"}, {"id": "r56", "tp": "老品", "asin": "B0GYDMFZZ8", "sku": "COMMON1EMO25900", "st": "维稳", "rk": "🟠 偏紧(60-120天)", "pri": "P2 计划", "d": 0.137, "need": 16, "av": 11, "sale": 0, "tr": 11, "pend": 0, "po": 0, "net": 5, "days": 80, "price": 109.33, "amt": 547, "kj": "月度月化"}, {"id": "r57", "tp": "老品", "asin": "B0GYDKRV4T", "sku": "COMMON1EMO35700", "st": "维稳", "rk": "🟠 偏紧(60-120天)", "pri": "P2 计划", "d": 0.085, "need": 10, "av": 6, "sale": 0, "tr": 6, "pend": 0, "po": 0, "net": 4, "days": 70, "price": 129.73, "amt": 519, "kj": "月度月化"}, {"id": "r58", "tp": "新品", "asin": "B0HBB9NPTV", "sku": "OO1EMO44600", "st": "推新", "rk": "🟠 偏紧(60-120天)", "pri": "P2 计划", "d": 0.227, "need": 27, "av": 15, "sale": 15, "tr": 0, "pend": 0, "po": 0, "net": 12, "days": 66, "price": 34.51, "amt": 414, "kj": "首销"}, {"id": "r59", "tp": "老品", "asin": "B0G3PVBY7D", "sku": "COMMON1EMO30300", "st": "维稳", "rk": "🟠 偏紧(60-120天)", "pri": "P2 计划", "d": 0.157, "need": 19, "av": 17, "sale": 2, "tr": 11, "pend": 0, "po": 0, "net": 2, "days": 108, "price": 123.4, "amt": 247, "kj": "月度月化"}, {"id": "r60", "tp": "老品", "asin": "B0GQZFTB9Z", "sku": "COMMON1EMO20100", "st": "维稳", "rk": "🟠 偏紧(60-120天)", "pri": "P2 计划", "d": 0.278, "need": 33, "av": 25, "sale": 11, "tr": 9, "pend": 0, "po": 0, "net": 8, "days": 90, "price": 29.74, "amt": 238, "kj": "月度月化"}, {"id": "r61", "tp": "老品", "asin": "B0G4RJJXBP", "sku": "OO1EMO10300", "st": "维稳", "rk": "🟠 偏紧(60-120天)", "pri": "P2 计划", "d": 0.152, "need": 18, "av": 17, "sale": 8, "tr": 5, "pend": 0, "po": 0, "net": 1, "days": 112, "price": 215.61, "amt": 216, "kj": "月度月化"}, {"id": "r62", "tp": "老品", "asin": "B0G4RFXN8J", "sku": "COMMON1EMO39100", "st": "维稳", "rk": "🟠 偏紧(60-120天)", "pri": "P2 计划", "d": 0.196, "need": 24, "av": 18, "sale": 2, "tr": 10, "pend": 1, "po": 0, "net": 6, "days": 92, "price": 34.18, "amt": 205, "kj": "月度月化"}, {"id": "r63", "tp": "老品", "asin": "B0GKG89817", "sku": "COMMON1EMO21500", "st": "维稳", "rk": "🟠 偏紧(60-120天)", "pri": "P2 计划", "d": 0.396, "need": 48, "av": 44, "sale": 8, "tr": 30, "pend": 0, "po": 0, "net": 4, "days": 111, "price": 41.11, "amt": 164, "kj": "月度月化"}, {"id": "r64", "tp": "老品", "asin": "B0GLGP2C66", "sku": "COMMON1EMO37100", "st": "维稳", "rk": "🟠 偏紧(60-120天)", "pri": "P2 计划", "d": 0.405, "need": 49, "av": 47, "sale": 3, "tr": 34, "pend": 4, "po": 0, "net": 2, "days": 116, "price": 68.32, "amt": 137, "kj": "月度月化"}, {"id": "r65", "tp": "老品", "asin": "B0GQZPWDTQ", "sku": "COMMON1EMO37300", "st": "维稳", "rk": "🟠 偏紧(60-120天)", "pri": "P2 计划", "d": 0.122, "need": 15, "av": 14, "sale": 14, "tr": 0, "pend": 0, "po": 0, "net": 1, "days": 115, "price": 22.27, "amt": 22, "kj": "月度月化"}, {"id": "r66", "tp": "新品", "asin": "B0HB9WBVK5", "sku": "OO1EMO50300", "st": "推新", "rk": "🟠 偏紧(60-120天)", "pri": "P2 计划", "d": 0.227, "need": 27, "av": 27, "sale": 26, "tr": 0, "pend": 0, "po": 0, "net": 0, "days": 119, "price": 38.94, "amt": 0, "kj": "首销"}, {"id": "r67", "tp": "新品", "asin": "B0HBBCC35X", "sku": "OO1EMO40900", "st": "推新", "rk": "🟠 偏紧(60-120天)", "pri": "P2 计划", "d": 0.111, "need": 13, "av": 13, "sale": 12, "tr": 0, "pend": 0, "po": 0, "net": 0, "days": 117, "price": 31.65, "amt": 0, "kj": "在架(样本不足)"}, {"id": "r68", "tp": "新品", "asin": "B0HBBFGZ1L", "sku": "OO1EMO51800", "st": "推新", "rk": "🟠 偏紧(60-120天)", "pri": "P2 计划", "d": 0.103, "need": 12, "av": 12, "sale": 8, "tr": 3, "pend": 1, "po": 0, "net": 0, "days": 116, "price": 105.31, "amt": 0, "kj": "在架(样本不足)"}, {"id": "r69", "tp": "新品", "asin": "B0HBBHNB9Z", "sku": "OO1EMO52100", "st": "推新", "rk": "🟠 偏紧(60-120天)", "pri": "P2 计划", "d": 0.111, "need": 13, "av": 13, "sale": 13, "tr": 0, "pend": 0, "po": 0, "net": 0, "days": 117, "price": 107.44, "amt": 0, "kj": "在架(样本不足)"}, {"id": "r70", "tp": "老品", "asin": "B0G4RJLRDG", "sku": "ZC1EMO01900", "st": "维稳", "rk": "🟠 偏紧(60-120天)", "pri": "P2 计划", "d": 0.087, "need": 10, "av": 10, "sale": 10, "tr": 0, "pend": 0, "po": 0, "net": 0, "days": 115, "price": 229.51, "amt": 0, "kj": "月度月化"}, {"id": "r71", "tp": "老品", "asin": "B0GLGQH354", "sku": "COMMON1EMO29800", "st": "维稳", "rk": "🟠 偏紧(60-120天)", "pri": "P2 计划", "d": 0.187, "need": 22, "av": 22, "sale": 11, "tr": 10, "pend": 0, "po": 0, "net": 0, "days": 118, "price": 178.51, "amt": 0, "kj": "月度月化"}, {"id": "r72", "tp": "老品", "asin": "B0GVM63D19", "sku": "COMMON1EMO25100", "st": "维稳", "rk": "🟠 偏紧(60-120天)", "pri": "P2 计划", "d": 0.126, "need": 15, "av": 15, "sale": 12, "tr": 3, "pend": 0, "po": 0, "net": 0, "days": 119, "price": 199.44, "amt": 0, "kj": "月度月化"}, {"id": "r73", "tp": "新品", "asin": "B0HB9Z5MHY", "sku": "OO1EMO53100", "st": "推新", "rk": "✅ 健康(120-240天)", "pri": "P3 观察", "d": 0.095, "need": 11, "av": 22, "sale": 15, "tr": 4, "pend": 0, "po": 0, "net": 0, "days": 231, "price": 153.98, "amt": 0, "kj": "首销"}, {"id": "r74", "tp": "新品", "asin": "B0HB9ZK2ZK", "sku": "OO1EMO51600", "st": "推新", "rk": "✅ 健康(120-240天)", "pri": "P3 观察", "d": 0.133, "need": 16, "av": 17, "sale": 7, "tr": 7, "pend": 0, "po": 0, "net": 0, "days": 128, "price": 209.73, "amt": 0, "kj": "首销"}, {"id": "r75", "tp": "新品", "asin": "B0HBB4SWVX", "sku": "OO1EMO39300", "st": "推新", "rk": "✅ 健康(120-240天)", "pri": "P3 观察", "d": 0.121, "need": 15, "av": 15, "sale": 9, "tr": 4, "pend": 0, "po": 0, "net": 0, "days": 124, "price": 216.81, "amt": 0, "kj": "首销"}, {"id": "r76", "tp": "新品", "asin": "B0HBB4WFRS", "sku": "OO1EMO43900", "st": "推新", "rk": "✅ 健康(120-240天)", "pri": "P3 观察", "d": 0.1, "need": 12, "av": 19, "sale": 10, "tr": 4, "pend": 0, "po": 0, "net": 0, "days": 190, "price": 419.47, "amt": 0, "kj": "首销"}, {"id": "r77", "tp": "新品", "asin": "B0HBB8N3CV", "sku": "OO1EMO50100", "st": "推新", "rk": "✅ 健康(120-240天)", "pri": "P3 观察", "d": 0.074, "need": 9, "av": 11, "sale": 8, "tr": 3, "pend": 0, "po": 0, "net": 0, "days": 148, "price": 124.93, "amt": 0, "kj": "在架(样本不足)"}, {"id": "r78", "tp": "新品", "asin": "B0HBBB78KT", "sku": "OO1EMO46000", "st": "推新", "rk": "✅ 健康(120-240天)", "pri": "P3 观察", "d": 0.074, "need": 9, "av": 11, "sale": 10, "tr": 0, "pend": 0, "po": 0, "net": 0, "days": 148, "price": 40.03, "amt": 0, "kj": "在架(样本不足)"}, {"id": "r79", "tp": "新品", "asin": "B0HBBDNQYR", "sku": "OO1EMO52600", "st": "推新", "rk": "✅ 健康(120-240天)", "pri": "P3 观察", "d": 0.074, "need": 9, "av": 14, "sale": 14, "tr": 0, "pend": 0, "po": 0, "net": 0, "days": 189, "price": 131.6, "amt": 0, "kj": "在架(样本不足)"}, {"id": "r80", "tp": "新品", "asin": "B0HBBLJ6JD", "sku": "OO1EMO46400", "st": "推新", "rk": "✅ 健康(120-240天)", "pri": "P3 观察", "d": 0.074, "need": 9, "av": 13, "sale": 12, "tr": 0, "pend": 0, "po": 0, "net": 0, "days": 175, "price": 343.99, "amt": 0, "kj": "在架(样本不足)"}, {"id": "r81", "tp": "老品", "asin": "B0CG99S8QK", "sku": "ZC1EMO03700", "st": "维稳", "rk": "✅ 健康(120-240天)", "pri": "P3 观察", "d": 0.159, "need": 19, "av": 22, "sale": 19, "tr": 0, "pend": 0, "po": 0, "net": 0, "days": 138, "price": 210.86, "amt": 0, "kj": "月度月化"}, {"id": "r82", "tp": "老品", "asin": "B0FVFN7GBC", "sku": "ZC1EMO03600", "st": "维稳", "rk": "✅ 健康(120-240天)", "pri": "P3 观察", "d": 0.105, "need": 13, "av": 18, "sale": 4, "tr": 6, "pend": 0, "po": 0, "net": 0, "days": 171, "price": 252.0, "amt": 0, "kj": "月度月化"}, {"id": "r83", "tp": "老品", "asin": "B0GK6ZR1B4", "sku": "COMMON1EMO38700", "st": "淘汰", "rk": "✅ 健康(120-240天)", "pri": "P3 观察", "d": 0.072, "need": 9, "av": 12, "sale": 4, "tr": 4, "pend": 1, "po": 0, "net": 0, "days": 167, "price": 305.31, "amt": 0, "kj": "月度月化"}, {"id": "r84", "tp": "老品", "asin": "B0GK753ZKQ", "sku": "OO1EMO12400", "st": "风险", "rk": "✅ 健康(120-240天)", "pri": "P3 观察", "d": 0.037, "need": 4, "av": 6, "sale": 6, "tr": 0, "pend": 0, "po": 0, "net": 0, "days": 162, "price": 243.36, "amt": 0, "kj": "月度月化"}, {"id": "r85", "tp": "老品", "asin": "B0GLG79DHQ", "sku": "ZC1EMO05100", "st": "风险", "rk": "✅ 健康(120-240天)", "pri": "P3 观察", "d": 0.072, "need": 9, "av": 14, "sale": 14, "tr": 0, "pend": 0, "po": 0, "net": 0, "days": 194, "price": 246.83, "amt": 0, "kj": "月度月化"}, {"id": "r86", "tp": "老品", "asin": "B0GLGT7WHG", "sku": "COMMON1EMO29500", "st": "维稳", "rk": "✅ 健康(120-240天)", "pri": "P3 观察", "d": 0.313, "need": 38, "av": 68, "sale": 36, "tr": 25, "pend": 0, "po": 0, "net": 0, "days": 217, "price": 176.13, "amt": 0, "kj": "月度月化"}, {"id": "r87", "tp": "老品", "asin": "B0GQZLYPD3", "sku": "ZC1EMO03700", "st": "维稳", "rk": "✅ 健康(120-240天)", "pri": "P3 观察", "d": 0.133, "need": 16, "av": 32, "sale": 1, "tr": 3, "pend": 0, "po": 0, "net": 0, "days": 240, "price": 210.86, "amt": 0, "kj": "月度月化"}, {"id": "r88", "tp": "老品", "asin": "B0GR4M7X15", "sku": "COMMON1EMO39100", "st": "维稳", "rk": "✅ 健康(120-240天)", "pri": "P3 观察", "d": 0.119, "need": 14, "av": 15, "sale": 9, "tr": 4, "pend": 0, "po": 0, "net": 0, "days": 126, "price": 34.18, "amt": 0, "kj": "月度月化"}, {"id": "r89", "tp": "老品", "asin": "B0GVM24FN4", "sku": "COMMON1EMO30800", "st": "风险", "rk": "✅ 健康(120-240天)", "pri": "P3 观察", "d": 0.085, "need": 10, "av": 13, "sale": 10, "tr": 0, "pend": 0, "po": 0, "net": 0, "days": 152, "price": 123.0, "amt": 0, "kj": "月度月化"}, {"id": "r90", "tp": "老品", "asin": "B0GVMBFB7H", "sku": "COMMON1EMO19800", "st": "维稳", "rk": "✅ 健康(120-240天)", "pri": "P3 观察", "d": 0.1, "need": 12, "av": 16, "sale": 8, "tr": 3, "pend": 3, "po": 0, "net": 0, "days": 160, "price": 150.95, "amt": 0, "kj": "月度月化"}, {"id": "r91", "tp": "老品", "asin": "B0GVMPZN8P", "sku": "COMMON1EMO29600", "st": "维稳", "rk": "✅ 健康(120-240天)", "pri": "P3 观察", "d": 0.195, "need": 23, "av": 27, "sale": 7, "tr": 12, "pend": 0, "po": 0, "net": 0, "days": 139, "price": 110.91, "amt": 0, "kj": "月度月化"}, {"id": "r92", "tp": "老品", "asin": "B0GYDQPJ4H", "sku": "COMMON1EMO37400", "st": "风险", "rk": "✅ 健康(120-240天)", "pri": "P3 观察", "d": 0.089, "need": 11, "av": 21, "sale": 15, "tr": 2, "pend": 0, "po": 0, "net": 0, "days": 237, "price": 193.38, "amt": 0, "kj": "月度月化"}, {"id": "r93", "tp": "老品", "asin": "B0GYDTYJDJ", "sku": "ZC1EMO03200", "st": "风险", "rk": "✅ 健康(120-240天)", "pri": "P3 观察", "d": 0.052, "need": 6, "av": 8, "sale": 8, "tr": 0, "pend": 0, "po": 0, "net": 0, "days": 154, "price": 260.21, "amt": 0, "kj": "月度月化"}, {"id": "r94", "tp": "老品", "asin": "B0H2Z1XVXM", "sku": "COMMON1EMO29000", "st": "维稳", "rk": "✅ 健康(120-240天)", "pri": "P3 观察", "d": 0.091, "need": 11, "av": 20, "sale": 15, "tr": 2, "pend": 1, "po": 0, "net": 0, "days": 221, "price": 116.08, "amt": 0, "kj": "月度月化"}, {"id": "r95", "tp": "老品", "asin": "B0HBB8GDRC", "sku": "OO1EMO43000", "st": "淘汰", "rk": "✅ 健康(120-240天)", "pri": "P3 观察", "d": 0.091, "need": 11, "av": 14, "sale": 14, "tr": 0, "pend": 0, "po": 0, "net": 0, "days": 154, "price": 219.47, "amt": 0, "kj": "月度月化"}, {"id": "r96", "tp": "新品", "asin": "B0HBB1FHKP", "sku": "OO1EMO49600", "st": "推新", "rk": "💤 过高(>240天)", "pri": "— 清库存", "d": 0.036, "need": 4, "av": 14, "sale": 6, "tr": 8, "pend": 0, "po": 0, "net": 0, "days": 392, "price": 176.99, "amt": 0, "kj": "首销"}, {"id": "r97", "tp": "新品", "asin": "B0HBB1HWWT", "sku": "OO1EMO45800", "st": "推新", "rk": "💤 过高(>240天)", "pri": "— 清库存", "d": 0.05, "need": 6, "av": 22, "sale": 15, "tr": 4, "pend": 0, "po": 0, "net": 0, "days": 440, "price": 205.31, "amt": 0, "kj": "在架(样本不足)"}, {"id": "r98", "tp": "新品", "asin": "B0HBB5ZSZ4", "sku": "OO1EMO44000", "st": "推新", "rk": "💤 过高(>240天)", "pri": "— 清库存", "d": 0.035, "need": 4, "av": 14, "sale": 9, "tr": 3, "pend": 0, "po": 0, "net": 0, "days": 406, "price": 172.41, "amt": 0, "kj": "在架(样本不足)"}, {"id": "r99", "tp": "新品", "asin": "B0HBB7N4L9", "sku": "OO1EMO45600", "st": "推新", "rk": "💤 过高(>240天)", "pri": "— 清库存", "d": 0.037, "need": 4, "av": 23, "sale": 23, "tr": 0, "pend": 0, "po": 0, "net": 0, "days": 622, "price": 36.53, "amt": 0, "kj": "在架(样本不足)"}, {"id": "r100", "tp": "新品", "asin": "B0HBB7TL9G", "sku": "OO1EMO44200", "st": "推新", "rk": "💤 过高(>240天)", "pri": "— 清库存", "d": 0.061, "need": 7, "av": 19, "sale": 9, "tr": 4, "pend": 0, "po": 0, "net": 0, "days": 314, "price": 145.13, "amt": 0, "kj": "首销"}, {"id": "r101", "tp": "新品", "asin": "B0HBB98X8B", "sku": "OO1EMO51500", "st": "推新", "rk": "💤 过高(>240天)", "pri": "— 清库存", "d": 0.04, "need": 5, "av": 23, "sale": 22, "tr": 0, "pend": 0, "po": 0, "net": 0, "days": 575, "price": 114.16, "amt": 0, "kj": "首销"}, {"id": "r102", "tp": "新品", "asin": "B0HBB9LDM7", "sku": "OO1EMO40100", "st": "推新", "rk": "💤 过高(>240天)", "pri": "— 清库存", "d": 0.027, "need": 3, "av": 19, "sale": 12, "tr": 4, "pend": 0, "po": 0, "net": 0, "days": 704, "price": 139.82, "amt": 0, "kj": "在架(样本不足)"}, {"id": "r103", "tp": "新品", "asin": "B0HBB9PSRF", "sku": "OO1EMO41800", "st": "推新", "rk": "💤 过高(>240天)", "pri": "— 清库存", "d": 0.05, "need": 6, "av": 26, "sale": 9, "tr": 8, "pend": 0, "po": 0, "net": 0, "days": 520, "price": 203.54, "amt": 0, "kj": "在架(样本不足)"}, {"id": "r104", "tp": "新品", "asin": "B0HBBB3ZBW", "sku": "OO1EMO49101", "st": "推新", "rk": "💤 过高(>240天)", "pri": "— 清库存", "d": 0.037, "need": 4, "av": 14, "sale": 14, "tr": 0, "pend": 0, "po": 0, "net": 0, "days": 378, "price": 95.78, "amt": 0, "kj": "在架(样本不足)"}, {"id": "r105", "tp": "新品", "asin": "B0HBBBNJ18", "sku": "OO1EMO43600", "st": "推新", "rk": "💤 过高(>240天)", "pri": "— 清库存", "d": 0.026, "need": 3, "av": 47, "sale": 26, "tr": 18, "pend": 0, "po": 0, "net": 0, "days": 1787, "price": 204.75, "amt": 0, "kj": "在架(样本不足)"}, {"id": "r106", "tp": "新品", "asin": "B0HBBCSSZD", "sku": "OO1EMO46200", "st": "推新", "rk": "💤 过高(>240天)", "pri": "— 清库存", "d": 0.026, "need": 3, "av": 22, "sale": 14, "tr": 4, "pend": 0, "po": 0, "net": 0, "days": 859, "price": 116.81, "amt": 0, "kj": "在架(样本不足)"}, {"id": "r107", "tp": "新品", "asin": "B0HBBHLP5N", "sku": "OO1EMO44400", "st": "推新", "rk": "💤 过高(>240天)", "pri": "— 清库存", "d": 0.035, "need": 4, "av": 13, "sale": 10, "tr": 3, "pend": 0, "po": 0, "net": 0, "days": 377, "price": 116.61, "amt": 0, "kj": "在架(样本不足)"}, {"id": "r108", "tp": "新品", "asin": "B0HBBJ6YQC", "sku": "OO1EMO51701", "st": "推新", "rk": "💤 过高(>240天)", "pri": "— 清库存", "d": 0.033, "need": 4, "av": 25, "sale": 10, "tr": 8, "pend": 0, "po": 0, "net": 0, "days": 751, "price": 176.99, "amt": 0, "kj": "首销"}, {"id": "r109", "tp": "新品", "asin": "B0HBBM68WS", "sku": "OO1EMO41100", "st": "推新", "rk": "💤 过高(>240天)", "pri": "— 清库存", "d": 0.037, "need": 4, "av": 15, "sale": 15, "tr": 0, "pend": 0, "po": 0, "net": 0, "days": 405, "price": 146.59, "amt": 0, "kj": "在架(样本不足)"}, {"id": "r110", "tp": "老品", "asin": "B0FVFC6JLC", "sku": "COMMON1EMO32800", "st": "风险", "rk": "💤 过高(>240天)", "pri": "— 清库存", "d": 0.017, "need": 2, "av": 21, "sale": 0, "tr": 21, "pend": 27, "po": 0, "net": 0, "days": 1257, "price": 187.88, "amt": 0, "kj": "月度月化"}, {"id": "r111", "tp": "老品", "asin": "B0FVFD11BK", "sku": "COMMON1EMO30700", "st": "维稳", "rk": "💤 过高(>240天)", "pri": "— 清库存", "d": 0.019, "need": 2, "av": 11, "sale": 8, "tr": 3, "pend": 3, "po": 0, "net": 0, "days": 588, "price": 125.0, "amt": 0, "kj": "月度月化"}, {"id": "r112", "tp": "老品", "asin": "B0FY35HJBT", "sku": "COMMON1EMO37300", "st": "维稳", "rk": "💤 过高(>240天)", "pri": "— 清库存", "d": 0.087, "need": 10, "av": 22, "sale": 8, "tr": 12, "pend": 0, "po": 0, "net": 0, "days": 253, "price": 22.27, "amt": 0, "kj": "月度月化"}, {"id": "r113", "tp": "老品", "asin": "B0G4RDQPHN", "sku": "COMMON1EMO20400", "st": "维稳", "rk": "💤 过高(>240天)", "pri": "— 清库存", "d": 0.111, "need": 13, "av": 28, "sale": 28, "tr": 0, "pend": 0, "po": 0, "net": 0, "days": 252, "price": 47.09, "amt": 0, "kj": "月度月化"}, {"id": "r114", "tp": "老品", "asin": "B0GK5DSGVV", "sku": "ZC1EMO02300", "st": "维稳", "rk": "💤 过高(>240天)", "pri": "— 清库存", "d": 0.169, "need": 20, "av": 48, "sale": 4, "tr": 35, "pend": 0, "po": 0, "net": 0, "days": 285, "price": 290.61, "amt": 0, "kj": "月度月化"}, {"id": "r115", "tp": "老品", "asin": "B0GK69YWJV", "sku": "COMMON1EMO25800", "st": "风险", "rk": "💤 过高(>240天)", "pri": "— 清库存", "d": 0.035, "need": 4, "av": 10, "sale": 0, "tr": 7, "pend": 0, "po": 0, "net": 0, "days": 283, "price": 264.22, "amt": 0, "kj": "月度月化"}, {"id": "r116", "tp": "老品", "asin": "B0GK752JBN", "sku": "COMMON1EMO38000", "st": "风险", "rk": "💤 过高(>240天)", "pri": "— 清库存", "d": 0.017, "need": 2, "av": 5, "sale": 5, "tr": 0, "pend": 0, "po": 0, "net": 0, "days": 299, "price": 155.84, "amt": 0, "kj": "月度月化"}, {"id": "r117", "tp": "老品", "asin": "B0GLGJT4TH", "sku": "COMMON1EMO33400", "st": "维稳", "rk": "💤 过高(>240天)", "pri": "— 清库存", "d": 0.072, "need": 9, "av": 55, "sale": 55, "tr": 0, "pend": 0, "po": 0, "net": 0, "days": 764, "price": 190.0, "amt": 0, "kj": "月度月化"}, {"id": "r118", "tp": "老品", "asin": "B0GLGQ7DPX", "sku": "COMMON1EMO34500", "st": "风险", "rk": "💤 过高(>240天)", "pri": "— 清库存", "d": 0.05, "need": 6, "av": 42, "sale": 42, "tr": 0, "pend": 3, "po": 0, "net": 0, "days": 840, "price": 139.2, "amt": 0, "kj": "月度月化"}, {"id": "r119", "tp": "老品", "asin": "B0GQZ8MZKY", "sku": "COMMON1EMO32700", "st": "维稳", "rk": "💤 过高(>240天)", "pri": "— 清库存", "d": 0.052, "need": 6, "av": 67, "sale": 46, "tr": 9, "pend": 3, "po": 0, "net": 0, "days": 1288, "price": 170.0, "amt": 0, "kj": "月度月化"}, {"id": "r120", "tp": "老品", "asin": "B0GQZ8R2TS", "sku": "ZC1EMO03900", "st": "淘汰", "rk": "💤 过高(>240天)", "pri": "— 清库存", "d": 0.033, "need": 4, "av": 13, "sale": 7, "tr": 4, "pend": 3, "po": 0, "net": 0, "days": 390, "price": 193.46, "amt": 0, "kj": "月度月化"}, {"id": "r121", "tp": "老品", "asin": "B0GQZ9WSRK", "sku": "ZC1EMO02600", "st": "维稳", "rk": "💤 过高(>240天)", "pri": "— 清库存", "d": 0.033, "need": 4, "av": 21, "sale": 13, "tr": 8, "pend": 0, "po": 0, "net": 0, "days": 631, "price": 237.08, "amt": 0, "kj": "月度月化"}, {"id": "r122", "tp": "老品", "asin": "B0GQZPRFM9", "sku": "OO1EMO06800", "st": "维稳", "rk": "💤 过高(>240天)", "pri": "— 清库存", "d": 0.137, "need": 16, "av": 47, "sale": 39, "tr": 4, "pend": 3, "po": 0, "net": 0, "days": 343, "price": 173.74, "amt": 0, "kj": "月度月化"}, {"id": "r123", "tp": "老品", "asin": "B0GR3QZ7YX", "sku": "COMMON1EMO20400", "st": "维稳", "rk": "💤 过高(>240天)", "pri": "— 清库存", "d": 0.104, "need": 12, "av": 31, "sale": 21, "tr": 9, "pend": 1, "po": 0, "net": 0, "days": 299, "price": 47.09, "amt": 0, "kj": "月度月化"}, {"id": "r124", "tp": "老品", "asin": "B0GVMHCWRS", "sku": "COMMON1EMO38900", "st": "风险", "rk": "💤 过高(>240天)", "pri": "— 清库存", "d": 0.035, "need": 4, "av": 18, "sale": 18, "tr": 0, "pend": 0, "po": 0, "net": 0, "days": 510, "price": 335.32, "amt": 0, "kj": "月度月化"}, {"id": "r125", "tp": "老品", "asin": "B0GVMHMJ7F", "sku": "COMMON1EMO38600", "st": "风险", "rk": "💤 过高(>240天)", "pri": "— 清库存", "d": 0.019, "need": 2, "av": 15, "sale": 6, "tr": 8, "pend": 0, "po": 0, "net": 0, "days": 802, "price": 272.38, "amt": 0, "kj": "月度月化"}, {"id": "r126", "tp": "老品", "asin": "B0GVMK8JXH", "sku": "COMMON1EMO38100", "st": "维稳", "rk": "💤 过高(>240天)", "pri": "— 清库存", "d": 0.05, "need": 6, "av": 16, "sale": 16, "tr": 0, "pend": 1, "po": 0, "net": 0, "days": 320, "price": 208.41, "amt": 0, "kj": "月度月化"}, {"id": "r127", "tp": "老品", "asin": "B0GVMKXHNQ", "sku": "ZC1EMO00900", "st": "维稳", "rk": "💤 过高(>240天)", "pri": "— 清库存", "d": 0.035, "need": 4, "av": 11, "sale": 1, "tr": 5, "pend": 3, "po": 0, "net": 0, "days": 312, "price": 260.19, "amt": 0, "kj": "月度月化"}, {"id": "r128", "tp": "老品", "asin": "B0GVMMVYX4", "sku": "COMMON1EMO39000", "st": "风险", "rk": "💤 过高(>240天)", "pri": "— 清库存", "d": 0.017, "need": 2, "av": 20, "sale": 5, "tr": 4, "pend": 2, "po": 0, "net": 0, "days": 1198, "price": 386.55, "amt": 0, "kj": "月度月化"}, {"id": "r129", "tp": "老品", "asin": "B0GYDX76HT", "sku": "OO1EMO12200", "st": "风险", "rk": "💤 过高(>240天)", "pri": "— 清库存", "d": 0.033, "need": 4, "av": 18, "sale": 17, "tr": 0, "pend": 0, "po": 0, "net": 0, "days": 541, "price": 25.22, "amt": 0, "kj": "月度月化"}, {"id": "r130", "tp": "老品", "asin": "B0GYF27MRC", "sku": "COMMON1EMO26900", "st": "风险", "rk": "💤 过高(>240天)", "pri": "— 清库存", "d": 0.035, "need": 4, "av": 19, "sale": 19, "tr": 0, "pend": 0, "po": 0, "net": 0, "days": 538, "price": 96.37, "amt": 0, "kj": "月度月化"}, {"id": "r131", "tp": "老品", "asin": "B0H2Z2Y7TP", "sku": "COMMON1EMO29200", "st": "维稳", "rk": "💤 过高(>240天)", "pri": "— 清库存", "d": 0.107, "need": 13, "av": 26, "sale": 9, "tr": 11, "pend": 0, "po": 0, "net": 0, "days": 242, "price": 99.15, "amt": 0, "kj": "月度月化"}, {"id": "r132", "tp": "老品", "asin": "B0H2Z4YZRQ", "sku": "COMMON1EMO34200", "st": "风险", "rk": "💤 过高(>240天)", "pri": "— 清库存", "d": 0.037, "need": 4, "av": 38, "sale": 35, "tr": 0, "pend": 0, "po": 0, "net": 0, "days": 1027, "price": 170.0, "amt": 0, "kj": "月度月化"}, {"id": "r133", "tp": "老品", "asin": "B0H2Z87F7F", "sku": "COMMON1EMO34700", "st": "风险", "rk": "💤 过高(>240天)", "pri": "— 清库存", "d": 0.033, "need": 4, "av": 31, "sale": 14, "tr": 11, "pend": 0, "po": 0, "net": 0, "days": 931, "price": 134.5, "amt": 0, "kj": "月度月化"}, {"id": "r134", "tp": "老品", "asin": "B0HBB6QBX7", "sku": "OO1EMO51200", "st": "淘汰", "rk": "💤 过高(>240天)", "pri": "— 清库存", "d": 0.055, "need": 7, "av": 14, "sale": 14, "tr": 0, "pend": 0, "po": 0, "net": 0, "days": 253, "price": 343.36, "amt": 0, "kj": "月度月化"}, {"id": "r135", "tp": "新品", "asin": "B0HBB46K46", "sku": "OO1EMO42600", "st": "交付中", "rk": "⚫ 零销量", "pri": "— 不备", "d": 0.0, "need": 0, "av": 1, "sale": 0, "tr": 1, "pend": 0, "po": 0, "net": 0, "days": 9999, "price": 135.76, "amt": 0, "kj": "零销量"}, {"id": "r136", "tp": "新品", "asin": "B0HBB4VYDK", "sku": "OO1EMO41300", "st": "推新", "rk": "⚫ 零销量", "pri": "— 不备", "d": 0.0, "need": 0, "av": 16, "sale": 16, "tr": 0, "pend": 0, "po": 0, "net": 0, "days": 9999, "price": 54.14, "amt": 0, "kj": "零销量"}, {"id": "r137", "tp": "新品", "asin": "B0HBB4X2DR", "sku": "OO1EMO42500", "st": "推新", "rk": "⚫ 零销量", "pri": "— 不备", "d": 0.0, "need": 0, "av": 16, "sale": 16, "tr": 0, "pend": 0, "po": 0, "net": 0, "days": 9999, "price": 100.78, "amt": 0, "kj": "零销量"}, {"id": "r138", "tp": "新品", "asin": "B0HBB52QCT", "sku": "OO1EMO40400", "st": "推新", "rk": "⚫ 零销量", "pri": "— 不备", "d": 0.0, "need": 0, "av": 16, "sale": 15, "tr": 0, "pend": 0, "po": 0, "net": 0, "days": 9999, "price": 45.81, "amt": 0, "kj": "零销量"}, {"id": "r139", "tp": "新品", "asin": "B0HBB64MM5", "sku": "OO1EMO47500", "st": "交付中", "rk": "⚫ 零销量", "pri": "— 不备", "d": 0.0, "need": 0, "av": 2, "sale": 0, "tr": 2, "pend": 0, "po": 0, "net": 0, "days": 9999, "price": 77.46, "amt": 0, "kj": "零销量"}, {"id": "r140", "tp": "新品", "asin": "B0HBB7R99T", "sku": "OO1EMO46500", "st": "推新", "rk": "⚫ 零销量", "pri": "— 不备", "d": 0.0, "need": 0, "av": 14, "sale": 11, "tr": 3, "pend": 0, "po": 0, "net": 0, "days": 9999, "price": 184.07, "amt": 0, "kj": "零销量"}, {"id": "r141", "tp": "新品", "asin": "B0HBB8PNLZ", "sku": "OO1EMO48600", "st": "推新", "rk": "⚫ 零销量", "pri": "— 不备", "d": 0.0, "need": 0, "av": 15, "sale": 15, "tr": 0, "pend": 0, "po": 0, "net": 0, "days": 9999, "price": 219.89, "amt": 0, "kj": "零销量"}, {"id": "r142", "tp": "新品", "asin": "B0HBB942V3", "sku": "OO1EMO47700", "st": "推新", "rk": "⚫ 零销量", "pri": "— 不备", "d": 0.0, "need": 0, "av": 16, "sale": 10, "tr": 3, "pend": 0, "po": 0, "net": 0, "days": 9999, "price": 176.57, "amt": 0, "kj": "零销量"}, {"id": "r143", "tp": "新品", "asin": "B0HBB9NBJ3", "sku": "OO1EMO52800", "st": "交付中", "rk": "⚫ 零销量", "pri": "— 不备", "d": 0.0, "need": 0, "av": 2, "sale": 0, "tr": 2, "pend": 0, "po": 0, "net": 0, "days": 9999, "price": 167.41, "amt": 0, "kj": "零销量"}, {"id": "r144", "tp": "新品", "asin": "B0HBB9QC4N", "sku": "OO1EMO50700", "st": "推新", "rk": "⚫ 零销量", "pri": "— 不备", "d": 0.0, "need": 0, "av": 16, "sale": 16, "tr": 0, "pend": 0, "po": 0, "net": 0, "days": 9999, "price": 99.12, "amt": 0, "kj": "零销量"}, {"id": "r145", "tp": "新品", "asin": "B0HBB9ZYGF", "sku": "OO1EMO51900", "st": "交付中", "rk": "⚫ 零销量", "pri": "— 不备", "d": 0.0, "need": 0, "av": 16, "sale": 0, "tr": 16, "pend": 0, "po": 0, "net": 0, "days": 9999, "price": 109.73, "amt": 0, "kj": "零销量"}, {"id": "r146", "tp": "新品", "asin": "B0HBBB31MQ", "sku": "OO1EMO40000", "st": "交付中", "rk": "⚫ 零销量", "pri": "— 不备", "d": 0.0, "need": 0, "av": 15, "sale": 0, "tr": 15, "pend": 0, "po": 0, "net": 0, "days": 9999, "price": 186.73, "amt": 0, "kj": "零销量"}, {"id": "r147", "tp": "新品", "asin": "B0HBBBCPVD", "sku": "OO1EMO43800", "st": "推新", "rk": "⚫ 零销量", "pri": "— 不备", "d": 0.0, "need": 0, "av": 26, "sale": 12, "tr": 8, "pend": 0, "po": 0, "net": 0, "days": 9999, "price": 204.42, "amt": 0, "kj": "零销量"}, {"id": "r148", "tp": "新品", "asin": "B0HBBBQYRW", "sku": "OO1EMO49500", "st": "推新", "rk": "⚫ 零销量", "pri": "— 不备", "d": 0.0, "need": 0, "av": 16, "sale": 16, "tr": 0, "pend": 0, "po": 0, "net": 0, "days": 9999, "price": 41.64, "amt": 0, "kj": "零销量"}, {"id": "r149", "tp": "新品", "asin": "B0HBBBW29N", "sku": "OO1EMO45000", "st": "推新", "rk": "⚫ 零销量", "pri": "— 不备", "d": 0.0, "need": 0, "av": 36, "sale": 36, "tr": 0, "pend": 0, "po": 0, "net": 0, "days": 9999, "price": 32.72, "amt": 0, "kj": "零销量"}, {"id": "r150", "tp": "新品", "asin": "B0HBBCCYX4", "sku": "OO1EMO46300", "st": "推新", "rk": "⚫ 零销量", "pri": "— 不备", "d": 0.0, "need": 0, "av": 24, "sale": 15, "tr": 4, "pend": 0, "po": 0, "net": 0, "days": 9999, "price": 330.09, "amt": 0, "kj": "零销量"}, {"id": "r151", "tp": "新品", "asin": "B0HBBDHYTJ", "sku": "OO1EMO39400", "st": "推新", "rk": "⚫ 零销量", "pri": "— 不备", "d": 0.0, "need": 0, "av": 13, "sale": 10, "tr": 3, "pend": 0, "po": 0, "net": 0, "days": 9999, "price": 163.25, "amt": 0, "kj": "零销量"}, {"id": "r152", "tp": "新品", "asin": "B0HBBHPCMR", "sku": "OO1EMO49300", "st": "推新", "rk": "⚫ 零销量", "pri": "— 不备", "d": 0.0, "need": 0, "av": 17, "sale": 13, "tr": 4, "pend": 0, "po": 0, "net": 0, "days": 9999, "price": 453.1, "amt": 0, "kj": "零销量"}, {"id": "r153", "tp": "新品", "asin": "B0HBBJ4LKX", "sku": "OO1EMO42000", "st": "推新", "rk": "⚫ 零销量", "pri": "— 不备", "d": 0.0, "need": 0, "av": 11, "sale": 10, "tr": 0, "pend": 0, "po": 0, "net": 0, "days": 9999, "price": 76.63, "amt": 0, "kj": "零销量"}, {"id": "r154", "tp": "新品", "asin": "B0HBBTYT7R", "sku": "OO1EMO44300", "st": "推新", "rk": "⚫ 零销量", "pri": "— 不备", "d": 0.0, "need": 0, "av": 16, "sale": 16, "tr": 0, "pend": 0, "po": 0, "net": 0, "days": 9999, "price": 106.61, "amt": 0, "kj": "零销量"}, {"id": "r155", "tp": "老品", "asin": "B0CLY2TLDR", "sku": "OO1EMO11700", "st": "清库", "rk": "⚫ 零销量", "pri": "— 不备", "d": 0.0, "need": 0, "av": 1, "sale": 0, "tr": 1, "pend": 0, "po": 0, "net": 0, "days": 9999, "price": 187.61, "amt": 0, "kj": "月度月化"}, {"id": "r156", "tp": "老品", "asin": "B0CNXFJP5F", "sku": "OO1EMO12600", "st": "淘汰", "rk": "⚫ 零销量", "pri": "— 不备", "d": 0.0, "need": 0, "av": 10, "sale": 0, "tr": 10, "pend": 0, "po": 0, "net": 0, "days": 9999, "price": 30.13, "amt": 0, "kj": "月度月化"}, {"id": "r157", "tp": "老品", "asin": "B0CTGVSFTJ", "sku": "OO1EMO14800", "st": "淘汰", "rk": "⚫ 零销量", "pri": "— 不备", "d": 0.0, "need": 0, "av": 2, "sale": 0, "tr": 2, "pend": 0, "po": 0, "net": 0, "days": 9999, "price": 203.54, "amt": 0, "kj": "月度月化"}, {"id": "r158", "tp": "老品", "asin": "B0D8RSWHCJ", "sku": "OO1EMO11900", "st": "风险", "rk": "⚫ 零销量", "pri": "— 不备", "d": 0.0, "need": 0, "av": 1, "sale": 0, "tr": 1, "pend": 0, "po": 0, "net": 0, "days": 9999, "price": 199.12, "amt": 0, "kj": "月度月化"}, {"id": "r159", "tp": "老品", "asin": "B0D8S4X1XX", "sku": "OO1EMO14000", "st": "风险", "rk": "⚫ 零销量", "pri": "— 不备", "d": 0.0, "need": 0, "av": 15, "sale": 2, "tr": 10, "pend": 0, "po": 0, "net": 0, "days": 9999, "price": 207.96, "amt": 0, "kj": "月度月化"}, {"id": "r160", "tp": "老品", "asin": "B0FVFDVBR3", "sku": "COMMON1EMO29000", "st": "维稳", "rk": "⚫ 零销量", "pri": "— 不备", "d": 0.0, "need": 0, "av": 1, "sale": 1, "tr": 0, "pend": 0, "po": 0, "net": 0, "days": 9999, "price": 116.08, "amt": 0, "kj": "月度月化"}, {"id": "r161", "tp": "老品", "asin": "B0FVFFQXYS", "sku": "COMMON1EMO34300", "st": "维稳", "rk": "⚫ 零销量", "pri": "— 不备", "d": 0.0, "need": 0, "av": 9, "sale": 9, "tr": 0, "pend": 0, "po": 0, "net": 0, "days": 9999, "price": 118.0, "amt": 0, "kj": "月度月化"}, {"id": "r162", "tp": "老品", "asin": "B0GVM8FS7G", "sku": "COMMON1EMO22300", "st": "清库", "rk": "⚫ 零销量", "pri": "— 不备", "d": 0.0, "need": 0, "av": 4, "sale": 4, "tr": 0, "pend": 0, "po": 0, "net": 0, "days": 9999, "price": 198.94, "amt": 0, "kj": "月度月化"}, {"id": "r163", "tp": "老品", "asin": "B0GVMBTRL7", "sku": "COMMON1EMO39200", "st": "清库", "rk": "⚫ 零销量", "pri": "— 不备", "d": 0.0, "need": 0, "av": 6, "sale": 5, "tr": 1, "pend": 0, "po": 0, "net": 0, "days": 9999, "price": 227.41, "amt": 0, "kj": "月度月化"}, {"id": "r164", "tp": "老品", "asin": "B0GVMHK3JW", "sku": "ZC1EMO05400", "st": "风险", "rk": "⚫ 零销量", "pri": "— 不备", "d": 0.0, "need": 0, "av": 1, "sale": 1, "tr": 0, "pend": 0, "po": 0, "net": 0, "days": 9999, "price": 252.21, "amt": 0, "kj": "月度月化"}, {"id": "r165", "tp": "老品", "asin": "B0GVMHMX86", "sku": "ZC1EMO00600", "st": "风险", "rk": "⚫ 零销量", "pri": "— 不备", "d": 0.0, "need": 0, "av": 5, "sale": 0, "tr": 5, "pend": 0, "po": 0, "net": 0, "days": 9999, "price": 184.48, "amt": 0, "kj": "月度月化"}, {"id": "r166", "tp": "老品", "asin": "B0H2Z3NSWD", "sku": "COMMON1EMO36000", "st": "维稳", "rk": "⚫ 零销量", "pri": "— 不备", "d": 0.0, "need": 0, "av": 3, "sale": 3, "tr": 0, "pend": 0, "po": 0, "net": 0, "days": 9999, "price": 155.0, "amt": 0, "kj": "月度月化"}, {"id": "r167", "tp": "老品", "asin": "B0H33DWB5T", "sku": "ZC1EMO06300", "st": "风险", "rk": "⚫ 零销量", "pri": "— 不备", "d": 0.0, "need": 0, "av": 11, "sale": 0, "tr": 6, "pend": 0, "po": 0, "net": 0, "days": 9999, "price": 198.45, "amt": 0, "kj": "月度月化"}], "rk": ["🚨 紧急(<30天)", "🔴 预警(30-60天)", "🟠 偏紧(60-120天)", "✅ 健康(120-240天)", "💤 过高(>240天)", "⚫ 零销量"], "rc": {"🚨 紧急(<30天)": "r0", "🔴 预警(30-60天)": "r1", "🟠 偏紧(60-120天)": "r2", "✅ 健康(120-240天)": "r3", "💤 过高(>240天)": "r4", "⚫ 零销量": "r5"}};
+var ALL = D.rows;
+var LS_KEY = 'em_stock_4m_notes_v1';
+var LS_MARK = 'em_stock_4m_mark_v1';
+
+// ===== 备注/标记 持久化 =====
+function loadNotes(){ try{ return JSON.parse(localStorage.getItem(LS_KEY)||'{}'); }catch(e){ return {}; } }
+function saveNotes(o){ try{ localStorage.setItem(LS_KEY, JSON.stringify(o)); }catch(e){} }
+function loadMarks(){ try{ return JSON.parse(localStorage.getItem(LS_MARK)||'{}'); }catch(e){ return {}; } }
+function saveMarks(o){ try{ localStorage.setItem(LS_MARK, JSON.stringify(o)); }catch(e){} }
+var NOTES = loadNotes(), MARKS = loadMarks();
+
+// ===== 状态 =====
+var F = {kw:'', tp:'全部', rk:[], pri:[], st:'全部', onlyNeed:false, dMin:'', dMax:'', sortCol:-1, sortAsc:true};
+
+function match(r){
+  if(F.kw){
+    var k = F.kw.toLowerCase();
+    if(!(String(r.asin).toLowerCase().includes(k) || String(r.sku).toLowerCase().includes(k))) return false;
+  }
+  if(F.tp !== '全部' && r.tp !== F.tp) return false;
+  if(F.rk.length && F.rk.indexOf(r.rk)<0) return false;
+  if(F.pri.length && F.pri.indexOf(r.pri)<0) return false;
+  if(F.st !== '全部' && r.st !== F.st) return false;
+  if(F.onlyNeed && r.net <= 0) return false;
+  if(F.dMin !== '' && r.days < Number(F.dMin)) return false;
+  if(F.dMax !== '' && r.days > Number(F.dMax)) return false;
+  return true;
+}
+
+function render(){
+  var list = ALL.filter(match);
+  if(F.sortCol >= 0){
+    var keys = ['id','tp','asin','sku','st','rk','pri','d','need','av','sale','tr','pend','po','net','days','price','amt'];
+    var k = keys[F.sortCol];
+    list = list.slice().sort(function(a,b){
+      var x=a[k], yv=b[k];
+      if(typeof x==='number' && typeof yv==='number') return F.sortAsc?x-yv:yv-x;
+      return F.sortAsc?String(x).localeCompare(String(yv)):String(yv).localeCompare(String(x));
+    });
+  }
+  var tb = document.getElementById('tbody');
+  var html = '';
+  for(var i=0;i<list.length;i++){
+    var r = list[i];
+    var nv = NOTES[r.id]||'';
+    var mk = MARKS[r.id];
+    html += '<tr class="'+(mk?'marked':'')+'" data-id="'+r.id+'">'
+      + '<td>'+(i+1)+'</td>'
+      + '<td><span class="tag '+(r.tp==='新品'?'tn':'to')+'">'+r.tp+'</span></td>'
+      + '<td>'+r.asin+'</td>'
+      + '<td style="font-size:10.5px">'+r.sku+'</td>'
+      + '<td>'+r.st+'</td>'
+      + '<td><span class="tag '+(D.rc[r.rk]||'r5')+'">'+r.rk+'</span></td>'
+      + '<td>'+r.pri+'</td>'
+      + '<td>'+r.d.toFixed(3)+'</td>'
+      + '<td>'+r.need+'</td>'
+      + '<td>'+r.av+'</td>'
+      + '<td>'+r.sale+'</td>'
+      + '<td>'+r.tr+'</td>'
+      + '<td>'+r.pend+'</td>'
+      + '<td>'+r.po+'</td>'
+      + '<td class="'+(r.net>0?'down':'')+'"><b>'+r.net+'</b></td>'
+      + '<td class="'+(r.days<30?'down':'')+'">'+(r.days>=9999?'—':r.days)+'</td>'
+      + '<td>'+r.price.toFixed(0)+'</td>'
+      + '<td>'+(r.amt?r.amt.toLocaleString():'—')+'</td>'
+      + '<td><input class="note-inp'+(nv?' has':'')+'" data-id="'+r.id+'" value="'+nv.replace(/"/g,'&quot;')+'" placeholder="点此备注..."></td>'
+      + '<td><input type="checkbox" class="chk" data-id="'+r.id+'"'+(mk?' checked':'')+'></td>'
+      + '</tr>';
+  }
+  tb.innerHTML = html || '<tr><td colspan="20" style="padding:26px;color:#8494a5">无匹配数据</td></tr>';
+
+  // 统计
+  var need = list.filter(function(x){return x.net>0;});
+  document.getElementById('stat').innerHTML = '显示 <b>'+list.length+'</b> / '+ALL.length+' 个 ｜ '
+    + '净备货 <b>'+need.reduce(function(s,x){return s+x.net;},0)+'</b> 件 ｜ '
+    + '金额 <b>¥'+need.reduce(function(s,x){return s+x.amt;},0).toLocaleString()+'</b> ｜ '
+    + '已标记 <b>'+list.filter(function(x){return MARKS[x.id];}).length+'</b> 个 ｜ '
+    + '有备注 <b>'+list.filter(function(x){return NOTES[x.id];}).length+'</b> 个';
+
+  // 绑定
+  tb.querySelectorAll('.note-inp').forEach(function(el){
+    el.addEventListener('input', function(){
+      var id = this.dataset.id;
+      if(this.value.trim()) { NOTES[id] = this.value; this.classList.add('has'); }
+      else { delete NOTES[id]; this.classList.remove('has'); }
+      saveNotes(NOTES);
+      updateStat();
+    });
+  });
+  tb.querySelectorAll('.chk').forEach(function(el){
+    el.addEventListener('change', function(){
+      var id = this.dataset.id;
+      if(this.checked) MARKS[id] = 1; else delete MARKS[id];
+      saveMarks(MARKS);
+      this.closest('tr').classList.toggle('marked', this.checked);
+      updateStat();
+    });
+  });
+  updateStat();
+}
+
+function updateStat(){
+  var list = ALL.filter(match);
+  var need = list.filter(function(x){return x.net>0;});
+  document.getElementById('stat').innerHTML = '显示 <b>'+list.length+'</b> / '+ALL.length+' 个 ｜ '
+    + '净备货 <b>'+need.reduce(function(s,x){return s+x.net;},0)+'</b> 件 ｜ '
+    + '金额 <b>¥'+need.reduce(function(s,x){return s+x.amt;},0).toLocaleString()+'</b> ｜ '
+    + '已标记 <b>'+list.filter(function(x){return MARKS[x.id];}).length+'</b> 个 ｜ '
+    + '有备注 <b>'+list.filter(function(x){return NOTES[x.id];}).length+'</b> 个';
+}
+
+// ===== 筛选事件 =====
+document.getElementById('fkw').addEventListener('input', function(){ F.kw = this.value; render(); });
+document.getElementById('ftp').addEventListener('change', function(){ F.tp = this.value; render(); });
+document.getElementById('fst').addEventListener('change', function(){ F.st = this.value; render(); });
+document.getElementById('fdmin').addEventListener('input', function(){ F.dMin = this.value; render(); });
+document.getElementById('fdmax').addEventListener('input', function(){ F.dMax = this.value; render(); });
+document.getElementById('fneed').addEventListener('change', function(){ F.onlyNeed = this.checked; render(); });
+
+document.querySelectorAll('.f-chip[data-rk]').forEach(function(el){
+  el.addEventListener('click', function(){
+    var v = this.dataset.rk;
+    var i = F.rk.indexOf(v);
+    if(i>=0){ F.rk.splice(i,1); this.classList.remove('on'); }
+    else { F.rk.push(v); this.classList.add('on'); }
+    render();
+  });
+});
+document.querySelectorAll('.f-chip[data-pri]').forEach(function(el){
+  el.addEventListener('click', function(){
+    var v = this.dataset.pri;
+    var i = F.pri.indexOf(v);
+    if(i>=0){ F.pri.splice(i,1); this.classList.remove('on'); }
+    else { F.pri.push(v); this.classList.add('on'); }
+    render();
+  });
+});
+
+document.getElementById('freset').addEventListener('click', function(){
+  F = {kw:'', tp:'全部', rk:[], pri:[], st:'全部', onlyNeed:false, dMin:'', dMax:'', sortCol:-1, sortAsc:true};
+  document.getElementById('fkw').value = '';
+  document.getElementById('ftp').value = '全部';
+  document.getElementById('fst').value = '全部';
+  document.getElementById('fdmin').value = '';
+  document.getElementById('fdmax').value = '';
+  document.getElementById('fneed').checked = false;
+  document.querySelectorAll('.f-chip').forEach(function(e){ e.classList.remove('on'); });
+  render();
+});
+
+// 快捷筛选
+document.getElementById('q-urg').addEventListener('click', function(){
+  F = {kw:'', tp:'全部', rk:['🚨 紧急(<30天)'], pri:[], st:'全部', onlyNeed:false, dMin:'', dMax:'', sortCol:-1, sortAsc:true};
+  document.querySelectorAll('.f-chip').forEach(function(e){ e.classList.toggle('on', e.dataset.rk==='🚨 紧急(<30天)'); });
+  document.getElementById('fkw').value=''; document.getElementById('ftp').value='全部';
+  document.getElementById('fst').value='全部'; document.getElementById('fdmin').value='';
+  document.getElementById('fdmax').value=''; document.getElementById('fneed').checked=false;
+  render();
+});
+document.getElementById('q-new').addEventListener('click', function(){
+  F = {kw:'', tp:'新品', rk:[], pri:[], st:'全部', onlyNeed:true, dMin:'', dMax:'', sortCol:-1, sortAsc:true};
+  document.querySelectorAll('.f-chip').forEach(function(e){ e.classList.remove('on'); });
+  document.getElementById('fkw').value=''; document.getElementById('ftp').value='新品';
+  document.getElementById('fst').value='全部'; document.getElementById('fdmin').value='';
+  document.getElementById('fdmax').value=''; document.getElementById('fneed').checked=true;
+  render();
+});
+document.getElementById('q-old').addEventListener('click', function(){
+  F = {kw:'', tp:'老品', rk:[], pri:[], st:'全部', onlyNeed:true, dMin:'', dMax:'', sortCol:-1, sortAsc:true};
+  document.querySelectorAll('.f-chip').forEach(function(e){ e.classList.remove('on'); });
+  document.getElementById('fkw').value=''; document.getElementById('ftp').value='老品';
+  document.getElementById('fst').value='全部'; document.getElementById('fdmin').value='';
+  document.getElementById('fdmax').value=''; document.getElementById('fneed').checked=true;
+  render();
+});
+
+// 表头排序
+document.querySelectorAll('th[data-col]').forEach(function(th){
+  th.addEventListener('click', function(){
+    var c = Number(this.dataset.col);
+    if(F.sortCol === c) F.sortAsc = !F.sortAsc;
+    else { F.sortCol = c; F.sortAsc = true; }
+    render();
+  });
+});
+
+// ===== 导出 =====
+document.getElementById('exp-note').addEventListener('click', function(){
+  var lines = ['类型,ASIN,SKU,状态,风险,优先级,净备货,金额,备注,已标记'];
+  ALL.forEach(function(r){
+    var nv = (NOTES[r.id]||'').replace(/,/g,'，');
+    var mk = MARKS[r.id] ? '是' : '';
+    if(nv || mk) lines.push([r.tp,r.asin,r.sku,r.st,r.rk,r.pri,r.net,r.amt,nv,mk].join(','));
+  });
+  dl(lines.join('\n'), '发动机支架_备货备注.csv');
+});
+document.getElementById('exp-all').addEventListener('click', function(){
+  var lines = ['类型,ASIN,SKU,状态,风险,优先级,日均,4月需求,可用,可售,头程,待上架,已采在途,净备货,可撑天数,单价,金额,备注,已标记'];
+  ALL.forEach(function(r){
+    var nv = (NOTES[r.id]||'').replace(/,/g,'，');
+    lines.push([r.tp,r.asin,r.sku,r.st,r.rk,r.pri,r.d,r.need,r.av,r.sale,r.tr,r.pend,r.po,r.net,r.days,r.price,r.amt,nv,MARKS[r.id]?'是':''].join(','));
+  });
+  dl('\ufeff'+lines.join('\n'), '发动机支架_备货全量.csv');
+});
+function dl(txt, fn){
+  var b = new Blob([txt], {type:'text/csv;charset=utf-8'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(b); a.download = fn; a.click();
+}
+
+// 导入备注
+document.getElementById('imp-note').addEventListener('change', function(e){
+  var f = e.target.files[0]; if(!f) return;
+  var rd = new FileReader();
+  rd.onload = function(){
+    var lines = rd.result.split('\n');
+    var n = 0;
+    for(var i=1;i<lines.length;i++){
+      var c = lines[i].split(',');
+      if(c.length < 10) continue;
+      var asin = c[1], sku = c[2], note = (c[8]||'').trim(), mk = (c[9]||'').trim();
+      var r = ALL.find(function(x){ return x.asin===asin && x.sku===sku; });
+      if(!r) continue;
+      if(note){ NOTES[r.id] = note; n++; }
+      if(mk==='是') MARKS[r.id] = 1;
+    }
+    saveNotes(NOTES); saveMarks(MARKS);
+    render();
+    alert('已导入 '+n+' 条备注');
+  };
+  rd.readAsText(f, 'utf-8');
+  e.target.value = '';
+});
+
+// ===== 图表 =====
+(function(){
+  var el = document.getElementById('c1');
+  var m = {};
+  ALL.forEach(function(r){ m[r.rk] = (m[r.rk]||0) + 1; });
+  var data = D.rk.filter(function(k){ return m[k]; }).map(function(k){
+    var cmap = {'🚨 紧急(<30天)':'#C0392B','🔴 预警(30-60天)':'#E74C3C','🟠 偏紧(60-120天)':'#E67E22','✅ 健康(120-240天)':'#2A9D48','💤 过高(>240天)':'#8E44AD','⚫ 零销量':'#7F8C8D'};
+    return {name:k, value:m[k], itemStyle:{color:cmap[k]}};
+  });
+  el.setOption({tooltip:{trigger:'item'},legend:{bottom:0,textStyle:{fontSize:10}},
+    series:[{type:'pie',radius:['38%','64%'],center:['50%','44%'],data:data,label:{fontSize:10,formatter:'{b}\n{c}个'}}]});
+})();
+(function(){
+  var el = document.getElementById('c2');
+  var cats = ['新品','老品'];
+  var need = cats.map(function(t){ return ALL.filter(function(r){return r.tp===t;}).reduce(function(s,r){return s+r.need;},0); });
+  var av = cats.map(function(t){ return ALL.filter(function(r){return r.tp===t;}).reduce(function(s,r){return s+r.av;},0); });
+  var net = cats.map(function(t){ return ALL.filter(function(r){return r.tp===t;}).reduce(function(s,r){return s+r.net;},0); });
+  el.setOption({tooltip:{trigger:'axis'},legend:{top:0,textStyle:{fontSize:10}},grid:{left:70,right:40,top:38,bottom:34},
+    xAxis:{type:'category',data:cats},yAxis:{type:'value',name:'件'},
+    series:[
+      {name:'4月需求',type:'bar',data:need,itemStyle:{color:'#9DB8CE'},barWidth:'22%',label:{show:true,position:'top',fontSize:10}},
+      {name:'可用库存',type:'bar',data:av,itemStyle:{color:'#1B9AAA'},barWidth:'22%',label:{show:true,position:'top',fontSize:10}},
+      {name:'净备货',type:'bar',data:net,itemStyle:{color:'#E67E22'},barWidth:'22%',label:{show:true,position:'top',fontSize:10}}
+    ]});
+})();
+
+window.addEventListener('resize', function(){
+  ['c1','c2'].forEach(function(i){ var e=echarts.getInstanceByDom(document.getElementById(i)); if(e) e.resize(); });
+});
+
+render();
+</script>
+</body>
+</html>
