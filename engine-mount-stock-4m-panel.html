@@ -395,7 +395,7 @@ document.getElementById('imp-note').addEventListener('change', function(e){
 
 // ===== 图表 =====
 (function(){
-  var el = document.getElementById('c1');
+  var el = echarts.init(document.getElementById('c1'));
   var m = {};
   ALL.forEach(function(r){ m[r.rk] = (m[r.rk]||0) + 1; });
   var data = D.rk.filter(function(k){ return m[k]; }).map(function(k){
@@ -406,7 +406,7 @@ document.getElementById('imp-note').addEventListener('change', function(e){
     series:[{type:'pie',radius:['38%','64%'],center:['50%','44%'],data:data,label:{fontSize:10,formatter:'{b}'}}]});
 })();
 (function(){
-  var el = document.getElementById('c2');
+  var el = echarts.init(document.getElementById('c2'));
   var cats = ['新品','老品'];
   var need = cats.map(function(t){ return ALL.filter(function(r){return r.tp===t;}).reduce(function(s,r){return s+r.need;},0); });
   var av = cats.map(function(t){ return ALL.filter(function(r){return r.tp===t;}).reduce(function(s,r){return s+r.av;},0); });
@@ -422,7 +422,7 @@ document.getElementById('imp-note').addEventListener('change', function(e){
 
 
 (function(){
-  var el = document.getElementById('c5');
+  var el = echarts.init(document.getElementById('c5'));
   if(!el) return;
   var d = [{name:'新品', value:2555.05}, {name:'老品', value:98386.81}];
   el.setOption({tooltip:{trigger:'item', formatter:'{b}: ¥{c} ({d}%)'},
@@ -432,7 +432,7 @@ document.getElementById('imp-note').addEventListener('change', function(e){
       label:{fontSize:10,formatter:'{b}'}}]});
 })();
 (function(){
-  var el = document.getElementById('c6');
+  var el = echarts.init(document.getElementById('c6'));
   if(!el) return;
   var cats = ["买家原因", "产品原因", "质量原因", "仓储原因", "物流原因"];
   var nv = [703.031, 0.0, 0.0, 1175.582, 676.432];
@@ -449,7 +449,7 @@ document.getElementById('imp-note').addEventListener('change', function(e){
 
 
 (function(){
-  var el = document.getElementById('c7');
+  var el = echarts.init(document.getElementById('c7'));
   if(!el) return;
   el.setOption({
     tooltip:{trigger:'axis'},
