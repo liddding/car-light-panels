@@ -7,12 +7,22 @@
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Microsoft YaHei',-apple-system,sans-serif;background:#eef3f8;color:#16233a;padding:16px;max-width:1660px;margin:0 auto}
+html{scroll-behavior:smooth}
+body{font-family:'Microsoft YaHei',-apple-system,sans-serif;background:#eef3f8;color:#16233a;padding:0 16px 16px;max-width:1660px;margin:0 auto}
+.nav{position:sticky;top:0;z-index:999;background:rgba(255,255,255,.97);backdrop-filter:blur(8px);
+ border-bottom:2px solid #0F4C75;display:flex;gap:6px;padding:10px 16px;margin:0 -16px 14px;
+ flex-wrap:wrap;align-items:center;box-shadow:0 3px 14px rgba(15,76,117,.13)}
+.nav .nt{font-size:12.5px;font-weight:700;color:#0F4C75;margin-right:6px;white-space:nowrap}
+.nav a{padding:6px 13px;border-radius:16px;background:#eef3f8;color:#0F4C75;text-decoration:none;
+ font-size:12px;font-weight:600;white-space:nowrap;transition:all .15s}
+.nav a:hover{background:#0F4C75;color:#fff;transform:translateY(-1px)}
+.nav a.hot{background:#fff3e0;color:#E67E22}
+section[id]{scroll-margin-top:76px}
 .hd{background:linear-gradient(135deg,#0F4C75,#1B9AAA);color:#fff;border-radius:14px;padding:24px 30px;margin-bottom:14px;box-shadow:0 6px 20px rgba(15,76,117,.22)}
 .hd h1{font-size:26px}
 .hd .mt{font-size:12.5px;opacity:.95;margin-top:9px;line-height:1.95}
 .kr{display:flex;flex-wrap:nowrap;gap:9px;margin-bottom:14px;overflow-x:auto}
-.kp{background:#fff;border-radius:10px;padding:13px 15px;box-shadow:0 2px 6px rgba(0,0,0,.07);flex:1 1 0;min-width:150px}
+.kp{background:#fff;border-radius:10px;padding:13px 15px;box-shadow:0 2px 6px rgba(0,0,0,.07);flex:1 1 0;min-width:148px}
 .kl{font-size:11.5px;color:#5f6b7a}
 .kv{font-size:19px;font-weight:700;margin:4px 0;color:#0F4C75}
 .kv.good{color:#2A9D48}.kv.warn{color:#E67E22}.kv.bad{color:#C0392B}
@@ -23,6 +33,7 @@ body{font-family:'Microsoft YaHei',-apple-system,sans-serif;background:#eef3f8;c
 .ch{width:100%;height:370px}
 .ch2{width:100%;height:330px}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
 .chp{background:linear-gradient(90deg,#0F4C75,#1B9AAA);color:#fff;border-radius:10px;padding:11px 22px;margin:22px 0 12px;font-size:16.5px;font-weight:700}
 .twr{margin:0 auto;max-width:100%;overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:12px;margin:0 auto}
@@ -43,115 +54,140 @@ tbody tr.ours{background:#e8f8ec !important;font-weight:700}
 </style>
 </head>
 <body>
-
+<nav class="nav"><span class="nt">&#128204; 快捷导航</span><a href="#ov">概览</a><a href="#mkt">大盘趋势</a><a href="#ptm">PT走势</a><a href="#y25">2025 年度</a><a href="#y26">2026 年度</a><a href="#cmp">年度对比</a><a href="#sea">季节性</a><a href="#comp">竞争关系</a></nav>
 <div class="hd">
 <h1>&#127760; 发动机支架 · PHILTOP 市占分析</h1>
 <div class="mt">
-类目：Engine Mounts（Amazon US · node 15725951）｜ 统计区间 202501 ~ 202610（22 个月）<br>
-大盘 1,473,329 件 / ¥666,334,457 ｜ 品牌 2,987 个 ｜ <b>PHILTOP 排名 63</b><br>
-份额 = 品牌月度销售额 ÷ 大盘月度销售额 ｜ 年度对比用 1-10 月同月口径 ｜ 金额按 1 USD = 7.1 CNY（¥）
+类目：Engine Mounts（Amazon US · node 15725951）｜ 统计区间 202501 ~ 202610<br>
+<b>口径已分年度</b>：2025 全年（12 个月）/ 2025 年 1-10 月 / 2026 年 1-10 月，各段独立统计，不做跨期混算<br>
+份额 = 品牌销售额 ÷ 该期间大盘销售额 ｜ 金额按 1 USD = 7.1 CNY（¥）
 </div>
 </div>
-<div class="kr"><div class="kp"><div class="kl">PT 累计销售额</div><div class="kv brand">¥1,727,664</div><div class="kn">22 个月 · 3,539 件</div></div><div class="kp"><div class="kl">PT 额份额</div><div class="kv warn">0.259%</div><div class="kn">排名 63 / 2987</div></div><div class="kp"><div class="kl">2026 同比</div><div class="kv good">+294.6%</div><div class="kn">同月口径（1-10月）</div></div><div class="kp"><div class="kl">份额变化</div><div class="kv good">+0.326pp</div><div class="kn">0.113% → 0.439%</div></div><div class="kp"><div class="kl">涨最多竞品</div><div class="kv bad">SHICHU</div><div class="kn">+1.734pp · 额 +166%</div></div><div class="kp"><div class="kl">跌最多竞品</div><div class="kv warn">A-Premium</div><div class="kn">-0.775pp · 额 -3%</div></div><div class="kp"><div class="kl">旺季月</div><div class="kv good">3 月</div><div class="kn">指数 110（基准 100）</div></div><div class="kp"><div class="kl">淡季月</div><div class="kv bad">12 月</div><div class="kn">指数 91（基准 100）</div></div></div>
 
-<div class="chp">&#128202; 一、大盘月度趋势</div>
+<section id="ov">
+<div class="chp">&#128202; 概览</div>
+<div class="kr"><div class="kp"><div class="kl">2025 全年 PT 份额</div><div class="kv warn">0.107%</div><div class="kn">排名 115 / 2767 · ¥387,933</div></div><div class="kp"><div class="kl">2026 1-10月 PT 份额</div><div class="kv good">0.439%</div><div class="kn">排名 39 / 2987 · ¥1,339,731</div></div><div class="kp"><div class="kl">份额变化</div><div class="kv good">+0.326pp</div><div class="kn">2025(1-10) 0.113% → 2026 0.439%</div></div><div class="kp"><div class="kl">2026 同比</div><div class="kv good">+294.6%</div><div class="kn">同月口径 · 大盘 +1.2%</div></div><div class="kp"><div class="kl">2025 CR10</div><div class="kv bad">43.09%</div><div class="kn">CR5 33.08%</div></div><div class="kp"><div class="kl">2026 CR10</div><div class="kv bad">45.03%</div><div class="kn">CR5 34.14%</div></div><div class="kp"><div class="kl">2025 进TOP50门槛</div><div class="kv warn">¥93,578</div><div class="kn">第50名月均</div></div><div class="kp"><div class="kl">2026 进TOP50门槛</div><div class="kv warn">¥110,374</div><div class="kn">第50名月均</div></div></div>
+<div class="cd"><div class="insight good"><div class="ins-line"><b>📊 数据解读：</b><b>2025 全年：PT ¥387,933 / 718 件，份额 0.107%，排名 115 / 2767。</b><br><b>2026 1-10月：PT ¥1,339,731 / 2,821 件，份额 0.439%，排名 39 / 2987。</b><br>份额 0.113% → 0.439%，<b>+0.326pp</b>；排名 115 → 39（前进 76 位）。</div><div class="ins-line"><b>🔍 原因分析：</b><b>大盘 2026 同比 +1.2%，PT 同比 +294.6%</b> —— 份额完全是抢来的。<br><b>PT 均价 ¥475 vs 大盘 ¥454</b>，额占 0.439% 略高于量占 0.419%，定价合理。<br><b>品牌数从 2767 增到 2987</b>，新玩家还在涌入，竞争在加剧。</div><div class="ins-line"><b>✅ 建议动作：</b><b>① 2026 份额 0.439%，2025 是 0.107%</b> —— 斜率保持住，2027 可冲进 TOP50；<br><b>② 2026 进 TOP50 门槛 ¥110,374/月，PT 现在 ¥133,973</b> —— 差 0.82 倍，是现实目标；<br><b>③ 别只看份额，也要看排名</b> —— 排名前进 76 位，说明绝对份额在涨。</div></div></div>
+</section>
+
+<section id="mkt">
+<div class="chp">&#128200; 一、大盘月度趋势</div>
 <div class="cd">
-  <div class="ct">Engine Mounts 大盘：销量 / 销售额 / 均价</div>
+  <div class="ct">22 个月大盘销量 / 销售额 / 均价</div>
   <div class="cs">柱=销量（件）｜橙线=销售额（¥）｜紫虚线=均价（¥）</div>
   <div id="c-mon" class="ch"></div>
 </div>
-<div class="cd"><div class="twr"><table id="t-mon"><thead><tr><th>月份</th><th>大盘销量</th><th>环比</th><th>大盘销售额</th><th>PT销量</th><th>PT销售额</th><th>PT份额</th><th>PT环比</th></tr></thead><tbody><tr><td>202501</td><td>54,287</td><td><b class="up">—</b></td><td>¥24,216,932</td><td>108</td><td>¥52,835</td><td><b class="up">0.218%</b></td><td>—</td></tr><tr><td>202502</td><td>58,653</td><td><b class="up">+8.0%</b></td><td>¥26,122,126</td><td>83</td><td>¥39,487</td><td><b class="up">0.151%</b></td><td><b class="down">-25.3%</b></td></tr><tr><td>202503</td><td>72,196</td><td><b class="up">+23.1%</b></td><td>¥32,872,987</td><td>50</td><td>¥27,923</td><td><b class="down">0.085%</b></td><td><b class="down">-29.3%</b></td></tr><tr><td>202504</td><td>67,611</td><td><b class="down">-6.4%</b></td><td>¥30,697,252</td><td>55</td><td>¥33,005</td><td><b class="down">0.108%</b></td><td><b class="up">+18.2%</b></td></tr><tr><td>202505</td><td>75,909</td><td><b class="up">+12.3%</b></td><td>¥34,747,057</td><td>47</td><td>¥26,055</td><td><b class="down">0.075%</b></td><td><b class="down">-21.1%</b></td></tr><tr><td>202506</td><td>68,403</td><td><b class="down">-9.9%</b></td><td>¥30,726,171</td><td>34</td><td>¥19,142</td><td><b class="down">0.062%</b></td><td><b class="down">-26.5%</b></td></tr><tr><td>202507</td><td>65,335</td><td><b class="down">-4.5%</b></td><td>¥29,159,301</td><td>90</td><td>¥49,855</td><td><b class="up">0.171%</b></td><td><b class="up">+160.4%</b></td></tr><tr><td>202508</td><td>70,630</td><td><b class="up">+8.1%</b></td><td>¥31,709,303</td><td>68</td><td>¥39,726</td><td><b class="up">0.125%</b></td><td><b class="down">-20.3%</b></td></tr><tr><td>202509</td><td>66,596</td><td><b class="down">-5.7%</b></td><td>¥29,712,193</td><td>54</td><td>¥31,493</td><td><b class="down">0.106%</b></td><td><b class="down">-20.7%</b></td></tr><tr><td>202510</td><td>71,312</td><td><b class="up">+7.1%</b></td><td>¥31,798,527</td><td>35</td><td>¥19,969</td><td><b class="down">0.063%</b></td><td><b class="down">-36.6%</b></td></tr><tr><td>202511</td><td>70,408</td><td><b class="down">-1.3%</b></td><td>¥31,762,127</td><td>47</td><td>¥23,501</td><td><b class="down">0.074%</b></td><td><b class="up">+17.7%</b></td></tr><tr><td>202512</td><td>59,418</td><td><b class="down">-15.6%</b></td><td>¥27,449,910</td><td>47</td><td>¥24,943</td><td><b class="down">0.091%</b></td><td><b class="up">+6.1%</b></td></tr><tr><td>202601</td><td>67,177</td><td><b class="up">+13.1%</b></td><td>¥30,774,991</td><td>79</td><td>¥41,344</td><td><b class="up">0.134%</b></td><td><b class="up">+65.7%</b></td></tr><tr><td>202602</td><td>63,483</td><td><b class="down">-5.5%</b></td><td>¥28,860,804</td><td>111</td><td>¥60,360</td><td><b class="up">0.209%</b></td><td><b class="up">+46.0%</b></td></tr><tr><td>202603</td><td>74,280</td><td><b class="up">+17.0%</b></td><td>¥33,929,310</td><td>173</td><td>¥88,271</td><td><b class="up">0.260%</b></td><td><b class="up">+46.2%</b></td></tr><tr><td>202604</td><td>74,643</td><td><b class="up">+0.5%</b></td><td>¥34,335,308</td><td>165</td><td>¥89,948</td><td><b class="up">0.262%</b></td><td><b class="up">+1.9%</b></td></tr><tr><td>202605</td><td>62,431</td><td><b class="down">-16.4%</b></td><td>¥28,538,119</td><td>117</td><td>¥61,253</td><td><b class="up">0.215%</b></td><td><b class="down">-31.9%</b></td></tr><tr><td>202606</td><td>67,301</td><td><b class="up">+7.8%</b></td><td>¥30,725,205</td><td>318</td><td>¥151,853</td><td><b class="up">0.494%</b></td><td><b class="up">+147.9%</b></td></tr><tr><td>202607</td><td>57,702</td><td><b class="down">-14.3%</b></td><td>¥26,003,227</td><td>292</td><td>¥144,581</td><td><b class="up">0.556%</b></td><td><b class="down">-4.8%</b></td></tr><tr><td>202608</td><td>66,134</td><td><b class="up">+14.6%</b></td><td>¥29,592,154</td><td>343</td><td>¥155,188</td><td><b class="up">0.524%</b></td><td><b class="up">+7.3%</b></td></tr><tr><td>202609</td><td>68,136</td><td><b class="up">+3.0%</b></td><td>¥30,549,871</td><td>530</td><td>¥235,302</td><td><b class="up">0.770%</b></td><td><b class="up">+51.6%</b></td></tr><tr><td>202610</td><td>71,284</td><td><b class="up">+4.6%</b></td><td>¥32,051,583</td><td>693</td><td>¥311,632</td><td><b class="up">0.972%</b></td><td><b class="up">+32.4%</b></td></tr></tbody></table></div></div>
+</section>
 
-<div class="chp">&#128200; 二、PHILTOP 月度走势与份额</div>
+<section id="ptm">
+<div class="chp">&#128201; 二、PHILTOP 月度走势与份额</div>
 <div class="cd">
-  <div class="ct">PT 销售额 + 额份额</div>
+  <div class="ct">PT 月度销售额 + 额份额</div>
   <div class="cs">绿柱=PT销售额（¥）｜红线=额份额（%）</div>
   <div id="c-pt" class="ch"></div>
 </div>
+</section>
 
-<div class="chp">&#128197; 三、年度对比（2025 vs 2026）</div>
+<section id="y25">
+<div class="chp">&#128197; 三、2025 年度（全年 12 个月）</div>
+<div class="cd"><div class="kr"><div class="kp"><div class="kl">大盘销售额</div><div class="kv brand">¥360,973,884</div><div class="kn">800,758 件</div></div><div class="kp"><div class="kl">大盘均价</div><div class="kv brand">¥451</div><div class="kn">加权平均</div></div><div class="kp"><div class="kl">PT 销售额</div><div class="kv good">¥387,933</div><div class="kn">718 件</div></div><div class="kp"><div class="kl">PT 份额</div><div class="kv warn">0.107%</div><div class="kn">排名 115 / 2767</div></div><div class="kp"><div class="kl">PT 均价</div><div class="kv warn">¥540</div><div class="kn">vs 大盘 ¥451</div></div><div class="kp"><div class="kl">品牌数</div><div class="kv brand">2,767</div><div class="kn">有销量的品牌</div></div></div></div>
 <div class="cd">
   <div class="row2">
-    <div><div class="ct">年度销售额与 PT 份额</div><div class="cs">灰=大盘｜绿=PT｜红虚线=PT份额</div>
-    <div id="c-yr" class="ch2"></div></div>
-    <div><div class="ct">TOP10 品牌份额</div><div class="cs">其余 2,977 个品牌合计 56.72%</div>
-    <div id="c-pie" class="ch2"></div></div>
-  </div>
-</div>
-<div class="cd"><div class="twr"><table id="t-yr"><thead><tr><th>年份</th><th>月数</th><th>大盘销量</th><th>大盘销售额</th><th>大盘均价</th><th>PT销售额</th><th>PT销量</th><th>PT额占</th><th>PT量占</th><th>PT均价</th></tr></thead><tbody><tr><td>2025</td><td>12 个月</td><td>800,758</td><td>¥360,973,884</td><td>¥451</td><td>¥387,933</td><td>718</td><td>0.107%</td><td>0.090%</td><td>¥540</td></tr><tr><td>2026</td><td>10 个月</td><td>672,570</td><td>¥305,360,573</td><td>¥454</td><td>¥1,339,731</td><td>2,821</td><td>0.439%</td><td>0.419%</td><td>¥475</td></tr></tbody></table></div></div>
-<div class="cd">
-  <div class="ct">2025 vs 2026 同比（1-10 月同月口径）</div>
-  <div class="cs">大盘几乎持平，PT 逆势增长近 3 倍</div>
-  <div class="twr"><table id="t-yoy"><thead><tr><th>指标</th><th>2025 1-10月</th><th>2026 1-10月</th><th>同比</th></tr></thead><tbody><tr><td>大盘销量</td><td>670,932</td><td>672,570</td><td><b class="up">+0.2%</b></td></tr><tr><td>大盘销售额</td><td>¥301,761,847</td><td>¥305,360,573</td><td><b class="up">+1.2%</b></td></tr><tr><td>PT 销量</td><td>624</td><td>2,821</td><td><b class="up">+352.0%</b></td></tr><tr><td>PT 销售额</td><td>¥339,489</td><td>¥1,339,731</td><td><b class="up">+294.6%</b></td></tr><tr><td>PT 额份额</td><td>0.113%</td><td>0.439%</td><td><b class="up">+0.326pp</b></td></tr></tbody></table></div>
-</div>
-<div class="cd"><div class="insight good"><div class="ins-line"><b>📊 数据解读：</b><b>PT 22 个月累计 ¥1,727,664 / 3,539 件，额份额 0.259%，排名 63 / 2987。</b><br><b>2026 同比（1-10月同月口径）：销售额 +294.6%，销量 +352.0%，份额 0.113% → 0.439%（+0.326pp）。</b><br>最新月 202610：PT ¥311,632，份额 0.972%。</div><div class="ins-line"><b>🔍 原因分析：</b><b>大盘 2026 同比仅 +1.2%，PT 却 +294.6% —— 增长全部来自抢份额，不是吃大盘增量。</b><br>PT 均价 ¥488 vs 大盘 ¥452，<b>额占 0.259% 略高于量占 0.240%</b>，说明定价合理、没有靠低价冲量。</div><div class="ins-line"><b>✅ 建议动作：</b><b>① 保持当前斜率</b> —— 2026 的打法已验证有效，不换方向；<br><b>② 备货按季节指数加权</b> —— 3 月最旺（指数 110），提前 6-8 周压货；<br><b>③ 短期目标先冲 TOP50</b>（月均 ¥104,646 即可），比一步到位打 TOP10 现实。</div></div></div>
-
-<div class="chp">&#128300; 四、竞品份额走势与迁移</div>
-<div class="cd">
-  <div class="ct">TOP9 品牌月度份额变化</div>
-  <div class="cs">绿粗线 = PHILTOP｜其余为竞品</div>
-  <div id="c-share" class="ch"></div>
-</div>
-<div class="cd">
-  <div class="ct">份额迁移（2025 → 2026，同月口径）</div>
-  <div class="cs">横轴 2025｜纵轴 2026｜虚线以上 = 份额提升</div>
-  <div id="c-scatter" class="ch2"></div>
-</div>
-<div class="cd"><div class="twr"><table id="t-mig"><thead><tr><th>#</th><th>品牌</th><th>2025 份额</th><th>2026 份额</th><th>变化</th><th>2025 销售额</th><th>2026 销售额</th><th>额增长</th></tr></thead><tbody><tr><td><span class="tag">1</span></td><td>SHICHU</td><td>1.067%</td><td>2.801%</td><td><b class="up">+1.734pp</b></td><td>¥3,220,314</td><td>¥8,552,579</td><td><b class="up">+166%</b></td></tr><tr><td><span class="tag">2</span></td><td>loongrie</td><td>5.862%</td><td>7.357%</td><td><b class="up">+1.495pp</b></td><td>¥17,689,951</td><td>¥22,464,686</td><td><b class="up">+27%</b></td></tr><tr><td><span class="tag">3</span></td><td>sherxibo</td><td>1.774%</td><td>3.016%</td><td><b class="up">+1.242pp</b></td><td>¥5,353,931</td><td>¥9,211,183</td><td><b class="up">+72%</b></td></tr><tr><td><span class="tag">4</span></td><td>Yllshengyu</td><td>1.930%</td><td>2.665%</td><td><b class="up">+0.735pp</b></td><td>¥5,824,614</td><td>¥8,137,977</td><td><b class="up">+40%</b></td></tr><tr class="ours"><td><span class="tag">5</span></td><td><b>PHILTOP</b></td><td>0.113%</td><td>0.439%</td><td><b class="up">+0.326pp</b></td><td>¥339,489</td><td>¥1,339,731</td><td><b class="up">+295%</b></td></tr><tr><td><span class="tag">6</span></td><td>Yllhaoyuan</td><td>3.366%</td><td>3.347%</td><td><b class="down">-0.019pp</b></td><td>¥10,157,093</td><td>¥10,220,182</td><td><b class="up">+1%</b></td></tr><tr><td><span class="tag">7</span></td><td>Mardarth</td><td>3.512%</td><td>3.333%</td><td><b class="down">-0.179pp</b></td><td>¥10,598,114</td><td>¥10,178,731</td><td><b class="down">-4%</b></td></tr><tr><td><span class="tag">8</span></td><td>ENA</td><td>2.499%</td><td>1.984%</td><td><b class="down">-0.515pp</b></td><td>¥7,542,004</td><td>¥6,058,962</td><td><b class="down">-20%</b></td></tr><tr><td><span class="tag">9</span></td><td>A-Premium</td><td>17.862%</td><td>17.087%</td><td><b class="down">-0.775pp</b></td><td>¥53,901,953</td><td>¥52,177,283</td><td><b class="down">-3%</b></td></tr></tbody></table></div></div>
-<div class="cd"><div class="insight warm"><div class="ins-line"><b>📊 数据解读：</b><b>份额迁移（2025 → 2026，同月口径）：</b><br>涨最多 <b>SHICHU +1.734pp</b>（额 +166%）、<b>loongrie +1.495pp</b>（额 +27%）；<br>跌最多 <b>A-Premium -0.775pp</b>（额 -3%）、<b>ENA -0.515pp</b>（额 -20%）；<br><b>PT +0.326pp（额 +295%），排第 5。</b></div><div class="ins-line"><b>🔍 原因分析：</b><b>关键判断：PT 不是这场迁移的主角。</b><br>A-Premium 与 ENA 合计丢了 1.29pp，PT 只拿到 0.326pp —— <b>大头被 SHICHU 和 loongrie 吃掉</b>。<br>相关系数印证：PT 与 ENA（-0.476）、A-Premium（-0.347）负相关，但与 SHICHU（+0.561）、Yllshengyu（+0.621）正相关 —— 说明 PT 和它们在同时涨，抢的是更小的玩家。</div><div class="ins-line"><b>✅ 建议动作：</b><b>① 真正的对手是 SHICHU 和 loongrie</b>，不是 A-Premium —— 前者额增 +166%、+27%，都在加速；<br><b>② A-Premium 虽在丢份额，体量仍是 PT 的 198 倍</b>，短期不构成直接竞争；<br><b>③ 优先研究 SHICHU</b> —— 它从 1.067% 涨到 2.801%，是同类打法里跑得最快的，车型覆盖和定价最值得对标。</div></div></div>
-
-<div class="chp">&#128202; 五、集中度与季节性</div>
-<div class="cd">
-  <div class="row2">
-    <div><div class="ct">集中度全档（CR1→CR100）</div><div class="cs">额占 vs 量占，差距 = 价格溢价</div>
+    <div><div class="ct">2025 TOP10 品牌份额</div><div class="cs">共 2,767 个有销量品牌</div>
+    <div id="c-pie25" class="ch2"></div></div>
+    <div><div class="ct">2025 集中度</div><div class="cs">额占 vs 量占</div>
     <div id="c-cr" class="ch2"></div></div>
-    <div><div class="ct">集中度时间序列</div><div class="cs">CR3 / CR5 / CR10 逐月</div>
-    <div id="c-crt" class="ch2"></div></div>
   </div>
 </div>
-<div class="cd"><div class="twr"><table id="t-cr"><thead><tr><th>集中度</th><th>额占</th><th>量占</th><th>累计销售额</th><th>月均</th></tr></thead><tbody><tr><td>CR1</td><td>17.41%</td><td>12.66%</td><td>¥116,038,797</td><td>¥5,274,491</td></tr><tr><td>CR3</td><td>27.46%</td><td>24.34%</td><td>¥182,969,605</td><td>¥8,316,800</td></tr><tr><td>CR5</td><td>33.29%</td><td>29.86%</td><td>¥221,823,475</td><td>¥10,082,885</td></tr><tr><td>CR10</td><td>43.28%</td><td>38.78%</td><td>¥288,377,079</td><td>¥13,108,049</td></tr><tr><td>CR15</td><td>50.50%</td><td>46.53%</td><td>¥336,517,885</td><td>¥15,296,268</td></tr><tr><td>CR20</td><td>56.03%</td><td>52.49%</td><td>¥373,315,487</td><td>¥16,968,886</td></tr><tr><td>CR30</td><td>62.94%</td><td>58.89%</td><td>¥419,411,400</td><td>¥19,064,155</td></tr><tr><td>CR50</td><td>71.16%</td><td>67.52%</td><td>¥474,137,389</td><td>¥21,551,700</td></tr><tr><td>CR100</td><td>81.46%</td><td>78.52%</td><td>¥542,765,495</td><td>¥24,671,159</td></tr></tbody></table></div></div>
+<div class="cd">
+  <div class="ct">2025 品牌 TOP15</div>
+  <div class="cs">PHILTOP 排名 115 / 2,767</div>
+  <div class="twr"><table id="t-br-25"><thead><tr><th>#</th><th>品牌</th><th>销量</th><th>销售额</th><th>额占</th><th>量占</th><th>均价</th></tr></thead><tbody><tr><td><span class="tag">1</span></td><td>A-Premium</td><td>102,379</td><td>¥63,861,514</td><td>17.69%</td><td>12.79%</td><td>¥624</td></tr><tr><td><span class="tag">2</span></td><td>loongrie</td><td>57,961</td><td>¥21,738,086</td><td>6.02%</td><td>7.24%</td><td>¥375</td></tr><tr><td><span class="tag">3</span></td><td>Mardarth</td><td>30,333</td><td>¥12,549,306</td><td>3.48%</td><td>3.79%</td><td>¥414</td></tr><tr><td><span class="tag">4</span></td><td>Yllhaoyuan</td><td>28,517</td><td>¥12,355,568</td><td>3.42%</td><td>3.56%</td><td>¥433</td></tr><tr><td><span class="tag">5</span></td><td>ENA</td><td>22,049</td><td>¥8,917,511</td><td>2.47%</td><td>2.75%</td><td>¥404</td></tr><tr><td><span class="tag">6</span></td><td>ONNURI</td><td>13,564</td><td>¥7,786,074</td><td>2.16%</td><td>1.69%</td><td>¥574</td></tr><tr><td><span class="tag">7</span></td><td>JDMON</td><td>19,376</td><td>¥7,489,800</td><td>2.07%</td><td>2.42%</td><td>¥387</td></tr><tr><td><span class="tag">8</span></td><td>Yllshengyu</td><td>15,365</td><td>¥7,283,125</td><td>2.02%</td><td>1.92%</td><td>¥474</td></tr><tr><td><span class="tag">9</span></td><td>sherxibo</td><td>12,319</td><td>¥7,066,937</td><td>1.96%</td><td>1.54%</td><td>¥574</td></tr><tr><td><span class="tag">10</span></td><td>TRQ</td><td>12,723</td><td>¥6,495,974</td><td>1.80%</td><td>1.59%</td><td>¥511</td></tr><tr><td><span class="tag">11</span></td><td>OMNI5</td><td>10,465</td><td>¥6,038,528</td><td>1.67%</td><td>1.31%</td><td>¥577</td></tr><tr><td><span class="tag">12</span></td><td>GM GENUINE PARTS</td><td>8,921</td><td>¥5,325,449</td><td>1.48%</td><td>1.11%</td><td>¥597</td></tr><tr><td><span class="tag">13</span></td><td>iKer</td><td>11,999</td><td>¥5,151,467</td><td>1.43%</td><td>1.50%</td><td>¥429</td></tr><tr><td><span class="tag">14</span></td><td>SHICHU</td><td>8,169</td><td>¥5,023,348</td><td>1.39%</td><td>1.02%</td><td>¥615</td></tr><tr><td><span class="tag">15</span></td><td>YBDDZH</td><td>14,908</td><td>¥4,947,485</td><td>1.37%</td><td>1.86%</td><td>¥332</td></tr></tbody></table></div>
+</div>
+<div class="cd">
+  <div class="ct">2025 进榜门槛（真实门槛 = 第 N 名月均）</div>
+  <div class="cs">要超过第 N 名的月均销售额才能挤进该名次 ｜ 2025 按 12 个月折算</div>
+  <div class="twr"><table id="t-gate-25"><thead><tr><th>目标</th><th>门槛<br>(第N名月均)</th><th>PT 月均</th><th>PT 还差</th><th>需翻倍数</th></tr></thead><tbody><tr><td>TOP5</td><td>¥743,126</td><td>¥32,328</td><td>¥710,798</td><td>22.99x</td></tr><tr><td>TOP10</td><td>¥541,331</td><td>¥32,328</td><td>¥509,003</td><td>16.75x</td></tr><tr><td>TOP15</td><td>¥412,290</td><td>¥32,328</td><td>¥379,963</td><td>12.75x</td></tr><tr><td>TOP20</td><td>¥290,097</td><td>¥32,328</td><td>¥257,769</td><td>8.97x</td></tr><tr><td>TOP30</td><td>¥160,942</td><td>¥32,328</td><td>¥128,615</td><td>4.98x</td></tr><tr><td>TOP50</td><td>¥93,578</td><td>¥32,328</td><td>¥61,250</td><td>2.89x</td></tr></tbody></table></div>
+</div>
+</section>
+
+<section id="y26">
+<div class="chp">&#128198; 四、2026 年度（1-10 月，10 个月）</div>
+<div class="cd"><div class="kr"><div class="kp"><div class="kl">大盘销售额</div><div class="kv brand">¥305,360,573</div><div class="kn">672,570 件</div></div><div class="kp"><div class="kl">大盘均价</div><div class="kv brand">¥454</div><div class="kn">加权平均</div></div><div class="kp"><div class="kl">PT 销售额</div><div class="kv good">¥1,339,731</div><div class="kn">2,821 件</div></div><div class="kp"><div class="kl">PT 份额</div><div class="kv warn">0.439%</div><div class="kn">排名 39 / 2987</div></div><div class="kp"><div class="kl">PT 均价</div><div class="kv warn">¥475</div><div class="kn">vs 大盘 ¥454</div></div><div class="kp"><div class="kl">品牌数</div><div class="kv brand">2,987</div><div class="kn">有销量的品牌</div></div></div></div>
 <div class="cd">
   <div class="row2">
-    <div><div class="ct">季节指数（大盘月均 = 100）</div><div class="cs">绿≥110 旺季｜红≤90 淡季</div>
-    <div id="c-sea" class="ch2"></div></div>
-    <div><div class="ct">进榜门槛 vs PT 当前</div><div class="cs">灰柱=进榜门槛（第N名月均）｜绿虚线=PT当前月均</div>
+    <div><div class="ct">2026 TOP10 品牌份额</div><div class="cs">共 2,987 个有销量品牌</div>
+    <div id="c-pie26" class="ch2"></div></div>
+    <div><div class="ct">2025 vs 2026 集中度对比</div><div class="cs">灰=2025全年｜蓝=2026(1-10月)</div>
     <div id="c-gate" class="ch2"></div></div>
   </div>
 </div>
+<div class="cd">
+  <div class="ct">2026 品牌 TOP15</div>
+  <div class="cs">PHILTOP 排名 39 / 2,987</div>
+  <div class="twr"><table id="t-br-26"><thead><tr><th>#</th><th>品牌</th><th>销量</th><th>销售额</th><th>额占</th><th>量占</th><th>均价</th></tr></thead><tbody><tr><td><span class="tag">1</span></td><td>A-Premium</td><td>84,098</td><td>¥52,177,283</td><td>17.09%</td><td>12.50%</td><td>¥620</td></tr><tr><td><span class="tag">2</span></td><td>loongrie</td><td>58,816</td><td>¥22,464,686</td><td>7.36%</td><td>8.74%</td><td>¥382</td></tr><tr><td><span class="tag">3</span></td><td>Yllhaoyuan</td><td>24,343</td><td>¥10,220,182</td><td>3.35%</td><td>3.62%</td><td>¥420</td></tr><tr><td><span class="tag">4</span></td><td>Mardarth</td><td>25,045</td><td>¥10,178,731</td><td>3.33%</td><td>3.72%</td><td>¥406</td></tr><tr><td><span class="tag">5</span></td><td>sherxibo</td><td>16,051</td><td>¥9,211,183</td><td>3.02%</td><td>2.39%</td><td>¥574</td></tr><tr><td><span class="tag">6</span></td><td>SHICHU</td><td>14,091</td><td>¥8,552,579</td><td>2.80%</td><td>2.10%</td><td>¥607</td></tr><tr><td><span class="tag">7</span></td><td>Yllshengyu</td><td>17,482</td><td>¥8,137,977</td><td>2.67%</td><td>2.60%</td><td>¥465</td></tr><tr><td><span class="tag">8</span></td><td>ENA</td><td>13,990</td><td>¥6,058,962</td><td>1.98%</td><td>2.08%</td><td>¥433</td></tr><tr><td><span class="tag">9</span></td><td>QRYIPPDM</td><td>11,269</td><td>¥5,359,456</td><td>1.76%</td><td>1.68%</td><td>¥476</td></tr><tr><td><span class="tag">10</span></td><td>TRQ</td><td>8,694</td><td>¥5,145,749</td><td>1.69%</td><td>1.29%</td><td>¥592</td></tr><tr><td><span class="tag">11</span></td><td>YBDDZH</td><td>13,787</td><td>¥4,409,324</td><td>1.44%</td><td>2.05%</td><td>¥320</td></tr><tr><td><span class="tag">12</span></td><td>iKer</td><td>9,488</td><td>¥4,079,166</td><td>1.34%</td><td>1.41%</td><td>¥430</td></tr><tr><td><span class="tag">13</span></td><td>PATEWIN</td><td>8,015</td><td>¥3,887,165</td><td>1.27%</td><td>1.19%</td><td>¥485</td></tr><tr><td><span class="tag">14</span></td><td>BEBLEPANY</td><td>7,198</td><td>¥3,752,605</td><td>1.23%</td><td>1.07%</td><td>¥521</td></tr><tr><td><span class="tag">15</span></td><td>GM GENUINE PARTS</td><td>5,378</td><td>¥3,314,091</td><td>1.09%</td><td>0.80%</td><td>¥616</td></tr></tbody></table></div>
+</div>
+<div class="cd">
+  <div class="ct">2026 进榜门槛（真实门槛 = 第 N 名月均）</div>
+  <div class="cs">2026 按 10 个月折算 ｜ 与 2025 对比看门槛是否抬高</div>
+  <div class="twr"><table id="t-gate-26"><thead><tr><th>目标</th><th>门槛<br>(第N名月均)</th><th>PT 月均</th><th>PT 还差</th><th>需翻倍数</th></tr></thead><tbody><tr><td>TOP5</td><td>¥921,118</td><td>¥133,973</td><td>¥787,145</td><td>6.88x</td></tr><tr><td>TOP10</td><td>¥514,575</td><td>¥133,973</td><td>¥380,602</td><td>3.84x</td></tr><tr><td>TOP15</td><td>¥331,409</td><td>¥133,973</td><td>¥197,436</td><td>2.47x</td></tr><tr><td>TOP20</td><td>¥292,329</td><td>¥133,973</td><td>¥158,355</td><td>2.18x</td></tr><tr><td>TOP30</td><td>¥198,297</td><td>¥133,973</td><td>¥64,324</td><td>1.48x</td></tr><tr><td>TOP50</td><td>¥110,374</td><td>¥133,973</td><td>¥0</td><td>0.82x</td></tr></tbody></table></div>
+</div>
+</section>
+
+<section id="cmp">
+<div class="chp">&#128260; 五、年度对比与份额迁移</div>
+<div class="cd">
+  <div class="ct">三段期间：大盘 vs PT vs 份额</div>
+  <div class="cs">灰柱=大盘｜绿柱=PT｜红线=PT额份额（注：2025 全年 12 个月，另两段 10 个月）</div>
+  <div id="c-yr3" class="ch"></div>
+</div>
+<div class="cd">
+  <div class="ct">份额迁移散点（2025 1-10月 → 2026 1-10月，同月口径）</div>
+  <div class="cs">横轴 2025｜纵轴 2026｜虚线以上 = 份额提升</div>
+  <div id="c-scatter" class="ch2"></div>
+</div>
+<div class="cd">
+  <div class="ct">份额迁移 TOP12</div>
+  <div class="cs">同比口径：2025 年 1-10 月 vs 2026 年 1-10 月</div>
+  <div class="twr"><table id="t-mig"><thead><tr><th>#</th><th>品牌</th><th>2025(1-10) 份额</th><th>2026(1-10) 份额</th><th>变化</th><th>额增长</th></tr></thead><tbody><tr><td><span class="tag">1</span></td><td>SHICHU</td><td>1.067%</td><td>2.801%</td><td><b class="up">+1.734pp</b></td><td><b class="up">+166%</b></td></tr><tr><td><span class="tag">2</span></td><td>loongrie</td><td>5.862%</td><td>7.357%</td><td><b class="up">+1.495pp</b></td><td><b class="up">+27%</b></td></tr><tr><td><span class="tag">3</span></td><td>sherxibo</td><td>1.774%</td><td>3.016%</td><td><b class="up">+1.242pp</b></td><td><b class="up">+72%</b></td></tr><tr><td><span class="tag">4</span></td><td>Yllshengyu</td><td>1.930%</td><td>2.665%</td><td><b class="up">+0.735pp</b></td><td><b class="up">+40%</b></td></tr><tr><td><span class="tag">5</span></td><td>BEBLEPANY</td><td>0.578%</td><td>1.229%</td><td><b class="up">+0.650pp</b></td><td><b class="up">+115%</b></td></tr><tr><td><span class="tag">6</span></td><td>QRYIPPDM</td><td>1.257%</td><td>1.755%</td><td><b class="up">+0.499pp</b></td><td><b class="up">+41%</b></td></tr><tr><td><span class="tag">7</span></td><td>YEOPGYEON</td><td>0.887%</td><td>1.064%</td><td><b class="up">+0.177pp</b></td><td><b class="up">+21%</b></td></tr><tr><td><span class="tag">8</span></td><td>YBDDZH</td><td>1.320%</td><td>1.444%</td><td><b class="up">+0.124pp</b></td><td><b class="up">+11%</b></td></tr><tr><td><span class="tag">9</span></td><td>PATEWIN</td><td>1.193%</td><td>1.273%</td><td><b class="up">+0.080pp</b></td><td><b class="up">+8%</b></td></tr><tr><td><span class="tag">10</span></td><td>Dngbymx</td><td>0.816%</td><td>0.868%</td><td><b class="up">+0.052pp</b></td><td><b class="up">+8%</b></td></tr><tr><td><span class="tag">11</span></td><td>Yllhaoyuan</td><td>3.366%</td><td>3.347%</td><td><b class="down">-0.019pp</b></td><td><b class="up">+1%</b></td></tr><tr><td><span class="tag">12</span></td><td>iKer</td><td>1.405%</td><td>1.336%</td><td><b class="down">-0.069pp</b></td><td><b class="down">-4%</b></td></tr></tbody></table></div>
+</div>
+<div class="cd"><div class="insight warm"><div class="ins-line"><b>📊 数据解读：</b><b>2025 全年 vs 2026 1-10月（注意：月数不同，看份额和排名更准）</b><br>大盘：¥360,973,884 → ¥305,360,573 ｜ PT：¥387,933 → ¥1,339,731<br>份额：0.107% → 0.439%（+0.331pp）｜ 排名：115 → 39<br><b>同比（同月口径 1-10 月）：PT 销售额 +294.6%，大盘 +1.2%。</b></div><div class="ins-line"><b>🔍 原因分析：</b><b>CR10：2025 43.09% → 2026 45.03%（+1.94pp）</b>。<br>集中度在上升，头部在加固。<br><b>进 TOP50 门槛：¥93,578（2025）→ ¥110,374（2026）</b>，门槛在抬高，进榜变难。</div><div class="ins-line"><b>✅ 建议动作：</b><b>① 用排名做 KPI 比份额更稳</b> —— 份额受大盘波动影响，排名反映真实竞争力；<br><b>② 门槛年年抬，要提前布局</b> —— 2026 的 TOP50 门槛是 ¥110,374/月；<br><b>③ 2027 目标建议定在 TOP40</b> —— 按当前斜率，比一步冲 TOP10 现实。</div></div></div>
+</section>
+
+<section id="sea">
+<div class="chp">&#127774; 六、季节性</div>
+<div class="cd">
+  <div class="ct">季节指数（月均大盘 = 100）</div>
+  <div class="cs">绿≥110 旺季｜红≤90 淡季｜橙虚线=基准 100</div>
+  <div id="c-sea" class="ch2"></div>
+</div>
 <div class="cd"><div class="twr"><table id="t-sea"><thead><tr><th>月份</th><th>样本</th><th>月均销售额</th><th>季节指数</th></tr></thead><tbody><tr><td>1 月</td><td>2 个月</td><td>¥27,495,962</td><td><b class="">91</b></td></tr><tr><td>2 月</td><td>2 个月</td><td>¥27,491,465</td><td><b class="">91</b></td></tr><tr><td>3 月</td><td>2 个月</td><td>¥33,401,148</td><td><b class="up">110</b></td></tr><tr><td>4 月</td><td>2 个月</td><td>¥32,516,280</td><td><b class="">107</b></td></tr><tr><td>5 月</td><td>2 个月</td><td>¥31,642,588</td><td><b class="">104</b></td></tr><tr><td>6 月</td><td>2 个月</td><td>¥30,725,688</td><td><b class="">101</b></td></tr><tr><td>7 月</td><td>2 个月</td><td>¥27,581,264</td><td><b class="">91</b></td></tr><tr><td>8 月</td><td>2 个月</td><td>¥30,650,728</td><td><b class="">101</b></td></tr><tr><td>9 月</td><td>2 个月</td><td>¥30,131,032</td><td><b class="">99</b></td></tr><tr><td>10 月</td><td>2 个月</td><td>¥31,925,055</td><td><b class="">105</b></td></tr><tr><td>11 月</td><td>1 个月</td><td>¥31,762,127</td><td><b class="">105</b></td></tr><tr><td>12 月</td><td>1 个月</td><td>¥27,449,910</td><td><b class="">91</b></td></tr></tbody></table></div></div>
-<div class="cd"><div class="twr"><table id="t-crt"><thead><tr><th>月份</th><th>CR3</th><th>CR5</th><th>CR10</th><th>TOP10 合计</th></tr></thead><tbody><tr><td>202501</td><td>25.76%</td><td>31.48%</td><td>34.93%</td><td>¥8,459,468</td></tr><tr><td>202502</td><td>26.09%</td><td>32.14%</td><td>35.43%</td><td>¥9,255,176</td></tr><tr><td>202503</td><td>26.22%</td><td>31.81%</td><td>34.83%</td><td>¥11,449,957</td></tr><tr><td>202504</td><td>26.72%</td><td>31.54%</td><td>34.54%</td><td>¥10,602,910</td></tr><tr><td>202505</td><td>26.95%</td><td>32.77%</td><td>37.76%</td><td>¥13,119,517</td></tr><tr><td>202506</td><td>27.56%</td><td>33.20%</td><td>38.01%</td><td>¥11,677,736</td></tr><tr><td>202507</td><td>27.39%</td><td>34.07%</td><td>40.01%</td><td>¥11,666,542</td></tr><tr><td>202508</td><td>28.73%</td><td>34.77%</td><td>41.17%</td><td>¥13,055,045</td></tr><tr><td>202509</td><td>29.22%</td><td>35.29%</td><td>41.41%</td><td>¥12,303,735</td></tr><tr><td>202510</td><td>29.56%</td><td>35.88%</td><td>42.49%</td><td>¥13,511,049</td></tr><tr><td>202511</td><td>28.45%</td><td>34.91%</td><td>41.83%</td><td>¥13,285,183</td></tr><tr><td>202512</td><td>26.98%</td><td>33.54%</td><td>41.27%</td><td>¥11,329,266</td></tr><tr><td>202601</td><td>27.16%</td><td>32.41%</td><td>39.21%</td><td>¥12,068,098</td></tr><tr><td>202602</td><td>26.91%</td><td>33.07%</td><td>40.89%</td><td>¥11,802,503</td></tr><tr><td>202603</td><td>27.47%</td><td>33.43%</td><td>40.32%</td><td>¥13,681,719</td></tr><tr><td>202604</td><td>28.43%</td><td>34.19%</td><td>40.91%</td><td>¥14,045,679</td></tr><tr><td>202605</td><td>29.06%</td><td>35.23%</td><td>42.74%</td><td>¥12,197,285</td></tr><tr><td>202606</td><td>27.64%</td><td>34.19%</td><td>42.73%</td><td>¥13,128,152</td></tr><tr><td>202607</td><td>27.91%</td><td>35.02%</td><td>43.45%</td><td>¥11,298,026</td></tr><tr><td>202608</td><td>29.09%</td><td>35.36%</td><td>43.71%</td><td>¥12,935,098</td></tr><tr><td>202609</td><td>29.35%</td><td>35.94%</td><td>44.61%</td><td>¥13,627,389</td></tr><tr><td>202610</td><td>28.05%</td><td>34.43%</td><td>43.29%</td><td>¥13,876,567</td></tr></tbody></table></div></div>
+<div class="cd"><div class="insight bad"><div class="ins-line"><b>📊 数据解读：</b><b>旺季 3 月（指数 110），淡季 12 月（指数 91），旺季比淡季高 22%。</b><br>大盘月均 ¥30,287,930，最旺月 ¥33,401,148，最淡月 ¥27,449,910。</div><div class="ins-line"><b>🔍 原因分析：</b><b>季节性来自美国家庭自驾与改装旺季</b> —— 春夏（3-8 月）是汽车维修和改装高峰，冬季（12-1 月）需求最低。<br><b>指数 ≥110 的月份：3月</b>；<b>≤90 的月份：无</b>。</div><div class="ins-line"><b>✅ 建议动作：</b><b>① 备货按季节指数加权</b> —— 3 月旺季，提前 6-8 周（约 9 月）下单压货；<br><b>② 淡季（12 月）收缩广告预算</b>，把资源留给旺季；<br><b>③ 用季节指数修正目标</b> —— 旺季月目标 = 年均目标 × 1.10 倍。</div></div></div>
+</section>
 
-<div class="chp">&#127942; 六、竞争格局</div>
-<div class="cd">
-  <div class="ct">品牌 TOP15（PHILTOP 高亮）</div>
-  <div class="cs">额占 / 量占 差距 = 价格溢价能力</div>
-  <div class="twr"><table id="t-br"><thead><tr><th>#</th><th>品牌</th><th>销量</th><th>销售额</th><th>额占</th><th>量占</th><th>均价</th></tr></thead><tbody><tr><td><span class="tag">1</span></td><td>A-Premium</td><td>186,477</td><td>¥116,038,797</td><td>17.41%</td><td>12.66%</td><td>¥622</td></tr><tr><td><span class="tag">2</span></td><td>loongrie</td><td>116,777</td><td>¥44,202,772</td><td>6.63%</td><td>7.93%</td><td>¥379</td></tr><tr><td><span class="tag">3</span></td><td>Mardarth</td><td>55,378</td><td>¥22,728,036</td><td>3.41%</td><td>3.76%</td><td>¥410</td></tr><tr><td><span class="tag">4</span></td><td>Yllhaoyuan</td><td>52,859</td><td>¥22,575,750</td><td>3.39%</td><td>3.59%</td><td>¥427</td></tr><tr><td><span class="tag">5</span></td><td>sherxibo</td><td>28,370</td><td>¥16,278,120</td><td>2.44%</td><td>1.93%</td><td>¥574</td></tr><tr><td><span class="tag">6</span></td><td>Yllshengyu</td><td>32,847</td><td>¥15,421,103</td><td>2.31%</td><td>2.23%</td><td>¥469</td></tr><tr><td><span class="tag">7</span></td><td>ENA</td><td>36,038</td><td>¥14,976,474</td><td>2.25%</td><td>2.45%</td><td>¥416</td></tr><tr><td><span class="tag">8</span></td><td>SHICHU</td><td>22,260</td><td>¥13,575,926</td><td>2.04%</td><td>1.51%</td><td>¥610</td></tr><tr><td><span class="tag">9</span></td><td>TRQ</td><td>21,416</td><td>¥11,641,723</td><td>1.75%</td><td>1.45%</td><td>¥544</td></tr><tr><td><span class="tag">10</span></td><td>ONNURI</td><td>18,949</td><td>¥10,938,378</td><td>1.64%</td><td>1.29%</td><td>¥577</td></tr><tr><td><span class="tag">11</span></td><td>JDMON</td><td>28,079</td><td>¥10,777,406</td><td>1.62%</td><td>1.91%</td><td>¥384</td></tr><tr><td><span class="tag">12</span></td><td>QRYIPPDM</td><td>21,616</td><td>¥10,136,417</td><td>1.52%</td><td>1.47%</td><td>¥469</td></tr><tr><td><span class="tag">13</span></td><td>YBDDZH</td><td>28,694</td><td>¥9,356,810</td><td>1.40%</td><td>1.95%</td><td>¥326</td></tr><tr><td><span class="tag">14</span></td><td>iKer</td><td>21,487</td><td>¥9,230,634</td><td>1.39%</td><td>1.46%</td><td>¥430</td></tr><tr><td><span class="tag">15</span></td><td>GM GENUINE PARTS</td><td>14,300</td><td>¥8,639,540</td><td>1.30%</td><td>0.97%</td><td>¥604</td></tr></tbody></table></div>
-</div>
-<div class="cd">
-  <div class="ct">进榜门槛（22 个月折月均）</div>
-  <div class="cs">门槛 = 第 N 名自己的月均销售额（要超过它才能挤进第 N 名）｜PT 还差 = 门槛 − PT 月均｜需翻倍数 = 门槛 ÷ PT 月均</div>
-  <div class="twr"><table id="t-gate"><thead><tr><th>目标</th><th>进榜门槛<br>(第N名月均)</th><th>TOP-N均价<br>(参考)</th><th>PT 当前月均</th><th>PT 还差</th><th>需翻倍数</th></tr></thead><tbody><tr><td>TOP5</td><td>¥739,915</td><td>¥2,016,577</td><td>¥78,530</td><td>¥661,384</td><td>9.42x</td></tr><tr><td>TOP10</td><td>¥497,199</td><td>¥1,310,805</td><td>¥78,530</td><td>¥418,669</td><td>6.33x</td></tr><tr><td>TOP15</td><td>¥392,706</td><td>¥1,019,751</td><td>¥78,530</td><td>¥314,176</td><td>5.00x</td></tr><tr><td>TOP20</td><td>¥293,213</td><td>¥848,444</td><td>¥78,530</td><td>¥214,682</td><td>3.73x</td></tr><tr><td>TOP30</td><td>¥156,558</td><td>¥635,472</td><td>¥78,530</td><td>¥78,027</td><td>1.99x</td></tr><tr><td>TOP50</td><td>¥104,646</td><td>¥431,034</td><td>¥78,530</td><td>¥26,116</td><td>1.33x</td></tr></tbody></table></div>
-</div>
-<div class="cd"><div class="insight bad"><div class="ins-line"><b>📊 数据解读：</b><b>集中度：CR1 17.41%、CR5 33.29%、CR10 43.28%、CR20 56.03%。</b><br>CR5 从 2025-01 的 31.48% 变到 2026-10 的 34.43%（+2.95pp）。<br><b>TOP10 拿走 43.28% 的销售额，剩下 2977 个品牌分 57%。</b></div><div class="ins-line"><b>🔍 原因分析：</b><b>集中度在上升（市场在集中）</b> —— 对新进入者不利，头部在加固。<br><b>季节性：3 月最旺（指数 110），12 月最淡（指数 91），旺季比淡季高 22%。</b><br>这个波动幅度直接决定备货节奏和广告预算分配。</div><div class="ins-line"><b>✅ 建议动作：</b><b>① 备货按季节指数加权</b> —— 3-4 月提前 6-8 周下单；<br><b>② 淡季（12 月）收缩广告</b>，把预算留给旺季；<br><b>③ 长尾仍是主战场</b> —— 2977 个品牌分 57% 份额，PT 不需要挤进 TOP10 也能拿到可观份额。</div></div></div>
-
+<section id="comp">
 <div class="chp">&#128269; 七、PT 与竞品的此消彼长</div>
 <div class="cd">
-  <div class="ct">PT 份额与各品牌份额的相关系数</div>
-  <div class="cs">负值 = 此消彼长（PT 涨它跌）｜正值 = 同涨同跌｜|0.3| 以下为弱相关</div>
-  <div class="twr"><table id="t-corr"><thead><tr><th>品牌</th><th>与 PT 份额相关系数</th><th>关系</th></tr></thead><tbody><tr><td>ENA</td><td><b class="down">-0.476</b></td><td>此消彼长</td></tr><tr><td>A-Premium</td><td><b class="down">-0.347</b></td><td>此消彼长</td></tr><tr><td>Mardarth</td><td><b class="">-0.208</b></td><td>弱相关</td></tr><tr><td>Yllhaoyuan</td><td><b class="">+0.222</b></td><td>弱相关</td></tr><tr><td>sherxibo</td><td><b class="up">+0.453</b></td><td>同涨同跌</td></tr><tr><td>loongrie</td><td><b class="up">+0.554</b></td><td>同涨同跌</td></tr><tr><td>SHICHU</td><td><b class="up">+0.561</b></td><td>同涨同跌</td></tr><tr><td>Yllshengyu</td><td><b class="up">+0.621</b></td><td>同涨同跌</td></tr></tbody></table></div>
+  <div class="ct">TOP9 品牌月度份额走势</div>
+  <div class="cs">绿粗线 = PHILTOP｜其余为竞品</div>
+  <div id="c-share" class="ch"></div>
 </div>
+<div class="cd"><div class="twr"><table id="t-corr"><thead><tr><th>品牌</th><th>与 PT 份额相关系数</th><th>关系</th></tr></thead><tbody><tr><td>ENA</td><td><b class="down">-0.476</b></td><td>此消彼长</td></tr><tr><td>A-Premium</td><td><b class="down">-0.347</b></td><td>此消彼长</td></tr><tr><td>Mardarth</td><td><b class="">-0.208</b></td><td>弱相关</td></tr><tr><td>Yllhaoyuan</td><td><b class="">+0.222</b></td><td>弱相关</td></tr><tr><td>sherxibo</td><td><b class="up">+0.453</b></td><td>同涨同跌</td></tr><tr><td>loongrie</td><td><b class="up">+0.554</b></td><td>同涨同跌</td></tr><tr><td>SHICHU</td><td><b class="up">+0.561</b></td><td>同涨同跌</td></tr><tr><td>Yllshengyu</td><td><b class="up">+0.621</b></td><td>同涨同跌</td></tr></tbody></table></div></div>
+<div class="cd"><div class="insight good"><div class="ins-line"><b>📊 数据解读：</b><b>PT 与 ENA 负相关最强（-0.476），与 Yllshengyu 正相关最强（+0.621）。</b></div><div class="ins-line"><b>🔍 原因分析：</b><b>负相关 = 此消彼长，是直接的份额来源；正相关 = 同涨同跌，抢的是同一批小玩家。</b><br>PT 涨的月份，ENA 和 A-Premium 在跌；同时 Yllshengyu 和 SHICHU 也在涨。</div><div class="ins-line"><b>✅ 建议动作：</b><b>① 优先研究 ENA</b> —— 它的份额直接流向 PT；<br><b>② 对标 SHICHU</b> —— 同涨同跌里它跑得最快，打法最值得复制；<br><b>③ 别和 ONNURI 正面拼</b> —— 体量差太多。</div></div></div>
+</section>
 
 <div class="ft">
-BI 市场预测销量分析 · Engine Mounts（node 15725951）｜ 22 个月 / 2,987 个品牌<br>
-销量为「市场预测销量」（爬虫+算法推算），非实际成交 ｜ 金额按 1 USD = 7.1 CNY<br>
+BI 市场预测销量分析 · Engine Mounts（node 15725951）｜ 22 个月数据，按年度分段统计<br>
+份额口径 = 品牌销售额 ÷ 该期间大盘销售额 ｜ 金额按 1 USD = 7.1 CNY<br>
 生成：Hermes Agent
 </div>
 
 <script>
 
-var CH = {"w": ["202501", "202502", "202503", "202504", "202505", "202506", "202507", "202508", "202509", "202510", "202511", "202512", "202601", "202602", "202603", "202604", "202605", "202606", "202607", "202608", "202609", "202610"], "mq": [54287.0, 58653.0, 72196.0, 67611.0, 75909.0, 68403.0, 65335.0, 70630.0, 66596.0, 71312.0, 70408.0, 59418.0, 67177.0, 63483.0, 74280.0, 74643.0, 62431.0, 67301.0, 57702.0, 66134.0, 68136.0, 71284.0], "ma": [24216932.0, 26122126.0, 32872987.0, 30697252.0, 34747057.0, 30726171.0, 29159301.0, 31709303.0, 29712193.0, 31798527.0, 31762127.0, 27449910.0, 30774991.0, 28860804.0, 33929310.0, 34335308.0, 28538119.0, 30725205.0, 26003227.0, 29592154.0, 30549871.0, 32051583.0], "mp": [446.09, 445.37, 455.33, 454.03, 457.75, 449.19, 446.3, 448.95, 446.15, 445.91, 451.11, 461.98, 458.12, 454.62, 456.78, 460.0, 457.11, 456.54, 450.65, 447.45, 448.37, 449.63], "pq": [108.0, 83.0, 50.0, 55.0, 47.0, 34.0, 90.0, 68.0, 54.0, 35.0, 47.0, 47.0, 79.0, 111.0, 173.0, 165.0, 117.0, 318.0, 292.0, 343.0, 530.0, 693.0], "pa": [52835.0, 39487.0, 27923.0, 33005.0, 26055.0, 19142.0, 49855.0, 39726.0, 31493.0, 19969.0, 23501.0, 24943.0, 41344.0, 60360.0, 88271.0, 89948.0, 61253.0, 151853.0, 144581.0, 155188.0, 235302.0, 311632.0], "psh": [0.2182, 0.1512, 0.0849, 0.1075, 0.075, 0.0623, 0.171, 0.1253, 0.106, 0.0628, 0.074, 0.0909, 0.1343, 0.2091, 0.2602, 0.262, 0.2146, 0.4942, 0.556, 0.5244, 0.7702, 0.9723], "yr": ["2025", "2026"], "yr_ma": [360973884.0, 305360573.0], "yr_pa": [387933.0, 1339731.0], "yr_sh": [0.1075, 0.4387], "share_series": [{"name": "A-Premium", "type": "line", "data": [17.4095, 16.9651, 17.557, 18.076, 18.4174, 18.2922, 16.6706, 18.4398, 18.3424, 18.1009, 17.2449, 16.3288, 16.6946, 15.9829, 16.8195, 17.9935, 18.4466, 16.5823, 16.743, 17.5147, 17.7034, 16.3409], "smooth": true, "symbolSize": 4, "lineStyle": {"width": 1.5, "opacity": 0.7}, "itemStyle": {"color": "#E67E22"}}, {"name": "ENA", "type": "line", "data": [3.633, 2.9612, 2.8882, 2.4171, 2.0119, 2.3685, 2.2127, 2.2378, 2.2276, 2.3703, 2.3885, 2.2472, 2.157, 2.1874, 2.1978, 1.9871, 2.1009, 1.9697, 1.7648, 1.7226, 1.7422, 1.9662], "smooth": true, "symbolSize": 4, "lineStyle": {"width": 1.5, "opacity": 0.7}, "itemStyle": {"color": "#8E44AD"}}, {"name": "Mardarth", "type": "line", "data": [2.3458, 4.0513, 3.6258, 3.7872, 3.2305, 3.4658, 3.673, 3.5489, 3.462, 3.7891, 3.7579, 2.7599, 3.5396, 3.4796, 3.5969, 3.3941, 3.1651, 3.1045, 2.8498, 3.1755, 3.3646, 3.537], "smooth": true, "symbolSize": 4, "lineStyle": {"width": 1.5, "opacity": 0.7}, "itemStyle": {"color": "#C0392B"}}, {"name": "SHICHU", "type": "line", "data": [0.8499, 0.8575, 0.6971, 0.5633, 0.8158, 0.8844, 1.3078, 1.6065, 1.3474, 1.7049, 1.9592, 4.3014, 2.2844, 2.7326, 2.1123, 2.2287, 3.0005, 3.2845, 3.4909, 2.9982, 3.0666, 3.063], "smooth": true, "symbolSize": 4, "lineStyle": {"width": 1.5, "opacity": 0.7}, "itemStyle": {"color": "#16A085"}}, {"name": "Yllhaoyuan", "type": "line", "data": [3.3747, 3.082, 2.7081, 2.4046, 3.3111, 3.2811, 4.4575, 3.668, 3.7517, 3.68, 3.9432, 3.4463, 2.7167, 3.0678, 2.9117, 2.9271, 3.4294, 3.2705, 4.0461, 4.2241, 3.8807, 3.2278], "smooth": true, "symbolSize": 4, "lineStyle": {"width": 1.5, "opacity": 0.7}, "itemStyle": {"color": "#D68910"}}, {"name": "Yllshengyu", "type": "line", "data": [1.4064, 1.4382, 1.155, 0.8708, 1.8361, 2.0221, 3.0076, 2.4917, 2.6118, 2.3866, 2.4054, 2.5301, 2.0716, 2.5531, 2.2053, 2.1118, 2.442, 2.8588, 3.1676, 3.0252, 3.2237, 3.155], "smooth": true, "symbolSize": 4, "lineStyle": {"width": 1.5, "opacity": 0.7}, "itemStyle": {"color": "#5D6D7E"}}, {"name": "loongrie", "type": "line", "data": [4.7196, 5.0777, 5.0323, 4.8571, 5.2188, 5.7973, 6.2603, 6.6227, 7.1214, 7.6709, 7.2596, 6.3473, 6.9294, 7.4489, 7.054, 7.0401, 7.1852, 7.5001, 7.1214, 7.3496, 7.7652, 8.1676], "smooth": true, "symbolSize": 4, "lineStyle": {"width": 1.5, "opacity": 0.7}, "itemStyle": {"color": "#7D3C98"}}, {"name": "sherxibo", "type": "line", "data": [0.9271, 0.7986, 0.8315, 1.2486, 2.5902, 1.5944, 2.0815, 2.2963, 2.3571, 2.6378, 2.701, 3.1151, 2.5326, 3.092, 3.0476, 2.8393, 2.6624, 3.5568, 3.6144, 3.0984, 3.014, 2.809], "smooth": true, "symbolSize": 4, "lineStyle": {"width": 1.5, "opacity": 0.7}, "itemStyle": {"color": "#95A5A6"}}, {"name": "PHILTOP", "type": "line", "data": [0.2182, 0.1512, 0.0849, 0.1075, 0.075, 0.0623, 0.171, 0.1253, 0.106, 0.0628, 0.074, 0.0909, 0.1343, 0.2091, 0.2602, 0.262, 0.2146, 0.4942, 0.556, 0.5244, 0.7702, 0.9723], "smooth": true, "symbolSize": 7, "lineStyle": {"width": 4}, "itemStyle": {"color": "#2A9D48"}, "z": 10}], "pie": [{"name": "A-Premium", "value": 116038797.0}, {"name": "loongrie", "value": 44202772.0}, {"name": "Mardarth", "value": 22728036.0}, {"name": "Yllhaoyuan", "value": 22575750.0}, {"name": "sherxibo", "value": 16278120.0}, {"name": "Yllshengyu", "value": 15421103.0}, {"name": "ENA", "value": 14976474.0}, {"name": "SHICHU", "value": 13575926.0}, {"name": "TRQ", "value": 11641723.0}, {"name": "ONNURI", "value": 10938378.0}, {"name": "其他 2977 个", "value": 377957379.0}], "crx": ["CR1", "CR3", "CR5", "CR10", "CR15", "CR20", "CR30", "CR50", "CR100"], "cra": [17.41, 27.46, 33.29, 43.28, 50.5, 56.03, 62.94, 71.16, 81.46], "crq": [12.66, 24.34, 29.86, 38.78, 46.53, 52.49, 58.89, 67.52, 78.52], "cr_w": ["202501", "202502", "202503", "202504", "202505", "202506", "202507", "202508", "202509", "202510", "202511", "202512", "202601", "202602", "202603", "202604", "202605", "202606", "202607", "202608", "202609", "202610"], "cr3": [25.76, 26.09, 26.22, 26.72, 26.95, 27.56, 27.39, 28.73, 29.22, 29.56, 28.45, 26.98, 27.16, 26.91, 27.47, 28.43, 29.06, 27.64, 27.91, 29.09, 29.35, 28.05], "cr5": [31.48, 32.14, 31.81, 31.54, 32.77, 33.2, 34.07, 34.77, 35.29, 35.88, 34.91, 33.54, 32.41, 33.07, 33.43, 34.19, 35.23, 34.19, 35.02, 35.36, 35.94, 34.43], "cr10": [34.93, 35.43, 34.83, 34.54, 37.76, 38.01, 40.01, 41.17, 41.41, 42.49, 41.83, 41.27, 39.21, 40.89, 40.32, 40.91, 42.74, 42.73, 43.45, 43.71, 44.61, 43.29], "sea_x": ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"], "sea_y": [91.0, 91.0, 110.0, 107.0, 104.0, 101.0, 91.0, 101.0, 99.0, 105.0, 105.0, 91.0], "scatter": [{"name": "SHICHU", "value": [1.067, 2.801], "itemStyle": {"color": "#9DB8CE"}, "symbolSize": 12}, {"name": "loongrie", "value": [5.862, 7.357], "itemStyle": {"color": "#9DB8CE"}, "symbolSize": 12}, {"name": "sherxibo", "value": [1.774, 3.016], "itemStyle": {"color": "#9DB8CE"}, "symbolSize": 12}, {"name": "Yllshengyu", "value": [1.93, 2.665], "itemStyle": {"color": "#9DB8CE"}, "symbolSize": 12}, {"name": "PHILTOP", "value": [0.113, 0.439], "itemStyle": {"color": "#2A9D48"}, "symbolSize": 18}, {"name": "Yllhaoyuan", "value": [3.366, 3.347], "itemStyle": {"color": "#9DB8CE"}, "symbolSize": 12}, {"name": "Mardarth", "value": [3.512, 3.333], "itemStyle": {"color": "#9DB8CE"}, "symbolSize": 12}, {"name": "ENA", "value": [2.499, 1.984], "itemStyle": {"color": "#9DB8CE"}, "symbolSize": 12}, {"name": "A-Premium", "value": [17.862, 17.087], "itemStyle": {"color": "#9DB8CE"}, "symbolSize": 12}], "gate_x": ["TOP5", "TOP10", "TOP15", "TOP20", "TOP30", "TOP50"], "gate_need": [739915.0, 497199.0, 392706.0, 293213.0, 156558.0, 104646.0], "gate_pt": [78530.0, 78530.0, 78530.0, 78530.0, 78530.0, 78530.0]};
+var CH = {"w": ["202501", "202502", "202503", "202504", "202505", "202506", "202507", "202508", "202509", "202510", "202511", "202512", "202601", "202602", "202603", "202604", "202605", "202606", "202607", "202608", "202609", "202610"], "mq": [54287.0, 58653.0, 72196.0, 67611.0, 75909.0, 68403.0, 65335.0, 70630.0, 66596.0, 71312.0, 70408.0, 59418.0, 67177.0, 63483.0, 74280.0, 74643.0, 62431.0, 67301.0, 57702.0, 66134.0, 68136.0, 71284.0], "ma": [24216932.0, 26122126.0, 32872987.0, 30697252.0, 34747057.0, 30726171.0, 29159301.0, 31709303.0, 29712193.0, 31798527.0, 31762127.0, 27449910.0, 30774991.0, 28860804.0, 33929310.0, 34335308.0, 28538119.0, 30725205.0, 26003227.0, 29592154.0, 30549871.0, 32051583.0], "mp": [446.09, 445.37, 455.33, 454.03, 457.75, 449.19, 446.3, 448.95, 446.15, 445.91, 451.11, 461.98, 458.12, 454.62, 456.78, 460.0, 457.11, 456.54, 450.65, 447.45, 448.37, 449.63], "pq": [108.0, 83.0, 50.0, 55.0, 47.0, 34.0, 90.0, 68.0, 54.0, 35.0, 47.0, 47.0, 79.0, 111.0, 173.0, 165.0, 117.0, 318.0, 292.0, 343.0, 530.0, 693.0], "pa": [52835.0, 39487.0, 27923.0, 33005.0, 26055.0, 19142.0, 49855.0, 39726.0, 31493.0, 19969.0, 23501.0, 24943.0, 41344.0, 60360.0, 88271.0, 89948.0, 61253.0, 151853.0, 144581.0, 155188.0, 235302.0, 311632.0], "psh": [0.2182, 0.1512, 0.0849, 0.1075, 0.075, 0.0623, 0.171, 0.1253, 0.106, 0.0628, 0.074, 0.0909, 0.1343, 0.2091, 0.2602, 0.262, 0.2146, 0.4942, 0.556, 0.5244, 0.7702, 0.9723], "share_series": [{"name": "A-Premium", "type": "line", "data": [17.4095, 16.9651, 17.557, 18.076, 18.4174, 18.2922, 16.6706, 18.4398, 18.3424, 18.1009, 17.2449, 16.3288, 16.6946, 15.9829, 16.8195, 17.9935, 18.4466, 16.5823, 16.743, 17.5147, 17.7034, 16.3409], "smooth": true, "symbolSize": 4, "lineStyle": {"width": 1.5, "opacity": 0.7}, "itemStyle": {"color": "#E67E22"}}, {"name": "ENA", "type": "line", "data": [3.633, 2.9612, 2.8882, 2.4171, 2.0119, 2.3685, 2.2127, 2.2378, 2.2276, 2.3703, 2.3885, 2.2472, 2.157, 2.1874, 2.1978, 1.9871, 2.1009, 1.9697, 1.7648, 1.7226, 1.7422, 1.9662], "smooth": true, "symbolSize": 4, "lineStyle": {"width": 1.5, "opacity": 0.7}, "itemStyle": {"color": "#8E44AD"}}, {"name": "Mardarth", "type": "line", "data": [2.3458, 4.0513, 3.6258, 3.7872, 3.2305, 3.4658, 3.673, 3.5489, 3.462, 3.7891, 3.7579, 2.7599, 3.5396, 3.4796, 3.5969, 3.3941, 3.1651, 3.1045, 2.8498, 3.1755, 3.3646, 3.537], "smooth": true, "symbolSize": 4, "lineStyle": {"width": 1.5, "opacity": 0.7}, "itemStyle": {"color": "#C0392B"}}, {"name": "SHICHU", "type": "line", "data": [0.8499, 0.8575, 0.6971, 0.5633, 0.8158, 0.8844, 1.3078, 1.6065, 1.3474, 1.7049, 1.9592, 4.3014, 2.2844, 2.7326, 2.1123, 2.2287, 3.0005, 3.2845, 3.4909, 2.9982, 3.0666, 3.063], "smooth": true, "symbolSize": 4, "lineStyle": {"width": 1.5, "opacity": 0.7}, "itemStyle": {"color": "#16A085"}}, {"name": "Yllhaoyuan", "type": "line", "data": [3.3747, 3.082, 2.7081, 2.4046, 3.3111, 3.2811, 4.4575, 3.668, 3.7517, 3.68, 3.9432, 3.4463, 2.7167, 3.0678, 2.9117, 2.9271, 3.4294, 3.2705, 4.0461, 4.2241, 3.8807, 3.2278], "smooth": true, "symbolSize": 4, "lineStyle": {"width": 1.5, "opacity": 0.7}, "itemStyle": {"color": "#D68910"}}, {"name": "Yllshengyu", "type": "line", "data": [1.4064, 1.4382, 1.155, 0.8708, 1.8361, 2.0221, 3.0076, 2.4917, 2.6118, 2.3866, 2.4054, 2.5301, 2.0716, 2.5531, 2.2053, 2.1118, 2.442, 2.8588, 3.1676, 3.0252, 3.2237, 3.155], "smooth": true, "symbolSize": 4, "lineStyle": {"width": 1.5, "opacity": 0.7}, "itemStyle": {"color": "#5D6D7E"}}, {"name": "loongrie", "type": "line", "data": [4.7196, 5.0777, 5.0323, 4.8571, 5.2188, 5.7973, 6.2603, 6.6227, 7.1214, 7.6709, 7.2596, 6.3473, 6.9294, 7.4489, 7.054, 7.0401, 7.1852, 7.5001, 7.1214, 7.3496, 7.7652, 8.1676], "smooth": true, "symbolSize": 4, "lineStyle": {"width": 1.5, "opacity": 0.7}, "itemStyle": {"color": "#7D3C98"}}, {"name": "sherxibo", "type": "line", "data": [0.9271, 0.7986, 0.8315, 1.2486, 2.5902, 1.5944, 2.0815, 2.2963, 2.3571, 2.6378, 2.701, 3.1151, 2.5326, 3.092, 3.0476, 2.8393, 2.6624, 3.5568, 3.6144, 3.0984, 3.014, 2.809], "smooth": true, "symbolSize": 4, "lineStyle": {"width": 1.5, "opacity": 0.7}, "itemStyle": {"color": "#95A5A6"}}, {"name": "PHILTOP", "type": "line", "data": [0.2182, 0.1512, 0.0849, 0.1075, 0.075, 0.0623, 0.171, 0.1253, 0.106, 0.0628, 0.074, 0.0909, 0.1343, 0.2091, 0.2602, 0.262, 0.2146, 0.4942, 0.556, 0.5244, 0.7702, 0.9723], "smooth": true, "symbolSize": 7, "lineStyle": {"width": 4}, "itemStyle": {"color": "#2A9D48"}, "z": 10}], "yr3_x": ["2025 全年", "2025 1-10月", "2026 1-10月"], "yr3_ta": [360973884.0, 301761847.0, 305360573.0], "yr3_pa": [387933.0, 339489.0, 1339731.0], "yr3_sh": [0.1075, 0.1125, 0.4387], "pie25": [{"name": "A-Premium", "value": 63861514.0}, {"name": "loongrie", "value": 21738086.0}, {"name": "Mardarth", "value": 12549306.0}, {"name": "Yllhaoyuan", "value": 12355568.0}, {"name": "ENA", "value": 8917511.0}, {"name": "ONNURI", "value": 7786074.0}, {"name": "JDMON", "value": 7489800.0}, {"name": "Yllshengyu", "value": 7283125.0}, {"name": "sherxibo", "value": 7066937.0}, {"name": "TRQ", "value": 6495974.0}, {"name": "其他 2757", "value": 205429989.0}], "pie26": [{"name": "A-Premium", "value": 52177283.0}, {"name": "loongrie", "value": 22464686.0}, {"name": "Yllhaoyuan", "value": 10220182.0}, {"name": "Mardarth", "value": 10178731.0}, {"name": "sherxibo", "value": 9211183.0}, {"name": "SHICHU", "value": 8552579.0}, {"name": "Yllshengyu", "value": 8137977.0}, {"name": "ENA", "value": 6058962.0}, {"name": "QRYIPPDM", "value": 5359456.0}, {"name": "TRQ", "value": 5145749.0}, {"name": "其他 2977", "value": 167853785.0}], "crx": ["CR1", "CR3", "CR5", "CR10", "CR15", "CR20", "CR30", "CR50", "CR100"], "cr25": [17.69, 27.19, 33.08, 43.09, 50.43, 56.13, 62.87, 71.37, 81.67], "cr26": [17.09, 27.79, 34.14, 45.03, 51.4, 56.58, 64.39, 73.07, 82.77], "scatter": [{"name": "SHICHU", "value": [1.067, 2.801], "itemStyle": {"color": "#9DB8CE"}, "symbolSize": 12}, {"name": "loongrie", "value": [5.862, 7.357], "itemStyle": {"color": "#9DB8CE"}, "symbolSize": 12}, {"name": "sherxibo", "value": [1.774, 3.016], "itemStyle": {"color": "#9DB8CE"}, "symbolSize": 12}, {"name": "Yllshengyu", "value": [1.93, 2.665], "itemStyle": {"color": "#9DB8CE"}, "symbolSize": 12}, {"name": "BEBLEPANY", "value": [0.578, 1.229], "itemStyle": {"color": "#9DB8CE"}, "symbolSize": 12}, {"name": "QRYIPPDM", "value": [1.257, 1.755], "itemStyle": {"color": "#9DB8CE"}, "symbolSize": 12}, {"name": "YEOPGYEON", "value": [0.887, 1.064], "itemStyle": {"color": "#9DB8CE"}, "symbolSize": 12}, {"name": "YBDDZH", "value": [1.32, 1.444], "itemStyle": {"color": "#9DB8CE"}, "symbolSize": 12}, {"name": "PATEWIN", "value": [1.193, 1.273], "itemStyle": {"color": "#9DB8CE"}, "symbolSize": 12}, {"name": "Dngbymx", "value": [0.816, 0.868], "itemStyle": {"color": "#9DB8CE"}, "symbolSize": 12}, {"name": "Yllhaoyuan", "value": [3.366, 3.347], "itemStyle": {"color": "#9DB8CE"}, "symbolSize": 12}, {"name": "iKer", "value": [1.405, 1.336], "itemStyle": {"color": "#9DB8CE"}, "symbolSize": 12}, {"name": "NewYall", "value": [1.052, 0.957], "itemStyle": {"color": "#9DB8CE"}, "symbolSize": 12}, {"name": "JAVOUKA", "value": [0.575, 0.425], "itemStyle": {"color": "#9DB8CE"}, "symbolSize": 12}, {"name": "Mardarth", "value": [3.512, 3.333], "itemStyle": {"color": "#9DB8CE"}, "symbolSize": 12}, {"name": "TRQ", "value": [1.867, 1.685], "itemStyle": {"color": "#9DB8CE"}, "symbolSize": 12}, {"name": "Lochnchn", "value": [0.588, 0.369], "itemStyle": {"color": "#9DB8CE"}, "symbolSize": 12}, {"name": "Dirty Dingo Motorsports", "value": [0.571, 0.283], "itemStyle": {"color": "#9DB8CE"}, "symbolSize": 12}, {"name": "ApplianPar", "value": [1.179, 0.878], "itemStyle": {"color": "#9DB8CE"}, "symbolSize": 12}, {"name": "Advance Ignition Technology", "value": [0.56, 0.243], "itemStyle": {"color": "#9DB8CE"}, "symbolSize": 12}, {"name": "ICT Billet", "value": [0.792, 0.461], "itemStyle": {"color": "#9DB8CE"}, "symbolSize": 12}, {"name": "Westar", "value": [0.565, 0.134], "itemStyle": {"color": "#9DB8CE"}, "symbolSize": 12}, {"name": "CF Advance", "value": [0.839, 0.407], "itemStyle": {"color": "#9DB8CE"}, "symbolSize": 12}, {"name": "GM GENUINE PARTS", "value": [1.523, 1.085], "itemStyle": {"color": "#9DB8CE"}, "symbolSize": 12}, {"name": "ENA", "value": [2.499, 1.984], "itemStyle": {"color": "#9DB8CE"}, "symbolSize": 12}, {"name": "OCPTY", "value": [1.033, 0.441], "itemStyle": {"color": "#9DB8CE"}, "symbolSize": 12}, {"name": "A-Premium", "value": [17.862, 17.087], "itemStyle": {"color": "#9DB8CE"}, "symbolSize": 12}, {"name": "OMNI5", "value": [1.742, 0.818], "itemStyle": {"color": "#9DB8CE"}, "symbolSize": 12}, {"name": "JDMON", "value": [2.186, 1.077], "itemStyle": {"color": "#9DB8CE"}, "symbolSize": 12}, {"name": "ONNURI", "value": [2.27, 1.032], "itemStyle": {"color": "#9DB8CE"}, "symbolSize": 12}], "sea_x": ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"], "sea_y": [91.0, 91.0, 110.0, 107.0, 104.0, 101.0, 91.0, 101.0, 99.0, 105.0, 105.0, 91.0], "gate_x": ["TOP5", "TOP10", "TOP15", "TOP20", "TOP30", "TOP50"], "g25": [743126.0, 541331.0, 412290.0, 290097.0, 160942.0, 93578.0], "g26": [921118.0, 514575.0, 331409.0, 292329.0, 198297.0, 110374.0], "pt_mon25": 32328.0, "pt_mon26": 133973.0};
 var CHARTS=[];
 function mk(id,o){var e=document.getElementById(id); if(!e) return; var c=echarts.init(e); c.setOption(o); CHARTS.push(c);}
+var PIE_C=['#0F4C75','#1B9AAA','#2A9D48','#E67E22','#8E44AD','#C0392B','#16A085','#D68910','#5D6D7E','#7D3C98','#95A5A6'];
 mk('c-mon',{tooltip:{trigger:'axis'},legend:{top:0,textStyle:{fontSize:11}},
  grid:{left:78,right:74,top:48,bottom:58},
  xAxis:{type:'category',data:CH.w,axisLabel:{fontSize:9.5,rotate:34,interval:0}},
@@ -166,18 +202,31 @@ mk('c-pt',{tooltip:{trigger:'axis'},legend:{top:0,textStyle:{fontSize:11}},
  series:[{name:'PT 销售额',type:'bar',data:CH.pa,itemStyle:{color:'#2A9D48'},barWidth:'48%'},
   {name:'PT 额份额',type:'line',yAxisIndex:1,data:CH.psh,itemStyle:{color:'#C0392B'},lineStyle:{width:3.2},symbolSize:8,smooth:true,
    label:{show:true,fontSize:9,formatter:'{c}%'}}]});
-mk('c-yr',{tooltip:{trigger:'axis'},legend:{top:0,textStyle:{fontSize:11}},
- grid:{left:78,right:74,top:48,bottom:44},
- xAxis:{type:'category',data:CH.yr,boundaryGap:false},
+mk('c-yr3',{tooltip:{trigger:'axis'},legend:{top:0,textStyle:{fontSize:11}},
+ grid:{left:82,right:72,top:48,bottom:44},
+ xAxis:{type:'category',data:CH.yr3_x},
  yAxis:[{type:'value',name:'金额(¥)'},{type:'value',name:'PT份额(%)',position:'right'}],
- series:[{name:'大盘销售额',type:'line',data:CH.yr_ma,itemStyle:{color:'#9DB8CE'},lineStyle:{width:3},symbolSize:10,smooth:true,label:{show:true,fontSize:10,position:'top'}},
-  {name:'PT 销售额',type:'line',data:CH.yr_pa,itemStyle:{color:'#2A9D48'},lineStyle:{width:3},symbolSize:10,smooth:true,label:{show:true,fontSize:10,position:'bottom'}},
-  {name:'PT 额份额',type:'line',yAxisIndex:1,data:CH.yr_sh,itemStyle:{color:'#C0392B'},lineStyle:{width:3,type:'dashed'},symbolSize:10,smooth:true,label:{show:true,fontSize:10,formatter:'{c}%'}}]});
-mk('c-pie',{tooltip:{trigger:'item',formatter:function(p){return p.name+'<br>¥'+p.value.toLocaleString()+' ('+p.percent+'%)';}},
+ series:[{name:'大盘销售额',type:'bar',data:CH.yr3_ta,itemStyle:{color:'#9DB8CE'},barWidth:'38%',
+   label:{show:true,fontSize:9.5,position:'top',formatter:function(p){return (p.value/10000).toFixed(0)+'万';}}},
+  {name:'PT 销售额',type:'bar',data:CH.yr3_pa,itemStyle:{color:'#2A9D48'},barWidth:'38%',
+   label:{show:true,fontSize:9.5,position:'top',formatter:function(p){return (p.value/10000).toFixed(1)+'万';}}},
+  {name:'PT 额份额',type:'line',yAxisIndex:1,data:CH.yr3_sh,itemStyle:{color:'#C0392B'},lineStyle:{width:3},symbolSize:11,
+   label:{show:true,fontSize:10,formatter:'{c}%'}}]});
+mk('c-pie25',{tooltip:{trigger:'item',formatter:function(p){return p.name+'<br>¥'+p.value.toLocaleString()+' ('+p.percent+'%)';}},
  legend:{type:'scroll',bottom:0,textStyle:{fontSize:10}},
- series:[{type:'pie',radius:['34%','60%'],center:['50%','44%'],data:CH.pie,
-  itemStyle:{color:function(p){var c=['#0F4C75','#1B9AAA','#2A9D48','#E67E22','#8E44AD','#C0392B','#16A085','#D68910','#5D6D7E','#7D3C98','#95A5A6'];return c[p.dataIndex%c.length];}},
-  label:{fontSize:9.5,formatter:'{b}\n{d}%'}}]});
+ series:[{type:'pie',radius:['34%','60%'],center:['50%','44%'],data:CH.pie25,
+  itemStyle:{color:function(p){return PIE_C[p.dataIndex%PIE_C.length];}},label:{fontSize:9.5,formatter:'{b}\n{d}%'}}]});
+mk('c-pie26',{tooltip:{trigger:'item',formatter:function(p){return p.name+'<br>¥'+p.value.toLocaleString()+' ('+p.percent+'%)';}},
+ legend:{type:'scroll',bottom:0,textStyle:{fontSize:10}},
+ series:[{type:'pie',radius:['34%','60%'],center:['50%','44%'],data:CH.pie26,
+  itemStyle:{color:function(p){return PIE_C[p.dataIndex%PIE_C.length];}},label:{fontSize:9.5,formatter:'{b}\n{d}%'}}]});
+mk('c-cr',{tooltip:{trigger:'axis'},legend:{top:0,textStyle:{fontSize:11}},
+ grid:{left:62,right:44,top:44,bottom:44},
+ xAxis:{type:'category',data:CH.crx,boundaryGap:false},
+ yAxis:{type:'value',name:'额占(%)',max:100},
+ series:[{name:'2025 全年',type:'line',data:CH.cr25,itemStyle:{color:'#9DB8CE'},lineStyle:{width:2.6},symbolSize:8,smooth:true},
+  {name:'2026 1-10月',type:'line',data:CH.cr26,itemStyle:{color:'#0F4C75'},lineStyle:{width:3.4},symbolSize:9,smooth:true,
+   label:{show:true,fontSize:9,formatter:'{c}%'}}]});
 mk('c-share',{tooltip:{trigger:'axis',valueFormatter:function(v){return v.toFixed(3)+'%';}},
  legend:{type:'scroll',top:0,textStyle:{fontSize:10.5}},
  grid:{left:64,right:40,top:52,bottom:62},
@@ -185,26 +234,13 @@ mk('c-share',{tooltip:{trigger:'axis',valueFormatter:function(v){return v.toFixe
  yAxis:{type:'value',name:'份额(%)',axisLabel:{formatter:'{value}%'}},
  series:CH.share_series});
 mk('c-scatter',{tooltip:{trigger:'item',formatter:function(p){var v=p.value;
-  return p.name+'<br>2025: '+v[0].toFixed(3)+'%<br>2026: '+v[1].toFixed(3)+'%<br>变化: '+(v[1]-v[0]>=0?'+':'')+(v[1]-v[0]).toFixed(3)+'pp';}},
+  return p.name+'<br>2025(1-10): '+v[0].toFixed(3)+'%<br>2026(1-10): '+v[1].toFixed(3)+'%<br>变化: '+(v[1]-v[0]>=0?'+':'')+(v[1]-v[0]).toFixed(3)+'pp';}},
  grid:{left:68,right:44,top:44,bottom:54},
- xAxis:{type:'value',name:'2025 份额(%)',axisLabel:{formatter:'{value}%'}},
- yAxis:{type:'value',name:'2026 份额(%)',axisLabel:{formatter:'{value}%'}},
+ xAxis:{type:'value',name:'2025(1-10) 份额(%)',axisLabel:{formatter:'{value}%'}},
+ yAxis:{type:'value',name:'2026(1-10) 份额(%)',axisLabel:{formatter:'{value}%'}},
  series:[{type:'scatter',data:CH.scatter,symbolSize:12,
   markLine:{silent:true,symbol:'none',data:[[{coord:[0,0]},{coord:[20,20]}]],lineStyle:{color:'#E67E22',type:'dashed',width:1.5},label:{formatter:'持平线',fontSize:9}},
   label:{show:true,fontSize:9,position:'right',formatter:function(p){return p.name;}}}]});
-mk('c-cr',{tooltip:{trigger:'axis'},legend:{top:0,textStyle:{fontSize:11}},
- grid:{left:62,right:44,top:44,bottom:44},
- xAxis:{type:'category',data:CH.crx,boundaryGap:false},
- yAxis:{type:'value',name:'份额(%)',max:100},
- series:[{name:'额占',type:'line',data:CH.cra,itemStyle:{color:'#0F4C75'},lineStyle:{width:3},symbolSize:9,smooth:true,label:{show:true,fontSize:9.5,formatter:'{c}%'}},
-  {name:'量占',type:'line',data:CH.crq,itemStyle:{color:'#2A9D48'},lineStyle:{width:3,type:'dashed'},symbolSize:9,smooth:true}]});
-mk('c-crt',{tooltip:{trigger:'axis'},legend:{top:0,textStyle:{fontSize:11}},
- grid:{left:60,right:40,top:44,bottom:52},
- xAxis:{type:'category',data:CH.cr_w,boundaryGap:false,axisLabel:{fontSize:9.5,rotate:32}},
- yAxis:{type:'value',name:'集中度(%)'},
- series:[{name:'CR3',type:'line',data:CH.cr3,smooth:true,symbolSize:5,itemStyle:{color:'#9DB8CE'},lineStyle:{width:2}},
-  {name:'CR5',type:'line',data:CH.cr5,smooth:true,symbolSize:6,itemStyle:{color:'#1B9AAA'},lineStyle:{width:2.6}},
-  {name:'CR10',type:'line',data:CH.cr10,smooth:true,symbolSize:7,itemStyle:{color:'#0F4C75'},lineStyle:{width:3.2}}]});
 mk('c-sea',{tooltip:{trigger:'axis'},grid:{left:60,right:40,top:44,bottom:44},
  xAxis:{type:'category',data:CH.sea_x},yAxis:{type:'value',name:'季节指数'},
  series:[{type:'bar',data:CH.sea_y,barWidth:'54%',
@@ -212,16 +248,14 @@ mk('c-sea',{tooltip:{trigger:'axis'},grid:{left:60,right:40,top:44,bottom:44},
   markLine:{silent:true,symbol:'none',data:[{yAxis:100,label:{formatter:'基准 100',fontSize:9},lineStyle:{color:'#E67E22',type:'dashed'}}]},
   label:{show:true,fontSize:9.5,position:'top',formatter:function(p){return p.value.toFixed(0);}}}]});
 mk('c-gate',{tooltip:{trigger:'axis'},legend:{top:0,textStyle:{fontSize:11}},
- grid:{left:88,right:44,top:48,bottom:44},
+ grid:{left:82,right:44,top:48,bottom:44},
  xAxis:{type:'category',data:CH.gate_x},
  yAxis:{type:'value',name:'月均销售额(¥)'},
- series:[{name:'进榜门槛',type:'bar',data:CH.gate_need,itemStyle:{color:'#9DB8CE'},barWidth:'42%',
-   label:{show:true,fontSize:9,position:'top',formatter:function(p){return (p.value/10000).toFixed(0)+'万';}}},
-  {name:'PT 当前月均',type:'line',data:CH.gate_pt,itemStyle:{color:'#2A9D48'},lineStyle:{width:3,type:'dashed'},symbol:'none',
-   label:{show:true,fontSize:10,formatter:function(p){return '¥'+(p.value/10000).toFixed(1)+'万';}}}]});
-window.addEventListener('resize',function(){
- ['c-mon','c-pt','c-yr','c-pie','c-share','c-scatter','c-cr','c-crt','c-sea','c-gate'].forEach(function(i){
-  var e=echarts.getInstanceByDom(document.getElementById(i)); if(e) e.resize();});});
+ series:[{name:'2025 全年',type:'bar',data:CH.g25,itemStyle:{color:'#9DB8CE'},barWidth:'32%',
+   label:{show:true,fontSize:8.5,position:'top',formatter:function(p){return (p.value/10000).toFixed(1)+'万';}}},
+  {name:'2026 1-10月',type:'bar',data:CH.g26,itemStyle:{color:'#1B9AAA'},barWidth:'32%',
+   label:{show:true,fontSize:8.5,position:'top',formatter:function(p){return (p.value/10000).toFixed(1)+'万';}}}]});
+window.addEventListener('resize',function(){CHARTS.forEach(function(c){c.resize();});});
 
 </script>
 </body>
