@@ -663,7 +663,19 @@ var SNAP = {
   today: calc(DAILY.slice(-1)),
   yest:  calc(DAILY.slice(-2,-1)),
   d7:    calc(DAILY.slice(-7)),
-  d30:   calc(DAILY.slice(-30))
+  d30:   calc(DAILY.slice(-30)),
+  // 对比基准（各窗口各自的前一期）
+  prev1:  calc(DAILY.slice(-2,-1)),      // 前一日
+  prev2:  calc(DAILY.slice(-3,-2)),      // 前二日
+  prev7:  calc(DAILY.slice(-14,-7)),     // 前 7 日
+  prev30: calc(DAILY.slice(-60,-30))     // 前 30 日
+};
+// 每个窗口对应哪个基准 + 文案
+var CMAP = {
+  today: {prev:'prev1',  label:'较前一日'},
+  yest:  {prev:'prev2',  label:'较前一日'},
+  d7:    {prev:'prev7',  label:'较前7日'},
+  d30:   {prev:'prev30', label:'较前30日'}
 };
 function fN(v){ return (Math.round(v*10)/10).toLocaleString(); }
 function fY(v){ return '¥'+Math.round(v).toLocaleString(); }
@@ -679,8 +691,9 @@ function card(l,v,d,t){ return '<div class="mc"><div class="mc-l">'+l+'</div><di
 
 var sk='today', ak='today';
 function renderSales(){
-  var c=SNAP[sk], p=SNAP.yest;
-  var t = sk==='today' ? '较前一日' : (sk==='yest' ? '较前一日' : '较前一日');
+  var cfg = CMAP[sk] || CMAP.today;
+  var c=SNAP[sk], p=SNAP[cfg.prev];
+  var t = cfg.label;
   document.getElementById('mgrid-sales').innerHTML =
       card('销量', fN(c.q)+' 件', dl(c.q,p.q,false,true), t)
     + card('销售额', fY(c.a), dl(c.a,p.a,false,true), t)
@@ -689,8 +702,9 @@ function renderSales(){
     + card('转化率', fP(c.cvr), dl(c.cvr,p.cvr,true,true), t);
 }
 function renderAd(){
-  var c=SNAP[ak], p=SNAP.yest;
-  var t = '较前一日';
+  var cfg = CMAP[ak] || CMAP.today;
+  var c=SNAP[ak], p=SNAP[cfg.prev];
+  var t = cfg.label;
   document.getElementById('mgrid-ad').innerHTML =
       card('广告花费', fY(c.sp), dl(c.sp,p.sp,false,false), t)
     + card('广告销售额', fY(c.sa), dl(c.sa,p.sa,false,true), t)
