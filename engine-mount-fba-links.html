@@ -9,14 +9,11 @@
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{font-family:'Microsoft YaHei',-apple-system,sans-serif;background:#eef3f8;color:#16233a;padding:0 16px 16px;max-width:1760px;margin:0 auto}
-.nav{position:sticky;top:0;z-index:999;background:rgba(255,255,255,.97);backdrop-filter:blur(8px);
- border-bottom:2px solid #0F4C75;display:flex;gap:6px;padding:10px 16px;margin:0 -16px 14px;
- flex-wrap:wrap;align-items:center;box-shadow:0 3px 14px rgba(15,76,117,.13)}
-.nav .nt{font-size:12.5px;font-weight:700;color:#0F4C75;margin-right:6px}
-.nav a{padding:6px 13px;border-radius:16px;background:#eef3f8;color:#0F4C75;text-decoration:none;
- font-size:12px;font-weight:600;white-space:nowrap;transition:all .15s}
-.nav a:hover{background:#0F4C75;color:#fff;transform:translateY(-1px)}
-section[id]{scroll-margin-top:76px}
+
+
+
+
+section[id]{scroll-margin-top:14px}
 .hd{background:linear-gradient(135deg,#0F4C75,#1B9AAA);color:#fff;border-radius:14px;padding:24px 30px;margin-bottom:14px;box-shadow:0 6px 20px rgba(15,76,117,.22)}
 .hd h1{font-size:26px}
 .hd .mt{font-size:12.5px;opacity:.95;margin-top:9px;line-height:1.95}
@@ -126,23 +123,83 @@ th.sorted-desc::after{content:' \2193';opacity:1}
 .sgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .sch{width:100%;height:340px}
 .sch2{width:100%;height:300px}
+
+/* ===== 左侧固定侧边栏 ===== */
+body{padding-left:228px !important}
+.sb{position:fixed;top:0;left:0;width:212px;height:100vh;background:#fff;z-index:1000;
+ border-right:1px solid #e5ecf3;display:flex;flex-direction:column;box-shadow:2px 0 14px rgba(15,76,117,.07)}
+.sb-hd{padding:18px 18px 14px;border-bottom:1px solid #eef2f6}
+.sb-hd .t1{font-size:15px;font-weight:800;color:#0F4C75;line-height:1.3}
+.sb-hd .t2{font-size:10.5px;color:#93a3b3;margin-top:5px;line-height:1.6}
+.sb-body{flex:1;overflow-y:auto;padding:10px 10px 18px}
+.sb-body::-webkit-scrollbar{width:5px}
+.sb-body::-webkit-scrollbar-thumb{background:#d6e0ea;border-radius:3px}
+.sb-g{margin-bottom:4px}
+.sb-gt{font-size:10.5px;color:#a8b6c4;font-weight:700;padding:12px 10px 6px;
+ letter-spacing:.6px;text-transform:uppercase}
+.sb-i{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:8px;
+ color:#4a5a6a;font-size:12.5px;font-weight:600;text-decoration:none;cursor:pointer;
+ transition:all .14s;margin-bottom:2px;position:relative}
+.sb-i:hover{background:#f2f7fb;color:#0F4C75}
+.sb-i.on{background:#0F4C75;color:#fff;box-shadow:0 3px 10px rgba(15,76,117,.28)}
+.sb-i.on::before{content:'';position:absolute;left:-10px;top:50%;transform:translateY(-50%);
+ width:3px;height:18px;background:#1B9AAA;border-radius:0 3px 3px 0}
+.sb-i .ic{font-size:14px;width:17px;text-align:center;flex-shrink:0}
+.sb-i .tx{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb-i .bg{font-size:9.5px;padding:1px 6px;border-radius:8px;background:#fdecea;color:#C0392B;font-weight:700}
+.sb-i.on .bg{background:rgba(255,255,255,.25);color:#fff}
+.sb-ft{padding:12px 16px;border-top:1px solid #eef2f6;font-size:10px;color:#a8b6c4;line-height:1.7}
+/* 顶部信息条（替代原 hd 的紧凑版） */
+.topbar{background:#fff;border-radius:12px;padding:16px 22px;margin-bottom:14px;
+ box-shadow:0 2px 8px rgba(0,0,0,.06);display:flex;align-items:center;justify-content:space-between;
+ flex-wrap:wrap;gap:12px;border-left:4px solid #0F4C75}
+.topbar h1{font-size:20px;color:#16233a;font-weight:800}
+.topbar .sub{font-size:11.5px;color:#8494a5;margin-top:6px;line-height:1.8}
+.topbar .pill{display:inline-block;padding:3px 10px;border-radius:10px;background:#eef7ff;
+ color:#1565C0;font-size:11px;font-weight:700;margin-left:7px}
+.topbar .acts{display:flex;gap:8px;flex-wrap:wrap}
+.tbtn{padding:8px 16px;border-radius:8px;border:1px solid #d8e2ec;background:#fff;color:#4a5a6a;
+ font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .15s;text-decoration:none;
+ display:inline-flex;align-items:center;gap:6px}
+.tbtn:hover{background:#f2f7fb;border-color:#0F4C75;color:#0F4C75}
+.tbtn.pri{background:#0F4C75;color:#fff;border-color:#0F4C75}
+.tbtn.pri:hover{background:#1B9AAA;border-color:#1B9AAA;color:#fff}
+/* 预警横条 */
+.alert{background:#fff5f5;border:1px solid #ffd9d9;border-left:4px solid #C0392B;border-radius:9px;
+ padding:12px 16px;margin-bottom:14px;font-size:12.5px;color:#8a2a2a;line-height:1.8}
+.alert.y{background:#fffaf0;border-color:#ffe9c2;border-left-color:#E67E22;color:#8a5a00}
+.alert b{font-weight:800}
+.alert .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:middle}
+.alert .dot.r{background:#C0392B}.alert .dot.y{background:#E67E22}.alert .dot.g{background:#2A9D48}
+@media(max-width:1180px){
+  body{padding-left:16px !important}
+  .sb{transform:translateX(-100%);transition:transform .22s}
+  .sb.open{transform:translateX(0)}
+  .sbtoggle{display:flex !important}
+}
+.sbtoggle{display:none;position:fixed;top:14px;left:14px;z-index:1100;width:42px;height:42px;
+ border-radius:11px;background:#0F4C75;color:#fff;border:none;font-size:19px;cursor:pointer;
+ align-items:center;justify-content:center;box-shadow:0 3px 12px rgba(15,76,117,.35)}
 </style>
 </head>
 <body>
-<nav class="nav"><span class="nt">&#128204; 快捷导航</span><a href="#kpi">核心指标</a><a href="#board">实时看板</a><a href="#perf">业绩走势</a><a href="#repl">补货建议</a><a href="#summ">窗口汇总</a><a href="#grp">新老品</a><a href="#list">链接明细</a><a href="#share">市占分析</a></nav>
+<aside class="sb" id="sb"><div class="sb-hd"><div class="t1">发动机支架<br>FBA 看板</div><div class="t2">US22 · 全 FBA<br>数据截至 2026-11-02</div></div><div class="sb-body"><div class="sb-g"><div class="sb-gt">概览</div><a class="sb-i on" href="#kpi" data-t="kpi"><span class="ic">📊</span><span class="tx">核心指标</span></a><a class="sb-i" href="#board" data-t="board"><span class="ic">📡</span><span class="tx">实时看板</span></a><a class="sb-i" href="#perf" data-t="perf"><span class="ic">📈</span><span class="tx">业绩走势</span></a></div><div class="sb-g"><div class="sb-gt">运营</div><a class="sb-i" href="#repl" data-t="repl"><span class="ic">📦</span><span class="tx">补货建议</span><span class="bg">P0</span></a><a class="sb-i" href="#summ" data-t="summ"><span class="ic">🧭</span><span class="tx">窗口汇总</span></a><a class="sb-i" href="#grp" data-t="grp"><span class="ic">📋</span><span class="tx">新品 / 老品</span></a><a class="sb-i" href="#list" data-t="list"><span class="ic">🔗</span><span class="tx">链接明细</span><span class="bg">168</span></a></div><div class="sb-g"><div class="sb-gt">市场</div><a class="sb-i" href="#share" data-t="share"><span class="ic">🌐</span><span class="tx">市占分析</span></a></div></div><div class="sb-ft">BI 日粒度 · 延迟约 3 天<br>金额单位：人民币 ¥</div></aside><button class="sbtoggle" id="sbt">☰</button>
 
-<div class="hd">
-<h1>&#128279; 发动机支架 · FBA 链接看板<span class="badge">日维度更新</span></h1>
-<div class="mt">
-店铺：US22（全 FBA）｜ 链接数：<b>168 个</b>｜ 数据截止：<b>2026-11-02</b><br>
-7 天 = 2026-10-27 ~ 2026-11-02 ｜ 14 天 = 2026-10-20 ~ 2026-11-02 ｜ 30 天 = 2026-10-04 ~ 2026-11-02 ｜ 环比基准 = 2026-10-20 ~ 2026-10-26（前 7 天）<br>
-自然转化率 = (总销量 − 广告单) ÷ (总流量 − 广告点击) ｜ 金额：人民币（&#165;）
+<div class="topbar">
+  <div>
+    <h1>&#128279; 发动机支架 · FBA 链接看板<span class="pill">日维度更新</span></h1>
+    <div class="sub">店铺 US22（全 FBA）｜ 链接 168 个｜ 数据截止 2026-11-02<br>
+    7 天 = 10-27 ~ 11-02 ｜ 环比基准 = 前 7 天 ｜ 金额：人民币（&#165;）</div>
+  </div>
+  <div class="acts">
+    <a class="tbtn" href="#list">&#128221; 查看明细</a>
+    <a class="tbtn" href="#repl">&#128230; 补货建议</a>
+    <a class="tbtn pri" href="#share">&#127760; 市场地位</a>
+  </div>
 </div>
-</div>
-
 <section id="kpi">
 <div class="chp">&#128202; 核心指标</div>
-<div class="warnbox">⚠️ <b>2026-11-03 数据不完整</b>（流量为 0，BI 尚未结算），已从统计中剔除。当前以 <b>2026-11-02</b> 为最后完整日。</div>
+<div class="alert y"><span class="dot y"></span>⚠️ <b>2026-11-03 数据不完整</b>（流量为 0，BI 尚未结算），已从统计中剔除。当前以 <b>2026-11-02</b> 为最后完整日。</div>
 <div class="kr"><div class="kp"><div class="kl">FBA 链接数</div><div class="kv brand">168 个</div><div class="kn">新品 70 + 老品 93 + 待上架 5</div></div><div class="kp"><div class="kl">当日销量</div><div class="kv good">22 件</div><div class="kn">2026-11-02</div></div><div class="kp"><div class="kl">近 7 天销量</div><div class="kv good">153 件</div><div class="kn">日均 21.9 件 | 出单 88 个</div></div><div class="kp"><div class="kl">近 30 天销量</div><div class="kv brand">633 件</div><div class="kn">¥249,459</div></div><div class="kp"><div class="kl">近 7 天广告花费</div><div class="kv brand">¥2,562</div><div class="kn">ACOS 9.83% | TACOS 4.23%</div></div><div class="kp"><div class="kl">近 7 天转化率</div><div class="kv brand">10.36%</div><div class="kn">CTR 0.95% | 广告CVR 9.16%</div></div><div class="kp"><div class="kl">近 7 天毛利</div><div class="kv good">¥7,121</div><div class="kn">利润率 11.77%</div></div><div class="kp"><div class="kl">近 30 天 ACOS</div><div class="kv warn">12.53%</div><div class="kn">近7天是 9.83%</div></div></div>
 </section>
 
@@ -658,6 +715,38 @@ smk('s-sea',{tooltip:{trigger:'axis'},grid:{left:56,right:40,top:40,bottom:40},
   markLine:{silent:true,symbol:'none',data:[{yAxis:100,label:{formatter:'100',fontSize:9},
     lineStyle:{color:'#E67E22',type:'dashed'}}]},
   label:{show:true,fontSize:9,position:'top',formatter:function(p){return p.value.toFixed(0);}}}]});
+
+
+/* ===== 侧边栏导航 ===== */
+var SBI = Array.prototype.slice.call(document.querySelectorAll('.sb-i'));
+var SECS = SBI.map(function(a){ return document.getElementById(a.getAttribute('data-t')); }).filter(Boolean);
+function setOn(id){
+  SBI.forEach(function(a){ a.classList.toggle('on', a.getAttribute('data-t') === id); });
+}
+SBI.forEach(function(a){
+  a.addEventListener('click', function(e){
+    e.preventDefault();
+    var el = document.getElementById(a.getAttribute('data-t'));
+    if(el){ el.scrollIntoView({behavior:'smooth', block:'start'}); setOn(a.getAttribute('data-t')); }
+    document.getElementById('sb').classList.remove('open');
+  });
+});
+// 滚动监听
+var stick = false;
+window.addEventListener('scroll', function(){
+  if(stick) return;
+  stick = true;
+  requestAnimationFrame(function(){
+    var y = window.scrollY + 130, cur = SECS[0] ? SECS[0].id : 'kpi';
+    SECS.slice().sort(function(a,b){ return a.offsetTop - b.offsetTop; }).forEach(function(el){ if(el.offsetTop <= y) cur = el.id; });
+    setOn(cur);
+    stick = false;
+  });
+}, {passive:true});
+// 移动端
+var tg = document.getElementById('sbt');
+if(tg) tg.addEventListener('click', function(){ document.getElementById('sb').classList.toggle('open'); });
+window.addEventListener('resize', function(){ if(CHARTS) CHARTS.forEach(function(c){c.resize();}); });
 
 </script>
 </body>
