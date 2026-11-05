@@ -9,11 +9,14 @@
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{font-family:'Microsoft YaHei',-apple-system,sans-serif;background:#eef3f8;color:#16233a;padding:0 16px 16px;max-width:1760px;margin:0 auto}
-
-
-
-
-section[id]{scroll-margin-top:14px}
+.nav{position:sticky;top:0;z-index:999;background:rgba(255,255,255,.97);backdrop-filter:blur(8px);
+ border-bottom:2px solid #0F4C75;display:flex;gap:6px;padding:10px 16px;margin:0 -16px 14px;
+ flex-wrap:wrap;align-items:center;box-shadow:0 3px 14px rgba(15,76,117,.13)}
+.nav .nt{font-size:12.5px;font-weight:700;color:#0F4C75;margin-right:6px}
+.nav a{padding:6px 13px;border-radius:16px;background:#eef3f8;color:#0F4C75;text-decoration:none;
+ font-size:12px;font-weight:600;white-space:nowrap;transition:all .15s}
+.nav a:hover{background:#0F4C75;color:#fff;transform:translateY(-1px)}
+section[id]{scroll-margin-top:76px}
 .hd{background:linear-gradient(135deg,#0F4C75,#1B9AAA);color:#fff;border-radius:14px;padding:24px 30px;margin-bottom:14px;box-shadow:0 6px 20px rgba(15,76,117,.22)}
 .hd h1{font-size:26px}
 .hd .mt{font-size:12.5px;opacity:.95;margin-top:9px;line-height:1.95}
@@ -119,37 +122,42 @@ th.sorted-desc::after{content:' \2193';opacity:1}
 .bd.n{background:#e8f8ec;color:#2A9D48}.bd.o{background:#eef3f8;color:#5f6b7a}
 .mxnote{font-size:11.5px;color:#8494a5;margin-top:10px;line-height:1.7}
 
-/* 市占模块 */
-.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.sch{width:100%;height:340px}
-.sch2{width:100%;height:300px}
-
-/* ===== 左侧固定侧边栏 ===== */
-body{padding-left:228px !important}
-.sb{position:fixed;top:0;left:0;width:212px;height:100vh;background:#fff;z-index:1000;
+/* ===== 左侧侧边栏 v2（分组 Tab） ===== */
+body{padding-left:232px !important}
+.sb{position:fixed;top:0;left:0;width:216px;height:100vh;background:#fff;z-index:1000;
  border-right:1px solid #e5ecf3;display:flex;flex-direction:column;box-shadow:2px 0 14px rgba(15,76,117,.07)}
-.sb-hd{padding:18px 18px 14px;border-bottom:1px solid #eef2f6}
+.sb-hd{padding:17px 16px 13px;border-bottom:1px solid #eef2f6}
 .sb-hd .t1{font-size:15px;font-weight:800;color:#0F4C75;line-height:1.3}
-.sb-hd .t2{font-size:10.5px;color:#93a3b3;margin-top:5px;line-height:1.6}
-.sb-body{flex:1;overflow-y:auto;padding:10px 10px 18px}
+.sb-hd .t2{font-size:10.5px;color:#93a3b3;margin-top:5px;line-height:1.65}
+.sb-body{flex:1;overflow-y:auto;padding:8px 9px 16px}
 .sb-body::-webkit-scrollbar{width:5px}
 .sb-body::-webkit-scrollbar-thumb{background:#d6e0ea;border-radius:3px}
-.sb-g{margin-bottom:4px}
-.sb-gt{font-size:10.5px;color:#a8b6c4;font-weight:700;padding:12px 10px 6px;
- letter-spacing:.6px;text-transform:uppercase}
-.sb-i{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:8px;
- color:#4a5a6a;font-size:12.5px;font-weight:600;text-decoration:none;cursor:pointer;
- transition:all .14s;margin-bottom:2px;position:relative}
+/* 分组标题 = Tab 按钮 */
+.sb-gt{display:flex;align-items:center;gap:7px;padding:10px 11px;border-radius:8px;
+ font-size:12.5px;font-weight:800;color:#8d9dab;cursor:pointer;user-select:none;
+ transition:all .15s;margin-top:4px;letter-spacing:.3px}
+.sb-gt:hover{background:#f4f8fc;color:#0F4C75}
+.sb-gt.on{background:#0F4C75;color:#fff;box-shadow:0 3px 11px rgba(15,76,117,.3)}
+.sb-gt .cnt{font-size:9.5px;padding:1px 6px;border-radius:8px;background:#eaf1f8;color:#7d8d9b;font-weight:700}
+.sb-gt.on .cnt{background:rgba(255,255,255,.24);color:#fff}
+.sb-gt .chev{font-size:9px;transition:transform .18s;opacity:.7}
+.sb-gt.on .chev{transform:rotate(180deg)}
+/* 子项 */
+.sb-sub{padding:2px 0 2px 0;overflow:hidden;transition:max-height .2s}
+.sb-sub.hide{max-height:0 !important;padding:0}
+.sb-sub{max-height:420px}
+.sb-i{display:flex;align-items:center;gap:8px;padding:8px 11px 8px 22px;border-radius:7px;
+ color:#5a6a7a;font-size:12px;font-weight:600;text-decoration:none;cursor:pointer;
+ transition:all .14s;margin-bottom:1px;position:relative}
 .sb-i:hover{background:#f2f7fb;color:#0F4C75}
-.sb-i.on{background:#0F4C75;color:#fff;box-shadow:0 3px 10px rgba(15,76,117,.28)}
-.sb-i.on::before{content:'';position:absolute;left:-10px;top:50%;transform:translateY(-50%);
- width:3px;height:18px;background:#1B9AAA;border-radius:0 3px 3px 0}
-.sb-i .ic{font-size:14px;width:17px;text-align:center;flex-shrink:0}
+.sb-i.on{background:#e8f4ff;color:#0F4C75;font-weight:700}
+.sb-i.on::before{content:'';position:absolute;left:10px;top:50%;transform:translateY(-50%);
+ width:4px;height:4px;border-radius:50%;background:#1B9AAA}
+.sb-i .ic{font-size:12.5px;width:15px;text-align:center;flex-shrink:0}
 .sb-i .tx{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.sb-i .bg{font-size:9.5px;padding:1px 6px;border-radius:8px;background:#fdecea;color:#C0392B;font-weight:700}
-.sb-i.on .bg{background:rgba(255,255,255,.25);color:#fff}
-.sb-ft{padding:12px 16px;border-top:1px solid #eef2f6;font-size:10px;color:#a8b6c4;line-height:1.7}
-/* 顶部信息条（替代原 hd 的紧凑版） */
+.sb-i .bg{font-size:9px;padding:1px 5px;border-radius:7px;background:#fdecea;color:#C0392B;font-weight:700}
+.sb-ft{padding:11px 15px;border-top:1px solid #eef2f6;font-size:10px;color:#a8b6c4;line-height:1.7}
+/* 顶部信息条 */
 .topbar{background:#fff;border-radius:12px;padding:16px 22px;margin-bottom:14px;
  box-shadow:0 2px 8px rgba(0,0,0,.06);display:flex;align-items:center;justify-content:space-between;
  flex-wrap:wrap;gap:12px;border-left:4px solid #0F4C75}
@@ -164,13 +172,12 @@ body{padding-left:228px !important}
 .tbtn:hover{background:#f2f7fb;border-color:#0F4C75;color:#0F4C75}
 .tbtn.pri{background:#0F4C75;color:#fff;border-color:#0F4C75}
 .tbtn.pri:hover{background:#1B9AAA;border-color:#1B9AAA;color:#fff}
-/* 预警横条 */
 .alert{background:#fff5f5;border:1px solid #ffd9d9;border-left:4px solid #C0392B;border-radius:9px;
  padding:12px 16px;margin-bottom:14px;font-size:12.5px;color:#8a2a2a;line-height:1.8}
 .alert.y{background:#fffaf0;border-color:#ffe9c2;border-left-color:#E67E22;color:#8a5a00}
-.alert b{font-weight:800}
 .alert .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:middle}
-.alert .dot.r{background:#C0392B}.alert .dot.y{background:#E67E22}.alert .dot.g{background:#2A9D48}
+/* 分组视图切换 */
+section.grp-off{display:none !important}
 @media(max-width:1180px){
   body{padding-left:16px !important}
   .sb{transform:translateX(-100%);transition:transform .22s}
@@ -183,27 +190,26 @@ body{padding-left:228px !important}
 </style>
 </head>
 <body>
-<aside class="sb" id="sb"><div class="sb-hd"><div class="t1">发动机支架<br>FBA 看板</div><div class="t2">US22 · 全 FBA<br>数据截至 2026-11-02</div></div><div class="sb-body"><div class="sb-g"><div class="sb-gt">概览</div><a class="sb-i on" href="#kpi" data-t="kpi"><span class="ic">📊</span><span class="tx">核心指标</span></a><a class="sb-i" href="#board" data-t="board"><span class="ic">📡</span><span class="tx">实时看板</span></a><a class="sb-i" href="#perf" data-t="perf"><span class="ic">📈</span><span class="tx">业绩走势</span></a></div><div class="sb-g"><div class="sb-gt">运营</div><a class="sb-i" href="#repl" data-t="repl"><span class="ic">📦</span><span class="tx">补货建议</span><span class="bg">P0</span></a><a class="sb-i" href="#summ" data-t="summ"><span class="ic">🧭</span><span class="tx">窗口汇总</span></a><a class="sb-i" href="#grp" data-t="grp"><span class="ic">📋</span><span class="tx">新品 / 老品</span></a><a class="sb-i" href="#list" data-t="list"><span class="ic">🔗</span><span class="tx">链接明细</span><span class="bg">168</span></a></div><div class="sb-g"><div class="sb-gt">市场</div><a class="sb-i" href="#share" data-t="share"><span class="ic">🌐</span><span class="tx">市占分析</span></a></div></div><div class="sb-ft">BI 日粒度 · 延迟约 3 天<br>金额单位：人民币 ¥</div></aside><button class="sbtoggle" id="sbt">☰</button>
+<aside class="sb" id="sb"><div class="sb-hd"><div class="t1">发动机支架<br>FBA 看板</div><div class="t2">US22 · 全 FBA<br>截至 2026-11-02</div></div><div class="sb-body"><div class="sb-gt on" data-g="g1"><span>概览</span><span class="cnt">4</span><span class="chev">▼</span></div><div class="sb-sub" data-sub="g1"><a class="sb-i on" href="#kpi" data-t="kpi"><span class="ic">📊</span><span class="tx">核心指标</span></a><a class="sb-i" href="#board" data-t="board"><span class="ic">📡</span><span class="tx">实时看板</span></a><a class="sb-i" href="#perf" data-t="perf"><span class="ic">📈</span><span class="tx">业绩走势</span></a><a class="sb-i" href="#summ" data-t="summ"><span class="ic">🧭</span><span class="tx">窗口汇总</span></a></div><div class="sb-gt" data-g="g2"><span>运营</span><span class="cnt">3</span><span class="chev">▼</span></div><div class="sb-sub hide" data-sub="g2"><a class="sb-i" href="#repl" data-t="repl"><span class="ic">📦</span><span class="tx">补货建议</span><span class="bg">P0</span></a>
+<a class="sb-i" href="#profit" data-t="profit"><span class="ic">💰</span><span class="tx">利润 / 退款 / 清库</span></a><a class="sb-i" href="#grp" data-t="grp"><span class="ic">📋</span><span class="tx">新品 / 老品</span></a><a class="sb-i" href="#list" data-t="list"><span class="ic">🔗</span><span class="tx">链接明细</span><span class="bg">168</span></a></div><div class="sb-gt" data-g="g3"><span>市场</span><span class="cnt">1</span><span class="chev">▼</span></div><div class="sb-sub hide" data-sub="g3"><a class="sb-i" href="#share" data-t="share"><span class="ic">🌐</span><span class="tx">市占分析</span></a></div></div><div class="sb-ft">BI 日粒度 · 延迟约 3 天<br>金额：人民币 ¥</div></aside><button class="sbtoggle" id="sbt">☰</button>
+<nav class="nav"><span class="nt">&#128204; 快捷导航</span><a href="#kpi">核心指标</a><a href="#board">实时看板</a><a href="#perf">业绩走势</a><a href="#repl">补货建议</a><a href="#summ">窗口汇总</a><a href="#grp">新老品</a><a href="#list">链接明细</a></nav>
 
-<div class="topbar">
-  <div>
-    <h1>&#128279; 发动机支架 · FBA 链接看板<span class="pill">日维度更新</span></h1>
-    <div class="sub">店铺 US22（全 FBA）｜ 链接 168 个｜ 数据截止 2026-11-02<br>
-    7 天 = 10-27 ~ 11-02 ｜ 环比基准 = 前 7 天 ｜ 金额：人民币（&#165;）</div>
-  </div>
-  <div class="acts">
-    <a class="tbtn" href="#list">&#128221; 查看明细</a>
-    <a class="tbtn" href="#repl">&#128230; 补货建议</a>
-    <a class="tbtn pri" href="#share">&#127760; 市场地位</a>
-  </div>
+<div class="hd">
+<h1>&#128279; 发动机支架 · FBA 链接看板<span class="badge">日维度更新</span></h1>
+<div class="mt">
+店铺：US22（全 FBA）｜ 链接数：<b>168 个</b>｜ 数据截止：<b>2026-11-02</b><br>
+7 天 = 2026-10-27 ~ 2026-11-02 ｜ 14 天 = 2026-10-20 ~ 2026-11-02 ｜ 30 天 = 2026-10-04 ~ 2026-11-02 ｜ 环比基准 = 2026-10-20 ~ 2026-10-26（前 7 天）<br>
+自然转化率 = (总销量 − 广告单) ÷ (总流量 − 广告点击) ｜ 金额：人民币（&#165;）
 </div>
-<section id="kpi">
+</div>
+
+<section id="kpi" data-g="g1">
 <div class="chp">&#128202; 核心指标</div>
-<div class="alert y"><span class="dot y"></span>⚠️ <b>2026-11-03 数据不完整</b>（流量为 0，BI 尚未结算），已从统计中剔除。当前以 <b>2026-11-02</b> 为最后完整日。</div>
+<div class="warnbox">⚠️ <b>2026-11-03 数据不完整</b>（流量为 0，BI 尚未结算），已从统计中剔除。当前以 <b>2026-11-02</b> 为最后完整日。</div>
 <div class="kr"><div class="kp"><div class="kl">FBA 链接数</div><div class="kv brand">168 个</div><div class="kn">新品 70 + 老品 93 + 待上架 5</div></div><div class="kp"><div class="kl">当日销量</div><div class="kv good">22 件</div><div class="kn">2026-11-02</div></div><div class="kp"><div class="kl">近 7 天销量</div><div class="kv good">153 件</div><div class="kn">日均 21.9 件 | 出单 88 个</div></div><div class="kp"><div class="kl">近 30 天销量</div><div class="kv brand">633 件</div><div class="kn">¥249,459</div></div><div class="kp"><div class="kl">近 7 天广告花费</div><div class="kv brand">¥2,562</div><div class="kn">ACOS 9.83% | TACOS 4.23%</div></div><div class="kp"><div class="kl">近 7 天转化率</div><div class="kv brand">10.36%</div><div class="kn">CTR 0.95% | 广告CVR 9.16%</div></div><div class="kp"><div class="kl">近 7 天毛利</div><div class="kv good">¥7,121</div><div class="kn">利润率 11.77%</div></div><div class="kp"><div class="kl">近 30 天 ACOS</div><div class="kv warn">12.53%</div><div class="kn">近7天是 9.83%</div></div></div>
 </section>
 
-<section id="board">
+<section id="board" data-g="g1">
 <div class="chp">&#128225; 实时看板</div>
 <div class="mrow">
   <div class="mrow-hd">
@@ -231,7 +237,7 @@ body{padding-left:228px !important}
 </div>
 </section>
 
-<section id="perf">
+<section id="perf" data-g="g1">
 <div class="chp">&#128200; 业绩走势（日粒度）</div>
 <div class="cd">
   <div class="chart-hd">
@@ -257,7 +263,16 @@ body{padding-left:228px !important}
 </section>
 
 
-<section id="repl">
+<section id="summ" data-g="g1">
+<div class="chp">&#128337; 滚动窗口汇总</div>
+<div class="cd">
+  <div class="ct">按日粒度滚动，不依赖自然周</div>
+  <div class="cs">所有窗口都截至 2026-11-02｜环比基准 = 前 7 天</div>
+  <div class="twr"><table><thead><tr><th>窗口</th><th>区间</th><th>销量</th><th>销售额</th><th>广告花费</th><th>ACOS</th><th>TACOS</th><th>转化率</th><th>毛利</th><th>出单ASIN</th></tr></thead><tbody><tr><td><b>当日</b></td><td>2026-11-02</td><td>22</td><td>¥9,642</td><td>¥390</td><td>8.74%</td><td>4.04%</td><td>10.28%</td><td>¥1,287</td><td>22</td></tr><tr><td><b>近 7 天</b></td><td>10-27 ~ 11-02</td><td>153</td><td>¥60,513</td><td>¥2,562</td><td>9.83%</td><td>4.23%</td><td>10.36%</td><td>¥7,121</td><td>88</td></tr><tr><td><b>近 14 天</b></td><td>10-20 ~ 11-02</td><td>320</td><td>¥127,805</td><td>¥5,143</td><td>10.99%</td><td>4.02%</td><td>10.36%</td><td>¥16,779</td><td>—</td></tr><tr><td><b>近 30 天</b></td><td>10-04 ~ 11-02</td><td>633</td><td>¥249,459</td><td>¥10,068</td><td>12.53%</td><td>4.04%</td><td>10.13%</td><td>¥32,423</td><td>131</td></tr><tr><td><b>环比基准</b></td><td>10-20 ~ 10-26</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr></tbody></table></div>
+</div>
+</section>
+
+<section id="repl" data-g="g2">
 <div class="chp">&#128230; 补货建议</div>
 
 <div class="mrow">
@@ -299,16 +314,7 @@ body{padding-left:228px !important}
 </div>
 </section>
 
-<section id="summ">
-<div class="chp">&#128337; 滚动窗口汇总</div>
-<div class="cd">
-  <div class="ct">按日粒度滚动，不依赖自然周</div>
-  <div class="cs">所有窗口都截至 2026-11-02｜环比基准 = 前 7 天</div>
-  <div class="twr"><table><thead><tr><th>窗口</th><th>区间</th><th>销量</th><th>销售额</th><th>广告花费</th><th>ACOS</th><th>TACOS</th><th>转化率</th><th>毛利</th><th>出单ASIN</th></tr></thead><tbody><tr><td><b>当日</b></td><td>2026-11-02</td><td>22</td><td>¥9,642</td><td>¥390</td><td>8.74%</td><td>4.04%</td><td>10.28%</td><td>¥1,287</td><td>22</td></tr><tr><td><b>近 7 天</b></td><td>10-27 ~ 11-02</td><td>153</td><td>¥60,513</td><td>¥2,562</td><td>9.83%</td><td>4.23%</td><td>10.36%</td><td>¥7,121</td><td>88</td></tr><tr><td><b>近 14 天</b></td><td>10-20 ~ 11-02</td><td>320</td><td>¥127,805</td><td>¥5,143</td><td>10.99%</td><td>4.02%</td><td>10.36%</td><td>¥16,779</td><td>—</td></tr><tr><td><b>近 30 天</b></td><td>10-04 ~ 11-02</td><td>633</td><td>¥249,459</td><td>¥10,068</td><td>12.53%</td><td>4.04%</td><td>10.13%</td><td>¥32,423</td><td>131</td></tr><tr><td><b>环比基准</b></td><td>10-20 ~ 10-26</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td></tr></tbody></table></div>
-</div>
-</section>
-
-<section id="grp">
+<section id="grp" data-g="g2">
 <div class="chp">&#128203; 新品 / 老品</div>
 <div class="cd">
   <div class="ct">三类商品汇总</div>
@@ -317,7 +323,7 @@ body{padding-left:228px !important}
 </div>
 </section>
 
-<section id="list">
+<section id="list" data-g="g2">
 <div class="chp">&#128279; 链接明细（168 个）</div>
 <div class="cd">
   <div class="toolbar">
@@ -361,16 +367,22 @@ body{padding-left:228px !important}
 </section>
 
 
-<section id="share">
+<section id="share" data-g="g3">
 <div class="chp">&#127760; 市场市占分析（Engine Mounts）</div>
 
 <div class="cd">
   <div class="ct">类目：Amazon US · Engine Mounts（node 15725951）</div>
   <div class="cs">
     PT 份额 = PT 销售额 ÷ 大盘销售额 ｜ 年度对比用 1-10 月同月口径 ｜ 金额按 1 USD = 7.1 CNY<br>
-    <b>2025 全年 2767 个品牌 / 2026 年 1-10 月 2987 个品牌</b>
+    数据源：BI 市场预测（月度）｜ 2025 全年 2767 个品牌 / 2026 年 1-10 月 2987 个品牌
   </div>
-  <div class="kr"><div class="kp"><div class="kl">2025 份额</div><div class="kv warn">0.107%</div><div class="kn">排名 115 / 2767</div></div><div class="kp"><div class="kl">2026 份额</div><div class="kv good">0.439%</div><div class="kn">排名 39 / 2987</div></div><div class="kp"><div class="kl">份额变化</div><div class="kv good">+0.326pp</div><div class="kn">0.113% → 0.439%</div></div><div class="kp"><div class="kl">2026 同比</div><div class="kv good">+294.6%</div><div class="kn">大盘 +1.2%</div></div><div class="kp"><div class="kl">CR5 / CR10</div><div class="kv bad">34.14% / 45.03%</div><div class="kn">2025 CR10 43.09%</div></div><div class="kp"><div class="kl">进 TOP50 门槛</div><div class="kv warn">¥110,374</div><div class="kn">第 50 名月均</div></div><div class="kp"><div class="kl">旺季</div><div class="kv good">3 月</div><div class="kn">指数 110</div></div><div class="kp"><div class="kl">淡季</div><div class="kv bad">12 月</div><div class="kn">指数 91</div></div></div>
+  <div class="kr"><div class="kp"><div class="kl">2025 全年份额</div><div class="kv warn">0.107%</div><div class="kn">排名 115 / 2767</div></div><div class="kp"><div class="kl">2026 份额</div><div class="kv good">0.439%</div><div class="kn">排名 39 / 2987</div></div><div class="kp"><div class="kl">份额变化</div><div class="kv good">+0.326pp</div><div class="kn">0.113% → 0.439%</div></div><div class="kp"><div class="kl">排名变化</div><div class="kv good">-74 位</div><div class="kn">113 → 39</div></div><div class="kp"><div class="kl">2026 同比</div><div class="kv good">+294.6%</div><div class="kn">大盘 +1.2%</div></div><div class="kp"><div class="kl">PT 月均</div><div class="kv good">¥133,973</div><div class="kn">2025 ¥33,949</div></div><div class="kp"><div class="kl">CR10</div><div class="kv bad">45.03%</div><div class="kn">2025 43.13%</div></div><div class="kp"><div class="kl">进 TOP30 门槛</div><div class="kv warn">¥198,297</div><div class="kn">需 1.48x</div></div></div>
+</div>
+
+<div class="cd">
+  <div class="ct">&#128202; 年度对比（三期间）</div>
+  <div class="cs">2025 全年（12个月）/ 2025 1-10月 / 2026 1-10月 —— 后两者可直接同比</div>
+  <div class="twr"><table><thead><tr><th>期间</th><th>品牌数</th><th>大盘销量</th><th>大盘销售额</th><th>大盘均价</th><th>PT 额份额</th><th>PT 量份额</th><th>PT 销售额</th><th>PT 均价</th></tr></thead><tbody><tr><td><b>2025 全年</b></td><td>2767</td><td>800,758</td><td>¥360,973,884</td><td>¥451</td><td><b>0.107%</b></td><td>0.090%</td><td>¥387,933</td><td>¥540</td></tr><tr><td><b>2025 1-10月</b></td><td>2767</td><td>670,932</td><td>¥301,761,847</td><td>¥450</td><td><b>0.113%</b></td><td>0.093%</td><td>¥339,489</td><td>¥544</td></tr><tr><td><b>2026 1-10月</b></td><td>2987</td><td>672,570</td><td>¥305,360,573</td><td>¥454</td><td><b>0.439%</b></td><td>0.419%</td><td>¥1,339,731</td><td>¥475</td></tr></tbody></table></div>
 </div>
 
 <div class="cd">
@@ -385,21 +397,21 @@ body{padding-left:228px !important}
 </div>
 
 <div class="cd">
-  <div class="ct">竞品份额走势（TOP9）</div>
+  <div class="ct">&#128200; 竞品份额走势（TOP9）</div>
   <div class="cs">绿粗线 = PHILTOP ｜ 其余为竞品</div>
   <div id="s-share" class="sch"></div>
 </div>
 
 <div class="cd">
-  <div class="ct">份额迁移（2025 1-10月 → 2026 1-10月）</div>
-  <div class="cs">涨最多 SHICHU +1.734pp、跌最多 A-Premium -0.775pp；PT 排第 5</div>
-  <div class="twr"><table><thead><tr><th>#</th><th>品牌</th><th>2025(1-10) 份额</th><th>2026(1-10) 份额</th><th>变化</th><th>额增长</th></tr></thead><tbody><tr><td>1</td><td>SHICHU</td><td>1.067%</td><td>2.801%</td><td><b class="up">+1.734pp</b></td><td><b class="up">+166%</b></td></tr><tr><td>2</td><td>loongrie</td><td>5.862%</td><td>7.357%</td><td><b class="up">+1.495pp</b></td><td><b class="up">+27%</b></td></tr><tr><td>3</td><td>sherxibo</td><td>1.774%</td><td>3.016%</td><td><b class="up">+1.242pp</b></td><td><b class="up">+72%</b></td></tr><tr><td>4</td><td>Yllshengyu</td><td>1.930%</td><td>2.665%</td><td><b class="up">+0.735pp</b></td><td><b class="up">+40%</b></td></tr><tr><td>5</td><td>BEBLEPANY</td><td>0.578%</td><td>1.229%</td><td><b class="up">+0.650pp</b></td><td><b class="up">+115%</b></td></tr><tr><td>6</td><td>QRYIPPDM</td><td>1.257%</td><td>1.755%</td><td><b class="up">+0.499pp</b></td><td><b class="up">+41%</b></td></tr><tr style="background:#e8f8ec;font-weight:700"><td>7</td><td><b>PHILTOP</b></td><td>0.113%</td><td>0.439%</td><td><b class="up">+0.326pp</b></td><td><b class="up">+295%</b></td></tr><tr><td>8</td><td>YEOPGYEON</td><td>0.887%</td><td>1.064%</td><td><b class="up">+0.177pp</b></td><td><b class="up">+21%</b></td></tr><tr><td>9</td><td>YBDDZH</td><td>1.320%</td><td>1.444%</td><td><b class="up">+0.124pp</b></td><td><b class="up">+11%</b></td></tr><tr><td>10</td><td>PATEWIN</td><td>1.193%</td><td>1.273%</td><td><b class="up">+0.080pp</b></td><td><b class="up">+8%</b></td></tr><tr><td>11</td><td>Dngbymx</td><td>0.816%</td><td>0.868%</td><td><b class="up">+0.052pp</b></td><td><b class="up">+8%</b></td></tr><tr><td>12</td><td>Yllhaoyuan</td><td>3.366%</td><td>3.347%</td><td><b class="down">-0.019pp</b></td><td><b class="up">+1%</b></td></tr></tbody></table></div>
+  <div class="ct">&#127942; 2026 年 TOP15 品牌</div>
+  <div class="cs">按销售额排序｜PT 排名 39</div>
+  <div class="twr"><table><thead><tr><th>#</th><th>品牌</th><th>销量</th><th>销售额</th><th>额占</th><th>量占</th><th>均价</th></tr></thead><tbody><tr><td>1</td><td>A-Premium</td><td>84,098</td><td>¥52,177,283</td><td><b>17.09%</b></td><td>12.50%</td><td>¥620</td></tr><tr><td>2</td><td>loongrie</td><td>58,816</td><td>¥22,464,686</td><td><b>7.36%</b></td><td>8.74%</td><td>¥382</td></tr><tr><td>3</td><td>Yllhaoyuan</td><td>24,343</td><td>¥10,220,182</td><td><b>3.35%</b></td><td>3.62%</td><td>¥420</td></tr><tr><td>4</td><td>Mardarth</td><td>25,045</td><td>¥10,178,731</td><td><b>3.33%</b></td><td>3.72%</td><td>¥406</td></tr><tr><td>5</td><td>sherxibo</td><td>16,051</td><td>¥9,211,183</td><td><b>3.02%</b></td><td>2.39%</td><td>¥574</td></tr><tr><td>6</td><td>SHICHU</td><td>14,091</td><td>¥8,552,579</td><td><b>2.80%</b></td><td>2.10%</td><td>¥607</td></tr><tr><td>7</td><td>Yllshengyu</td><td>17,482</td><td>¥8,137,977</td><td><b>2.67%</b></td><td>2.60%</td><td>¥465</td></tr><tr><td>8</td><td>ENA</td><td>13,990</td><td>¥6,058,962</td><td><b>1.98%</b></td><td>2.08%</td><td>¥433</td></tr><tr><td>9</td><td>QRYIPPDM</td><td>11,269</td><td>¥5,359,456</td><td><b>1.76%</b></td><td>1.68%</td><td>¥476</td></tr><tr><td>10</td><td>TRQ</td><td>8,694</td><td>¥5,145,749</td><td><b>1.69%</b></td><td>1.29%</td><td>¥592</td></tr><tr><td>11</td><td>YBDDZH</td><td>13,787</td><td>¥4,409,324</td><td><b>1.44%</b></td><td>2.05%</td><td>¥320</td></tr><tr><td>12</td><td>iKer</td><td>9,488</td><td>¥4,079,166</td><td><b>1.34%</b></td><td>1.41%</td><td>¥430</td></tr><tr><td>13</td><td>PATEWIN</td><td>8,015</td><td>¥3,887,165</td><td><b>1.27%</b></td><td>1.19%</td><td>¥485</td></tr><tr><td>14</td><td>BEBLEPANY</td><td>7,198</td><td>¥3,752,605</td><td><b>1.23%</b></td><td>1.07%</td><td>¥521</td></tr><tr><td>15</td><td>GM GENUINE PARTS</td><td>5,378</td><td>¥3,314,091</td><td><b>1.09%</b></td><td>0.80%</td><td>¥616</td></tr></tbody></table></div>
 </div>
 
 <div class="cd">
   <div class="sgrid">
     <div><div class="ct">集中度（CR1 → CR100）</div>
-      <div class="cs">额占 vs 量占，差距 = 价格溢价</div>
+      <div class="cs">额占 vs 量占</div>
       <div id="s-cr" class="sch2"></div></div>
     <div><div class="ct">季节指数（大盘月均 = 100）</div>
       <div class="cs">绿≥110 旺季 ｜ 红≤90 淡季</div>
@@ -408,24 +420,115 @@ body{padding-left:228px !important}
 </div>
 
 <div class="cd">
-  <div class="ct">进榜门槛（2026 年 1-10 月折月均）</div>
-  <div class="cs">门槛 = 第 N 名自己的月均销售额，超过它才能挤进第 N 名</div>
+  <div class="ct">&#128202; 集中度全档（额占 vs 量占）</div>
+  <div class="cs">额占 &gt; 量占 = 高价品牌集中；差距越大溢价能力越强</div>
+  <div class="twr"><table><thead><tr><th>档位</th><th>2025 额占</th><th>2026 额占</th><th>变化</th><th>2025 量占</th><th>2026 量占</th></tr></thead><tbody><tr><td>CR1</td><td>17.69%</td><td>17.09%</td><td class="down">-0.60pp</td><td>12.79%</td><td>12.50%</td></tr><tr><td>CR3</td><td>27.19%</td><td>27.79%</td><td class="up">+0.60pp</td><td>23.81%</td><td>24.87%</td></tr><tr><td>CR5</td><td>33.08%</td><td>34.14%</td><td class="up">+1.06pp</td><td>30.13%</td><td>30.98%</td></tr><tr><td>CR10</td><td>43.09%</td><td>45.03%</td><td class="up">+1.94pp</td><td>39.29%</td><td>40.72%</td></tr><tr><td>CR15</td><td>50.43%</td><td>51.40%</td><td class="up">+0.97pp</td><td>46.09%</td><td>47.24%</td></tr><tr><td>CR20</td><td>56.13%</td><td>56.58%</td><td class="up">+0.45pp</td><td>52.71%</td><td>52.54%</td></tr><tr><td>CR30</td><td>62.87%</td><td>64.39%</td><td class="up">+1.53pp</td><td>58.70%</td><td>60.02%</td></tr><tr><td>CR50</td><td>71.37%</td><td>73.07%</td><td class="up">+1.70pp</td><td>68.33%</td><td>69.45%</td></tr><tr><td>CR100</td><td>81.67%</td><td>82.77%</td><td class="up">+1.10pp</td><td>79.01%</td><td>79.74%</td></tr></tbody></table></div>
+</div>
+
+<div class="cd">
+  <div class="ct">&#128203; 进榜门槛（2026 年 1-10 月折月均）</div>
+  <div class="cs">门槛 = 第 N 名自己的月均销售额</div>
   <div class="twr"><table><thead><tr><th>目标</th><th>门槛(第N名月均)</th><th>PT 月均</th><th>还差</th><th>需翻倍数</th></tr></thead><tbody><tr><td>TOP5</td><td>¥921,118</td><td>¥133,973</td><td>¥787,145</td><td><b>6.88x</b></td></tr><tr><td>TOP10</td><td>¥514,575</td><td>¥133,973</td><td>¥380,602</td><td><b>3.84x</b></td></tr><tr><td>TOP15</td><td>¥331,409</td><td>¥133,973</td><td>¥197,436</td><td><b>2.47x</b></td></tr><tr><td>TOP20</td><td>¥292,329</td><td>¥133,973</td><td>¥158,355</td><td><b>2.18x</b></td></tr><tr><td>TOP30</td><td>¥198,297</td><td>¥133,973</td><td>¥64,324</td><td><b>1.48x</b></td></tr><tr><td>TOP50</td><td>¥110,374</td><td>¥133,973</td><td>¥0</td><td><b>0.82x</b></td></tr></tbody></table></div>
+</div>
+
+<div class="cd">
+  <div class="ct">&#128260; 份额迁移（2025 1-10月 → 2026 1-10月）</div>
+  <div class="cs">涨最多 loongrie +1.495pp ｜ 跌最多 ONNURI -1.238pp ｜ PT +0.326pp</div>
+  <div class="twr"><table><thead><tr><th>#</th><th>品牌</th><th>2025(1-10) 份额</th><th>2026(1-10) 份额</th><th>变化</th><th>额增长</th></tr></thead><tbody><tr><td>1</td><td>loongrie</td><td>5.862%</td><td>7.357%</td><td><b class="up">+1.495pp</b></td><td><b class="up">+27%</b></td></tr><tr><td>2</td><td>sherxibo</td><td>1.774%</td><td>3.016%</td><td><b class="up">+1.242pp</b></td><td><b class="up">+72%</b></td></tr><tr><td>3</td><td>Yllshengyu</td><td>1.930%</td><td>2.665%</td><td><b class="up">+0.735pp</b></td><td><b class="up">+40%</b></td></tr><tr style="background:#e8f8ec;font-weight:700"><td>4</td><td><b>PHILTOP</b></td><td>0.113%</td><td>0.439%</td><td><b class="up">+0.326pp</b></td><td><b class="up">+295%</b></td></tr><tr><td>5</td><td>Yllhaoyuan</td><td>3.366%</td><td>3.347%</td><td><b class="down">-0.019pp</b></td><td><b class="up">+1%</b></td></tr><tr><td>6</td><td>Mardarth</td><td>3.512%</td><td>3.333%</td><td><b class="down">-0.179pp</b></td><td><b class="down">-4%</b></td></tr><tr><td>7</td><td>TRQ</td><td>1.867%</td><td>1.685%</td><td><b class="down">-0.182pp</b></td><td><b class="down">-9%</b></td></tr><tr><td>8</td><td>GM GENUINE PARTS</td><td>1.523%</td><td>1.085%</td><td><b class="down">-0.438pp</b></td><td><b class="down">-28%</b></td></tr><tr><td>9</td><td>ENA</td><td>2.499%</td><td>1.984%</td><td><b class="down">-0.515pp</b></td><td><b class="down">-20%</b></td></tr><tr><td>10</td><td>A-Premium</td><td>17.862%</td><td>17.087%</td><td><b class="down">-0.775pp</b></td><td><b class="down">-3%</b></td></tr><tr><td>11</td><td>OMNI5</td><td>1.742%</td><td>0.818%</td><td><b class="down">-0.925pp</b></td><td><b class="down">-53%</b></td></tr><tr><td>12</td><td>JDMON</td><td>2.186%</td><td>1.077%</td><td><b class="down">-1.109pp</b></td><td><b class="down">-50%</b></td></tr><tr><td>13</td><td>ONNURI</td><td>2.270%</td><td>1.032%</td><td><b class="down">-1.238pp</b></td><td><b class="down">-54%</b></td></tr></tbody></table></div>
+</div>
+
+<div class="cd">
+  <div class="ct">&#128279; PT 与竞品的份额相关性（22 个月）</div>
+  <div class="cs">负相关 = 此消彼长（抢同一批客户）｜ 正相关 = 同涨同跌（抢的是别家）</div>
+  <div class="twr"><table><thead><tr><th>品牌</th><th>与 PT 相关系数</th><th>关系</th></tr></thead><tbody><tr><td>ENA</td><td><b class="down">-0.476</b></td><td>此消彼长</td></tr><tr><td>A-Premium</td><td><b class="down">-0.347</b></td><td>此消彼长</td></tr><tr><td>Mardarth</td><td><b class="down">-0.208</b></td><td>此消彼长</td></tr><tr><td>Yllhaoyuan</td><td><b class="up">+0.222</b></td><td>同涨同跌</td></tr><tr><td>sherxibo</td><td><b class="up">+0.453</b></td><td>同涨同跌</td></tr><tr><td>Yllhaoyuan</td><td><b class="up">+0.222</b></td><td>同涨同跌</td></tr><tr><td>sherxibo</td><td><b class="up">+0.453</b></td><td>同涨同跌</td></tr><tr><td>loongrie</td><td><b class="up">+0.554</b></td><td>同涨同跌</td></tr><tr><td>SHICHU</td><td><b class="up">+0.561</b></td><td>同涨同跌</td></tr><tr><td>Yllshengyu</td><td><b class="up">+0.621</b></td><td>同涨同跌</td></tr></tbody></table></div>
 </div>
 
 <div class="cd">
   <div class="insight warm">
     <div class="ins-line"><b>📊 数据解读：</b>
-      <b>PT 份额从 2025 年的 0.107% 涨到 2026 年的 0.439%（+0.326pp），排名从 115 前进到 39。</b><br>
-      2026 同比销售额 +294.6%，而大盘仅 +1.2% —— <b>份额是从竞品手里抢来的</b>。</div>
+      <b>PT 份额 0.113% → 0.439%（+0.326pp），排名 113 → 39（前进 74 位）。</b><br>
+      2026 同比销售额 +294.6%，大盘仅 +1.2% —— <b>份额完全来自抢竞品</b>。</div>
     <div class="ins-line"><b>🔍 原因分析：</b>
-      <b>PT 不是这场份额迁移的主角。</b>ONNURI（-1.238pp）和 JDMON（-1.109pp）合计丢的份额，
-      大头被 <b>SHICHU（+1.734pp，额增 +166%）</b> 和 <b>loongrie（+1.495pp）</b> 吃掉。<br>
-      集中度 CR10 从 43.09% 升到 45.03%，<b>头部在加固，长尾空间在收窄</b>。</div>
+      <b>PT 不是份额迁移主角。</b>ONNURI（-1.238pp）和 JDMON（-1.109pp）合计丢份额，
+      大头被 <b>loongrie（+1.495pp，额增 +27%）</b> 和 <b>sherxibo（+1.242pp）</b> 吃掉。<br>
+      CR10 43.13% → 45.03%（+1.90pp），<b>头部加固，长尾收窄</b>。
+      已有 9 个品牌份额下降。</div>
     <div class="ins-line"><b>✅ 建议动作：</b>
-      ① <b>短期目标 TOP30</b>（门槛 ¥198,297/月，PT 现在 ¥133,973，需翻 1.48 倍）；<br>
-      ② <b>备货按季节指数加权</b> —— 3 月旺季提前 6-8 周压货，12 月淡季收缩广告；<br>
-      ③ <b>对标 SHICHU 而非 A-Premium</b> —— 前者涨 166% 跑得最快，后者体量差 188 倍，短期打不动。</div>
+      ① <b>短期目标 TOP30</b>（门槛 ¥198,297/月，PT ¥133,973，需 1.48 倍）；<br>
+      ② <b>备货按季节加权</b> —— 3 月旺季提前 6-8 周压货，12 月淡季收缩；<br>
+      ③ <b>对标 loongrie 而非龙头</b> —— 它是涨幅榜第一（+27%），且与 PT 同向；<br>
+      ④ <b>盯住 ENA</b> —— 与 PT 负相关 -0.476，份额直接流向 PT。</div>
+  </div>
+</div>
+</section>
+
+
+<section id="profit" data-g="g2">
+<div class="chp">&#128176; 利润 &amp; 退款 &amp; 清库</div>
+
+<div class="cd">
+  <div class="ct">当月经营快照（2026-10）</div>
+  <div class="cs">
+    毛利 = BI 实际毛利（已扣采购/头程/佣金/仓储/广告等）｜ 退款率 = 退款额 ÷ 销售额<br>
+    清库判定：立即清库 = 近 3 月零销但有货 ｜ 降价清仓 = 可撑 &gt; 240 天 ｜ 关注 = 180–240 天
+  </div>
+  <div class="kr"><div class="kp"><div class="kl">当月销量</div><div class="kv brand">658 件</div><div class="kn">202610</div></div><div class="kp"><div class="kl">当月销售额</div><div class="kv good">¥260,402</div><div class="kn">环比 +39.9%</div></div><div class="kp"><div class="kl">当月毛利</div><div class="kv good">¥33,162</div><div class="kn">毛利率 12.74%</div></div><div class="kp"><div class="kl">当月退款额</div><div class="kv bad">¥17,571</div><div class="kn">退款率 6.75%</div></div><div class="kp"><div class="kl">清库·立即</div><div class="kv bad">28 个</div><div class="kn">三月零销但有货</div></div><div class="kp"><div class="kl">清库·降价</div><div class="kv warn">56 个</div><div class="kn">可撑 > 240 天</div></div><div class="kp"><div class="kl">清库·关注</div><div class="kv warn">16 个</div><div class="kn">可撑 180–240 天</div></div><div class="kp"><div class="kl">压货总额</div><div class="kv bad">¥301,156</div><div class="kn">1,729 件</div></div></div>
+</div>
+
+<div class="cd">
+  <div class="sgrid">
+    <div><div class="ct">月度销售额 &amp; 毛利率</div>
+      <div class="cs">柱=销售额 ｜ 线=毛利率</div>
+      <div id="p-ma" class="sch"></div></div>
+    <div><div class="ct">月度退款额 &amp; 退款率</div>
+      <div class="cs">柱=退款额 ｜ 线=退款率</div>
+      <div id="p-rf" class="sch"></div></div>
+  </div>
+</div>
+
+<div class="cd">
+  <div class="ct">&#128202; 月度明细（2026 年）</div>
+  <div class="cs">毛利率 &lt;10% 标红 ｜ 退款率 &gt;8% 标红</div>
+  <div class="twr"><table><thead><tr><th>月份</th><th>销量</th><th>销售额</th><th>毛利</th><th>毛利率</th><th>退款额</th><th>退款率</th><th>退款件数</th></tr></thead><tbody><tr><td><b>2026-01</b></td><td>33</td><td>¥14,454</td><td><b class="up">¥2,636</b></td><td>18.24%</td><td><b class="down">¥1,254</b></td><td>8.68%</td><td>2</td></tr><tr><td><b>2026-02</b></td><td>50</td><td>¥22,542</td><td><b class="down">¥-152</b></td><td>-0.67%</td><td><b class="down">¥4,123</b></td><td>18.29%</td><td>9</td></tr><tr><td><b>2026-03</b></td><td>83</td><td>¥34,783</td><td><b class="up">¥3,760</b></td><td>10.81%</td><td><b class="down">¥4,966</b></td><td>14.28%</td><td>9</td></tr><tr><td><b>2026-04</b></td><td>74</td><td>¥27,872</td><td><b class="up">¥4,759</b></td><td>17.07%</td><td><b class="down">¥2,932</b></td><td>10.52%</td><td>6</td></tr><tr><td><b>2026-05</b></td><td>121</td><td>¥46,996</td><td><b class="up">¥4,707</b></td><td>10.02%</td><td><b class="down">¥5,815</b></td><td>12.37%</td><td>10</td></tr><tr><td><b>2026-06</b></td><td>226</td><td>¥95,213</td><td><b class="up">¥11,594</b></td><td>12.18%</td><td><b class="">¥6,828</b></td><td>7.17%</td><td>17</td></tr><tr><td><b>2026-07</b></td><td>226</td><td>¥89,778</td><td><b class="up">¥14,760</b></td><td>16.44%</td><td><b class="down">¥8,567</b></td><td>9.54%</td><td>25</td></tr><tr><td><b>2026-08</b></td><td>324</td><td>¥129,878</td><td><b class="up">¥27,416</b></td><td>21.11%</td><td><b class="">¥8,045</b></td><td>6.19%</td><td>18</td></tr><tr><td><b>2026-09</b></td><td>470</td><td>¥186,178</td><td><b class="up">¥25,799</b></td><td>13.86%</td><td><b class="">¥12,509</b></td><td>6.72%</td><td>33</td></tr><tr><td><b>2026-10</b></td><td>658</td><td>¥260,402</td><td><b class="up">¥33,162</b></td><td>12.74%</td><td><b class="">¥17,571</b></td><td>6.75%</td><td>42</td></tr></tbody></table></div>
+</div>
+
+<div class="cd">
+  <div class="ct">&#128465; 清库建议（100 个 · 压 1,729 件 · ¥301,156）</div>
+  <div class="cs">
+    <b>立即清库 28 个</b>（近 3 月零销但有货）｜
+    <b>降价清仓 56 个</b>（可撑 &gt; 240 天）｜
+    <b>关注 16 个</b>（180–240 天）<br>
+    按库存金额降序，最多显示 60 条
+  </div>
+  <div class="twr"><table><thead><tr><th>ASIN</th><th>类型</th><th>建议</th><th>可用</th><th>在途</th><th>可撑</th><th>近3月销量</th><th>库存金额</th><th>近3月退款率</th><th>近3月毛利</th></tr></thead><tbody><tr><td><a class="asin" href="https://www.amazon.com/dp/B0GLGT7WHG" target="_blank" rel="noopener">B0GLGT7WHG</a></td><td><span class="bd o">老品</span></td><td><span class="bd ok">关注</span></td><td>45</td><td>22</td><td>220</td><td>28</td><td>¥30,287</td><td><b class="down">16.40%</b></td><td>¥615</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0GLGP2C66" target="_blank" rel="noopener">B0GLGP2C66</a></td><td><span class="bd o">老品</span></td><td><span class="bd ok">关注</span></td><td>13</td><td>34</td><td>180</td><td>24</td><td>¥9,910</td><td>4.17%</td><td>¥495</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0GYDQPJ4H" target="_blank" rel="noopener">B0GYDQPJ4H</a></td><td><span class="bd o">老品</span></td><td><span class="bd ok">关注</span></td><td>18</td><td>2</td><td>204</td><td>9</td><td>¥9,175</td><td><b class="down">24.69%</b></td><td>¥-329</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0HBB9C2XG" target="_blank" rel="noopener">B0HBB9C2XG</a></td><td><span class="bd n">新品</span></td><td><span class="bd ok">关注</span></td><td>9</td><td>3</td><td>184</td><td>6</td><td>¥8,801</td><td>0.00%</td><td>¥885</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0GR3QZ7YX" target="_blank" rel="noopener">B0GR3QZ7YX</a></td><td><span class="bd o">老品</span></td><td><span class="bd ok">关注</span></td><td>25</td><td>8</td><td>190</td><td>16</td><td>¥5,410</td><td><b class="down">23.52%</b></td><td>¥-20</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0HBB919W9" target="_blank" rel="noopener">B0HBB919W9</a></td><td><span class="bd n">新品</span></td><td><span class="bd ok">关注</span></td><td>9</td><td>3</td><td>184</td><td>6</td><td>¥3,094</td><td>0.00%</td><td>¥183</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0GK5DSGVV" target="_blank" rel="noopener">B0GK5DSGVV</a></td><td><span class="bd o">老品</span></td><td><span class="bd ok">关注</span></td><td>13</td><td>35</td><td>232</td><td>19</td><td>¥3,013</td><td>5.41%</td><td>¥6,433</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0HBB9NPTV" target="_blank" rel="noopener">B0HBB9NPTV</a></td><td><span class="bd n">新品</span></td><td><span class="bd ok">关注</span></td><td>15</td><td>0</td><td>230</td><td>6</td><td>¥2,459</td><td>0.00%</td><td>¥134</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0GK752JBN" target="_blank" rel="noopener">B0GK752JBN</a></td><td><span class="bd o">老品</span></td><td><span class="bd ok">关注</span></td><td>5</td><td>0</td><td>230</td><td>2</td><td>¥1,825</td><td>0.00%</td><td>¥213</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0GYDTYJDJ" target="_blank" rel="noopener">B0GYDTYJDJ</a></td><td><span class="bd o">老品</span></td><td><span class="bd ok">关注</span></td><td>8</td><td>0</td><td>184</td><td>4</td><td>¥393</td><td><b class="down">32.50%</b></td><td>¥-85</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0HBBB9K9D" target="_blank" rel="noopener">B0HBBB9K9D</a></td><td><span class="bd n">新品</span></td><td><span class="bd ok">关注</span></td><td>7</td><td>3</td><td>184</td><td>5</td><td>¥0</td><td>0.00%</td><td>¥404</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0GQZPRFM9" target="_blank" rel="noopener">B0GQZPRFM9</a></td><td><span class="bd o">老品</span></td><td><span class="bd ok">关注</span></td><td>42</td><td>4</td><td>235</td><td>18</td><td>¥0</td><td><b class="down">11.69%</b></td><td>¥953</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0GVM63D19" target="_blank" rel="noopener">B0GVM63D19</a></td><td><span class="bd o">老品</span></td><td><span class="bd ok">关注</span></td><td>12</td><td>3</td><td>230</td><td>6</td><td>¥0</td><td>0.00%</td><td>¥84</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0HB9WFVZG" target="_blank" rel="noopener">B0HB9WFVZG</a></td><td><span class="bd n">新品</span></td><td><span class="bd ok">关注</span></td><td>6</td><td>3</td><td>207</td><td>4</td><td>¥0</td><td>0.00%</td><td>¥253</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0FY35HJBT" target="_blank" rel="noopener">B0FY35HJBT</a></td><td><span class="bd o">老品</span></td><td><span class="bd ok">关注</span></td><td>10</td><td>12</td><td>202</td><td>10</td><td>¥0</td><td>0.00%</td><td>¥409</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0GQZ9WSRK" target="_blank" rel="noopener">B0GQZ9WSRK</a></td><td><span class="bd o">老品</span></td><td><span class="bd ok">关注</span></td><td>13</td><td>7</td><td>230</td><td>8</td><td>¥0</td><td><b class="down">14.37%</b></td><td>¥566</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0HBB8PNLZ" target="_blank" rel="noopener">B0HBB8PNLZ</a></td><td><span class="bd n">新品</span></td><td><span class="bd p0">立即清库</span></td><td>16</td><td>0</td><td>∞</td><td>0</td><td>¥8,868</td><td>0.00%</td><td>¥-28</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0CLY2TLDR" target="_blank" rel="noopener">B0CLY2TLDR</a></td><td><span class="bd o">老品</span></td><td><span class="bd p0">立即清库</span></td><td>0</td><td>1</td><td>∞</td><td>0</td><td>¥0</td><td>0.00%</td><td>¥0</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0CNXFJP5F" target="_blank" rel="noopener">B0CNXFJP5F</a></td><td><span class="bd o">老品</span></td><td><span class="bd p0">立即清库</span></td><td>0</td><td>10</td><td>∞</td><td>0</td><td>¥0</td><td>0.00%</td><td>¥0</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0CTGVSFTJ" target="_blank" rel="noopener">B0CTGVSFTJ</a></td><td><span class="bd o">老品</span></td><td><span class="bd p0">立即清库</span></td><td>0</td><td>2</td><td>∞</td><td>0</td><td>¥0</td><td>0.00%</td><td>¥0</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0D8RSWHCJ" target="_blank" rel="noopener">B0D8RSWHCJ</a></td><td><span class="bd o">老品</span></td><td><span class="bd p0">立即清库</span></td><td>0</td><td>1</td><td>∞</td><td>0</td><td>¥0</td><td>0.00%</td><td>¥0</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0D8S4X1XX" target="_blank" rel="noopener">B0D8S4X1XX</a></td><td><span class="bd o">老品</span></td><td><span class="bd p0">立即清库</span></td><td>5</td><td>10</td><td>∞</td><td>0</td><td>¥0</td><td>0.00%</td><td>¥-7</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0FVFDVBR3" target="_blank" rel="noopener">B0FVFDVBR3</a></td><td><span class="bd o">老品</span></td><td><span class="bd p0">立即清库</span></td><td>1</td><td>0</td><td>∞</td><td>0</td><td>¥0</td><td>0.00%</td><td>¥-10</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0FVFFQXYS" target="_blank" rel="noopener">B0FVFFQXYS</a></td><td><span class="bd o">老品</span></td><td><span class="bd p0">立即清库</span></td><td>9</td><td>0</td><td>∞</td><td>0</td><td>¥0</td><td>0.00%</td><td>¥-8</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0GVM8FS7G" target="_blank" rel="noopener">B0GVM8FS7G</a></td><td><span class="bd o">老品</span></td><td><span class="bd p0">立即清库</span></td><td>4</td><td>0</td><td>∞</td><td>0</td><td>¥0</td><td>0.00%</td><td>¥-79</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0GVMHK3JW" target="_blank" rel="noopener">B0GVMHK3JW</a></td><td><span class="bd o">老品</span></td><td><span class="bd p0">立即清库</span></td><td>1</td><td>0</td><td>∞</td><td>0</td><td>¥0</td><td>0.00%</td><td>¥-21</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0H2Z3NSWD" target="_blank" rel="noopener">B0H2Z3NSWD</a></td><td><span class="bd o">老品</span></td><td><span class="bd p0">立即清库</span></td><td>3</td><td>0</td><td>∞</td><td>0</td><td>¥0</td><td>0.00%</td><td>¥-12</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0H33DWB5T" target="_blank" rel="noopener">B0H33DWB5T</a></td><td><span class="bd o">老品</span></td><td><span class="bd p0">立即清库</span></td><td>5</td><td>6</td><td>∞</td><td>0</td><td>¥0</td><td>0.00%</td><td>¥-85</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0HBB46K46" target="_blank" rel="noopener">B0HBB46K46</a></td><td><span class="bd o">待上架</span></td><td><span class="bd p0">立即清库</span></td><td>0</td><td>1</td><td>∞</td><td>0</td><td>¥0</td><td>0.00%</td><td>¥0</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0HBB4VYDK" target="_blank" rel="noopener">B0HBB4VYDK</a></td><td><span class="bd n">新品</span></td><td><span class="bd p0">立即清库</span></td><td>16</td><td>0</td><td>∞</td><td>0</td><td>¥0</td><td>0.00%</td><td>¥-4</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0HBB4X2DR" target="_blank" rel="noopener">B0HBB4X2DR</a></td><td><span class="bd n">新品</span></td><td><span class="bd p0">立即清库</span></td><td>16</td><td>0</td><td>∞</td><td>0</td><td>¥0</td><td>0.00%</td><td>¥-14</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0HBB64MM5" target="_blank" rel="noopener">B0HBB64MM5</a></td><td><span class="bd o">待上架</span></td><td><span class="bd p0">立即清库</span></td><td>0</td><td>2</td><td>∞</td><td>0</td><td>¥0</td><td>0.00%</td><td>¥0</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0HBB7R99T" target="_blank" rel="noopener">B0HBB7R99T</a></td><td><span class="bd n">新品</span></td><td><span class="bd p0">立即清库</span></td><td>11</td><td>3</td><td>∞</td><td>0</td><td>¥0</td><td>0.00%</td><td>¥-37</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0HBB942V3" target="_blank" rel="noopener">B0HBB942V3</a></td><td><span class="bd n">新品</span></td><td><span class="bd p0">立即清库</span></td><td>13</td><td>3</td><td>∞</td><td>0</td><td>¥0</td><td>0.00%</td><td>¥-55</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0HBB9NBJ3" target="_blank" rel="noopener">B0HBB9NBJ3</a></td><td><span class="bd o">待上架</span></td><td><span class="bd p0">立即清库</span></td><td>0</td><td>2</td><td>∞</td><td>0</td><td>¥0</td><td>0.00%</td><td>¥0</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0HBB9QC4N" target="_blank" rel="noopener">B0HBB9QC4N</a></td><td><span class="bd n">新品</span></td><td><span class="bd p0">立即清库</span></td><td>16</td><td>0</td><td>∞</td><td>0</td><td>¥0</td><td>0.00%</td><td>¥-12</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0HBB9ZYGF" target="_blank" rel="noopener">B0HBB9ZYGF</a></td><td><span class="bd o">待上架</span></td><td><span class="bd p0">立即清库</span></td><td>0</td><td>16</td><td>∞</td><td>0</td><td>¥0</td><td>0.00%</td><td>¥0</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0HBBB31MQ" target="_blank" rel="noopener">B0HBBB31MQ</a></td><td><span class="bd o">待上架</span></td><td><span class="bd p0">立即清库</span></td><td>0</td><td>15</td><td>∞</td><td>0</td><td>¥0</td><td>0.00%</td><td>¥0</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0HBBBCPVD" target="_blank" rel="noopener">B0HBBBCPVD</a></td><td><span class="bd n">新品</span></td><td><span class="bd p0">立即清库</span></td><td>18</td><td>0</td><td>∞</td><td>0</td><td>¥0</td><td>0.00%</td><td>¥311</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0HBBBQYRW" target="_blank" rel="noopener">B0HBBBQYRW</a></td><td><span class="bd n">新品</span></td><td><span class="bd p0">立即清库</span></td><td>16</td><td>0</td><td>∞</td><td>0</td><td>¥0</td><td>0.00%</td><td>¥-11</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0HBBBW29N" target="_blank" rel="noopener">B0HBBBW29N</a></td><td><span class="bd n">新品</span></td><td><span class="bd p0">立即清库</span></td><td>36</td><td>0</td><td>∞</td><td>0</td><td>¥0</td><td>0.00%</td><td>¥-19</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0HBBDHYTJ" target="_blank" rel="noopener">B0HBBDHYTJ</a></td><td><span class="bd n">新品</span></td><td><span class="bd p0">立即清库</span></td><td>11</td><td>3</td><td>∞</td><td>0</td><td>¥0</td><td>0.00%</td><td>¥78</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0HBBHPCMR" target="_blank" rel="noopener">B0HBBHPCMR</a></td><td><span class="bd n">新品</span></td><td><span class="bd p0">立即清库</span></td><td>13</td><td>4</td><td>∞</td><td>0</td><td>¥0</td><td>0.00%</td><td>¥-40</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0HBBTYT7R" target="_blank" rel="noopener">B0HBBTYT7R</a></td><td><span class="bd n">新品</span></td><td><span class="bd p0">立即清库</span></td><td>16</td><td>0</td><td>∞</td><td>0</td><td>¥0</td><td>0.00%</td><td>¥-21</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0GLGJT4TH" target="_blank" rel="noopener">B0GLGJT4TH</a></td><td><span class="bd o">老品</span></td><td><span class="bd p1">降价清仓</span></td><td>55</td><td>0</td><td>843</td><td>6</td><td>¥25,047</td><td>0.00%</td><td>¥36</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0HBBBNJ18" target="_blank" rel="noopener">B0HBBBNJ18</a></td><td><span class="bd n">新品</span></td><td><span class="bd p1">降价清仓</span></td><td>28</td><td>18</td><td>4232</td><td>1</td><td>¥20,948</td><td>0.00%</td><td>¥-102</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0H2Z4YZRQ" target="_blank" rel="noopener">B0H2Z4YZRQ</a></td><td><span class="bd o">老品</span></td><td><span class="bd p1">降价清仓</span></td><td>38</td><td>0</td><td>1165</td><td>3</td><td>¥17,305</td><td>0.00%</td><td>¥24</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0HBBCCYX4" target="_blank" rel="noopener">B0HBBCCYX4</a></td><td><span class="bd n">新品</span></td><td><span class="bd p1">降价清仓</span></td><td>19</td><td>0</td><td>874</td><td>2</td><td>¥13,585</td><td>0.00%</td><td>¥108</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0HBBLJ6JD" target="_blank" rel="noopener">B0HBBLJ6JD</a></td><td><span class="bd n">新品</span></td><td><span class="bd p1">降价清仓</span></td><td>12</td><td>0</td><td>368</td><td>3</td><td>¥10,329</td><td><b class="down">66.80%</b></td><td>¥-1,060</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0HBB6QBX7" target="_blank" rel="noopener">B0HBB6QBX7</a></td><td><span class="bd o">老品</span></td><td><span class="bd p1">降价清仓</span></td><td>14</td><td>0</td><td>322</td><td>4</td><td>¥10,106</td><td>0.00%</td><td>¥509</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0HBB1HWWT" target="_blank" rel="noopener">B0HBB1HWWT</a></td><td><span class="bd n">新品</span></td><td><span class="bd p1">降价清仓</span></td><td>18</td><td>0</td><td>828</td><td>2</td><td>¥9,825</td><td>0.00%</td><td>¥145</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0HBB9PSRF" target="_blank" rel="noopener">B0HBB9PSRF</a></td><td><span class="bd n">新品</span></td><td><span class="bd p1">降价清仓</span></td><td>18</td><td>0</td><td>828</td><td>2</td><td>¥8,740</td><td>0.00%</td><td>¥29</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0HBBL8N35" target="_blank" rel="noopener">B0HBBL8N35</a></td><td><span class="bd n">新品</span></td><td><span class="bd p1">降价清仓</span></td><td>14</td><td>0</td><td>258</td><td>5</td><td>¥8,580</td><td>0.00%</td><td>¥601</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0HB9ZK2ZK" target="_blank" rel="noopener">B0HB9ZK2ZK</a></td><td><span class="bd n">新品</span></td><td><span class="bd p1">降价清仓</span></td><td>10</td><td>5</td><td>460</td><td>3</td><td>¥7,233</td><td>0.00%</td><td>¥301</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0HBB1FHKP" target="_blank" rel="noopener">B0HBB1FHKP</a></td><td><span class="bd n">新品</span></td><td><span class="bd p1">降价清仓</span></td><td>6</td><td>8</td><td>1288</td><td>1</td><td>¥6,657</td><td>0.00%</td><td>¥72</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0H2Z2Y7TP" target="_blank" rel="noopener">B0H2Z2Y7TP</a></td><td><span class="bd o">老品</span></td><td><span class="bd p1">降价清仓</span></td><td>14</td><td>11</td><td>256</td><td>9</td><td>¥6,611</td><td>0.00%</td><td>¥397</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0HBB7TL9G" target="_blank" rel="noopener">B0HBB7TL9G</a></td><td><span class="bd n">新品</span></td><td><span class="bd p1">降价清仓</span></td><td>15</td><td>0</td><td>345</td><td>4</td><td>¥6,479</td><td>0.00%</td><td>¥301</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0HBB4SWVX" target="_blank" rel="noopener">B0HBB4SWVX</a></td><td><span class="bd n">新品</span></td><td><span class="bd p1">降价清仓</span></td><td>11</td><td>1</td><td>276</td><td>4</td><td>¥6,430</td><td>0.00%</td><td>¥440</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0HBB9LDM7" target="_blank" rel="noopener">B0HBB9LDM7</a></td><td><span class="bd n">新品</span></td><td><span class="bd p1">降价清仓</span></td><td>15</td><td>0</td><td>690</td><td>2</td><td>¥5,876</td><td>0.00%</td><td>¥344</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0HBBM68WS" target="_blank" rel="noopener">B0HBBM68WS</a></td><td><span class="bd n">新品</span></td><td><span class="bd p1">降价清仓</span></td><td>15</td><td>0</td><td>1380</td><td>1</td><td>¥5,746</td><td>0.00%</td><td>¥45</td></tr></tbody></table></div>
+</div>
+
+<div class="cd">
+  <div class="ct">&#127942; 近 3 月毛利 TOP15</div>
+  <div class="cs">这些是真正在赚钱的款</div>
+  <div class="twr"><table><thead><tr><th>#</th><th>ASIN</th><th>类型</th><th>近3月销量</th><th>近3月销售额</th><th>近3月毛利</th><th>毛利率</th><th>退款率</th></tr></thead><tbody><tr><td>1</td><td><a class="asin" href="https://www.amazon.com/dp/B0GK5DSGVV" target="_blank" rel="noopener">B0GK5DSGVV</a></td><td><span class="bd o">老品</span></td><td>19</td><td>¥12,316</td><td><b class="up">¥6,433</b></td><td>52.23%</td><td>5.41%</td></tr><tr><td>2</td><td><a class="asin" href="https://www.amazon.com/dp/B0FVFN7GBC" target="_blank" rel="noopener">B0FVFN7GBC</a></td><td><span class="bd o">老品</span></td><td>14</td><td>¥9,699</td><td><b class="up">¥4,568</b></td><td>47.09%</td><td>0.00%</td></tr><tr><td>3</td><td><a class="asin" href="https://www.amazon.com/dp/B0GS5P27YF" target="_blank" rel="noopener">B0GS5P27YF</a></td><td><span class="bd o">老品</span></td><td>48</td><td>¥27,241</td><td><b class="up">¥2,972</b></td><td>10.91%</td><td>11.82%</td></tr><tr><td>4</td><td><a class="asin" href="https://www.amazon.com/dp/B0GLG77Q7H" target="_blank" rel="noopener">B0GLG77Q7H</a></td><td><span class="bd o">老品</span></td><td>35</td><td>¥10,748</td><td><b class="up">¥2,846</b></td><td>26.48%</td><td>6.04%</td></tr><tr><td>5</td><td><a class="asin" href="https://www.amazon.com/dp/B0GK62K2BF" target="_blank" rel="noopener">B0GK62K2BF</a></td><td><span class="bd o">老品</span></td><td>13</td><td>¥10,943</td><td><b class="up">¥2,674</b></td><td>24.44%</td><td>0.00%</td></tr><tr><td>6</td><td><a class="asin" href="https://www.amazon.com/dp/B0GLGLC7VJ" target="_blank" rel="noopener">B0GLGLC7VJ</a></td><td><span class="bd o">老品</span></td><td>24</td><td>¥11,024</td><td><b class="up">¥2,510</b></td><td>22.77%</td><td>4.25%</td></tr><tr><td>7</td><td><a class="asin" href="https://www.amazon.com/dp/B0GLGQ1R1R" target="_blank" rel="noopener">B0GLGQ1R1R</a></td><td><span class="bd o">老品</span></td><td>25</td><td>¥12,911</td><td><b class="up">¥2,351</b></td><td>18.21%</td><td>8.98%</td></tr><tr><td>8</td><td><a class="asin" href="https://www.amazon.com/dp/B0GKG89817" target="_blank" rel="noopener">B0GKG89817</a></td><td><span class="bd o">老品</span></td><td>39</td><td>¥6,750</td><td><b class="up">¥2,188</b></td><td>32.41%</td><td>2.82%</td></tr><tr><td>9</td><td><a class="asin" href="https://www.amazon.com/dp/B0GQZM9SYQ" target="_blank" rel="noopener">B0GQZM9SYQ</a></td><td><span class="bd o">老品</span></td><td>28</td><td>¥9,424</td><td><b class="up">¥2,076</b></td><td>22.03%</td><td>0.00%</td></tr><tr><td>10</td><td><a class="asin" href="https://www.amazon.com/dp/B0GK5DJW82" target="_blank" rel="noopener">B0GK5DJW82</a></td><td><span class="bd o">老品</span></td><td>23</td><td>¥6,531</td><td><b class="up">¥1,958</b></td><td>29.98%</td><td>5.13%</td></tr><tr><td>11</td><td><a class="asin" href="https://www.amazon.com/dp/B0GYDVRK7X" target="_blank" rel="noopener">B0GYDVRK7X</a></td><td><span class="bd o">老品</span></td><td>26</td><td>¥16,440</td><td><b class="up">¥1,943</b></td><td>11.82%</td><td>7.96%</td></tr><tr><td>12</td><td><a class="asin" href="https://www.amazon.com/dp/B0GLGQH354" target="_blank" rel="noopener">B0GLGQH354</a></td><td><span class="bd o">老品</span></td><td>12</td><td>¥6,339</td><td><b class="up">¥1,892</b></td><td>29.85%</td><td>0.00%</td></tr><tr><td>13</td><td><a class="asin" href="https://www.amazon.com/dp/B0HBBF4YL7" target="_blank" rel="noopener">B0HBBF4YL7</a></td><td><span class="bd n">新品</span></td><td>15</td><td>¥11,504</td><td><b class="up">¥1,888</b></td><td>16.41%</td><td>0.00%</td></tr><tr><td>14</td><td><a class="asin" href="https://www.amazon.com/dp/B0GQZLYPD3" target="_blank" rel="noopener">B0GQZLYPD3</a></td><td><span class="bd o">老品</span></td><td>17</td><td>¥9,088</td><td><b class="up">¥1,783</b></td><td>19.62%</td><td>6.58%</td></tr><tr><td>15</td><td><a class="asin" href="https://www.amazon.com/dp/B0GR4G3ZVJ" target="_blank" rel="noopener">B0GR4G3ZVJ</a></td><td><span class="bd o">老品</span></td><td>27</td><td>¥13,343</td><td><b class="up">¥1,768</b></td><td>13.25%</td><td>0.00%</td></tr></tbody></table></div>
+</div>
+
+<div class="cd">
+  <div class="ct">&#128308; 近 3 月亏损款</div>
+  <div class="cs">销售额为正但毛利为负 —— 需查成本或定价</div>
+  <div class="twr"><table><thead><tr><th>ASIN</th><th>类型</th><th>近3月销量</th><th>近3月销售额</th><th>近3月毛利</th><th>毛利率</th><th>退款率</th></tr></thead><tbody><tr><td><a class="asin" href="https://www.amazon.com/dp/B0HBBLJ6JD" target="_blank" rel="noopener">B0HBBLJ6JD</a></td><td><span class="bd n">新品</span></td><td>3</td><td>¥2,592</td><td><b class="down">¥-1,060</b></td><td>-40.90%</td><td>66.80%</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0GVMBTRL7" target="_blank" rel="noopener">B0GVMBTRL7</a></td><td><span class="bd o">老品</span></td><td>2</td><td>¥697</td><td><b class="down">¥-455</b></td><td>-65.28%</td><td>87.75%</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0GQZ8R2TS" target="_blank" rel="noopener">B0GQZ8R2TS</a></td><td><span class="bd o">老品</span></td><td>7</td><td>¥2,697</td><td><b class="down">¥-429</b></td><td>-15.90%</td><td>33.51%</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0GVMHMX86" target="_blank" rel="noopener">B0GVMHMX86</a></td><td><span class="bd o">老品</span></td><td>1</td><td>¥66</td><td><b class="down">¥-402</b></td><td>-611.05%</td><td>806.31%</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0GYDQPJ4H" target="_blank" rel="noopener">B0GYDQPJ4H</a></td><td><span class="bd o">老品</span></td><td>9</td><td>¥3,799</td><td><b class="down">¥-329</b></td><td>-8.65%</td><td>24.69%</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0HBBJ6YQC" target="_blank" rel="noopener">B0HBBJ6YQC</a></td><td><span class="bd n">新品</span></td><td>1</td><td>¥510</td><td><b class="down">¥-121</b></td><td>-23.72%</td><td>98.53%</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0HBBBNJ18" target="_blank" rel="noopener">B0HBBBNJ18</a></td><td><span class="bd n">新品</span></td><td>1</td><td>¥455</td><td><b class="down">¥-102</b></td><td>-22.44%</td><td>0.00%</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0G4RG24J4" target="_blank" rel="noopener">B0G4RG24J4</a></td><td><span class="bd o">老品</span></td><td>3</td><td>¥1,387</td><td><b class="down">¥-97</b></td><td>-7.01%</td><td>32.84%</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0GLGQ7DPX" target="_blank" rel="noopener">B0GLGQ7DPX</a></td><td><span class="bd o">老品</span></td><td>6</td><td>¥2,338</td><td><b class="down">¥-89</b></td><td>-3.81%</td><td>34.41%</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0GYDTYJDJ" target="_blank" rel="noopener">B0GYDTYJDJ</a></td><td><span class="bd o">老品</span></td><td>4</td><td>¥1,916</td><td><b class="down">¥-85</b></td><td>-4.46%</td><td>32.50%</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0HBBB78KT" target="_blank" rel="noopener">B0HBBB78KT</a></td><td><span class="bd n">新品</span></td><td>2</td><td>¥372</td><td><b class="down">¥-62</b></td><td>-16.70%</td><td>50.47%</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0HBB98X8B" target="_blank" rel="noopener">B0HBB98X8B</a></td><td><span class="bd n">新品</span></td><td>1</td><td>¥355</td><td><b class="down">¥-44</b></td><td>-12.41%</td><td>0.00%</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0HBBF5R79" target="_blank" rel="noopener">B0HBBF5R79</a></td><td><span class="bd n">新品</span></td><td>5</td><td>¥2,686</td><td><b class="down">¥-38</b></td><td>-1.42%</td><td>19.83%</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0GK753ZKQ" target="_blank" rel="noopener">B0GK753ZKQ</a></td><td><span class="bd o">老品</span></td><td>2</td><td>¥1,045</td><td><b class="down">¥-34</b></td><td>-3.27%</td><td>0.00%</td></tr><tr><td><a class="asin" href="https://www.amazon.com/dp/B0GR3QZ7YX" target="_blank" rel="noopener">B0GR3QZ7YX</a></td><td><span class="bd o">老品</span></td><td>16</td><td>¥2,281</td><td><b class="down">¥-20</b></td><td>-0.87%</td><td>23.52%</td></tr></tbody></table></div>
+</div>
+
+<div class="cd">
+  <div class="insight warm">
+    <div class="ins-line"><b>📊 数据解读：</b>
+      <b>当月（2026-10）销量 658 件 / ¥260,402，毛利 ¥33,162（毛利率 12.74%），退款 ¥17,571（退款率 6.75%）。</b><br>
+      2026 年毛利率在 -0.67% ~ 21.11% 之间波动，退款率 6.19% ~ 18.29%。</div>
+    <div class="ins-line"><b>🔍 原因分析：</b>
+      <b>清库压力集中在 100 个款、压 1,729 件 / ¥301,156。</b>
+      其中 28 个是「近 3 月零销但有货」—— 这部分是纯资金占用，没有任何产出。<br>
+      亏损款 15 个，多为新品爬坡期（广告投入大于毛利）。</div>
+    <div class="ins-line"><b>✅ 建议动作：</b>
+      ① <b>立即清库 28 个</b>：降价 20–30% 或捆绑销售，回笼 ¥8,868；<br>
+      ② <b>降价清仓 56 个</b>：可撑超 240 天，先降价测转化，不行再考虑站外；<br>
+      ③ <b>退款率 &gt;8% 的款</b>要查适配描述，退款主因是「不兼容」；<br>
+      ④ <b>亏损款</b>逐个核算：如果是新品爬坡可接受，老品亏损必须调价或停投。</div>
   </div>
 </div>
 </section>
@@ -675,7 +778,7 @@ document.querySelectorAll('.mx .cell[data-act]').forEach(function(td){
 });
 
 
-/* ===== 市占分析图表 ===== */
+/* ===== 市占图表 v2 ===== */
 var CHS = {"w": ["202501", "202502", "202503", "202504", "202505", "202506", "202507", "202508", "202509", "202510", "202511", "202512", "202601", "202602", "202603", "202604", "202605", "202606", "202607", "202608", "202609", "202610"], "mq": [54287.0, 58653.0, 72196.0, 67611.0, 75909.0, 68403.0, 65335.0, 70630.0, 66596.0, 71312.0, 70408.0, 59418.0, 67177.0, 63483.0, 74280.0, 74643.0, 62431.0, 67301.0, 57702.0, 66134.0, 68136.0, 71284.0], "ma": [24216932.0, 26122126.0, 32872987.0, 30697252.0, 34747057.0, 30726171.0, 29159301.0, 31709303.0, 29712193.0, 31798527.0, 31762127.0, 27449910.0, 30774991.0, 28860804.0, 33929310.0, 34335308.0, 28538119.0, 30725205.0, 26003227.0, 29592154.0, 30549871.0, 32051583.0], "mp": [446.09, 445.37, 455.33, 454.03, 457.75, 449.19, 446.3, 448.95, 446.15, 445.91, 451.11, 461.98, 458.12, 454.62, 456.78, 460.0, 457.11, 456.54, 450.65, 447.45, 448.37, 449.63], "pa": [52835.0, 39487.0, 27923.0, 33005.0, 26055.0, 19142.0, 49855.0, 39726.0, 31493.0, 19969.0, 23501.0, 24943.0, 41344.0, 60360.0, 88271.0, 89948.0, 61253.0, 151853.0, 144581.0, 155188.0, 235302.0, 311632.0], "psh": [0.2182, 0.1512, 0.0849, 0.1075, 0.075, 0.0623, 0.171, 0.1253, 0.106, 0.0628, 0.074, 0.0909, 0.1343, 0.2091, 0.2602, 0.262, 0.2146, 0.4942, 0.556, 0.5244, 0.7702, 0.9723], "series": [{"name": "A-Premium", "type": "line", "data": [17.4095, 16.9651, 17.557, 18.076, 18.4174, 18.2922, 16.6706, 18.4398, 18.3424, 18.1009, 17.2449, 16.3288, 16.6946, 15.9829, 16.8195, 17.9935, 18.4466, 16.5823, 16.743, 17.5147, 17.7034, 16.3409], "smooth": true, "symbolSize": 4, "lineStyle": {"width": 1.5, "opacity": 0.7}, "itemStyle": {"color": "#E67E22"}}, {"name": "ENA", "type": "line", "data": [3.633, 2.9612, 2.8882, 2.4171, 2.0119, 2.3685, 2.2127, 2.2378, 2.2276, 2.3703, 2.3885, 2.2472, 2.157, 2.1874, 2.1978, 1.9871, 2.1009, 1.9697, 1.7648, 1.7226, 1.7422, 1.9662], "smooth": true, "symbolSize": 4, "lineStyle": {"width": 1.5, "opacity": 0.7}, "itemStyle": {"color": "#8E44AD"}}, {"name": "Mardarth", "type": "line", "data": [2.3458, 4.0513, 3.6258, 3.7872, 3.2305, 3.4658, 3.673, 3.5489, 3.462, 3.7891, 3.7579, 2.7599, 3.5396, 3.4796, 3.5969, 3.3941, 3.1651, 3.1045, 2.8498, 3.1755, 3.3646, 3.537], "smooth": true, "symbolSize": 4, "lineStyle": {"width": 1.5, "opacity": 0.7}, "itemStyle": {"color": "#C0392B"}}, {"name": "SHICHU", "type": "line", "data": [0.8499, 0.8575, 0.6971, 0.5633, 0.8158, 0.8844, 1.3078, 1.6065, 1.3474, 1.7049, 1.9592, 4.3014, 2.2844, 2.7326, 2.1123, 2.2287, 3.0005, 3.2845, 3.4909, 2.9982, 3.0666, 3.063], "smooth": true, "symbolSize": 4, "lineStyle": {"width": 1.5, "opacity": 0.7}, "itemStyle": {"color": "#16A085"}}, {"name": "Yllhaoyuan", "type": "line", "data": [3.3747, 3.082, 2.7081, 2.4046, 3.3111, 3.2811, 4.4575, 3.668, 3.7517, 3.68, 3.9432, 3.4463, 2.7167, 3.0678, 2.9117, 2.9271, 3.4294, 3.2705, 4.0461, 4.2241, 3.8807, 3.2278], "smooth": true, "symbolSize": 4, "lineStyle": {"width": 1.5, "opacity": 0.7}, "itemStyle": {"color": "#D68910"}}, {"name": "Yllshengyu", "type": "line", "data": [1.4064, 1.4382, 1.155, 0.8708, 1.8361, 2.0221, 3.0076, 2.4917, 2.6118, 2.3866, 2.4054, 2.5301, 2.0716, 2.5531, 2.2053, 2.1118, 2.442, 2.8588, 3.1676, 3.0252, 3.2237, 3.155], "smooth": true, "symbolSize": 4, "lineStyle": {"width": 1.5, "opacity": 0.7}, "itemStyle": {"color": "#5D6D7E"}}, {"name": "loongrie", "type": "line", "data": [4.7196, 5.0777, 5.0323, 4.8571, 5.2188, 5.7973, 6.2603, 6.6227, 7.1214, 7.6709, 7.2596, 6.3473, 6.9294, 7.4489, 7.054, 7.0401, 7.1852, 7.5001, 7.1214, 7.3496, 7.7652, 8.1676], "smooth": true, "symbolSize": 4, "lineStyle": {"width": 1.5, "opacity": 0.7}, "itemStyle": {"color": "#7D3C98"}}, {"name": "sherxibo", "type": "line", "data": [0.9271, 0.7986, 0.8315, 1.2486, 2.5902, 1.5944, 2.0815, 2.2963, 2.3571, 2.6378, 2.701, 3.1151, 2.5326, 3.092, 3.0476, 2.8393, 2.6624, 3.5568, 3.6144, 3.0984, 3.014, 2.809], "smooth": true, "symbolSize": 4, "lineStyle": {"width": 1.5, "opacity": 0.7}, "itemStyle": {"color": "#95A5A6"}}, {"name": "PHILTOP", "type": "line", "data": [0.2182, 0.1512, 0.0849, 0.1075, 0.075, 0.0623, 0.171, 0.1253, 0.106, 0.0628, 0.074, 0.0909, 0.1343, 0.2091, 0.2602, 0.262, 0.2146, 0.4942, 0.556, 0.5244, 0.7702, 0.9723], "smooth": true, "symbolSize": 7, "lineStyle": {"width": 4}, "itemStyle": {"color": "#2A9D48"}, "z": 10}], "crx": ["CR1", "CR3", "CR5", "CR10", "CR15", "CR20", "CR30", "CR50", "CR100"], "cr25": [17.69, 27.19, 33.08, 43.09, 50.43, 56.13, 62.87, 71.37, 81.67], "cr26": [17.09, 27.79, 34.14, 45.03, 51.4, 56.58, 64.39, 73.07, 82.77], "seax": ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"], "seay": [91.0, 91.0, 110.0, 107.0, 104.0, 101.0, 91.0, 101.0, 99.0, 105.0, 105.0, 91.0]};
 function smk(id,o){var e=document.getElementById(id); if(!e) return; var c=echarts.init(e); c.setOption(o); CHARTS.push(c);}
 smk('s-mon',{tooltip:{trigger:'axis'},legend:{top:0,textStyle:{fontSize:10.5}},
@@ -704,7 +807,7 @@ smk('s-cr',{tooltip:{trigger:'axis'},legend:{top:0,textStyle:{fontSize:10.5}},
  grid:{left:56,right:40,top:44,bottom:40},
  xAxis:{type:'category',data:CHS.crx,boundaryGap:false},
  yAxis:{type:'value',name:'额占(%)',max:100,nameTextStyle:{fontSize:10}},
- series:[{name:'2025 全年',type:'line',data:CHS.cr25,smooth:true,symbolSize:7,itemStyle:{color:'#9DB8CE'},lineStyle:{width:2.4}},
+ series:[{name:'2025 1-10月',type:'line',data:CHS.cr25,smooth:true,symbolSize:7,itemStyle:{color:'#9DB8CE'},lineStyle:{width:2.4}},
   {name:'2026 1-10月',type:'line',data:CHS.cr26,smooth:true,symbolSize:8,itemStyle:{color:'#0F4C75'},
    lineStyle:{width:3.2},label:{show:true,fontSize:9,formatter:'{c}%'}}]});
 smk('s-sea',{tooltip:{trigger:'axis'},grid:{left:56,right:40,top:40,bottom:40},
@@ -716,37 +819,80 @@ smk('s-sea',{tooltip:{trigger:'axis'},grid:{left:56,right:40,top:40,bottom:40},
     lineStyle:{color:'#E67E22',type:'dashed'}}]},
   label:{show:true,fontSize:9,position:'top',formatter:function(p){return p.value.toFixed(0);}}}]});
 
+/* ===== 分组 Tab 切换 ===== */
+var GTS = Array.prototype.slice.call(document.querySelectorAll('.sb-gt'));
+var SBS = Array.prototype.slice.call(document.querySelectorAll('.sb-sub'));
+var ITEMS = Array.prototype.slice.call(document.querySelectorAll('.sb-i'));
+var SECS = Array.prototype.slice.call(document.querySelectorAll('section[data-g]'));
+var curG = 'g1';
 
-/* ===== 侧边栏导航 ===== */
-var SBI = Array.prototype.slice.call(document.querySelectorAll('.sb-i'));
-var SECS = SBI.map(function(a){ return document.getElementById(a.getAttribute('data-t')); }).filter(Boolean);
-function setOn(id){
-  SBI.forEach(function(a){ a.classList.toggle('on', a.getAttribute('data-t') === id); });
+function showGroup(gid, scroll){
+  curG = gid;
+  SECS.forEach(function(sec){ sec.classList.toggle('grp-off', sec.getAttribute('data-g') !== gid); });
+  GTS.forEach(function(t){ t.classList.toggle('on', t.getAttribute('data-g') === gid); });
+  SBS.forEach(function(sb){ sb.classList.toggle('hide', sb.getAttribute('data-sub') !== gid); });
+  var first = SECS.filter(function(x){ return x.getAttribute('data-g') === gid; })[0];
+  ITEMS.forEach(function(a){ a.classList.remove('on'); });
+  if(first){
+    var fa = ITEMS.filter(function(a){ return a.getAttribute('data-t') === first.id; })[0];
+    if(fa) fa.classList.add('on');
+    if(scroll) window.scrollTo({top:first.offsetTop - 16, behavior:'smooth'});
+  }
+  setTimeout(function(){ if(CHARTS) CHARTS.forEach(function(c){ c.resize(); }); }, 70);
 }
-SBI.forEach(function(a){
+GTS.forEach(function(t){
+  t.addEventListener('click', function(){ showGroup(t.getAttribute('data-g'), true); });
+});
+ITEMS.forEach(function(a){
   a.addEventListener('click', function(e){
     e.preventDefault();
-    var el = document.getElementById(a.getAttribute('data-t'));
-    if(el){ el.scrollIntoView({behavior:'smooth', block:'start'}); setOn(a.getAttribute('data-t')); }
+    var id = a.getAttribute('data-t');
+    var el = document.getElementById(id);
+    if(!el) return;
+    var g = el.getAttribute('data-g');
+    if(g !== curG) showGroup(g, false);
+    setTimeout(function(){
+      el.scrollIntoView({behavior:'smooth', block:'start'});
+      ITEMS.forEach(function(x){ x.classList.remove('on'); });
+      a.classList.add('on');
+    }, 40);
     document.getElementById('sb').classList.remove('open');
   });
 });
-// 滚动监听
+// 顶部按钮
+document.querySelectorAll('[data-jump]').forEach(function(b){
+  b.addEventListener('click', function(e){
+    e.preventDefault();
+    var id = b.getAttribute('data-jump');
+    var el = document.getElementById(id);
+    if(!el) return;
+    var g = el.getAttribute('data-g');
+    showGroup(g, false);
+    setTimeout(function(){
+      el.scrollIntoView({behavior:'smooth', block:'start'});
+      ITEMS.forEach(function(x){ x.classList.toggle('on', x.getAttribute('data-t') === id); });
+    }, 40);
+  });
+});
+// 组内滚动高亮
 var stick = false;
 window.addEventListener('scroll', function(){
   if(stick) return;
   stick = true;
   requestAnimationFrame(function(){
-    var y = window.scrollY + 130, cur = SECS[0] ? SECS[0].id : 'kpi';
-    SECS.slice().sort(function(a,b){ return a.offsetTop - b.offsetTop; }).forEach(function(el){ if(el.offsetTop <= y) cur = el.id; });
-    setOn(cur);
+    var y = window.scrollY + 150, cur = null;
+    SECS.filter(function(x){ return x.getAttribute('data-g') === curG; })
+        .slice().sort(function(a,b){ return a.offsetTop - b.offsetTop; })
+        .forEach(function(el){ if(el.offsetTop <= y) cur = el.id; });
+    if(cur) ITEMS.forEach(function(a){ a.classList.toggle('on', a.getAttribute('data-t') === cur); });
     stick = false;
   });
 }, {passive:true});
 // 移动端
 var tg = document.getElementById('sbt');
 if(tg) tg.addEventListener('click', function(){ document.getElementById('sb').classList.toggle('open'); });
-window.addEventListener('resize', function(){ if(CHARTS) CHARTS.forEach(function(c){c.resize();}); });
+
+showGroup('g1', false);
 
 </script>
 </body>
