@@ -122,6 +122,11 @@ th.sorted-desc::after{content:' \2193';opacity:1}
 .bd.n{background:#e8f8ec;color:#2A9D48}.bd.o{background:#eef3f8;color:#5f6b7a}
 .mxnote{font-size:11.5px;color:#8494a5;margin-top:10px;line-height:1.7}
 
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sch{width:100%;height:340px;min-height:340px}
+.sch2{width:100%;height:300px;min-height:300px}
+@media(max-width:900px){.sgrid{grid-template-columns:1fr}}
+
 /* ===== 左侧侧边栏 v2（分组 Tab） ===== */
 body{padding-left:232px !important}
 .sb{position:fixed;top:0;left:0;width:216px;height:100vh;background:#fff;z-index:1000;
@@ -809,10 +814,6 @@ function resizeAll(){
     var ex = echarts.getInstanceByDom(el);
     if(ex && el.offsetWidth > 10) ex.resize();
   });
-  if(typeof pc !== 'undefined' && pc){
-    var pe = document.getElementById('c-perf');
-    if(pe && pe.offsetWidth > 10) pc.resize();
-  }
 }
 defChart('s-mon',{tooltip:{trigger:'axis'},legend:{top:0,textStyle:{fontSize:10.5}},
  grid:{left:66,right:66,top:44,bottom:56},
