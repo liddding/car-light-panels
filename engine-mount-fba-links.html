@@ -527,8 +527,8 @@ var CHARTS = [];
 
 /* ===== 退款率图表 ===== */
 var PMON = {"x": ["2026-01", "2026-02", "2026-03", "2026-04", "2026-05", "2026-06", "2026-07", "2026-08", "2026-09", "2026-10"], "r": [1254.0, 4123.0, 4966.0, 2932.0, 5815.0, 6828.0, 8567.0, 8045.0, 12509.0, 17571.0], "rp": [8.68, 18.29, 14.28, 10.52, 12.37, 7.17, 9.54, 6.19, 6.72, 6.75]};
-function pmk(id,o){var e=document.getElementById(id); if(!e) return; var c=echarts.init(e); c.setOption(o); CHARTS.push(c);}
-pmk('p-rf',{tooltip:{trigger:'axis'},legend:{top:0,textStyle:{fontSize:10.5}},
+
+defChart('p-rf',{tooltip:{trigger:'axis'},legend:{top:0,textStyle:{fontSize:10.5}},
  grid:{left:64,right:56,top:42,bottom:52},
  xAxis:{type:'category',data:PMON.x,axisLabel:{fontSize:9,rotate:32,interval:0}},
  yAxis:[{type:'value',name:'退款额(¥)',nameTextStyle:{fontSize:10}},
@@ -612,7 +612,10 @@ renderSales(); renderAd();
 
 /* ===== 走势图 ===== */
 var pc = null;
+var PERF_DAYS = 30;
+function drawPerfNow(){ drawPerf(PERF_DAYS); }
 function drawPerf(n){
+  PERF_DAYS = n;
   var a = (n>=DAILY.length) ? DAILY : DAILY.slice(-n);
   var x = a.map(function(d){ return d.d.slice(5); });
   var el = document.getElementById('c-perf');
@@ -780,8 +783,38 @@ document.querySelectorAll('.mx .cell[data-act]').forEach(function(td){
 
 /* ===== 市占图表 v2 ===== */
 var CHS = {"w": ["202501", "202502", "202503", "202504", "202505", "202506", "202507", "202508", "202509", "202510", "202511", "202512", "202601", "202602", "202603", "202604", "202605", "202606", "202607", "202608", "202609", "202610"], "mq": [54287.0, 58653.0, 72196.0, 67611.0, 75909.0, 68403.0, 65335.0, 70630.0, 66596.0, 71312.0, 70408.0, 59418.0, 67177.0, 63483.0, 74280.0, 74643.0, 62431.0, 67301.0, 57702.0, 66134.0, 68136.0, 71284.0], "ma": [24216932.0, 26122126.0, 32872987.0, 30697252.0, 34747057.0, 30726171.0, 29159301.0, 31709303.0, 29712193.0, 31798527.0, 31762127.0, 27449910.0, 30774991.0, 28860804.0, 33929310.0, 34335308.0, 28538119.0, 30725205.0, 26003227.0, 29592154.0, 30549871.0, 32051583.0], "mp": [446.09, 445.37, 455.33, 454.03, 457.75, 449.19, 446.3, 448.95, 446.15, 445.91, 451.11, 461.98, 458.12, 454.62, 456.78, 460.0, 457.11, 456.54, 450.65, 447.45, 448.37, 449.63], "pa": [52835.0, 39487.0, 27923.0, 33005.0, 26055.0, 19142.0, 49855.0, 39726.0, 31493.0, 19969.0, 23501.0, 24943.0, 41344.0, 60360.0, 88271.0, 89948.0, 61253.0, 151853.0, 144581.0, 155188.0, 235302.0, 311632.0], "psh": [0.2182, 0.1512, 0.0849, 0.1075, 0.075, 0.0623, 0.171, 0.1253, 0.106, 0.0628, 0.074, 0.0909, 0.1343, 0.2091, 0.2602, 0.262, 0.2146, 0.4942, 0.556, 0.5244, 0.7702, 0.9723], "series": [{"name": "A-Premium", "type": "line", "data": [17.4095, 16.9651, 17.557, 18.076, 18.4174, 18.2922, 16.6706, 18.4398, 18.3424, 18.1009, 17.2449, 16.3288, 16.6946, 15.9829, 16.8195, 17.9935, 18.4466, 16.5823, 16.743, 17.5147, 17.7034, 16.3409], "smooth": true, "symbolSize": 4, "lineStyle": {"width": 1.5, "opacity": 0.7}, "itemStyle": {"color": "#E67E22"}}, {"name": "ENA", "type": "line", "data": [3.633, 2.9612, 2.8882, 2.4171, 2.0119, 2.3685, 2.2127, 2.2378, 2.2276, 2.3703, 2.3885, 2.2472, 2.157, 2.1874, 2.1978, 1.9871, 2.1009, 1.9697, 1.7648, 1.7226, 1.7422, 1.9662], "smooth": true, "symbolSize": 4, "lineStyle": {"width": 1.5, "opacity": 0.7}, "itemStyle": {"color": "#8E44AD"}}, {"name": "Mardarth", "type": "line", "data": [2.3458, 4.0513, 3.6258, 3.7872, 3.2305, 3.4658, 3.673, 3.5489, 3.462, 3.7891, 3.7579, 2.7599, 3.5396, 3.4796, 3.5969, 3.3941, 3.1651, 3.1045, 2.8498, 3.1755, 3.3646, 3.537], "smooth": true, "symbolSize": 4, "lineStyle": {"width": 1.5, "opacity": 0.7}, "itemStyle": {"color": "#C0392B"}}, {"name": "SHICHU", "type": "line", "data": [0.8499, 0.8575, 0.6971, 0.5633, 0.8158, 0.8844, 1.3078, 1.6065, 1.3474, 1.7049, 1.9592, 4.3014, 2.2844, 2.7326, 2.1123, 2.2287, 3.0005, 3.2845, 3.4909, 2.9982, 3.0666, 3.063], "smooth": true, "symbolSize": 4, "lineStyle": {"width": 1.5, "opacity": 0.7}, "itemStyle": {"color": "#16A085"}}, {"name": "Yllhaoyuan", "type": "line", "data": [3.3747, 3.082, 2.7081, 2.4046, 3.3111, 3.2811, 4.4575, 3.668, 3.7517, 3.68, 3.9432, 3.4463, 2.7167, 3.0678, 2.9117, 2.9271, 3.4294, 3.2705, 4.0461, 4.2241, 3.8807, 3.2278], "smooth": true, "symbolSize": 4, "lineStyle": {"width": 1.5, "opacity": 0.7}, "itemStyle": {"color": "#D68910"}}, {"name": "Yllshengyu", "type": "line", "data": [1.4064, 1.4382, 1.155, 0.8708, 1.8361, 2.0221, 3.0076, 2.4917, 2.6118, 2.3866, 2.4054, 2.5301, 2.0716, 2.5531, 2.2053, 2.1118, 2.442, 2.8588, 3.1676, 3.0252, 3.2237, 3.155], "smooth": true, "symbolSize": 4, "lineStyle": {"width": 1.5, "opacity": 0.7}, "itemStyle": {"color": "#5D6D7E"}}, {"name": "loongrie", "type": "line", "data": [4.7196, 5.0777, 5.0323, 4.8571, 5.2188, 5.7973, 6.2603, 6.6227, 7.1214, 7.6709, 7.2596, 6.3473, 6.9294, 7.4489, 7.054, 7.0401, 7.1852, 7.5001, 7.1214, 7.3496, 7.7652, 8.1676], "smooth": true, "symbolSize": 4, "lineStyle": {"width": 1.5, "opacity": 0.7}, "itemStyle": {"color": "#7D3C98"}}, {"name": "sherxibo", "type": "line", "data": [0.9271, 0.7986, 0.8315, 1.2486, 2.5902, 1.5944, 2.0815, 2.2963, 2.3571, 2.6378, 2.701, 3.1151, 2.5326, 3.092, 3.0476, 2.8393, 2.6624, 3.5568, 3.6144, 3.0984, 3.014, 2.809], "smooth": true, "symbolSize": 4, "lineStyle": {"width": 1.5, "opacity": 0.7}, "itemStyle": {"color": "#95A5A6"}}, {"name": "PHILTOP", "type": "line", "data": [0.2182, 0.1512, 0.0849, 0.1075, 0.075, 0.0623, 0.171, 0.1253, 0.106, 0.0628, 0.074, 0.0909, 0.1343, 0.2091, 0.2602, 0.262, 0.2146, 0.4942, 0.556, 0.5244, 0.7702, 0.9723], "smooth": true, "symbolSize": 7, "lineStyle": {"width": 4}, "itemStyle": {"color": "#2A9D48"}, "z": 10}], "crx": ["CR1", "CR3", "CR5", "CR10", "CR15", "CR20", "CR30", "CR50", "CR100"], "cr25": [17.69, 27.19, 33.08, 43.09, 50.43, 56.13, 62.87, 71.37, 81.67], "cr26": [17.09, 27.79, 34.14, 45.03, 51.4, 56.58, 64.39, 73.07, 82.77], "seax": ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"], "seay": [91.0, 91.0, 110.0, 107.0, 104.0, 101.0, 91.0, 101.0, 99.0, 105.0, 105.0, 91.0]};
-function smk(id,o){var e=document.getElementById(id); if(!e) return; var c=echarts.init(e); c.setOption(o); CHARTS.push(c);}
-smk('s-mon',{tooltip:{trigger:'axis'},legend:{top:0,textStyle:{fontSize:10.5}},
+var CHART_DEFS = {};
+function defChart(id,o){ CHART_DEFS[id] = o; }
+function renderCharts(gid){
+  var secs = document.querySelectorAll('section[data-g="'+gid+'"]');
+  if(!secs.length) return;
+  Object.keys(CHART_DEFS).forEach(function(id){
+    var el = document.getElementById(id);
+    if(!el) return;
+    if(!el.closest('section[data-g="'+gid+'"]')) return;
+    if(el.offsetWidth < 10 || el.offsetHeight < 10) return;
+    var ex = echarts.getInstanceByDom(el);
+    if(ex){ ex.resize(); }
+    else {
+      var c = echarts.init(el);
+      c.setOption(CHART_DEFS[id]);
+      CHARTS.push(c);
+    }
+  });
+}
+function resizeAll(){
+  Object.keys(CHART_DEFS).forEach(function(id){
+    var el = document.getElementById(id);
+    if(!el) return;
+    var ex = echarts.getInstanceByDom(el);
+    if(ex && el.offsetWidth > 10) ex.resize();
+  });
+  if(typeof pc !== 'undefined' && pc){
+    var pe = document.getElementById('c-perf');
+    if(pe && pe.offsetWidth > 10) pc.resize();
+  }
+}
+defChart('s-mon',{tooltip:{trigger:'axis'},legend:{top:0,textStyle:{fontSize:10.5}},
  grid:{left:66,right:66,top:44,bottom:56},
  xAxis:{type:'category',data:CHS.w,axisLabel:{fontSize:9,rotate:34,interval:0}},
  yAxis:[{type:'value',name:'销量(件)',nameTextStyle:{fontSize:10}},
@@ -789,7 +822,7 @@ smk('s-mon',{tooltip:{trigger:'axis'},legend:{top:0,textStyle:{fontSize:10.5}},
  series:[{name:'销量',type:'bar',data:CHS.mq,itemStyle:{color:'#9DB8CE'},barWidth:'44%'},
   {name:'销售额',type:'line',yAxisIndex:1,data:CHS.ma,smooth:true,symbolSize:6,itemStyle:{color:'#E67E22'},lineStyle:{width:2.6}},
   {name:'均价',type:'line',yAxisIndex:1,data:CHS.mp,smooth:true,symbolSize:5,itemStyle:{color:'#8E44AD'},lineStyle:{width:2,type:'dashed'}}]});
-smk('s-pt',{tooltip:{trigger:'axis'},legend:{top:0,textStyle:{fontSize:10.5}},
+defChart('s-pt',{tooltip:{trigger:'axis'},legend:{top:0,textStyle:{fontSize:10.5}},
  grid:{left:66,right:66,top:44,bottom:56},
  xAxis:{type:'category',data:CHS.w,axisLabel:{fontSize:9,rotate:34,interval:0}},
  yAxis:[{type:'value',name:'PT销售额(¥)',nameTextStyle:{fontSize:10}},
@@ -797,20 +830,20 @@ smk('s-pt',{tooltip:{trigger:'axis'},legend:{top:0,textStyle:{fontSize:10.5}},
  series:[{name:'PT 销售额',type:'bar',data:CHS.pa,itemStyle:{color:'#2A9D48'},barWidth:'48%'},
   {name:'PT 额份额',type:'line',yAxisIndex:1,data:CHS.psh,smooth:true,symbolSize:7,
    itemStyle:{color:'#C0392B'},lineStyle:{width:3},label:{show:true,fontSize:8.5,formatter:'{c}%'}}]});
-smk('s-share',{tooltip:{trigger:'axis',valueFormatter:function(v){return v.toFixed(3)+'%';}},
+defChart('s-share',{tooltip:{trigger:'axis',valueFormatter:function(v){return v.toFixed(3)+'%';}},
  legend:{type:'scroll',top:0,textStyle:{fontSize:10}},
  grid:{left:56,right:36,top:50,bottom:56},
  xAxis:{type:'category',data:CHS.w,axisLabel:{fontSize:9,rotate:34,interval:0}},
  yAxis:{type:'value',name:'份额(%)',nameTextStyle:{fontSize:10},axisLabel:{formatter:'{value}%',fontSize:10}},
  series:CHS.series});
-smk('s-cr',{tooltip:{trigger:'axis'},legend:{top:0,textStyle:{fontSize:10.5}},
+defChart('s-cr',{tooltip:{trigger:'axis'},legend:{top:0,textStyle:{fontSize:10.5}},
  grid:{left:56,right:40,top:44,bottom:40},
  xAxis:{type:'category',data:CHS.crx,boundaryGap:false},
  yAxis:{type:'value',name:'额占(%)',max:100,nameTextStyle:{fontSize:10}},
  series:[{name:'2025 1-10月',type:'line',data:CHS.cr25,smooth:true,symbolSize:7,itemStyle:{color:'#9DB8CE'},lineStyle:{width:2.4}},
   {name:'2026 1-10月',type:'line',data:CHS.cr26,smooth:true,symbolSize:8,itemStyle:{color:'#0F4C75'},
    lineStyle:{width:3.2},label:{show:true,fontSize:9,formatter:'{c}%'}}]});
-smk('s-sea',{tooltip:{trigger:'axis'},grid:{left:56,right:40,top:40,bottom:40},
+defChart('s-sea',{tooltip:{trigger:'axis'},grid:{left:56,right:40,top:40,bottom:40},
  xAxis:{type:'category',data:CHS.seax,axisLabel:{fontSize:10}},
  yAxis:{type:'value',name:'季节指数',nameTextStyle:{fontSize:10}},
  series:[{type:'bar',data:CHS.seay,barWidth:'52%',
@@ -838,7 +871,13 @@ function showGroup(gid, scroll){
     if(fa) fa.classList.add('on');
     if(scroll) window.scrollTo({top:first.offsetTop - 16, behavior:'smooth'});
   }
-  setTimeout(function(){ if(CHARTS) CHARTS.forEach(function(c){ c.resize(); }); }, 70);
+  // 先渲染本组图表，再 resize
+  renderCharts(gid);
+  setTimeout(function(){
+    renderCharts(gid);
+    if(typeof resizeAll === 'function') resizeAll();
+  }, 90);
+  setTimeout(function(){ if(typeof resizeAll === 'function') resizeAll(); }, 280);
 }
 GTS.forEach(function(t){
   t.addEventListener('click', function(){ showGroup(t.getAttribute('data-g'), true); });
@@ -893,6 +932,7 @@ var tg = document.getElementById('sbt');
 if(tg) tg.addEventListener('click', function(){ document.getElementById('sb').classList.toggle('open'); });
 
 showGroup('g1', false);
+setTimeout(function(){ renderCharts('g1'); drawPerf(PERF_DAYS); }, 120);
 
 </script>
 </body>
