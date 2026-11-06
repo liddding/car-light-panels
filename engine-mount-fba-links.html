@@ -594,21 +594,24 @@ section.grp-off{display:none !important}
 <div class="chp">&#127919; 广告分析（SP · 6-11月）</div>
 
 <div class="cd">
-  <div class="warn"><b>数据区间 2026-06-01 ~ 11-06</b>（SP 后台导出）｜
-  广告位/活动/竞价策略口径花费 ¥¥3,367，搜索词口径 ¥¥1,862（差值为无搜索词展示，正常）</div>
+  <div class="warn">
+  <b>数据区间 2026-06-01 ~ 11-06</b>（SP 后台导出）｜
+  <b>原表为美元，已按 1 USD = 7.1 CNY 折算</b>（与 BI 交叉验证：BI 同期 ¥23,175 / 本表 ¥¥23,907，误差 3%）<br>
+  <b>总览与广告位/活动/竞价策略口径 = 完整</b>（¥¥23,907）｜
+  <b>搜索词口径只覆盖 55% 花费</b>（¥¥23,907），因搜索词报告不含商品投放与无搜索词展示 —— 词级分析只看结构占比，不看绝对额</div>
 </div>
 
 <div class="cd">
-  <div class="ct">核心指标</div>
-  <div class="cs">ACOS = 花费 ÷ 广告销售额 ｜ 曝光/CTR 字段口径不可靠，不做结论依据</div>
+  <div class="ct">核心指标（广告活动口径 · 完整 · 已折人民币）</div>
+  <div class="cs">ACOS = 花费 ÷ 广告销售额 ｜ ⚠️ 曝光/CTR 字段合计行严重失真（7,415 vs 明细 536,924），不做任何结论依据</div>
   <div class="kr">
-    <div class="kp"><div class="kl">广告花费</div><div class="kv">¥3,367</div><div class="kn">2,925 次点击</div></div>
-    <div class="kp"><div class="kl">广告销售额</div><div class="kv good">¥25,072</div><div class="kn">ROAS 7.45</div></div>
+    <div class="kp"><div class="kl">广告花费</div><div class="kv">¥23,907</div><div class="kn">5,230 次点击</div></div>
+    <div class="kp"><div class="kl">广告销售额</div><div class="kv good">¥178,014</div><div class="kn">ROAS 7.45</div></div>
     <div class="kp"><div class="kl">ACOS</div><div class="kv good">13.43%</div><div class="kn">平衡线 17.7%</div></div>
-    <div class="kp"><div class="kl">广告订单</div><div class="kv">273</div><div class="kn">CVR 9.33%</div></div>
-    <div class="kp"><div class="kl">CPC</div><div class="kv">¥0.64</div><div class="kn">点击成本</div></div>
-    <div class="kp"><div class="kl">搜索词数</div><div class="kv">2,503</div><div class="kn">出单 257 个</div></div>
-    <div class="kp"><div class="kl">🚨 零单词花费</div><div class="kv bad">¥1,602</div><div class="kn">占 86.03%</div></div>
+    <div class="kp"><div class="kl">广告订单</div><div class="kv">414</div><div class="kn">CVR 7.92%</div></div>
+    <div class="kp"><div class="kl">CPC</div><div class="kv">¥4.57</div><div class="kn">点击成本</div></div>
+    <div class="kp"><div class="kl">搜索词数</div><div class="kv">2,503</div><div class="kn">出单 257 个（覆盖 55% 花费）</div></div>
+    <div class="kp"><div class="kl">🚨 零单词花费</div><div class="kv bad">¥11,375</div><div class="kn">占 47.58%</div></div>
     <div class="kp"><div class="kl">出单词 ACOS</div><div class="kv good">1.68%</div><div class="kn">极度高效</div></div>
   </div>
 </div>
@@ -627,7 +630,7 @@ section.grp-off{display:none !important}
   <div class="ct">广告位明细</div>
   <div class="twr"><table><thead><tr>
     <th>广告位</th><th>花费</th><th>花费占比</th><th>销售额</th><th>订单</th><th>ACOS</th><th>CPC</th><th>CVR</th>
-  </tr></thead><tbody><tr><td><b>搜索结果的其余位置</b></td><td>¥2,021</td><td>60.14%</td><td>¥13,695</td><td>220</td><td><b style="color:#E67E22">14.76%</b></td><td>¥0.63</td><td>6.88%</td></tr><tr><td><b>搜索结果顶部(首页)</b></td><td>¥1,082</td><td>32.18%</td><td>¥10,292</td><td>174</td><td><b style="color:#2A9D48">10.51%</b></td><td>¥0.68</td><td>10.94%</td></tr><tr><td><b>商品页面</b></td><td>¥254</td><td>7.56%</td><td>¥1,058</td><td>19</td><td><b style="color:#C0392B">24.01%</b></td><td>¥0.62</td><td>4.67%</td></tr><tr><td><b>OFF AMAZON</b></td><td>¥4</td><td>0.13%</td><td>¥27</td><td>1</td><td><b style="color:#E67E22">15.40%</b></td><td>¥0.18</td><td>4.17%</td></tr></tbody></table></div>
+  </tr></thead><tbody><tr><td><b>搜索结果的其余位置</b></td><td>¥14,351</td><td>60.14%</td><td>¥97,234</td><td>220</td><td><b style="color:#E67E22">14.76%</b></td><td>¥4.49</td><td>6.88%</td></tr><tr><td><b>搜索结果顶部(首页)</b></td><td>¥7,679</td><td>32.18%</td><td>¥73,073</td><td>174</td><td><b style="color:#2A9D48">10.51%</b></td><td>¥4.83</td><td>10.94%</td></tr><tr><td><b>商品页面</b></td><td>¥1,803</td><td>7.56%</td><td>¥7,512</td><td>19</td><td><b style="color:#C0392B">24.01%</b></td><td>¥4.43</td><td>4.67%</td></tr><tr><td><b>OFF AMAZON</b></td><td>¥30</td><td>0.13%</td><td>¥195</td><td>1</td><td><b style="color:#E67E22">15.40%</b></td><td>¥1.25</td><td>4.17%</td></tr></tbody></table></div>
 </div>
 
 <div class="cd">
@@ -645,14 +648,14 @@ section.grp-off{display:none !important}
   <div class="ct">竞价策略明细</div>
   <div class="twr"><table><thead><tr>
     <th>竞价策略</th><th>活动数</th><th>花费</th><th>花费占比</th><th>销售额</th><th>ACOS</th><th>订单</th>
-  </tr></thead><tbody><tr><td><b>动态竞价-只降低</b></td><td>1,031</td><td>¥2,610</td><td>77.52%</td><td>¥18,458</td><td><b style="color:#E67E22">14.14%</b></td><td>308</td></tr><tr><td><b>固定竞价</b></td><td>114</td><td>¥714</td><td>21.20%</td><td>¥6,127</td><td><b style="color:#2A9D48">11.65%</b></td><td>101</td></tr><tr><td><b>动态竞价-提高和降低</b></td><td>33</td><td>¥43</td><td>1.28%</td><td>¥487</td><td><b style="color:#2A9D48">8.82%</b></td><td>5</td></tr></tbody></table></div>
+  </tr></thead><tbody><tr><td><b>动态竞价-只降低</b></td><td>1,031</td><td>¥18,532</td><td>77.52%</td><td>¥131,050</td><td><b style="color:#E67E22">14.14%</b></td><td>308</td></tr><tr><td><b>固定竞价</b></td><td>114</td><td>¥5,069</td><td>21.20%</td><td>¥43,504</td><td><b style="color:#2A9D48">11.65%</b></td><td>101</td></tr><tr><td><b>动态竞价-提高和降低</b></td><td>33</td><td>¥305</td><td>1.28%</td><td>¥3,460</td><td><b style="color:#2A9D48">8.82%</b></td><td>5</td></tr></tbody></table></div>
 </div>
 
 <div class="cd">
   <div class="ct">🔴 投放类型结构：73% 预算在自动活动</div>
   <div class="twr"><table><thead><tr>
     <th>投放类型</th><th>组数</th><th>花费</th><th>花费占比</th><th>销售额</th><th>订单</th><th>ACOS</th>
-  </tr></thead><tbody><tr><td><b style="color:#0F4C75">支持自动定位组</b></td><td>334</td><td>¥2,456</td><td>73.02%</td><td>¥19,088</td><td>309</td><td>12.87%</td></tr><tr><td><b style="color:#16A085">关键词投放</b></td><td>334</td><td>¥898</td><td>26.72%</td><td>¥5,770</td><td>103</td><td>15.57%</td></tr><tr><td><b style="color:#16A085">商品投放</b></td><td>23</td><td>¥9</td><td>0.26%</td><td>¥214</td><td>2</td><td>4.10%</td></tr></tbody></table></div>
+  </tr></thead><tbody><tr><td><b style="color:#0F4C75">支持自动定位组</b></td><td>334</td><td>¥17,436</td><td>73.02%</td><td>¥135,526</td><td>309</td><td>12.87%</td></tr><tr><td><b style="color:#16A085">关键词投放</b></td><td>334</td><td>¥6,379</td><td>26.72%</td><td>¥40,969</td><td>103</td><td>15.57%</td></tr><tr><td><b style="color:#16A085">商品投放</b></td><td>23</td><td>¥62</td><td>0.26%</td><td>¥1,519</td><td>2</td><td>4.10%</td></tr></tbody></table></div>
 </div>
 
 <div class="cd">
@@ -660,29 +663,41 @@ section.grp-off{display:none !important}
   <div class="cs">不做全量清单，只列吃预算最多的</div>
   <div class="twr"><table><thead><tr>
     <th>#</th><th>广告活动</th><th>花费</th><th>花费占比</th><th>销售额</th><th>订单</th><th>ACOS</th>
-  </tr></thead><tbody><tr><td>1</td><td title="SP-KW-BR-发动机支架-李鼎-新品-主词-广泛-10.13">SP-KW-BR-发动机支架-李鼎-新品-主词-广泛-10.13</td><td>¥325</td><td>9.64%</td><td>¥1,843</td><td>36</td><td><b style="color:#E67E22">17.61%</b></td></tr><tr><td>2</td><td title="SP-KW-BR-发动机支架-李鼎-老品-宽泛-10.13">SP-KW-BR-发动机支架-李鼎-老品-宽泛-10.13</td><td>¥236</td><td>7.02%</td><td>¥1,729</td><td>29</td><td><b style="color:#E67E22">13.67%</b></td></tr><tr><td>3</td><td title="SP-AUTO-LS-发动机支架-李鼎-新品-宽泛-10.13">SP-AUTO-LS-发动机支架-李鼎-新品-宽泛-10.13</td><td>¥173</td><td>5.14%</td><td>¥1,475</td><td>31</td><td><b style="color:#2A9D48">11.73%</b></td></tr><tr><td>4</td><td title="SP-Auto-MIXS-发动机支架组12-李鼎">SP-Auto-MIXS-发动机支架组12-李鼎</td><td>¥131</td><td>3.89%</td><td>¥1,091</td><td>20</td><td><b style="color:#2A9D48">12.00%</b></td></tr><tr><td>5</td><td title="SP-Auto-发动机支架组11-李鼎">SP-Auto-发动机支架组11-李鼎</td><td>¥104</td><td>3.10%</td><td>¥835</td><td>17</td><td><b style="color:#E67E22">12.50%</b></td></tr><tr><td>6</td><td title="SP-Auto-发动机支架组9-李鼎">SP-Auto-发动机支架组9-李鼎</td><td>¥94</td><td>2.78%</td><td>¥710</td><td>13</td><td><b style="color:#E67E22">13.18%</b></td></tr><tr><td>7</td><td title="SP-Auto-MIXS-发动机支架组10-李鼎">SP-Auto-MIXS-发动机支架组10-李鼎</td><td>¥89</td><td>2.64%</td><td>¥561</td><td>9</td><td><b style="color:#E67E22">15.88%</b></td></tr><tr><td>8</td><td title="SP-Auto-MIXS-发动机支架组8-李鼎">SP-Auto-MIXS-发动机支架组8-李鼎</td><td>¥60</td><td>1.78%</td><td>¥707</td><td>9</td><td><b style="color:#2A9D48">8.46%</b></td></tr><tr><td>9</td><td title="SP-Auot-发动机支架-李鼎-7月降价-优惠券10%">SP-Auot-发动机支架-李鼎-7月降价-优惠券10%</td><td>¥46</td><td>1.35%</td><td>¥236</td><td>3</td><td><b style="color:#C0392B">19.31%</b></td></tr><tr><td>10</td><td title="SP-AUTO-MIXS-发动机支架-李鼎-B0GYF366RS-滞销组">SP-AUTO-MIXS-发动机支架-李鼎-B0GYF366RS…</td><td>¥43</td><td>1.28%</td><td>¥263</td><td>6</td><td><b style="color:#E67E22">16.35%</b></td></tr></tbody></table></div>
+  </tr></thead><tbody><tr><td>1</td><td title="SP-KW-BR-发动机支架-李鼎-新品-主词-广泛-10.13">SP-KW-BR-发动机支架-李鼎-新品-主词-广泛-10.13</td><td>¥2,305</td><td>9.64%</td><td>¥13,085</td><td>36</td><td><b style="color:#E67E22">17.61%</b></td></tr><tr><td>2</td><td title="SP-KW-BR-发动机支架-李鼎-老品-宽泛-10.13">SP-KW-BR-发动机支架-李鼎-老品-宽泛-10.13</td><td>¥1,678</td><td>7.02%</td><td>¥12,274</td><td>29</td><td><b style="color:#E67E22">13.67%</b></td></tr><tr><td>3</td><td title="SP-AUTO-LS-发动机支架-李鼎-新品-宽泛-10.13">SP-AUTO-LS-发动机支架-李鼎-新品-宽泛-10.13</td><td>¥1,228</td><td>5.14%</td><td>¥10,471</td><td>31</td><td><b style="color:#2A9D48">11.73%</b></td></tr><tr><td>4</td><td title="SP-Auto-MIXS-发动机支架组12-李鼎">SP-Auto-MIXS-发动机支架组12-李鼎</td><td>¥929</td><td>3.89%</td><td>¥7,743</td><td>20</td><td><b style="color:#2A9D48">12.00%</b></td></tr><tr><td>5</td><td title="SP-Auto-发动机支架组11-李鼎">SP-Auto-发动机支架组11-李鼎</td><td>¥741</td><td>3.10%</td><td>¥5,928</td><td>17</td><td><b style="color:#E67E22">12.50%</b></td></tr><tr><td>6</td><td title="SP-Auto-发动机支架组9-李鼎">SP-Auto-发动机支架组9-李鼎</td><td>¥664</td><td>2.78%</td><td>¥5,039</td><td>13</td><td><b style="color:#E67E22">13.18%</b></td></tr><tr><td>7</td><td title="SP-Auto-MIXS-发动机支架组10-李鼎">SP-Auto-MIXS-发动机支架组10-李鼎</td><td>¥632</td><td>2.64%</td><td>¥3,981</td><td>9</td><td><b style="color:#E67E22">15.88%</b></td></tr><tr><td>8</td><td title="SP-Auto-MIXS-发动机支架组8-李鼎">SP-Auto-MIXS-发动机支架组8-李鼎</td><td>¥425</td><td>1.78%</td><td>¥5,022</td><td>9</td><td><b style="color:#2A9D48">8.46%</b></td></tr><tr><td>9</td><td title="SP-Auot-发动机支架-李鼎-7月降价-优惠券10%">SP-Auot-发动机支架-李鼎-7月降价-优惠券10%</td><td>¥323</td><td>1.35%</td><td>¥1,675</td><td>3</td><td><b style="color:#C0392B">19.31%</b></td></tr><tr><td>10</td><td title="SP-AUTO-MIXS-发动机支架-李鼎-B0GYF366RS-滞销组">SP-AUTO-MIXS-发动机支架-李鼎-B0GYF366RS…</td><td>¥306</td><td>1.28%</td><td>¥1,870</td><td>6</td><td><b style="color:#E67E22">16.35%</b></td></tr></tbody></table></div>
 </div>
 
 <div class="cd">
-  <div class="ct">关键词投放：只有 broad，没有 exact</div>
+  <div class="ct">🔴 关键词投放的真实状态</div>
+  <div class="cs">
+    关键词文件共 <b>3,167 行 / 1,041 个词</b>，但<b>只有 67 行真正花过钱</b>。<br>
+    <b>exact 132 个词 + phrase 31 个词，花费全部为 ¥0 —— 建了但一个都没投</b>
+  </div>
   <div class="twr"><table><thead><tr>
     <th>匹配方式</th><th>词数</th><th>花费</th><th>花费占比</th><th>销售额</th><th>订单</th><th>ACOS</th>
-  </tr></thead><tbody><tr><td><b>broad</b></td><td>934</td><td>¥122</td><td>100.00%</td><td>¥532</td><td>8</td><td>23.01%</td></tr></tbody></table></div>
+  </tr></thead><tbody><tr><td><b>broad</b></td><td>934</td><td>¥869</td><td>100.00%</td><td>¥3,776</td><td>8</td><td>23.01%</td></tr></tbody></table></div>
 </div>
 
 <div class="cd">
-  <div class="ct">关键词 TOP10（按销售额）</div>
-  <div class="cs">手动投放词贡献的销售额有限 —— 因为量太小（仅 3.64% 预算）</div>
+  <div class="ct">关键词有效状态</div>
+  <div class="cs"><b>archived = 已归档（建了不用） ｜ enabled = 启用 ｜ paused = 暂停</b></div>
+  <div class="twr"><table><thead><tr>
+    <th>状态</th><th>行数</th><th>词数</th><th>花费</th><th>花费占比</th><th>销售额</th><th>订单</th>
+  </tr></thead><tbody><tr><td><b style="color:#2A9D48">enabled</b></td><td>1,753</td><td>1,040</td><td>¥6,240</td><td>97.68%</td><td>¥40,969</td><td>103</td></tr><tr><td><b style="color:#C0392B">archived</b></td><td>1,392</td><td>864</td><td>¥0</td><td>0.00%</td><td>¥0</td><td>0</td></tr><tr><td><b style="color:#E67E22">paused</b></td><td>22</td><td>10</td><td>¥148</td><td>2.32%</td><td>¥0</td><td>0</td></tr></tbody></table></div>
+</div>
+
+<div class="cd">
+  <div class="ct">关键词 TOP10（我们设置的投放词）</div>
+  <div class="cs">来源：SP关键词报告「关键词」列 ｜ 和上面的「搜索词」是两回事：<b>这个是我们在投的词，上面是客户搜的词</b></div>
   <div class="twr"><table><thead><tr>
     <th>#</th><th>关键词</th><th>花费</th><th>销售额</th><th>订单</th><th>ACOS</th>
-  </tr></thead><tbody><tr><td>1</td><td>sonata engine mount</td><td>¥28.03</td><td>¥206</td><td>3</td><td>13.61%</td></tr><tr><td>2</td><td>corolla engine mount</td><td>¥15.63</td><td>¥186</td><td>2</td><td>8.41%</td></tr><tr><td>3</td><td>honda element engine mount</td><td>¥9.67</td><td>¥53</td><td>1</td><td>18.26%</td></tr><tr><td>4</td><td>engine motor mount</td><td>¥7.89</td><td>¥52</td><td>1</td><td>15.18%</td></tr><tr><td>5</td><td>honda fit motor mount</td><td>¥7.99</td><td>¥35</td><td>1</td><td>22.84%</td></tr><tr><td>6</td><td>audi a5 engine mount</td><td>¥0.49</td><td>¥0</td><td>0</td><td>0.00%</td></tr><tr><td>7</td><td>aveo motor mount</td><td>¥1.36</td><td>¥0</td><td>0</td><td>0.00%</td></tr><tr><td>8</td><td>avenger transmission mount</td><td>¥0.67</td><td>¥0</td><td>0</td><td>0.00%</td></tr><tr><td>9</td><td>automotive replacement engine mounts</td><td>¥0.87</td><td>¥0</td><td>0</td><td>0.00%</td></tr><tr><td>10</td><td>dodge avenger engine mount</td><td>¥0.49</td><td>¥0</td><td>0</td><td>0.00%</td></tr></tbody></table></div>
+  </tr></thead><tbody><tr><td>1</td><td>sonata engine mount</td><td>¥199.01</td><td>¥1,462</td><td>3</td><td>13.61%</td></tr><tr><td>2</td><td>corolla engine mount</td><td>¥110.97</td><td>¥1,320</td><td>2</td><td>8.41%</td></tr><tr><td>3</td><td>honda element engine mount</td><td>¥68.66</td><td>¥376</td><td>1</td><td>18.26%</td></tr><tr><td>4</td><td>engine motor mount</td><td>¥56.02</td><td>¥369</td><td>1</td><td>15.18%</td></tr><tr><td>5</td><td>honda fit motor mount</td><td>¥56.73</td><td>¥248</td><td>1</td><td>22.84%</td></tr><tr><td>6</td><td>audi a5 engine mount</td><td>¥3.48</td><td>¥0</td><td>0</td><td>0.00%</td></tr><tr><td>7</td><td>aveo motor mount</td><td>¥9.66</td><td>¥0</td><td>0</td><td>0.00%</td></tr><tr><td>8</td><td>avenger transmission mount</td><td>¥4.76</td><td>¥0</td><td>0</td><td>0.00%</td></tr><tr><td>9</td><td>automotive replacement engine mounts</td><td>¥6.18</td><td>¥0</td><td>0</td><td>0.00%</td></tr><tr><td>10</td><td>dodge avenger engine mount</td><td>¥3.48</td><td>¥0</td><td>0</td><td>0.00%</td></tr></tbody></table></div>
 </div>
 
 <div class="cd">
   <div class="ct">搜索词三类结构</div>
   <div class="twr"><table><thead><tr>
     <th>类型</th><th>词数</th><th>词占比</th><th>花费</th><th>花费占比</th><th>销售额</th><th>ACOS</th>
-  </tr></thead><tbody><tr><td><b style="color:#2A9D48">出单词</b></td><td>257</td><td>10.27%</td><td>¥260</td><td>13.97%</td><td>¥15,499</td><td>1.68%</td></tr><tr><td><b style="color:#C0392B">流量词</b></td><td>2,246</td><td>89.73%</td><td>¥1,602</td><td>86.03%</td><td>¥0</td><td>—</td></tr></tbody></table></div>
+  </tr></thead><tbody><tr><td><b style="color:#2A9D48">出单词</b></td><td>257</td><td>10.27%</td><td>¥1,848</td><td>13.97%</td><td>¥110,042</td><td>1.68%</td></tr><tr><td><b style="color:#C0392B">流量词</b></td><td>2,246</td><td>89.73%</td><td>¥11,375</td><td>86.03%</td><td>¥0</td><td>—</td></tr></tbody></table></div>
 </div>
 
 <div class="cd">
@@ -694,35 +709,36 @@ section.grp-off{display:none !important}
       <div class="cs">车型 + engine/motor mount 是核心</div>
       <div class="twr" style="margin-top:8px"><table><thead><tr>
         <th>词根</th><th>订单</th><th>销售额</th>
-      </tr></thead><tbody><tr><td><b>mount</b></td><td>134</td><td>¥7,516</td></tr><tr><td><b>engine</b></td><td>130</td><td>¥7,848</td></tr><tr><td><b>motor</b></td><td>102</td><td>¥5,555</td></tr><tr><td><b>mounts</b></td><td>88</td><td>¥4,709</td></tr><tr><td><b>honda</b></td><td>30</td><td>¥1,685</td></tr><tr><td><b>transmission</b></td><td>24</td><td>¥1,463</td></tr><tr><td><b>chevy</b></td><td>23</td><td>¥1,157</td></tr><tr><td><b>mazda</b></td><td>22</td><td>¥1,208</td></tr><tr><td><b>2008</b></td><td>21</td><td>¥1,153</td></tr><tr><td><b>2007</b></td><td>18</td><td>¥973</td></tr></tbody></table></div></div>
+      </tr></thead><tbody><tr><td><b>mount</b></td><td>134</td><td>¥53,362</td></tr><tr><td><b>engine</b></td><td>130</td><td>¥55,722</td></tr><tr><td><b>motor</b></td><td>102</td><td>¥39,440</td></tr><tr><td><b>mounts</b></td><td>88</td><td>¥33,431</td></tr><tr><td><b>honda</b></td><td>30</td><td>¥11,966</td></tr><tr><td><b>transmission</b></td><td>24</td><td>¥10,387</td></tr><tr><td><b>chevy</b></td><td>23</td><td>¥8,212</td></tr><tr><td><b>mazda</b></td><td>22</td><td>¥8,579</td></tr><tr><td><b>2008</b></td><td>21</td><td>¥8,183</td></tr><tr><td><b>2006</b></td><td>18</td><td>¥6,838</td></tr></tbody></table></div></div>
   </div>
 </div>
 
 <div class="cd">
-  <div class="ct">TOP12 出单词</div>
+  <div class="ct">TOP12 出单词（客户实际搜索词）</div>
+  <div class="cs">来源：SP搜索词报告「用户搜索词」列，按销售额降序 ｜ 仅覆盖 55% 花费</div>
   <div class="twr"><table><thead><tr>
     <th>#</th><th>搜索词</th><th>点击</th><th>花费</th><th>销售额</th><th>订单</th>
-  </tr></thead><tbody><tr><td>1</td><td>motor mounts set</td><td>5</td><td>¥2.43</td><td>¥213</td><td>2</td></tr><tr><td>2</td><td>motor mount kit</td><td>5</td><td>¥2.23</td><td>¥209</td><td>2</td></tr><tr><td>3</td><td>motor mount</td><td>59</td><td>¥32.46</td><td>¥204</td><td>4</td></tr><tr><td>4</td><td>soportes para el motor</td><td>3</td><td>¥1.26</td><td>¥166</td><td>2</td></tr><tr><td>5</td><td>mazda cx9 engine mount</td><td>2</td><td>¥1.44</td><td>¥163</td><td>2</td></tr><tr><td>6</td><td>a4553</td><td>1</td><td>¥0.73</td><td>¥160</td><td>2</td></tr><tr><td>7</td><td>2021 jeep compass 9 speed transmission</td><td>2</td><td>¥1.23</td><td>¥157</td><td>2</td></tr><tr><td>8</td><td>honda odyssey2012 stand set</td><td>1</td><td>¥0.68</td><td>¥140</td><td>1</td></tr><tr><td>9</td><td>ford explore 2013 engine coves</td><td>1</td><td>¥0.58</td><td>¥125</td><td>1</td></tr><tr><td>10</td><td>ford explore 2014 engine carsos</td><td>1</td><td>¥0.74</td><td>¥120</td><td>1</td></tr><tr><td>11</td><td>engine mount for a flower explore 2015</td><td>1</td><td>¥0.73</td><td>¥120</td><td>1</td></tr><tr><td>12</td><td>engine mount ford explorer</td><td>1</td><td>¥0.77</td><td>¥120</td><td>1</td></tr></tbody></table></div>
+  </tr></thead><tbody><tr><td>1</td><td>motor mounts set</td><td>5</td><td>¥17.25</td><td>¥1,512</td><td>2</td></tr><tr><td>2</td><td>motor mount kit</td><td>5</td><td>¥15.83</td><td>¥1,483</td><td>2</td></tr><tr><td>3</td><td>motor mount</td><td>59</td><td>¥230.47</td><td>¥1,451</td><td>4</td></tr><tr><td>4</td><td>soportes para el motor</td><td>3</td><td>¥8.95</td><td>¥1,178</td><td>2</td></tr><tr><td>5</td><td>mazda cx9 engine mount</td><td>2</td><td>¥10.22</td><td>¥1,157</td><td>2</td></tr><tr><td>6</td><td>a4553</td><td>1</td><td>¥5.18</td><td>¥1,136</td><td>2</td></tr><tr><td>7</td><td>2021 jeep compass 9 speed transmission</td><td>2</td><td>¥8.73</td><td>¥1,114</td><td>2</td></tr><tr><td>8</td><td>honda odyssey2012 stand set</td><td>1</td><td>¥4.83</td><td>¥994</td><td>1</td></tr><tr><td>9</td><td>ford explore 2013 engine coves</td><td>1</td><td>¥4.12</td><td>¥887</td><td>1</td></tr><tr><td>10</td><td>ford explore 2014 engine carsos</td><td>1</td><td>¥5.25</td><td>¥852</td><td>1</td></tr><tr><td>11</td><td>engine mount for a flower explore 2015</td><td>1</td><td>¥5.18</td><td>¥852</td><td>1</td></tr><tr><td>12</td><td>engine mount ford explorer</td><td>1</td><td>¥5.47</td><td>¥852</td><td>1</td></tr></tbody></table></div>
 </div>
 
 <div class="cd">
   <div class="ct">否定词建议（零单 & 花费≥¥5 & 点击≥3）</div>
-  <div class="cs">只有 2 个达标 —— 大部分零单词是「点 1 次花 ¥0.6」的长尾，<b>不该批量否定</b></div>
+  <div class="cs">只有 15 个达标 —— 大部分零单词是「点 1 次花 ¥0.6」的长尾，<b>不该批量否定</b></div>
   <div class="twr"><table><thead><tr>
     <th>搜索词</th><th>点击</th><th>花费</th><th>曝光</th>
-  </tr></thead><tbody><tr><td>motor mounts</td><td>21</td><td>¥10.69</td><td>97</td></tr><tr><td>soportes de motor</td><td>11</td><td>¥8.92</td><td>83</td></tr></tbody></table></div>
+  </tr></thead><tbody><tr><td>motor mounts</td><td>21</td><td>¥75.90</td><td>97</td></tr><tr><td>soportes de motor</td><td>11</td><td>¥63.33</td><td>83</td></tr><tr><td>soporte de motor</td><td>6</td><td>¥32.94</td><td>10</td></tr><tr><td>engine stand honda civic 2012</td><td>7</td><td>¥30.81</td><td>25</td></tr><tr><td>engine mounts crv 2006</td><td>6</td><td>¥30.17</td><td>17</td></tr><tr><td>engine stand honda civic 2016</td><td>7</td><td>¥27.26</td><td>12</td></tr><tr><td>engine mounts silverado 2500 2014</td><td>5</td><td>¥26.27</td><td>16</td></tr><tr><td>honda element</td><td>5</td><td>¥25.06</td><td>37</td></tr><tr><td>rear motor mount</td><td>5</td><td>¥23.50</td><td>22</td></tr><tr><td>left side engine mount toyota rav4 2008</td><td>5</td><td>¥21.80</td><td>15</td></tr></tbody></table></div>
 </div>
 
 <div class="cd">
   <div class="insight warm">
     <div class="ins-line"><b>📊 数据解读：</b>
-      区间花费 <b>¥3,367</b>、销售额 <b>¥25,072</b>、ACOS <b>13.43%</b>、ROAS <b>7.45</b>，共 273 单。<br>
+      区间花费 <b>¥23,907</b>、销售额 <b>¥178,014</b>、ACOS <b>13.43%</b>、ROAS <b>7.45</b>，共 414 单。<br>
       <b>广告位差异巨大：</b>首页顶部 ACOS 10.51% / CVR 10.94%（最好），
       商品页面 ACOS 24.01% / CVR 4.67%（最差）。<br>
       <b>预算结构失衡：</b>自动活动占 73.02%，手动关键词投放只占 3.64%；
       关键词只有 broad 匹配，<b>没有 exact</b>。<br>
       <b>搜索词浪费：</b>2,503 个词里 257 个出单，出单词花 14.0% 预算带来 100% 销售额（ACOS 1.68%），
-      余下 <b>¥1,602（86.03%）</b>零转化。</div>
+      余下 <b>¥11,375（47.58%）</b>零转化。</div>
     <div class="ins-line"><b>🔍 原因分析：</b>
       <b>① 广告位错配是最大漏损。</b>商品页面 ACOS 24.01% 比首页顶部高 13.50pp，
       说明"逛详情页"的流量购买意图弱；但预算没有向首页顶部倾斜。
@@ -741,7 +757,7 @@ section.grp-off{display:none !important}
       <b>③ 收自动、放手动：</b>自动活动砍掉 ACOS &gt;25% 的组，把预算移到关键词投放
       （手动 ACOS 反而更低，只是没给钱）。<br>
       <b>④ 切换竞价策略：</b>高转化的头部活动改「动态-提高和降低」，长尾活动保持「只降低」。<br>
-      <b>⑤ 别批量否定：</b>达标只有 2 个；零单词多为单次点击长尾，批量否会误伤。<br>
+      <b>⑤ 别批量否定：</b>达标只有 15 个；零单词多为单次点击长尾，批量否会误伤。<br>
       <b>⑥ 按车型建组：</b>sonata / corolla / honda element / honda fit 已证明能出单，
       应各自独立广告组 + 对应 listing。</div>
   </div>
