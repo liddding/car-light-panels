@@ -42,12 +42,13 @@ tr.grp td{background:#f4f8fc;font-weight:800;color:#0F4C75;text-align:left}
 .judge{font-size:12.8px;line-height:1.95;color:#334;background:#f0f7ff;border-left:3px solid #0F4C75;padding:9px 12px;border-radius:6px;margin-top:10px}
 .hint{font-size:11px;color:#94a3b8;margin-top:8px;line-height:1.6}
 .mono{font-family:Consolas,monospace;font-size:11.5px}
+.note-box{background:#eff6ff;border-left:4px solid #3b82f6;color:#1e40af;font-size:12.5px;line-height:1.8;padding:11px 15px;border-radius:8px;margin-bottom:13px}
 </style>
 </head>
 <body>
 <nav class="nav"><span class="nt">&#128204; 快捷导航</span>
 <a href="#wr">周报分析</a><a href="#trend">周趋势</a><a href="#cmp">环比明细</a>
-<a href="#inv">库存健康</a><a href="#adx">广告组类型</a><a href="#ado">活动出单</a><a href="#ana">分析总结</a>
+<a href="#inv">库存健康</a><a href="#adx">广告组类型</a><a href="#pos">广告位转化</a><a href="#ado">活动出单</a><a href="#ana">分析总结</a>
 </nav>
 
 <div class="hd">
@@ -122,6 +123,75 @@ tr.grp td{background:#f4f8fc;font-weight:800;color:#0F4C75;text-align:left}
 <p class="hint">🔍 <b>手动·KW 订单 2→10（+400%）、ACOS 43.10%→11.80%（-31.30pp）</b>，是本期最大改善；手动·广泛BR 花费 -17% 但订单 18→20。</p></div>
 </section>
 
+<section id="pos">
+<h2>&#127919; 广告位转化分析 · W47 vs W46</h2>
+<p class="sub">数据源：领星 ERP 活动级（US22 · 发动机支架 · 1,078 个活动）｜金额 ¥（美元 × 7.1）</p>
+
+<div class="note-box" style="background:#eff6ff;border-left-color:#3b82f6;color:#1e40af">
+&#9888; <b>数据口径说明</b>：领星<b>没有</b>「三个广告位各自的花费 / 订单 / CVR」拆分（亚马逊只在广告位报告里给，且仅 US22 后台可导）。
+本节用两个可测维度替代：<b>① 搜索顶部曝光份额</b>（真实效果指标，越高 = 越靠搜索顶部）；<b>② 位置溢价策略组合</b>（谁设置了哪些位置溢价）。
+<code>placement_*</code> 是溢价设置值，不是实际花费。
+</div>
+
+<div class="kpis">
+  <div class="kpi"><div class="kpi-l">加权顶部份额</div><div class="kpi-v">3.69%</div><div class="kpi-d" style="color:#16a34a">▲+0.14pp</div><div class="kpi-s">W46 3.55%（按花费加权）</div></div>
+  <div class="kpi"><div class="kpi-l">搜索顶部溢价</div><div class="kpi-v">17.6%</div><div class="kpi-d" style="color:#16a34a">▲+0.9pp</div><div class="kpi-s">W46 16.7%（978 个活动）</div></div>
+  <div class="kpi"><div class="kpi-l">其余位置溢价</div><div class="kpi-v">8.5%</div><div class="kpi-d" style="color:#dc2626">▼-1.2pp</div><div class="kpi-s">W46 9.7%（963 个活动）</div></div>
+  <div class="kpi"><div class="kpi-l">商品页溢价</div><div class="kpi-v">5.0%</div><div class="kpi-d" style="color:#64748b">▼-0.1pp</div><div class="kpi-s">W46 5.1%（仅 57 个活动）</div></div>
+</div>
+
+<div class="cd"><h3>① 搜索顶部曝光份额分档 → 真实转化变化</h3>
+<table class="tb"><thead><tr><th>份额档</th><th>W47活动</th><th>W46花费</th><th>W47花费</th><th>订单</th><th>W46 CVR</th><th>W47 CVR</th><th>CVR变化</th><th>ACOS</th><th>ACOS变化</th><th>CPA</th></tr></thead>
+<tbody><tr><td><b><1%</b></td><td>42</td><td>¥21</td><td>¥29</td><td>4→<b>3</b></td><td>8.89%</td><td><b>5.08%</b></td><td><span class="dn2">-3.80pp</span></td><td>9.21%→25.28%</td><td><span class="dn2">+16.07pp</span></td><td>¥5.18→<b>¥9.73</b></td></tr><tr><td><b>1-5%</b></td><td>2</td><td>¥10</td><td>¥3</td><td>0→<b>0</b></td><td>0.00%</td><td><b>0.00%</b></td><td><span class="nt2">+0.00pp</span></td><td>—</td><td>—</td><td>—</td></tr><tr><td><b>5-20%</b></td><td>20</td><td>¥37</td><td>¥16</td><td>4→<b>2</b></td><td>5.97%</td><td><b>6.06%</b></td><td><span class="up2">+0.09pp</span></td><td>22.13%→11.91%</td><td><span class="up2">-10.22pp</span></td><td>¥9.37→<b>¥8.06</b></td></tr><tr><td><b>20-50%</b></td><td>14</td><td>¥10</td><td>¥55</td><td>0→<b>4</b></td><td>0.00%</td><td><b>4.65%</b></td><td><span class="up2">+4.65pp</span></td><td>0.00%→25.15%</td><td><span class="dn2">+25.15pp</span></td><td>—</td></tr><tr><td><b>>50%</b></td><td>86</td><td>¥259</td><td>¥231</td><td>25→<b>34</b></td><td>6.44%</td><td><b>9.50%</b></td><td><span class="up2">+3.05pp</span></td><td>18.38%→11.02%</td><td><span class="up2">-7.36pp</span></td><td>¥10.35→<b>¥6.80</b></td></tr></tbody></table>
+<p class="hint">🔍 <b>&gt;50% 档（搜索顶部强势位）是最大功臣</b>：86 个活动、34 单（占总订单 48%）、CVR 6.44%→<b>9.50%（+3.05pp）</b>、ACOS 18.38%→<b>11.02%（-7.36pp）</b>、CPA ¥10.35→<b>¥6.80（-34.3%）</b>。<br>
+⚠️ <b>&lt;1% 档反而恶化</b>：CVR 8.89%→5.08%（-3.80pp）、ACOS 9.21%→25.28%（+16.07pp）——位置太靠后，促销红利吃不到。</p>
+</div>
+
+<div class="cd"><h3>② 按「位置溢价策略组合」分组 → 哪种打法在变好</h3>
+<table class="tb"><thead><tr><th>位置策略</th><th>W47活动</th><th>W46花费</th><th>W47花费</th><th>花费变化</th><th>订单</th><th>CVR</th><th>CVR变化</th><th>ACOS</th><th>ACOS变化</th><th>判定</th></tr></thead>
+<tbody><tr><td><b>顶部+其余</b></td><td>903</td><td>¥228</td><td>¥211</td><td><span class="up2">-8%</span></td><td>22→<b>22</b></td><td>6.03%→<b>6.13%</b></td><td><span class="up2">+0.10pp</span></td><td>18.09%→<b>16.49%</b></td><td><span class="up2">-1.60pp</span></td><td>🟡 持平</td></tr><tr><td><b>顶部+商品页</b></td><td>9</td><td>¥2</td><td>¥0</td><td><span class="up2">-100%</span></td><td>0→<b>0</b></td><td>0.00%→<b>0.00%</b></td><td><span class="nt2">+0.00pp</span></td><td>0.00%→—</td><td>—</td><td>🟡 持平</td></tr><tr><td><b>仅顶部</b></td><td>23</td><td>¥1</td><td>¥31</td><td><span class="dn2">+2594%</span></td><td>0→<b>1</b></td><td>0.00%→<b>2.08%</b></td><td><span class="up2">+2.08pp</span></td><td>0.00%→<b>29.82%</b></td><td><span class="dn2">+29.82pp</span></td><td>🔴 恶化</td></tr><tr><td><b>仅其余位置</b></td><td>15</td><td>¥12</td><td>¥14</td><td><span class="up2">+18%</span></td><td>1→<b>2</b></td><td>5.00%→<b>10.00%</b></td><td><span class="up2">+5.00pp</span></td><td>18.64%→<b>9.85%</b></td><td><span class="up2">-8.79pp</span></td><td>🟢 改善</td></tr><tr><td><b>三位全覆盖</b></td><td>43</td><td>¥91</td><td>¥74</td><td><span class="dn2">-19%</span></td><td>9→<b>18</b></td><td>6.77%→<b>16.51%</b></td><td><span class="up2">+9.75pp</span></td><td>21.00%→<b>7.07%</b></td><td><span class="up2">-13.92pp</span></td><td>🏆 效率翻倍</td></tr><tr><td><b>商品页+其余</b></td><td>2</td><td>¥1</td><td>¥0</td><td><span class="up2">-100%</span></td><td>1→<b>0</b></td><td>50.00%→<b>0.00%</b></td><td><span class="dn2">-50.00pp</span></td><td>2.54%→—</td><td>—</td><td>🔴 恶化</td></tr><tr><td><b>未设溢价</b></td><td>80</td><td>¥2</td><td>¥5</td><td><span class="dn2">+152%</span></td><td>0→<b>0</b></td><td>0.00%→<b>0.00%</b></td><td><span class="nt2">+0.00pp</span></td><td>0.00%→—</td><td>—</td><td>🟡 持平</td></tr></tbody></table>
+<p class="hint">🏆 <b>「三位全覆盖」是效率之王</b>：43 个活动、花费 ¥91→<b>¥74（-18.6%）</b>、订单 9→<b>18（+100%）</b>、CVR 6.77%→<b>16.51%（+9.75pp）</b>、ACOS 21.00%→<b>7.07%（-13.92pp）</b>、CPA ¥10.13→<b>¥4.12（-59.3%）</b>。<br>
+🟢 <b>「仅其余位置」改善明显</b>：CVR 5.00%→10.00%、ACOS 18.64%→9.85%。<br>
+🔴 <b>「仅顶部」是坑</b>：花费从 ¥1.14 暴涨到 ¥30.71（+2594%），但只出 1 单、ACOS 29.82%——单靠顶部溢价不配合其他位置，效率极差。</p>
+</div>
+
+<div class="blk">
+  <div class="blk-h">🔍 广告位归因（三条结论）</div>
+  <div class="prob" style="border-left-color:#16a34a">
+    <h4 style="color:#16a34a">【结论1｜搜索顶部 >50% 份额档是转化引擎：34 单（占 48%）、CVR +3.05pp、CPA -34.3%】</h4>
+    <p><b>现象</b>：86 个活动、花费 ¥231（占总花费 76%）、<b>34 单</b>、CVR 6.44%→<b>9.50%</b>、ACOS 18.38%→<b>11.02%</b>、CPA ¥10.35→<b>¥6.80</b>。</p>
+    <p><b>原因</b>：促销期搜索顶部的转化优势被放大——位置越靠前，促销红利吃得越多。加权顶部份额也从 3.55% 微升到 3.69%。</p>
+    <p><b>动作</b>：搜索顶部溢价从 17.6% 提到 22-25%，把 &lt;1% 档的 ¥29 预算转到 &gt;50% 档。</p>
+  </div>
+  <div class="prob" style="border-left-color:#16a34a">
+    <h4 style="color:#16a34a">【结论2｜「三位全覆盖」策略效率翻倍：花费 -18.6%、订单 +100%、CPA -59.3%】</h4>
+    <p><b>现象</b>：43 个活动同时设了顶部 + 商品页 + 其余位置溢价，花费 ¥91→<b>¥74</b>、订单 9→<b>18</b>、CVR 6.77%→<b>16.51%</b>、ACOS 21.00%→<b>7.07%</b>、CPA ¥10.13→<b>¥4.12</b>。</p>
+    <p><b>原因</b>：三个位置全覆盖 = 全链路触达（搜索顶部抓意图 + 商品页抓比价 + 其余位置兜底），促销期这套组合的转化效率最高。</p>
+    <p><b>动作</b>：把「仅顶部」（23 个活动）和「顶部+其余」（903 个活动）逐步改为「三位全覆盖」，预计可再提升 CVR 3-5pp。</p>
+  </div>
+  <div class="prob" style="border-left-color:#d97706">
+    <h4 style="color:#d97706">【结论3｜&lt;1% 份额档是最大浪费：花费 +40.9% 但 CVR -3.80pp、ACOS +16.07pp】</h4>
+    <p><b>现象</b>：42 个活动、花费 ¥20.71→<b>¥29.18（+40.9%）</b>、订单 4→3、CVR 8.89%→<b>5.08%</b>、ACOS 9.21%→<b>25.28%</b>、CPA ¥5.18→<b>¥9.73（+87.9%）</b>。</p>
+    <p><b>原因</b>：份额 &lt;1% 意味着几乎不在搜索结果顶部出现，流量来自商品页/其余位置的边缘曝光，促销承接不到。</p>
+    <p><b>动作</b>：这批活动的花费（¥29/周）直接砍掉或转投 &gt;50% 档，ACOS 可再降 1-2pp。</p>
+  </div>
+</div>
+
+<div class="blk risk" style="border-left-color:#16a34a">
+  <div class="blk-h">✅ 广告位调整建议（W48 前）</div>
+  <table class="tb risk-tb">
+    <thead><tr><th>优先级</th><th>动作</th><th>依据</th><th>预期</th></tr></thead>
+    <tbody>
+      <tr class="p1"><td>P0</td><td><b>搜索顶部溢价 17.6% → 22-25%</b></td><td>&gt;50% 档 CVR 9.50%、ACOS 11.02%</td><td>提升整体 CVR 2-3pp</td></tr>
+      <tr class="p1"><td>P0</td><td><b>「仅顶部」23 个活动改为「三位全覆盖」</b></td><td>三位全覆盖 CPA ¥4.12，仅顶部 1 单 ACOS 29.82%</td><td>+5~8 单/周</td></tr>
+      <tr class="p1"><td>P0</td><td><b>砍掉 &lt;1% 份额档 42 个活动</b>（省 ¥29/周）</td><td>CVR -3.80pp、ACOS +16.07pp</td><td>ACOS 再降 1-2pp</td></tr>
+      <tr class="p2"><td>P1</td><td><b>其余位置溢价 8.5% → 10-12%</b></td><td>「仅其余位置」CVR 5%→10%、ACOS 18.64%→9.85%</td><td>兜底流量转化提升</td></tr>
+      <tr class="p2"><td>P1</td><td><b>商品页溢价保持 5% 或略提</b></td><td>仅 57 个活动设置，覆盖率低</td><td>扩大触达</td></tr>
+      <tr class="p3"><td>P2</td><td><b>导亚马逊广告位报告补全三位置真实数据</b></td><td>领星无三位置独立花费/订单</td><td>精确归因</td></tr>
+    </tbody>
+  </table>
+</div>
+</section>
 <section id="ado">
 <h2>&#128176; 活动出单与零单浪费 · W47</h2>
 <p class="sub">数据源：领星 ERP（US22 · 发动机支架）｜金额 ¥</p>
