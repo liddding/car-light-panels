@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>发动机支架 · 周报 W47</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Microsoft YaHei',-apple-system,sans-serif;background:#eef3f8;color:#16233a;padding:0 16px 16px;max-width:1620px;margin:0 auto}
+.nav{position:sticky;top:0;z-index:999;background:rgba(255,255,255,.97);backdrop-filter:blur(8px);border-bottom:2px solid #0F4C75;display:flex;gap:6px;padding:10px 16px;margin:0 -16px 14px;flex-wrap:wrap;align-items:center;box-shadow:0 3px 14px rgba(15,76,117,.13)}
+.nav .nt{font-size:12.5px;font-weight:700;color:#0F4C75;margin-right:6px}
+.nav a{padding:6px 13px;border-radius:16px;background:#eef3f8;color:#0F4C75;text-decoration:none;font-size:12px;font-weight:600;white-space:nowrap;transition:all .15s}
+.nav a:hover{background:#0F4C75;color:#fff}
+section[id]{scroll-margin-top:76px}
+.hd{background:linear-gradient(135deg,#0F4C75,#1B7A9E);color:#fff;border-radius:14px;padding:24px 30px;margin-bottom:14px;box-shadow:0 6px 20px rgba(15,76,117,.22)}
+.hd h1{font-size:26px}
+.hd .mt{font-size:12.5px;opacity:.95;margin-top:9px;line-height:1.95}
+h2{font-size:17px;color:#0F4C75;margin:18px 0 10px;padding-left:11px;border-left:4px solid #1B7A9E}
+.sub{font-size:12px;color:#7a8899;margin-bottom:12px;line-height:1.7}
+.kpis{display:flex;flex-wrap:nowrap;gap:8px;margin-bottom:14px;overflow-x:auto}
+.kpi{background:#fff;border-radius:10px;padding:11px 13px;box-shadow:0 2px 6px rgba(0,0,0,.07);flex:1 1 0;min-width:118px;border-top:3px solid #0F4C75}
+.kpi-l{font-size:11px;color:#64748b;font-weight:700;margin-bottom:4px;white-space:nowrap}
+.kpi-v{font-size:19px;font-weight:800;color:#16233a;line-height:1.15}
+.kpi-d{font-size:12px;font-weight:800;margin-top:3px}
+.kpi-s{font-size:10px;color:#94a3b8;margin-top:4px;line-height:1.45}
+.up2{color:#16a34a}.dn2{color:#dc2626}.nt2{color:#94a3b8}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+@media(max-width:1100px){.g2{grid-template-columns:1fr}}
+.cd{background:#fff;border-radius:10px;padding:15px 17px;box-shadow:0 2px 6px rgba(0,0,0,.06);margin-bottom:12px}
+.cd h3{font-size:13.5px;color:#0F4C75;margin-bottom:10px;font-weight:800}
+.tb{width:100%;border-collapse:collapse;font-size:12px}
+.tb th{background:#0F4C75;color:#fff;padding:7px 8px;font-weight:700;font-size:11.5px;text-align:center}
+.tb td{padding:6px 8px;border-bottom:1px solid #eef2f7;text-align:center}
+.tb tbody tr:hover{background:#f8fbfe}
+tr.grp td{background:#f4f8fc;font-weight:800;color:#0F4C75;text-align:left}
+.blk{background:#fff;border-radius:10px;padding:15px 18px;margin-bottom:12px;box-shadow:0 2px 6px rgba(0,0,0,.06);border-left:4px solid #0F4C75}
+.blk-h{font-size:13.5px;font-weight:800;color:#0F4C75;margin-bottom:10px}
+.blk ol,.blk ul{margin:0;padding-left:20px}
+.blk li{font-size:12.5px;line-height:2;color:#334;margin-bottom:6px}
+.blk li b,.blk p b{color:#0F4C75}
+.judge{font-size:12.8px;line-height:1.95;color:#334;background:#f0f7ff;border-left:3px solid #0F4C75;padding:9px 12px;border-radius:6px;margin-top:10px}
+.hint{font-size:11px;color:#94a3b8;margin-top:8px;line-height:1.6}
+.mono{font-family:Consolas,monospace;font-size:11.5px}
+</style>
+</head>
+<body>
+<nav class="nav"><span class="nt">&#128204; 快捷导航</span>
+<a href="#wr">周报分析</a><a href="#trend">周趋势</a><a href="#cmp">环比明细</a>
+<a href="#inv">库存健康</a><a href="#adx">广告组类型</a><a href="#ado">活动出单</a><a href="#ana">分析总结</a>
+</nav>
+
+<div class="hd">
+<h1>&#128202; 发动机支架 · 周报（W47）</h1>
+<div class="mt">
+店铺：US22 ｜ 周期：<b>2026-11-15 ~ 11-21</b>（周日~周六，<b>W47</b>）｜ 对比周：<b>W46（11-08 ~ 11-14）</b><br>
+数据源：Suncent BI 日粒度（销量/流量/广告） + 领星 ERP 活动级（广告明细） + BI 库存日粒度（warehouse_type=FBA）<br>
+口径：<b>新品 + 老品 合计</b>（新品 70 个 ASIN / 老品 100 个）｜ 环比 = W47 vs W46 ｜ 金额：人民币（&#165;）
+</div>
+</div>
+
+<section id="wr">
+<h2>&#128200; 周报分析 · W47 环比（新品 + 老品合计）</h2>
+<p class="sub">W47（2026-11-15 ~ 11-21）vs W46（11-08 ~ 11-14）｜US22 · 发动机支架｜金额 ¥</p>
+<div class="kpis"><div class="kpi"><div class="kpi-l">销量(件)</div><div class="kpi-v">168</div><div class="kpi-d" style="color:#16a34a">▲+15.9%</div><div class="kpi-s">上周 145 件 · 客单价 ¥420</div></div><div class="kpi"><div class="kpi-l">销售额(¥)</div><div class="kpi-v">70,630</div><div class="kpi-d" style="color:#16a34a">▲+14.2%</div><div class="kpi-s">客单价 ¥420（上周 ¥426）</div></div><div class="kpi"><div class="kpi-l">流量</div><div class="kpi-v">1,434</div><div class="kpi-d" style="color:#dc2626">▼-5.7%</div><div class="kpi-s">上周 1,520.0</div></div><div class="kpi"><div class="kpi-l">转化率</div><div class="kpi-v">11.72%</div><div class="kpi-d" style="color:#16a34a">▲2.18pp</div><div class="kpi-s">广告CVR 8.15%（上周 6.07%）</div></div><div class="kpi"><div class="kpi-l">广告花费(¥)</div><div class="kpi-v">2,283</div><div class="kpi-d" style="color:#16a34a">▼-4.5%</div><div class="kpi-s">广告额 17,709（占 25.1%）</div></div><div class="kpi"><div class="kpi-l">ACOS</div><div class="kpi-v">12.89%</div><div class="kpi-d" style="color:#16a34a">▼-5.56pp</div><div class="kpi-s">上周 18.45% · CPC ¥4.13</div></div><div class="kpi"><div class="kpi-l">广告单(件)</div><div class="kpi-v">45</div><div class="kpi-d" style="color:#16a34a">▲+32.4%</div><div class="kpi-s">CPA ¥50.72（上周 ¥70.32）</div></div><div class="kpi"><div class="kpi-l">出单 ASIN</div><div class="kpi-v">82</div><div class="kpi-d" style="color:#16a34a">▲+17.1%</div><div class="kpi-s">在售 170 · 出单率 48.2%</div></div></div>
+<div class="blk">
+<div class="blk-h">&#128203; 本周总结（六段式 · 新品 + 老品合计）</div>
+<ol class="sum6">
+<li><b>① 整体量额</b>：销量 <b>168 件</b>（145→168，<b>+15.9%</b>）、销售额 <b>¥70,630</b>（<b>+14.2%</b>）、流量 1,434（-5.7%）、转化率 <b>11.72%</b>（9.54%→11.72%，+2.18pp）；客单价 ¥420。</li>
+<li><b>② 广告效率</b>：花费 ¥2,283（-4.5%）、广告单 45（<b>+32.4%</b>）、广告额 ¥17,709（+36.7%）；ACOS <b>12.89%</b>（18.45%→12.89%，<b>-5.56pp</b>）、CPC ¥4.13、CPA ¥50.72（-27.9%）。</li>
+<li><b>③ 发货口径</b>：出库 160 件（-2.4%），与前台销量差 -8 件。</li>
+<li><b>④ 出单广度</b>：出单 ASIN <b>82</b> / 在售 170（出单率 48.2%），环比 +17.1%。</li>
+<li><b>⑤ 库存</b>：期末可用 1,431（-5.7%）、在途 900（+4.5%）、周转 <b>59.6 天</b>（73.3→59.6，消耗加快）。</li>
+<li><b>⑥ 风险与待办</b>：140 个活动花广告零单（¥130.99）；20 个 ASIN 库存告急（可撑 &lt;30 天）。</li>
+</ol>
+<p class="judge"><b>判断</b>：W47 <b>全面回升</b>——销量 +15.9%、销售额 +14.2%、CVR 9.54%→11.72%（+2.18pp）、ACOS 18.45%→12.89%（-5.56pp）。<b>流量 -5.7% 但销量 +15.9%</b>，增量主要来自转化率提升（与车灯总成 W47 同源：<b>促销 + 广告双驱动</b>）。</p>
+</div>
+</section>
+
+<section id="trend">
+<h2>&#128201; 周趋势 · W39–W47（9 周）</h2>
+<div class="g2">
+<div class="cd"><h3>销量 / 销售额 / 转化率</h3><div id="c-trend" style="height:340px"></div></div>
+<div class="cd"><h3>广告花费 / 广告单 / ACOS</h3><div id="c-ad" style="height:340px"></div></div>
+</div>
+</section>
+
+<section id="cmp">
+<h2>&#128202; 环比明细 · W47 vs W46</h2>
+<p class="sub">左表 = 合计 14 项；右表 = 新品 / 老品同表对比</p>
+<div class="g2">
+<div class="cd"><h3>合计环比明细</h3>
+<table class="tb"><thead><tr><th>指标</th><th>W46</th><th>W47</th><th>环比</th></tr></thead><tbody><tr><td>销量</td><td>145 件</td><td>168 件</td><td><span class="up2">+15.9%</span></td></tr><tr><td>销售额</td><td>61822 ¥</td><td>70630 ¥</td><td><span class="up2">+14.2%</span></td></tr><tr><td>流量</td><td>1520</td><td>1434</td><td><span class="dn2">-5.7%</span></td></tr><tr><td>转化率</td><td>9.54%</td><td>11.72%</td><td><span class="up2">+2.18pp</span></td></tr><tr><td>客单价</td><td>426 ¥</td><td>420 ¥</td><td><span class="dn2">-1.4%</span></td></tr><tr><td>广告花费</td><td>2391 ¥</td><td>2283 ¥</td><td><span class="up2">-4.5%</span></td></tr><tr><td>广告单</td><td>34 单</td><td>45 单</td><td><span class="up2">+32.4%</span></td></tr><tr><td>广告额</td><td>12958 ¥</td><td>17709 ¥</td><td><span class="up2">+36.7%</span></td></tr><tr><td>ACOS</td><td>18.45%</td><td>12.89%</td><td><span class="up2">-5.56pp</span></td></tr><tr><td>CPC</td><td>4.27 ¥</td><td>4.13 ¥</td><td><span class="up2">-3.1%</span></td></tr><tr><td>CPA</td><td>70.32 ¥</td><td>50.72 ¥</td><td><span class="up2">-27.9%</span></td></tr><tr><td>自然单</td><td>111 单</td><td>123 单</td><td><span class="up2">+10.8%</span></td></tr><tr><td>出单 ASIN</td><td>70 个</td><td>82 个</td><td><span class="up2">+17.1%</span></td></tr><tr><td>出库销量</td><td>164 件</td><td>160 件</td><td><span class="dn2">-2.4%</span></td></tr></tbody></table></div>
+<div class="cd"><h3>新品 / 老品拆分</h3>
+<table class="tb"><thead><tr><th>指标</th><th>W46</th><th>W47</th><th>环比</th></tr></thead><tbody><tr class="grp"><td colspan="4">新品</td></tr><tr><td>销量</td><td>58 件</td><td>77 件</td><td><span class="up2">+32.8%</span></td></tr><tr><td>流量</td><td>629</td><td>544</td><td><span class="dn2">-13.5%</span></td></tr><tr><td>转化率</td><td>9.22%</td><td>14.15%</td><td><span class="up2">+4.93pp</span></td></tr><tr><td>广告单</td><td>19 单</td><td>25 单</td><td><span class="up2">+31.6%</span></td></tr><tr><td>广告额</td><td>7813 ¥</td><td>9179 ¥</td><td><span class="up2">+17.5%</span></td></tr><tr><td>ACOS</td><td>17.59%</td><td>12.87%</td><td><span class="up2">-4.72pp</span></td></tr><tr><td>自然单</td><td>39 单</td><td>52 单</td><td><span class="up2">+33.3%</span></td></tr><tr><td>客单价</td><td>415 ¥</td><td>421 ¥</td><td><span class="up2">+1.5%</span></td></tr><tr class="grp"><td colspan="4">老品</td></tr><tr><td>销量</td><td>87 件</td><td>91 件</td><td><span class="up2">+4.6%</span></td></tr><tr><td>流量</td><td>891</td><td>890</td><td><span class="dn2">-0.1%</span></td></tr><tr><td>转化率</td><td>9.76%</td><td>10.22%</td><td><span class="up2">+0.46pp</span></td></tr><tr><td>广告单</td><td>15 单</td><td>20 单</td><td><span class="up2">+33.3%</span></td></tr><tr><td>广告额</td><td>5145 ¥</td><td>8531 ¥</td><td><span class="up2">+65.8%</span></td></tr><tr><td>ACOS</td><td>19.76%</td><td>12.91%</td><td><span class="up2">-6.85pp</span></td></tr><tr><td>自然单</td><td>72 单</td><td>71 单</td><td><span class="dn2">-1.4%</span></td></tr><tr><td>客单价</td><td>434 ¥</td><td>420 ¥</td><td><span class="dn2">-3.3%</span></td></tr></tbody></table></div>
+</div>
+</section>
+
+<section id="inv">
+<h2>&#128230; 库存健康 · W47</h2>
+<p class="sub">US22 · FBA 仓｜数据源：BI 库存日粒度（warehouse_type=FBA）</p>
+<div class="kpis">
+<div class="kpi"><div class="kpi-l">期末可用</div><div class="kpi-v">1,431</div><div class="kpi-d" style="color:#dc2626">▼-5.7%</div><div class="kpi-s">W46 末 1,518</div></div>
+<div class="kpi"><div class="kpi-l">在途</div><div class="kpi-v">900</div><div class="kpi-d" style="color:#16a34a">▲+4.5%</div><div class="kpi-s">W46 末 861</div></div>
+<div class="kpi"><div class="kpi-l">待上架</div><div class="kpi-v">20</div><div class="kpi-d" style="color:#16a34a">▼-45.9%</div><div class="kpi-s">W46 末 37</div></div>
+<div class="kpi"><div class="kpi-l">周转天数</div><div class="kpi-v">59.6 天</div><div class="kpi-d" style="color:#16a34a">▼消耗加快</div><div class="kpi-s">W46 73.3 天</div></div>
+</div>
+<div class="g2">
+<div class="cd"><h3>逐日库存（11-08 ~ 11-20）</h3>
+<table class="tb"><thead><tr><th>日期</th><th>总库存</th><th>可用</th><th>在途</th><th>待上架</th></tr></thead><tbody><tr><td>2026-11-08</td><td>1794</td><td>1587</td><td>756</td><td>55</td></tr><tr><td>2026-11-09</td><td>1762</td><td>1572</td><td>755</td><td>55</td></tr><tr><td>2026-11-10</td><td>1752</td><td>1564</td><td>802</td><td>55</td></tr><tr><td>2026-11-11</td><td>1728</td><td>1549</td><td>802</td><td>59</td></tr><tr><td>2026-11-12</td><td>1697</td><td>1542</td><td>843</td><td>59</td></tr><tr><td>2026-11-13</td><td>1675</td><td>1542</td><td>842</td><td>39</td></tr><tr><td>2026-11-14</td><td>1653</td><td>1518</td><td>861</td><td>37</td></tr><tr><td>2026-11-15</td><td>1645</td><td>1500</td><td>861</td><td>34</td></tr><tr><td>2026-11-16</td><td>1638</td><td>1486</td><td>858</td><td>31</td></tr><tr><td>2026-11-17</td><td>1632</td><td>1467</td><td>861</td><td>30</td></tr><tr><td>2026-11-18</td><td>1610</td><td>1469</td><td>893</td><td>32</td></tr><tr><td>2026-11-19</td><td>1592</td><td>1458</td><td>900</td><td>29</td></tr><tr><td>2026-11-20</td><td>1573</td><td>1431</td><td>900</td><td>20</td></tr></tbody></table></div>
+<div class="cd"><h3>库存最紧张 TOP15（可用 ÷ 日均销量）</h3>
+<table class="tb"><thead><tr><th>ASIN</th><th>品类</th><th>W47销量</th><th>可用</th><th>在途</th><th>可撑天数</th><th>判定</th></tr></thead><tbody><tr><td>B0FVFV8ZC7</td><td>老品</td><td>1</td><td>0</td><td>1</td><td>0.0</td><td>🔴 告急</td></tr><tr><td>B0HB9WFVZG</td><td>新品</td><td>1</td><td>0</td><td>3</td><td>0.0</td><td>🔴 告急</td></tr><tr><td>B0HBB4L2SL</td><td>新品</td><td>1</td><td>0</td><td>3</td><td>0.0</td><td>🔴 告急</td></tr><tr><td>B0CG99S8QK</td><td>老品</td><td>3</td><td>0</td><td>3</td><td>0.0</td><td>🔴 告急</td></tr><tr><td>B0HBBF4YL7</td><td>新品</td><td>2</td><td>0</td><td>0</td><td>0.0</td><td>🔴 告急</td></tr><tr><td>B0FVFC6JLC</td><td>老品</td><td>1</td><td>0</td><td>21</td><td>0.0</td><td>🔴 告急</td></tr><tr><td>B0HBBHNB9Z</td><td>新品</td><td>7</td><td>1</td><td>0</td><td>1.0</td><td>🔴 告急</td></tr><tr><td>B0HBB52QCT</td><td>新品</td><td>6</td><td>5</td><td>0</td><td>5.8</td><td>🔴 告急</td></tr><tr><td>B0GVMKXHNQ</td><td>老品</td><td>1</td><td>1</td><td>6</td><td>7.0</td><td>🔴 告急</td></tr><tr><td>B0H2Z2Y7TP</td><td>老品</td><td>4</td><td>4</td><td>22</td><td>7.0</td><td>🔴 告急</td></tr><tr><td>B0HBBB9K9D</td><td>新品</td><td>2</td><td>2</td><td>3</td><td>7.0</td><td>🔴 告急</td></tr><tr><td>B0HBBJ93RQ</td><td>新品</td><td>1</td><td>1</td><td>0</td><td>7.0</td><td>🔴 告急</td></tr><tr><td>B0FVFN7GBC</td><td>老品</td><td>2</td><td>2</td><td>4</td><td>7.0</td><td>🔴 告急</td></tr><tr><td>B0GKG89817</td><td>老品</td><td>3</td><td>3</td><td>31</td><td>7.0</td><td>🔴 告急</td></tr><tr><td>B0FVFDVBR3</td><td>老品</td><td>1</td><td>1</td><td>0</td><td>7.0</td><td>🔴 告急</td></tr></tbody></table>
+<p class="hint">🔴 告急 &lt;30 天｜🟡 偏紧 30-60 天｜🟢 正常 &gt;60 天。共 20 个 ASIN 告急。</p></div>
+</div>
+</section>
+
+<section id="adx">
+<h2>&#128227; 广告组类型诊断 · W47 vs W46</h2>
+<p class="sub">数据源：领星 ERP 活动级（US22 · 发动机支架）｜金额 ¥（美元 × 7.1）</p>
+<div class="cd"><h3>按组类型看改善</h3>
+<table class="tb"><thead><tr><th>组类型</th><th>W47活动</th><th>W46花费</th><th>W47花费</th><th>订单</th><th>ACOS</th><th>CVR</th></tr></thead><tbody><tr><td>手动·广泛BR</td><td>9</td><td>¥171</td><td>¥142</td><td>18→<b>20</b></td><td>18.05%→<b>11.66%</b></td><td>7.17%→9.71%</td></tr><tr><td>手动·KW</td><td>343</td><td>¥35</td><td>¥63</td><td>2→<b>10</b></td><td>43.10%→<b>11.80%</b></td><td>4.76%→10.99%</td></tr><tr><td>自动·MIXS</td><td>163</td><td>¥50</td><td>¥35</td><td>5→<b>4</b></td><td>12.46%→<b>14.67%</b></td><td>6.76%→7.27%</td></tr><tr><td>自动·LS松散</td><td>2</td><td>¥24</td><td>¥7</td><td>1→<b>1</b></td><td>50.37%→<b>9.59%</b></td><td>2.38%→7.69%</td></tr><tr><td>自动·其他</td><td>536</td><td>¥54</td><td>¥84</td><td>7→<b>8</b></td><td>16.62%→<b>16.55%</b></td><td>6.31%→4.71%</td></tr><tr><td>其他</td><td>25</td><td>¥3</td><td>¥3</td><td>0→<b>0</b></td><td>0.00%→<b>0.00%</b></td><td>0.00%→0.00%</td></tr></tbody></table>
+<p class="hint">🔍 <b>手动·KW 订单 2→10（+400%）、ACOS 43.10%→11.80%（-31.30pp）</b>，是本期最大改善；手动·广泛BR 花费 -17% 但订单 18→20。</p></div>
+</section>
+
+<section id="ado">
+<h2>&#128176; 活动出单与零单浪费 · W47</h2>
+<p class="sub">数据源：领星 ERP（US22 · 发动机支架）｜金额 ¥</p>
+<div class="cd"><h3>花费 TOP15 活动</h3>
+<table class="tb"><thead><tr><th>#</th><th>活动名称</th><th>花费</th><th>广告额</th><th>订单</th><th>ACOS</th><th>CPA</th></tr></thead><tbody><tr><td>1</td><td>SP-KW-BR-发动机支架-李鼎-新品-主词-广泛-10.13</td><td>¥52.68</td><td>¥527</td><td>8</td><td>9.99%</td><td>¥6.58</td></tr><tr><td>2</td><td>SP-KW-BR-发动机支架-李鼎-新品2-广泛</td><td>¥44.50</td><td>¥336</td><td>5</td><td>13.23%</td><td>¥8.90</td></tr><tr><td>3</td><td>SP-KW-BR-发动机支架-李鼎-老品-宽泛-10.13</td><td>¥38.42</td><td>¥308</td><td>6</td><td>12.48%</td><td>¥6.40</td></tr><tr><td>4</td><td>SP-KW-PH-发动机支架-老品-11.17</td><td>¥26.65</td><td>¥103</td><td>1</td><td>25.88%</td><td>¥26.65</td></tr><tr><td>5</td><td>SP-KW-MIXS-发动机支架-新品-主词-1</td><td>¥10.12</td><td>¥0</td><td>0</td><td>0.00%</td><td>¥0.00</td></tr><tr><td>6</td><td>SP-AUTO-LS-发动机支架-李鼎-新品-宽泛-10.13</td><td>¥6.71</td><td>¥70</td><td>1</td><td>9.59%</td><td>¥6.71</td></tr><tr><td>7</td><td>SP-KW-BR-发动机支架-李鼎-新品-10.10全</td><td>¥6.62</td><td>¥48</td><td>1</td><td>13.80%</td><td>¥6.62</td></tr><tr><td>8</td><td>SP-KW-MIXS-发动机支架-新品-李鼎-主词-8</td><td>¥5.84</td><td>¥145</td><td>2</td><td>4.01%</td><td>¥2.92</td></tr><tr><td>9</td><td>新品-发动机支架-李鼎-SP-AUTO-B0HBBF4YL7-批量:26092213</td><td>¥3.92</td><td>¥0</td><td>0</td><td>0.00%</td><td>¥0.00</td></tr><tr><td>10</td><td>SP-AUTO-MIXS-B0GVMK8JXH-发动机支架-李鼎</td><td>¥3.08</td><td>¥0</td><td>0</td><td>0.00%</td><td>¥0.00</td></tr><tr><td>11</td><td>SP-AUTO-MIXS-发动机支架-李鼎-B0GYF366RS-滞销组</td><td>¥2.71</td><td>¥0</td><td>0</td><td>0.00%</td><td>¥0.00</td></tr><tr><td>12</td><td>SP-KW-MIXS-发动机支架-新品-主词-2</td><td>¥2.61</td><td>¥0</td><td>0</td><td>0.00%</td><td>¥0.00</td></tr><tr><td>13</td><td>SP-发动机支架-B0GLGT7WHG-自动-smartcreat-李鼎-批量:261103</td><td>¥2.45</td><td>¥67</td><td>1</td><td>3.63%</td><td>¥2.45</td></tr><tr><td>14</td><td>SP-KW-MIXS-发动机支架-新品-李鼎-主词-6</td><td>¥2.43</td><td>¥55</td><td>2</td><td>4.38%</td><td>¥1.22</td></tr><tr><td>15</td><td>SP-AUTO-MIXS-发动机支架-李鼎-B0GYF4V7TF</td><td>¥2.23</td><td>¥0</td><td>0</td><td>0.00%</td><td>¥0.00</td></tr></tbody></table></div>
+<div class="cd"><h3>零单活动 TOP15（共 140 个 / 合计 ¥130.99）</h3>
+<table class="tb"><thead><tr><th>#</th><th>活动名称</th><th>花费</th><th>点击</th></tr></thead><tbody><tr><td>1</td><td>SP-KW-MIXS-发动机支架-新品-主词-1</td><td>¥10.12</td><td>10</td></tr><tr><td>2</td><td>新品-发动机支架-李鼎-SP-AUTO-B0HBBF4YL7-批量:26092213</td><td>¥3.92</td><td>5</td></tr><tr><td>3</td><td>SP-AUTO-MIXS-B0GVMK8JXH-发动机支架-李鼎</td><td>¥3.08</td><td>4</td></tr><tr><td>4</td><td>SP-AUTO-MIXS-发动机支架-李鼎-B0GYF366RS-滞销组</td><td>¥2.71</td><td>3</td></tr><tr><td>5</td><td>SP-KW-MIXS-发动机支架-新品-主词-2</td><td>¥2.61</td><td>3</td></tr><tr><td>6</td><td>SP-AUTO-MIXS-发动机支架-李鼎-B0GYF4V7TF</td><td>¥2.23</td><td>3</td></tr><tr><td>7</td><td>SP-发动机支架-B0G3PVBY7D-自动-smartcreat-李鼎-批量:2611</td><td>¥2.14</td><td>4</td></tr><tr><td>8</td><td>SP-AUTO-MIXS-发动机支架-新品-李鼎-降低-B0HBB4WFRS</td><td>¥2.14</td><td>4</td></tr><tr><td>9</td><td>SP-AUTO-MIXS-B0GVM24FN4-发动机支架-李鼎-1</td><td>¥2.10</td><td>3</td></tr><tr><td>10</td><td>SP-发动机支架-B0GQZPRFM9-自动-smartcreat-李鼎-批量:2611</td><td>¥2.07</td><td>5</td></tr><tr><td>11</td><td>SP-AUTO-MIXS-B0GQZPB92V-发动机支架-李鼎</td><td>¥1.97</td><td>3</td></tr><tr><td>12</td><td>SP-AUTO-MIXS-发动机支架-新品-李鼎-降低-B0HBB9C2XG</td><td>¥1.95</td><td>3</td></tr><tr><td>13</td><td>SP-PAT-NODE-发动机支架-李鼎-老品-类目</td><td>¥1.83</td><td>4</td></tr><tr><td>14</td><td>SP-KW-MIXS-发动机支架-新品-李鼎-主词-9</td><td>¥1.81</td><td>2</td></tr><tr><td>15</td><td>SP-发动机支架-B0GLGQH354-自动-smartcreat-李鼎-批量:2611</td><td>¥1.59</td><td>3</td></tr></tbody></table>
+<p class="hint">⚠️ 有花费但零订单，建议关停或降 bid。</p></div>
+</section>
+
+<section id="ana">
+<h2>&#128221; 分析总结 · W47</h2>
+<div class="blk">
+<div class="blk-h">&#128202; 数据解读</div>
+<ul>
+<li>销量 <b>145 → 168 件</b>（+15.9%），销售额 ¥61,822 → <b>¥70,630</b>（+14.2%）。</li>
+<li>流量 1,520 → 1,434（-5.7%），但转化率 9.54% → <b>11.72%</b>（+2.18pp），是本期最大亮点。</li>
+<li>广告单 34 → <b>45</b>（+32.4%），ACOS 18.45% → <b>12.89%</b>（-5.56pp）。</li>
+<li>出单 ASIN 70 → <b>82</b>（+17.1%），出单面在扩大。</li>
+<li>新品 58→77（+32.8%），老品 87→91（+4.6%）——新品增速是老品 7 倍。</li>
+</ul>
+</div>
+<div class="blk">
+<div class="blk-h">&#128269; 原因分析</div>
+<ul>
+<li><b>① 促销 + 广告双驱动</b>：流量 -5.7% 但销量 +15.9%，增量来自转化率提升（与车灯总成 W47 同源）。</li>
+<li><b>② 手动·KW 是最大改善</b>：订单 2→10（+400%）、ACOS 43.10%→11.80%（-31.30pp）、CVR 4.76%→10.99%。</li>
+<li><b>③ 手动·广泛BR 降本提效</b>：花费 -17% 但订单 18→20、ACOS 18.05%→11.66%。</li>
+<li><b>④ 自动·其他仍是拖累</b>：花费 +56% 但 CVR 6.31%→4.71%、ACOS 16.55% 未改善。</li>
+<li><b>⑤ 库存消耗加快</b>：可用 1,518 → 1,431，周转 73.3 → <b>59.6 天</b>，在途 900 件。</li>
+</ul>
+</div>
+<div class="blk">
+<div class="blk-h">&#9989; 建议动作</div>
+<ul>
+<li><b>1. 手动·KW 加预算</b>：ACOS 11.80%、订单翻 5 倍，是最高效类型。</li>
+<li><b>2. 关停 140 个零单活动</b>：烧 ¥130.99 零单，立即关停。</li>
+<li><b>3. 自动·其他 降 bid 或关停</b>：花费 +56% 但 CVR 反降。</li>
+<li><b>4. 库存告急 20 个 ASIN 优先补货</b>：可撑 &lt;30 天。</li>
+<li><b>5. 趁黑五（11-27）固化组合拳</b>：促销 × 广告同步拉满。</li>
+</ul>
+</div>
+</section>
+
+<script>
+var CH = {"w": ["W39", "W40", "W41", "W42", "W43", "W44", "W45", "W46", "W47"], "q": [142, 148, 155, 154, 161, 181, 177, 145.0, 168.0], "r": [68200, 71500, 74200, 73800, 75500, 74659, 72495, 61822.4, 70629.8], "v": [1480, 1520, 1585, 1509, 1540, 1620, 1560, 1520.0, 1434.0], "sp": [2650, 2720, 2800, 2583, 2610, 2680, 2730, 2390.77, 2282.61], "acos": [12.5, 12.8, 13.2, 11.89, 12.1, 12.4, 14.21, 18.45, 12.89], "cvr": [9.6, 9.7, 9.8, 10.21, 10.4, 11.2, 11.35, 9.54, 11.72], "asins": [86, 88, 90, 86, 88, 86, 86, 70, 82], "adq": [48, 50, 52, 51, 50, 51, 52, 34.0, 45.0]};
+var CHARTS = [];
+function mk(id, o) { var e = document.getElementById(id); if (!e) return; var c = echarts.init(e); c.setOption(o); CHARTS.push(c); return c; }
+
+mk('c-trend', {
+  tooltip: {trigger:'axis'},
+  legend: {data:['销量','销售额','转化率'], top:2, textStyle:{fontSize:11}},
+  grid: {left:60,right:62,top:40,bottom:34},
+  xAxis: {type:'category', data:CH.w, axisLabel:{fontSize:10}},
+  yAxis: [{type:'value', name:'件 / ¥', axisLabel:{fontSize:10}},
+          {type:'value', name:'转化率%', axisLabel:{fontSize:10}, splitLine:{show:false}}],
+  series: [
+    {name:'销量', type:'bar', data:CH.q, itemStyle:{color:'#0F4C75', borderRadius:[3,3,0,0]}, barWidth:'30%',
+      label:{show:true, position:'top', fontSize:9}},
+    {name:'销售额', type:'line', data:CH.r, smooth:true, symbolSize:6,
+      lineStyle:{width:2.2, color:'#1B7A9E'}, itemStyle:{color:'#1B7A9E'}},
+    {name:'转化率', type:'line', yAxisIndex:1, data:CH.cvr, smooth:true, symbolSize:6,
+      lineStyle:{width:2, type:'dashed', color:'#C9A227'}, itemStyle:{color:'#C9A227'},
+      label:{show:true, position:'top', fontSize:9, formatter:'{c}%'}}
+  ]
+});
+
+mk('c-ad', {
+  tooltip: {trigger:'axis'},
+  legend: {data:['广告花费','广告单','ACOS'], top:2, textStyle:{fontSize:11}},
+  grid: {left:62,right:62,top:40,bottom:34},
+  xAxis: {type:'category', data:CH.w, axisLabel:{fontSize:10}},
+  yAxis: [{type:'value', name:'¥ / 单', axisLabel:{fontSize:10}},
+          {type:'value', name:'ACOS%', axisLabel:{fontSize:10}, splitLine:{show:false}}],
+  series: [
+    {name:'广告花费', type:'bar', data:CH.sp, itemStyle:{color:'#E8734A', borderRadius:[3,3,0,0]}, barWidth:'28%'},
+    {name:'广告单', type:'bar', data:CH.adq, itemStyle:{color:'#5B8FF9', borderRadius:[3,3,0,0]}, barWidth:'28%',
+      label:{show:true, position:'top', fontSize:9}},
+    {name:'ACOS', type:'line', yAxisIndex:1, data:CH.acos, smooth:true, symbolSize:7,
+      lineStyle:{width:2.4, color:'#C9A227'}, itemStyle:{color:'#C9A227'},
+      label:{show:true, position:'top', fontSize:9.5, formatter:'{c}%'}}
+  ]
+});
+
+window.addEventListener('resize', function() { CHARTS.forEach(function(c) { c.resize(); }); });
+</script>
+</body>
+</html>
